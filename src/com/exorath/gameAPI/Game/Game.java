@@ -10,10 +10,10 @@ import com.exorath.gameAPI.lib.Properties;
  */
 
 public abstract class Game {
-    private Properties properties;
+    public static final String DEFAULT_GAME_NAME = "Game";
 
+    private GameProperties properties;
     private Lobby lobby;
-
     private TeamManager teamManager;
 
     public Game() {
@@ -23,8 +23,8 @@ public abstract class Game {
     /**
      * Basically the constructor of the Game object. This could be overwritten by Game's children.
      */
-    protected void init(){
-        properties = new Properties();
+    protected void init() {
+        properties = new GameProperties();
         lobby = new Lobby();
         teamManager = new TeamManager();
     }
@@ -36,16 +36,27 @@ public abstract class Game {
     public TeamManager getTeamManager() {
         return teamManager;
     }
-    public Properties getProperties(){
+
+    public GameProperties getProperties() {
         return properties;
     }
-    protected void setLobby(Lobby lobby){
+
+    protected void setLobby(Lobby lobby) {
         this.lobby = lobby;
     }
-    protected void setTeamManager(TeamManager teamManager){
+
+    protected void setTeamManager(TeamManager teamManager) {
         this.teamManager = teamManager;
     }
-    protected void setProperties(Properties properties){
+
+    protected void setProperties(GameProperties properties) {
         this.properties = properties;
+    }
+
+    public void setName(String name){
+        properties.set(GameProperty.NAME, name);
+    }
+    public String getName(String name){
+        return (String) properties.get(GameProperty.NAME, DEFAULT_GAME_NAME);
     }
 }
