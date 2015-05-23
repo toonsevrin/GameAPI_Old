@@ -19,12 +19,8 @@ public enum TeamProperty {
     private String key;
     private String description;
     private Class type;
-    TeamProperty(String key, String description){
-        this.key = GameAPI.PREFIX + key;
-        this.description = description;
-    }
     TeamProperty(String key, String description, Class type){
-        this.key = key;
+        this.key = GameAPI.PREFIX + key;
         this.description = description;
         this.type = type;
     }

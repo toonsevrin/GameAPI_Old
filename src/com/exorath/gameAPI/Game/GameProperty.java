@@ -17,12 +17,8 @@ public enum GameProperty {
     private String key;
     private String description;
     private Class type;
-    GameProperty(String key, String description){
-        this.key = GameAPI.PREFIX + key;
-        this.description = description;
-    }
     GameProperty(String key, String description, Class type){
-        this.key = key;
+        this.key = GameAPI.PREFIX + key;
         this.description = description;
         this.type = type;
     }

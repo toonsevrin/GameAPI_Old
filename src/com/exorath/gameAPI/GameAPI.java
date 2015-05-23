@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class GameAPI extends JavaPlugin{
     public static final String PREFIX = "GAPI_";
-    
+
     @Override
     public void onEnable(){
 
