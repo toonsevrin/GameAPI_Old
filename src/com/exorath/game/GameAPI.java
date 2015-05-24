@@ -1,4 +1,4 @@
-package com.exorath.gameAPI;
+package com.exorath.game;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

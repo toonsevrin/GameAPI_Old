@@ -1,8 +1,7 @@
-package com.exorath.gameAPI.game;
+package com.exorath.game.api;
 
-import com.exorath.gameAPI.game.lobby.Lobby;
-import com.exorath.gameAPI.game.teams.TeamManager;
-import com.exorath.gameAPI.lib.Properties;
+import com.exorath.game.api.lobby.Lobby;
+import com.exorath.game.api.teams.TeamManager;
 
 /**
  * Created by too on 23/05/2015.

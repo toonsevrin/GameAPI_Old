@@ -1,8 +1,6 @@
-package com.exorath.gameAPI.game.players;
+package com.exorath.game.api.players;
 
-import com.exorath.gameAPI.GameAPI;
-import org.bukkit.Location;
-import org.bukkit.World;
+import com.exorath.game.GameAPI;
 
 /**
  * Created by too on 23/05/2015.

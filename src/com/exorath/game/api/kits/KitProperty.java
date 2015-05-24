@@ -1,10 +1,10 @@
-package com.exorath.gameAPI.game.kits;
+package com.exorath.game.api.kits;
 
-import com.exorath.gameAPI.GameAPI;
-import com.exorath.gameAPI.lib.UnlockRequirements;
-import org.bukkit.Location;
+import com.exorath.game.GameAPI;
+import com.exorath.game.lib.UnlockRequirements;
 import org.bukkit.Material;
-import org.bukkit.World;
+
+import java.util.List;
 
 /**
  * Created by too on 23/05/2015.
@@ -15,7 +15,7 @@ public enum KitProperty {
     //TODO: Create unlockable class
     NAME("name","The name of this kit", String.class),
     MATERIAL("material","The material that will be shown in inventories", Material.class),
-    DESCRIPTION("description", "The description of the kit.", String[].class),
+    DESCRIPTION("description", "The description of the kit.", List.class),
     UNLOCK_REQUIREMENTS("unlockedwith","The kit might have some unlock requirements", UnlockRequirements.class);
     //Interaction
 

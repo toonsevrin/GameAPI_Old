@@ -1,4 +1,4 @@
-package com.exorath.gameAPI.game.lobby;
+package com.exorath.game.api.lobby;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

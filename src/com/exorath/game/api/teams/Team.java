@@ -1,4 +1,4 @@
-package com.exorath.gameAPI.game.teams;
+package com.exorath.game.api.teams;
 
 import org.bukkit.Bukkit;
 

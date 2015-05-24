@@ -1,6 +1,6 @@
-package com.exorath.gameAPI.lib;
+package com.exorath.game.lib;
 
-import com.exorath.gameAPI.game.players.GAPIPlayer;
+import com.exorath.game.api.players.GAPIPlayer;
 
 /**
  * Created by too on 23/05/2015.

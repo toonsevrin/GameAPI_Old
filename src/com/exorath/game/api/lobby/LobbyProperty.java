@@ -1,6 +1,6 @@
-package com.exorath.gameAPI.game.lobby;
+package com.exorath.game.api.lobby;
 
-import com.exorath.gameAPI.GameAPI;
+import com.exorath.game.GameAPI;
 import org.bukkit.Location;
 import org.bukkit.World;
 

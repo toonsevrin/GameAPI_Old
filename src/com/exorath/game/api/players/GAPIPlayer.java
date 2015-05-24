@@ -1,4 +1,4 @@
-package com.exorath.gameAPI.game.players;
+package com.exorath.game.api.players;
 
 import org.bukkit.entity.Player;
 

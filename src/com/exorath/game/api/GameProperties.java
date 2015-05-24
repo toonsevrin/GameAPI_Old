@@ -1,7 +1,7 @@
-package com.exorath.gameAPI.game;
+package com.exorath.game.api;
 
-import com.exorath.gameAPI.GameAPI;
-import com.exorath.gameAPI.lib.Properties;
+import com.exorath.game.GameAPI;
+import com.exorath.game.lib.Properties;
 
 /**
  * Created by too on 23/05/2015.

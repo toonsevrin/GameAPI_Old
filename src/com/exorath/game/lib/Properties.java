@@ -1,4 +1,4 @@
-package com.exorath.gameAPI.lib;
+package com.exorath.game.lib;
 
 import java.util.HashMap;
 
