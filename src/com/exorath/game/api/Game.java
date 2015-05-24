@@ -9,53 +9,52 @@ import com.exorath.game.api.teams.TeamManager;
  */
 
 public abstract class Game {
+    
     public static final String DEFAULT_GAME_NAME = "Game";
-
-    private GameProperties properties;
-    private Lobby lobby;
-    private TeamManager teamManager;
-
+    
+    private Properties properties = new Properties();
+    private TeamManager teamManager = new TeamManager();
+    private Lobby lobby = new Lobby();
+    
     public Game() {
-        init();
+        //this.init();
     }
-
-    /**
-     * Basically the constructor of the Game object. This could be overwritten by Game's children.
-     */
+    
     protected void init() {
-        properties = new GameProperties();
-        lobby = new Lobby();
-        teamManager = new TeamManager();
+        this.properties = new Properties();
+        this.lobby = new Lobby();
+        this.teamManager = new TeamManager();
     }
-
+    
     public Lobby getLobby() {
-        return lobby;
+        return this.lobby;
     }
-
+    
     public TeamManager getTeamManager() {
-        return teamManager;
+        return this.teamManager;
     }
-
-    public GameProperties getProperties() {
-        return properties;
+    
+    public Properties getProperties() {
+        return this.properties;
     }
-
-    protected void setLobby(Lobby lobby) {
+    
+    protected void setLobby( Lobby lobby ) {
         this.lobby = lobby;
     }
-
-    protected void setTeamManager(TeamManager teamManager) {
+    
+    protected void setTeamManager( TeamManager teamManager ) {
         this.teamManager = teamManager;
     }
-
-    protected void setProperties(GameProperties properties) {
+    
+    protected void setProperties( Properties properties ) {
         this.properties = properties;
     }
-
-    public void setName(String name){
-        properties.set(GameProperty.NAME, name);
+    
+    public void setName( String name ) {
+        this.properties.set( GameProperty.NAME, name );
     }
-    public String getName(String name){
-        return (String) properties.get(GameProperty.NAME, DEFAULT_GAME_NAME);
+    
+    public String getName( String name ) {
+        return this.properties.as( GameProperty.NAME, String.class );
     }
 }

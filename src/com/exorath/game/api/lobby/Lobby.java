@@ -4,42 +4,56 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import com.exorath.game.api.Properties;
+
 /**
  * Created by too on 23/05/2015.
- * This is the main Lobby class, it handles most of the lobby stuff (Area where players get tp'ed to between games).
+ * This is the main Lobby class, it handles most of the lobby stuff (Area where players get tp'ed to
+ * between games).
  */
 public class Lobby {
-    private static final String DEFAULT_WORLD_NAME = "Lobby";
-    private LobbyProperties properties;
-    public Lobby(){
-        properties = new LobbyProperties();
-        setupWorld();
+    
+    public static final String DEFAULT_WORLD_NAME = "Lobby";
+    private Properties properties = new Properties();
+    
+    public Lobby() {
+        this.setupWorld();
     }
-    private void setupWorld(){
-        setWorld(Bukkit.getWorld(DEFAULT_WORLD_NAME));
+    
+    private void setupWorld() {
+        this.setWorld( Bukkit.getWorld( Lobby.DEFAULT_WORLD_NAME ) );
     }
-    public LobbyProperties getProperties(){
-        return properties;
+    
+    public Properties getProperties() {
+        return this.properties;
     }
-    protected void setWorld(World world){
-        properties.set(LobbyProperty.WORLD, world);
+    
+    protected void setWorld( World world ) {
+        this.properties.set( LobbyProperty.WORLD, world );
     }
-    public World getWorld(){
-        World world = (World) properties.get(LobbyProperty.WORLD);
-        if(world == null) setupWorld();
+    
+    public World getWorld() {
+        World world = Bukkit.getWorld( this.properties.as( LobbyProperty.WORLD, String.class ) );
+        if ( world == null ) {
+            this.setupWorld();
+        }
         return world;
     }
-    public Lobby enable(){
-        properties.set(LobbyProperty.ENABLED, true);
+    
+    public Lobby enable() {
+        this.properties.set( LobbyProperty.ENABLED, true );
         return this;
     }
-    public boolean isEnabled(){
-        return (boolean) properties.get(LobbyProperty.ENABLED, false);
+    
+    public boolean isEnabled() {
+        return this.properties.as( LobbyProperty.ENABLED, boolean.class );
     }
-    public void setSpawnLocation(int x, int y, int z){
-        properties.set(LobbyProperty.LOBBY_SPAWN, new Location(getWorld(),x, y, z));
+    
+    public void setSpawnLocation( int x, int y, int z ) {
+        this.properties.set( LobbyProperty.LOBBY_SPAWN, new Location( this.getWorld(), x, y, z ) );
     }
-    public Location getSpawnLocation(){
-        return (Location) properties.get(LobbyProperty.LOBBY_SPAWN, new Location(getWorld(), 0, 0, 0));
+    
+    public Location getSpawnLocation() {
+        return this.properties.as( LobbyProperty.LOBBY_SPAWN, Location.class );
     }
 }

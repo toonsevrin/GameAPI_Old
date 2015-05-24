@@ -1,39 +1,18 @@
 package com.exorath.game.api.kits;
 
-import com.exorath.game.GameAPI;
-import com.exorath.game.lib.UnlockRequirements;
-import org.bukkit.Material;
-
-import java.util.List;
+import com.exorath.game.api.Property;
 
 /**
  * Created by too on 23/05/2015.
  * This is an enum with all default kit property keys.
  */
-public enum KitProperty {
-    //primary
-    //TODO: Create unlockable class
-    NAME("name","The name of this kit", String.class),
-    MATERIAL("material","The material that will be shown in inventories", Material.class),
-    DESCRIPTION("description", "The description of the kit.", List.class),
-    UNLOCK_REQUIREMENTS("unlockedwith","The kit might have some unlock requirements", UnlockRequirements.class);
-    //Interaction
-
-    private String key;
-    private String description;
-    private Class type;
-    KitProperty(String key, String description, Class type){
-        this.key = GameAPI.PREFIX + key;
-        this.description = description;
-        this.type = type;
-    }
-    public String getKey(){
-        return key;
-    }
-    public String getDescription(){
-        return description;
-    }
-    public Class getType(){
-        return type;
-    }
+public class KitProperty {
+    
+    public static final Property
+            
+            NAME = Property.get( "name", "The name of this kit", Kit.DEFAULT_NAME ),
+            MATERIAL = Property.get( "material", "The material that will be shown in inventories", Kit.DEFAULT_MATERIAL ),
+            DESCRIPTION = Property.get( "description", "The description of the kit.", Kit.DEFAULT_DESCRIPTION ),
+            UNLOCK_REQUIREMENTS = Property.get( "unlockedwith", "The kit might have some unlock requirements", null );
+    
 }
