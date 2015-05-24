@@ -9,10 +9,10 @@ import com.exorath.game.api.Property;
 public class KitProperty {
     
     public static final Property
-    
-    NAME = Property.get( "name", "The name of this kit", Kit.DEFAULT_NAME ),
-    MATERIAL = Property.get( "material", "The material that will be shown in inventories", Kit.DEFAULT_MATERIAL ),
-    DESCRIPTION = Property.get( "description", "The description of the kit.", Kit.DEFAULT_DESCRIPTION ),
-    UNLOCK_REQUIREMENTS = Property.get( "unlockedwith", "The kit might have some unlock requirements", null );
+            
+            NAME = Property.get( "name", "The name of this kit", Kit.DEFAULT_NAME ),
+            MATERIAL = Property.get( "material", "The material that will be shown in inventories", Kit.DEFAULT_MATERIAL ),
+            DESCRIPTION = Property.get( "description", "The description of the kit.", Kit.DEFAULT_DESCRIPTION ),
+            UNLOCK_REQUIREMENTS = Property.get( "unlockedwith", "The kit might have some unlock requirements", null );
     
 }

@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  * The main class
  */
 public class GameAPI extends JavaPlugin {
+    
     public static final String PREFIX = "GAPI_";
     
     @Override
@@ -26,9 +27,5 @@ public class GameAPI extends JavaPlugin {
      */
     public static void error( String error ) {
         System.out.println( "GameAPI ERROR: " + error );
-    }
-    
-    public static GameAPI getInstance() {
-        return JavaPlugin.getPlugin( GameAPI.class );
     }
 }

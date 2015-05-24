@@ -9,6 +9,7 @@ import com.exorath.game.api.Properties;
  * Base object for a Team.
  */
 public class Team {
+    
     protected static final String DEFAULT_NAME = "team";
     protected static final int DEFAULT_MAX_PLAYER_AMOUNT = Bukkit.getServer().getMaxPlayers();
     private Properties properties = new Properties();

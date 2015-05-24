@@ -5,5 +5,10 @@ package com.exorath.game.lib;
  * GAPIPlayer rank.
  */
 public enum Rank {
-    NONE, VIP, PREMIUM, MODERATOR, ADMIN, OWNER,
+    NONE,
+    VIP,
+    PREMIUM,
+    MODERATOR,
+    ADMIN,
+    OWNER,
 }

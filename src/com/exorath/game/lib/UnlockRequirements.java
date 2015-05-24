@@ -31,7 +31,7 @@ public class UnlockRequirements {
     }
     
     public int getHonorPoints() {
-        return honorPoints;
+        return this.honorPoints;
     }
     
     public void setCredits( int credits ) {
@@ -39,7 +39,7 @@ public class UnlockRequirements {
     }
     
     public int getCredits() {
-        return credits;
+        return this.credits;
     }
     
     public void setMinRank( Rank minRank ) {
@@ -47,6 +47,6 @@ public class UnlockRequirements {
     }
     
     public Rank getMinRank() {
-        return minRank;
+        return this.minRank;
     }
 }

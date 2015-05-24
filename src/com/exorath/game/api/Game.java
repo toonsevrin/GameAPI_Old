@@ -20,9 +20,6 @@ public abstract class Game {
         //this.init();
     }
     
-    /**
-     * Basically the constructor of the Game object. This could be overwritten by Game's children.
-     */
     protected void init() {
         this.properties = new Properties();
         this.lobby = new Lobby();
