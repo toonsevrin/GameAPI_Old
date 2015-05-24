@@ -1,3 +1,9 @@
 .idea/
-*.iml
 /out/
+/bin/
+
+*.iml
+*.class
+
+.classpath
+.project
