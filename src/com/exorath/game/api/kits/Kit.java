@@ -18,9 +18,10 @@ import com.exorath.game.api.players.GPlayer;
  * Base class for all GAPIPlayer kits.
  */
 public abstract class Kit {
-    private static final String DEFAULT_NAME = "Kit";
-    private static final Material DEFAULT_MATERIAL = Material.WORKBENCH;
-    private static final String[] DEFAULT_DESCRIPTION = new String[] { ChatColor.WHITE + "This is a cool kit." };
+    
+    public static final String DEFAULT_NAME = "Kit";
+    public static final Material DEFAULT_MATERIAL = Material.WORKBENCH;
+    public static final String[] DEFAULT_DESCRIPTION = new String[] { ChatColor.WHITE + "This is a cool kit." };
     
     private GPlayer player;
     private Properties properties = new Properties();
@@ -59,7 +60,7 @@ public abstract class Kit {
     }
     
     public String getName() {
-        return (String) this.properties.get( KitProperty.NAME, Kit.DEFAULT_NAME );
+        return this.properties.as( KitProperty.NAME, String.class );
     }
     
     public void setMaterial( Material material ) {
@@ -67,7 +68,7 @@ public abstract class Kit {
     }
     
     public String getMaterial() {
-        return (String) this.properties.get( KitProperty.NAME, Kit.DEFAULT_MATERIAL );
+        return this.properties.as( KitProperty.NAME, String.class );
     }
     
     public void setDescription( String[] description ) {
@@ -75,7 +76,7 @@ public abstract class Kit {
     }
     
     public String getDescription() {
-        return (String) this.properties.get( KitProperty.NAME, Kit.DEFAULT_DESCRIPTION );
+        return this.properties.as( KitProperty.NAME, String.class );
     }
     
     public static void getKitItem( String name, Material material ) {

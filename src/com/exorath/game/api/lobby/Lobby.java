@@ -46,7 +46,7 @@ public class Lobby {
     }
     
     public boolean isEnabled() {
-        return (boolean) this.properties.get( LobbyProperty.ENABLED, false );
+        return this.properties.as( LobbyProperty.ENABLED, boolean.class );
     }
     
     public void setSpawnLocation( int x, int y, int z ) {
@@ -54,6 +54,6 @@ public class Lobby {
     }
     
     public Location getSpawnLocation() {
-        return (Location) this.properties.get( LobbyProperty.LOBBY_SPAWN, new Location( this.getWorld(), 0, 0, 0 ) );
+        return this.properties.as( LobbyProperty.LOBBY_SPAWN, Location.class );
     }
 }

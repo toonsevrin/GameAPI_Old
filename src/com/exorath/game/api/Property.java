@@ -1,9 +1,15 @@
 package com.exorath.game.api;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Property {
     
+    private static Map<String, Property> properties = new HashMap<>();
+    
     public static Property get( String name, String desc, Object def ) {
-        return new Property( name, desc, def );
+        return name != null && Property.properties.containsKey( name.toLowerCase() ) ? Property.properties.get( name.toLowerCase() ) : new Property(
+                name, desc, def );
     }
     
     private final String name, desc;
@@ -13,6 +19,10 @@ public class Property {
         this.name = name;
         this.desc = desc;
         this.def = def;
+        
+        if ( name != null ) {
+            Property.properties.put( name.toLowerCase(), this );
+        }
     }
     
     public Property( String name, String desc ) {
