@@ -5,6 +5,8 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  * Created by too on 23/05/2015.
@@ -34,6 +36,12 @@ public abstract class Kit {
     public void onSneakToggle(PlayerToggleSneakEvent event){}
     public void onSprintToggle(PlayerToggleSprintEvent event){}
 
+    public void getKitItem(){
+        ItemStack is = new ItemStack(getMaterial());
+        ItemMeta im = is.getItemMeta();
+        im.setDisplayName(ChatColor.WHITE + "Select: " + getName());
+    }
+    
     public GAPIPlayer getPlayer() {
         return player;
     }
@@ -49,16 +57,13 @@ public abstract class Kit {
     public void setMaterial(Material material){
         properties.set(KitProperty.MATERIAL, material);
     }
-    public String getMaterial(){
-        return (String) properties.get(KitProperty.NAME, DEFAULT_MATERIAL);
+    public Material getMaterial(){
+        return (Material) properties.get(KitProperty.NAME, DEFAULT_MATERIAL);
     }
     public void setDescription(String[] description){
         properties.set(KitProperty.DESCRIPTION, description);
     }
-    public String getDescription(){
-        return (String) properties.get(KitProperty.NAME, DEFAULT_DESCRIPTION);
-    }
-    public static void getKitItem(String name, Material material){
-
+    public String[] getDescription(){
+        return (String[]) properties.get(KitProperty.NAME, DEFAULT_DESCRIPTION);
     }
 }
