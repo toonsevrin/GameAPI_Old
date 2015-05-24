@@ -41,4 +41,5 @@ public class Team {
     public int getTeamSize() {
         return this.properties.as( TeamProperty.TEAM_SIZE, int.class );
     }
+
 }

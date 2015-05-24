@@ -1,4 +1,4 @@
-package com.exorath.game.lib;
+package com.exorath.game.lib.util;
 
 import java.io.Serializable;
 
