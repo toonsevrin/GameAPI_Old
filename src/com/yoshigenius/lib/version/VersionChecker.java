@@ -26,7 +26,8 @@ import org.xml.sax.SAXException;
 public class VersionChecker {
     
     public static enum VersionFormat {
-        XML, JSON;
+        XML,
+        JSON;
     }
     
     public static class VersionResult {
@@ -113,7 +114,11 @@ public class VersionChecker {
     
     public static enum VersionBranch {
         
-        DEV, ALPHA, BETA, PRE_RELEASE, RELEASE;
+        DEV,
+        ALPHA,
+        BETA,
+        PRE_RELEASE,
+        RELEASE;
         
         public boolean isMoreStable( VersionBranch branch ) {
             return branch.ordinal() >= this.ordinal();
