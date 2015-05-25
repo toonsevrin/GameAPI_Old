@@ -5,19 +5,19 @@ import org.bukkit.Location;
 /**
  * Created by too on 24/05/2015.
  */
-public class Box implements Region {
+public class CuboidRegion implements Region {
     
     private Location minLoc;
     private double width;
     private double height;
     private double length;
     
-    public Box( Location minLoc, double size ) {
+    public CuboidRegion( Location minLoc, double size ) {
         this.minLoc = minLoc;
         this.setWHL( size, size, size );
     }
     
-    public Box( Location minLoc, double width, double height, double length ) {
+    public CuboidRegion( Location minLoc, double width, double height, double length ) {
         this.minLoc = minLoc;
         this.setWHL( width, height, length );
     }

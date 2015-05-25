@@ -5,17 +5,17 @@ import org.bukkit.Location;
 /**
  * Created by too on 24/05/2015.
  */
-public class Elipsoid implements Region{
+public class EllipsoidRegion implements Region{
     private Location center;
     private double rangeX;
     private double rangeY;
     private double rangeZ;
 
-    public Elipsoid(Location center, double range){
+    public EllipsoidRegion(Location center, double range){
         this.center = center;
         setRange(range , range, range);
     }
-    public Elipsoid(Location center, double rangeX, double rangeY, double rangeZ){
+    public EllipsoidRegion(Location center, double rangeX, double rangeY, double rangeZ){
         this.center = center;
         setRange(rangeX, rangeY, rangeZ);
     }
