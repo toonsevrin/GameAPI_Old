@@ -1,6 +1,5 @@
 package com.exorath.game.api.events;
 
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 /**
@@ -9,9 +8,9 @@ import org.bukkit.event.HandlerList;
  */
 public class GPlayerInteractEvent extends GEvent {
     private static final HandlerList handlers = new HandlerList();
-
+    
     @Override
     public HandlerList getHandlers() {
-        return handlers;
+        return GPlayerInteractEvent.handlers;
     }
 }
