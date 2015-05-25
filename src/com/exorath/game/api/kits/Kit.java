@@ -21,8 +21,8 @@ import com.exorath.game.api.events.GameStartEvent;
 import com.exorath.game.api.events.GameStopEvent;
 import com.exorath.game.api.players.GPlayer;
 import com.exorath.game.lib.UnlockRequirements;
-import com.exorath.game.lib.items.ItemStackBuilder;
 import com.exorath.game.lib.items.PurchasableItem;
+import com.yoshigenius.lib.util.ItemStackBuilder;
 
 /**
  * Created by too on 23/05/2015.
