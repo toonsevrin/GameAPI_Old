@@ -35,11 +35,11 @@ public class Team {
     }
     
     public void setTeamSize( int amount ) {
-        this.properties.set( TeamProperty.TEAM_SIZE, amount );
+        this.properties.set( TeamProperty.SIZE, amount );
     }
     
     public int getTeamSize() {
-        return this.properties.as( TeamProperty.TEAM_SIZE, int.class );
+        return this.properties.as( TeamProperty.SIZE, int.class );
     }
 
 }

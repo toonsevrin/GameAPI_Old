@@ -1,18 +1,19 @@
 package com.exorath.game.api.players;
 
+import com.exorath.game.api.BasePlayerProperty;
 import com.exorath.game.api.Property;
+import org.bukkit.GameMode;
 
 /**
  * Created by too on 23/05/2015.
  * This is an enum with all default player property keys.
  */
-public class PlayerProperty {
-    
+public class PlayerProperty extends BasePlayerProperty {
+
     public static final Property
-    
-    PVP = Property.get( "pvp", "Whether or not pvp is allowed for this player", false ),
-    BLOCK_BREAK = Property.get( "blockbreak", "Whether or not block breaking is allowed in for this player", false ),
-    BLOCK_PLACE = Property.get( "blockplace", "Whether or not block placement is allowed for this player", false ),
-    INTERACT = Property.get( "interact", "Whether or interaction is allowed for this player", false );
-    
+            PREFIX = Property.get("prefix", "Prefix for members, will be used on various places", ""),
+            GAMEMODE = Property.get("gamemode", "Default members gamemode", GameMode.SURVIVAL),
+            HUNGER = Property.get("hunger", "Whether or not members hunger should deplete", false),
+            NAME_TAG_VISIBILITY = Property.get("nametagvisibility", "Whether or not members name tag should be visible", true);
+
 }

@@ -22,6 +22,7 @@ public class Lobby {
     
     private void setupWorld() {
         this.setWorld( Bukkit.getWorld( Lobby.DEFAULT_WORLD_NAME ) );
+        this.setSpawnLocation(0,0,0);
     }
     
     public Properties getProperties() {
@@ -56,4 +57,6 @@ public class Lobby {
     public Location getSpawnLocation() {
         return this.properties.as( LobbyProperty.LOBBY_SPAWN, Location.class );
     }
+
+    //npc management
 }
