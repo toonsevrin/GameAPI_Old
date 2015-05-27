@@ -51,11 +51,11 @@ public class Lobby {
     }
     
     public void setSpawnLocation( int x, int y, int z ) {
-        this.properties.set( LobbyProperty.LOBBY_SPAWN, new Location( this.getWorld(), x, y, z ) );
+        this.properties.set( LobbyProperty.SPAWN, new Location( this.getWorld(), x, y, z ) );
     }
     
     public Location getSpawnLocation() {
-        return this.properties.as( LobbyProperty.LOBBY_SPAWN, Location.class );
+        return this.properties.as( LobbyProperty.SPAWN, Location.class );
     }
 
     //npc management
