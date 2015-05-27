@@ -1,5 +1,8 @@
 package com.exorath.game.api.teams;
 
+import com.exorath.game.api.players.GPlayer;
+import com.exorath.game.lib.util.GameUtil;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,7 +33,6 @@ public class TeamManager {
     public void removeTeam(Team team){
         if(teams.contains(team)) teams.remove(team);
     }
-
     /**
      *
      * @return the teams that are added in the TeamManager.
@@ -46,5 +48,14 @@ public class TeamManager {
        if(!defaultTeam) return;
         teams.clear();
         defaultTeam = false;
+    }
+    public void startGame(){
+        for(Team team : teams){
+            int spawn = 0;
+            for(GPlayer player : team.getPlayers()){
+                spawn = GameUtil.cycle(spawn, team.getSpawns().size() - 1);
+
+            }
+        }
     }
 }

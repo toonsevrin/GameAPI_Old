@@ -59,7 +59,9 @@ public class GPlayer {
     public OfflinePlayer getOfflinePlayer() {
         return Bukkit.getOfflinePlayer( this.uuid );
     }
-    
+    public boolean isOnline(){
+        return getOfflinePlayer().isOnline();
+    }
     public Player getBukkitPlayer() {
         OfflinePlayer player = this.getOfflinePlayer();
         if ( player != null && player.isOnline() ) {
