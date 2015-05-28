@@ -65,8 +65,8 @@ public final class GameUtil {
      * @return next integer in cycle
      */
     public static int cycle(int current,int min, int max){
-        if(current >= max) current = min;
         current++;
+        if(current > max) current = min;
         return current;
     }
     
