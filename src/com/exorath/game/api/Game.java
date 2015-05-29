@@ -1,7 +1,16 @@
 package com.exorath.game.api;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+
+import com.exorath.game.api.events.GameStateChangedEvent;
 import com.exorath.game.api.lobby.Lobby;
-import com.exorath.game.api.teams.TeamManager;
+import com.exorath.game.api.player.GamePlayer;
+import com.exorath.game.api.spectate.SpectateManager;
+import com.exorath.game.api.team.TeamManager;
+import com.google.common.collect.Sets;
 
 /**
  * Created by too on 23/05/2015.
@@ -11,32 +20,39 @@ import com.exorath.game.api.teams.TeamManager;
 public abstract class Game {
     
     public static final String DEFAULT_GAME_NAME = "Game";
-    public static final String DEFAULT_GAME_DESCRIPTION = "A fun to play game!";
-
-    private Properties properties = new Properties();
-    private TeamManager teamManager = new TeamManager();
+    public static final String DEFAULT_GAME_DESCRIPTION = "Default game description";
+    
     private Lobby lobby = new Lobby();
-
-    private boolean running;
+    private Properties properties = new Properties();
+    private TeamManager teamManager;
+    private SpectateManager spectateManager;
+    
+    private final Map<UUID, PlayerState> playerStates = new HashMap<>();
+    
+    private final Set<GameListener> listeners = Sets.newHashSet();
+    
+    private GameState state = GameState.WAITING;
     
     public Game() {
-        //this.init();
-
+        this.teamManager = new TeamManager( this );
+        this.spectateManager = new SpectateManager( this );
     }
     
-    protected void init() {
-        this.properties = new Properties();
-        this.lobby = new Lobby();
-        this.teamManager = new TeamManager();
+    public void setState( GameState state ) {
+        GameState old = this.state;
+        this.state = state;
+        GameStateChangedEvent event = new GameStateChangedEvent( this, old, state );
+        for ( GameListener listener : this.listeners ) {
+            listener.onGameStateChange( event );
+        }
     }
-    public void startGame(){
-        running = true;
-    }
-    public void stopGame() {
-        running = false;
-    }
+    
     public Lobby getLobby() {
         return this.lobby;
+    }
+    
+    public GameState getState() {
+        return this.state;
     }
     
     public TeamManager getTeamManager() {
@@ -59,18 +75,42 @@ public abstract class Game {
         this.properties = properties;
     }
     
+    public String getName() {
+        return this.properties.as( GameProperty.NAME, String.class );
+    }
+    
+    public String getDescription() {
+        return this.properties.as( GameProperty.DESCRIPTION, String.class );
+    }
+    
     public void setName( String name ) {
         this.properties.set( GameProperty.NAME, name );
     }
-
-    public String getName( String name ) {
-        return this.properties.as( GameProperty.NAME, String.class );
-    }
+    
     public void setDescription( String description ) {
         this.properties.set( GameProperty.DESCRIPTION, description );
     }
-
-    public String getDescription( String description ) {
-        return this.properties.as( GameProperty.DESCRIPTION, String.class );
+    
+    protected void addListener( GameListener listener ) {
+        if ( listener != null ) {
+            this.listeners.add( listener );
+        }
+    }
+    
+    public PlayerState getPlayerState( GamePlayer player ) {
+        PlayerState state = this.playerStates.get( player.getUUID() );
+        if ( state == null ) {
+            state = PlayerState.UNKNOWN;
+            this.playerStates.put( player.getUUID(), state );
+        }
+        return state;
+    }
+    
+    public boolean isPlaying( GamePlayer player ) {
+        return this.getPlayerState( player ) == PlayerState.PLAYING;
+    }
+    
+    public SpectateManager getSpectateManager() {
+        return this.spectateManager;
     }
 }

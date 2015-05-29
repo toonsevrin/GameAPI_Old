@@ -1,4 +1,4 @@
-package com.exorath.game.api.npcs;
+package com.exorath.game.api.npc;
 
 /**
  * Created by too on 24/05/2015.

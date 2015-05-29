@@ -1,4 +1,4 @@
-package com.exorath.game.api.players;
+package com.exorath.game.api.player;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -17,26 +17,26 @@ import com.exorath.game.lib.Rank;
  * Created by too on 23/05/2015.
  * Base player object in GameAPI
  */
-public class GPlayer {
+public class GamePlayer {
     
     private static final List<UUID> PLAYER_CACHE_ADDED = new LinkedList<>();
-    private static final Map<UUID, GPlayer> PLAYER_CACHE = new HashMap<>( 150 );
+    private static final Map<UUID, GamePlayer> PLAYER_CACHE = new HashMap<>( 150 );
     
-    public static GPlayer fromUUID( UUID uuid ) {
-        GPlayer player = GPlayer.PLAYER_CACHE.get( uuid );
+    public static GamePlayer fromUUID( UUID uuid ) {
+        GamePlayer player = GamePlayer.PLAYER_CACHE.get( uuid );
         if ( player == null ) {
-            player = new GPlayer( uuid );
-            if ( GPlayer.PLAYER_CACHE_ADDED.size() == 150 ) {
+            player = new GamePlayer( uuid );
+            if ( GamePlayer.PLAYER_CACHE_ADDED.size() == 150 ) {
                 int i = 0;
                 UUID u = null;
                 while ( u == null || Bukkit.getPlayer( u ) != null ) {
-                    u = GPlayer.PLAYER_CACHE_ADDED.get( i++ );
+                    u = GamePlayer.PLAYER_CACHE_ADDED.get( i++ );
                 }
-                GPlayer.PLAYER_CACHE_ADDED.remove( u );
-                GPlayer.PLAYER_CACHE.remove( u );
+                GamePlayer.PLAYER_CACHE_ADDED.remove( u );
+                GamePlayer.PLAYER_CACHE.remove( u );
             }
-            GPlayer.PLAYER_CACHE_ADDED.add( uuid );
-            GPlayer.PLAYER_CACHE.put( uuid, player );
+            GamePlayer.PLAYER_CACHE_ADDED.add( uuid );
+            GamePlayer.PLAYER_CACHE.put( uuid, player );
         }
         return player;
     }
@@ -44,11 +44,11 @@ public class GPlayer {
     private UUID uuid;
     private Properties properties = new Properties();
     
-    public GPlayer( UUID id ) {
+    public GamePlayer( UUID id ) {
         this.uuid = id;
     }
     
-    public GPlayer( Player player ) {
+    public GamePlayer( Player player ) {
         this( player.getUniqueId() );
     }
     

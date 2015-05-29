@@ -1,4 +1,4 @@
-package com.exorath.game.api.teams;
+package com.exorath.game.api.team;
 
 /**
  * Created by too on 24/05/2015.

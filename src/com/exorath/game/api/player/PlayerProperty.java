@@ -1,4 +1,4 @@
-package com.exorath.game.api.players;
+package com.exorath.game.api.player;
 
 import com.exorath.game.api.BasePlayerProperty;
 import com.exorath.game.api.Property;

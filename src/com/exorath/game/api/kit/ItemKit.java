@@ -1,4 +1,4 @@
-package com.exorath.game.api.kits;
+package com.exorath.game.api.kit;
 
 /**
  * Created by too on 27/05/2015.
