@@ -47,7 +47,7 @@ public class SGKits {
     
     public static class ArcherKit extends Kit {
         
-        private static final ItemStack icon = new ItemStackBuilder( Material.WOOD_SWORD ).getMeta().addLore( ChatColor.GOLD + "> Wood Sword" )
+        private static final ItemStack icon = new ItemStackBuilder( Material.BOW ).getMeta().addLore( ChatColor.GOLD + "> Bow and Arrows" )
                 .getBuilder().get();
         
         public ArcherKit() {
