@@ -33,18 +33,18 @@ public abstract class Kit {
     public static final String DEFAULT_NAME = "Kit";
     public static final Material DEFAULT_MATERIAL = Material.WORKBENCH;
     public static final String[] DEFAULT_DESCRIPTION = new String[] { ChatColor.WHITE + "This is a cool kit." };
-    
-    private GPlayer player;
+
     private Properties properties = new Properties();
-    
-    public Kit( String name, Material material, GPlayer player ) {
-        this.player = player;
+
+    public Kit( String name, Material material ) {
+        setName(name);
+        setMaterial(material);
     }
     
     //TODO: Call these events when ingame
-    public void onGameStart( GameStartEvent event ) {}
+    public void onGameStart(GPlayer player) {}
     
-    public void onGameStop( GameStopEvent event ) {}
+    public void onGameStop( GPlayer player) {}
     
     public void onInteract( GPlayerInteractEvent event ) {}
     
@@ -57,14 +57,7 @@ public abstract class Kit {
     public void onSneakToggle( GPlayerToggleSneakEvent event ) {}
     
     public void onSprintToggle( GPlayerToggleSprintEvent event ) {}
-    
-    public GPlayer getPlayer() {
-        return this.player;
-    }
-    
-    public void setPlayer( GPlayer player ) {
-        this.player = player;
-    }
+
     
     public void setName( String name ) {
         this.properties.set( KitProperty.NAME, name );
@@ -145,26 +138,6 @@ public abstract class Kit {
         //return false;
         
     }
-    
-    /* Start Event */
-    //TODO: Call these events when ingame
-    //TODO: Add game start event as parameter
-    public void onGameStart( GPlayer player ) {}
-    
-    //TODO: Change these events to custom events
-    public void onInteract( PlayerInteractEvent event, GPlayer player ) {}
-    
-    public void onDeath( PlayerDeathEvent event, GPlayer player ) {}
-    
-    public void onConsume( PlayerItemConsumeEvent event, GPlayer player ) {}
-    
-    public void onRespawn( PlayerRespawnEvent event, GPlayer player ) {}
-    
-    public void onSneakToggle( PlayerToggleSneakEvent event, GPlayer player ) {}
-    
-    public void onSprintToggle( PlayerToggleSprintEvent event, GPlayer player ) {}
-    
-    /* End Events */
     
     public static String greenOrRedString( String name, boolean green ) {
         return ( green ? ChatColor.GREEN : ChatColor.RED ) + name;

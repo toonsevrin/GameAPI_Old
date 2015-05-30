@@ -17,8 +17,8 @@ public class RepeatingMinigame extends Game {
     public RepeatingMinigame(){
 
     }
-    public void start(){
-        startGame();
+    public void startGame(){
+        super.startGame();
     }
     @EventHandler
     public void onGameStop(GameStopEvent event){
