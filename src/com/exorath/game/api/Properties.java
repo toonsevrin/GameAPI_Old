@@ -3,7 +3,7 @@ package com.exorath.game.api;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.exorath.game.lib.util.GameUtil;
+import com.yoshigenius.lib.util.GameUtil;
 
 /**
  * Created by too on 23/05/2015.

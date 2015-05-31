@@ -6,10 +6,13 @@ public class ArmorEnums {
     
     public static enum ArmorType {
         
-        HELMET, CHESTPLATE, LEGGINGS, BOOTS;
+        BOOTS,
+        HELMET,
+        LEGGINGS,
+        CHESTPLATE;
         
         public boolean isBetterThan( ArmorType type ) {
-            return this.ordinal() <= type.ordinal();
+            return this.ordinal() >= type.ordinal();
         }
         
         public static ArmorType getType( Material mat ) {
@@ -20,10 +23,14 @@ public class ArmorEnums {
     
     public static enum ArmorMaterial {
         
-        LEATHER, GOLD, CHAINMAIL, IRON, DIAMOND;
+        LEATHER,
+        GOLD,
+        CHAINMAIL,
+        IRON,
+        DIAMOND;
         
         public boolean isBetterThan( ArmorMaterial mat ) {
-            return this.ordinal() <= mat.ordinal();
+            return this.ordinal() >= mat.ordinal();
         }
         
         public static ArmorMaterial getType( Material mat ) {
@@ -32,4 +39,7 @@ public class ArmorEnums {
         
     }
     
+    public static Material getMaterial( ArmorMaterial material, ArmorType type ) {
+        return Material.valueOf( material.name() + "_" + type.name() );
+    }
 }

@@ -4,7 +4,6 @@ import com.exorath.game.GameAPI;
 import com.exorath.game.api.Game;
 import com.exorath.game.api.GameProperty;
 import com.exorath.game.api.Property;
-import com.exorath.game.api.events.GameStopEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.scheduler.BukkitRunnable;
 

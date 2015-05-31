@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import com.exorath.game.api.Properties;
+import com.exorath.game.api.player.GamePlayer;
 
 /**
  * Created by too on 23/05/2015.
@@ -22,7 +23,7 @@ public class Lobby {
     
     private void setupWorld() {
         this.setWorld( Bukkit.getWorld( Lobby.DEFAULT_WORLD_NAME ) );
-        this.setSpawnLocation(0,0,0);
+        this.setSpawnLocation( 0, 0, 0 );
     }
     
     public Properties getProperties() {
@@ -30,7 +31,7 @@ public class Lobby {
     }
     
     protected void setWorld( World world ) {
-        this.properties.set( LobbyProperty.WORLD, world );
+        this.properties.set( LobbyProperty.WORLD, world.getName() );
     }
     
     public World getWorld() {
@@ -57,6 +58,13 @@ public class Lobby {
     public Location getSpawnLocation() {
         return this.properties.as( LobbyProperty.SPAWN, Location.class );
     }
-
+    
+    public void teleport( GamePlayer player ) {
+        if ( player.isOnline() ) {
+            player.getBukkitPlayer().teleport( this.getSpawnLocation() );
+            player.getBukkitPlayer().get
+        }
+    }
+    
     //npc management
 }

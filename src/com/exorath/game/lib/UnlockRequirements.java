@@ -1,29 +1,29 @@
 package com.exorath.game.lib;
 
-import com.exorath.game.api.players.GPlayer;
+import com.exorath.game.api.player.GamePlayer;
 
 /**
  * Created by too on 23/05/2015.
  * Minimum Requirements to make a certain unlock
  */
 public class UnlockRequirements {
+    
     private int honorPoints = 0;
     private int credits = 0;
     private Rank minRank;
     
-    public boolean canUnlock( GPlayer player ) {
-        //TODO: Check values
+    public boolean canUnlock( GamePlayer player ) {
+        // TODO: Check values
         return true;
     }
     
-    /**
-     * if currency is required, deduct these
-     * 
-     * @param player
-     *            GAPIPlayer to deduct currency from
-     */
-    public void unlock( GPlayer player ) {
-        //TODO: Add content
+    public void unlock( GamePlayer player ) {
+        // TODO: Add content
+    }
+    
+    public boolean isUnlocked( GamePlayer player ) {
+        // TODO
+        return false;
     }
     
     public void setHonorPoints( int honorPoints ) {
@@ -49,4 +49,5 @@ public class UnlockRequirements {
     public Rank getMinRank() {
         return this.minRank;
     }
+    
 }

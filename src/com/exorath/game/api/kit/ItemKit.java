@@ -1,4 +1,4 @@
-package com.exorath.game.api.kits;
+package com.exorath.game.api.kit;
 
 import com.exorath.game.api.events.GPlayerRespawnEvent;
 import com.exorath.game.api.events.GameStartEvent;
