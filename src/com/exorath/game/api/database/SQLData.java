@@ -1,5 +1,7 @@
 package com.exorath.game.api.database;
 
+import com.exorath.game.GameAPI;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;

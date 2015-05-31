@@ -82,6 +82,7 @@ public final class SQLManager {
     
     private void updateTables() {
         try {
+
             this.tables.clear();
             PreparedStatement statement = this.connection.prepareStatement( "SHOW TABLES FROM " + this.database );
             ResultSet res = statement.executeQuery();
@@ -91,8 +92,8 @@ public final class SQLManager {
                 this.tables.put( tableName, new SQLTable( this, tableName ) );
                 
             }
-        } catch ( SQLException ex ) {
-            ex.printStackTrace();
+        } catch ( SQLException e) {
+            e.printStackTrace();
         }
     }
     

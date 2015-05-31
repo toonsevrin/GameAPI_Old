@@ -1,11 +1,15 @@
 package com.exorath.game.api.database;
 
+import com.exorath.game.GameAPI;
+
 /**
  * Created by too on 31/05/2015.
  */
 public class SQLTable {
-    public SQLTable(){
-
+    public static final String KEY = "Key";
+    private String name;
+    public SQLTable(String name){
+        this.name = name;
     }
 
     /**
@@ -14,15 +18,19 @@ public class SQLTable {
      * @return data of key, null if it doesn't exist.
      */
     public SQLData getData(String key){
+        //TODO: If exists: load and return. Else: return null;
         return null;
     }
     public void setData(String key, SQLData data){
-
+        //TODO: If exists: update. Else: Insert.
     }
     public void addColumn(String columnName, ColumnType type){
         addColumn(columnName, type.getName());
     }
-    public void addColumn(String columnName, String type){
-
+    private void addColumn(String columnName, String type){
+        GameAPI.getSQLManager().executeQuery("ALTER TABLE " + name + " ADD " + columnName + " " + type);
+    }
+    private void refresh(){
+        GameAPI.getSQLManager().refresh();
     }
 }

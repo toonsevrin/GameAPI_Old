@@ -1,5 +1,6 @@
 package com.exorath.game;
 
+import com.exorath.game.api.database.SQLManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -9,10 +10,13 @@ public class GameAPI extends JavaPlugin {
     private static GameAPI instance;
     public static final String PREFIX = "GAPI_";
 
+    private static SQLManager sqlManager;
     
     @Override
     public void onEnable() {
         instance = this;
+        //TODO: Load these from config
+        this.sqlManager = new SQLManager("localhost",1234,"database", "username","password");
     }
     
     @Override
@@ -33,4 +37,5 @@ public class GameAPI extends JavaPlugin {
     public static GameAPI getInstance(){
         return instance;
     }
+    public static SQLManager getSQLManager(){return sqlManager;}
 }
