@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
  * Allows serialization of {@link java.lang.String}s, {@link java.lang.Boolean}s and
  * {@link java.lang.Number}s.
  * 
- * @author fusion
+ * @author Nick Robson
  */
 public class SerializableWrapper implements Serializable {
     

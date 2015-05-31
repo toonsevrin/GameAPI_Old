@@ -1,5 +1,8 @@
 package com.yoshigenius.lib.reflect;
 
+/**
+ * @author Nick Robson
+ */
 public class SafeObject<T> {
     
     private T o;

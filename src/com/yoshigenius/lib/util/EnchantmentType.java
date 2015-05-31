@@ -3,6 +3,9 @@ package com.yoshigenius.lib.util;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 
+/**
+ * @author Nick Robson
+ */
 public enum EnchantmentType {
     
     SWORD,

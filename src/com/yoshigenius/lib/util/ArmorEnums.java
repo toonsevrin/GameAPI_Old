@@ -2,6 +2,9 @@ package com.yoshigenius.lib.util;
 
 import org.bukkit.Material;
 
+/**
+ * @author Nick Robson
+ */
 public class ArmorEnums {
     
     public static enum ArmorType {

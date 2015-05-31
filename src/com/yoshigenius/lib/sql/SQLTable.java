@@ -8,6 +8,9 @@ import java.util.List;
 
 import com.yoshigenius.lib.storage.SimpleMap;
 
+/**
+ * @author Nick Robson
+ */
 public final class SQLTable {
     
     private final SQLManager parent;
@@ -121,8 +124,7 @@ public final class SQLTable {
             set.next();
             int count = set.getInt( 1 );
             return count;
-        } catch ( SQLException ex ) {
-        }
+        } catch ( SQLException ex ) {}
         return -1;
     }
     

@@ -6,6 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * @author Nick Robson
+ */
 public class SimpleList<E> extends LinkedList<E> {
     
     public static class Cell<T> {

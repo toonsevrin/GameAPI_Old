@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author Nick Robson
+ */
 public class SimpleMap<K, V> extends HashMap<K, V> {
     
     public static class Cell<T1, T2> {

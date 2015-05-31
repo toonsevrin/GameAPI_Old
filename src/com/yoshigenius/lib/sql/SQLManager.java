@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Nick Robson
+ */
 public final class SQLManager {
     
     // SQL STUFFS
@@ -59,8 +62,7 @@ public final class SQLManager {
             if ( this.connection != null && !this.connection.isClosed() ) {
                 return true;
             }
-        } catch ( SQLException e ) {
-        }
+        } catch ( SQLException e ) {}
         return false;
     }
     

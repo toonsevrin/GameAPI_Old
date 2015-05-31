@@ -4,7 +4,7 @@ package com.yoshigenius.lib.serializable;
  * Represents a class that can be serialized to and deserialized from a {@link java.lang.String}
  * object.
  * 
- * @author fusion
+ * @author Nick Robson
  */
 public interface Serializable {
     

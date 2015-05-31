@@ -1,5 +1,8 @@
 package com.yoshigenius.lib.sql;
 
+/**
+ * @author Nick Robson
+ */
 public final class SQLColumn {
     
     private final SQLTable parent;

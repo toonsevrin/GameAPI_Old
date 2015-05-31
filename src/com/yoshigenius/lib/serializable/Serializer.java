@@ -3,6 +3,9 @@ package com.yoshigenius.lib.serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * @author Nick Robson
+ */
 public class Serializer {
     
     public static final String SEPARATOR_CLASS = "@";
