@@ -82,18 +82,17 @@ public final class SQLManager {
     
     private void updateTables() {
         try {
-
             this.tables.clear();
             PreparedStatement statement = this.connection.prepareStatement( "SHOW TABLES FROM " + this.database );
             ResultSet res = statement.executeQuery();
             while ( res.next() ) {
                 String tableName = res.getString( "Tables_in_" + this.database );
-                
+
                 this.tables.put( tableName, new SQLTable( this, tableName ) );
                 
             }
-        } catch ( SQLException e) {
-            e.printStackTrace();
+        } catch ( SQLException ex ) {
+            ex.printStackTrace();
         }
     }
     

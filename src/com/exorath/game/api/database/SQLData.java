@@ -1,10 +1,8 @@
 package com.exorath.game.api.database;
 
-import com.exorath.game.GameAPI;
 
-import java.util.Collection;
+import java.io.Serializable;
 import java.util.HashMap;
-import java.util.UUID;
 
 /**
  * Created by toon on 31/05/2015.
@@ -12,11 +10,14 @@ import java.util.UUID;
  */
 public class SQLData {
     private String dataKey;
+    private ColumnType type;
     private HashMap<String, Object> data = new HashMap<String, Object>();
-    public SQLData(String dataKey){
+    public SQLData(String dataKey, ColumnType type){
         this.dataKey = dataKey;
+        this.type = type;
     }
-    public void addData(String key, Object value){
+    public void addData(String key, Serializable value){
+
         data.put(key, value);
     }
     public Object getData(String key){
@@ -26,4 +27,27 @@ public class SQLData {
     public HashMap<String, Object> getData(){
         return data;
     }
+
+    /**
+     * TODO: Nick has to check this method
+     * @return
+     */
+    public String getValuesString(){
+        StringBuilder keys = new StringBuilder();
+        StringBuilder values = new StringBuilder();
+        for(String key : data.keySet()){
+            keys.append(key);
+            keys.append(",");
+
+            values.append("'");
+            values.append(data.get(key).toString());
+            values.append("'");
+            values.append(",");
+        }
+        keys.deleteCharAt(keys.length() - 1);
+        values.deleteCharAt(keys.length() - 1);
+
+        return "(" + keys.toString() + ") VALUES (" + values.toString() + ")";
+    }
 }
+
