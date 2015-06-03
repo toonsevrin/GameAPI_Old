@@ -1,5 +1,6 @@
 package com.exorath.game.api.database;
 
+import com.exorath.game.GameAPI;
 import com.exorath.game.lib.util.GameUtil;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -54,6 +55,10 @@ public class SQLManager {
         return addTable(name);
     }
 
+    /**
+     * Open new connection with remote MYSQL database
+     * @return Newly created connection with remote MYSQL database
+     */
     protected Connection open() {
         try {
             this.connection = DriverManager.getConnection("jdbc:mysql://" + this.host + "/" + this.database + "?user="
@@ -65,12 +70,19 @@ public class SQLManager {
         return this.connection;
     }
 
+    /**
+     * Open the connection again if closed
+     */
     public void refresh() {
         if (!this.checkConnection()) {
             this.connection = this.open();
         }
     }
 
+    /**
+     * Check whether or not the connection is valid
+     * @return Whether or not the connection is valid
+     */
     public boolean checkConnection() {
         try {
             if (this.connection != null && !this.connection.isClosed()) {
@@ -81,10 +93,18 @@ public class SQLManager {
         return false;
     }
 
+    /**
+     * Get an array of the credentials [HOST, PORT, DATABASE, USERNAME, PASSWORD]
+     * @return An array of the credentials [HOST, PORT, DATABASE, USERNAME, PASSWORD]
+     */
     protected String[] getCredentials() {
         return new String[]{this.host, String.valueOf(this.port), this.database, this.user, this.password};
     }
 
+    /**
+     * Get the connection with the mysql database
+     * @return The connection with the mysql database
+     */
     protected Connection getConnection() {
         return this.connection;
     }
@@ -110,7 +130,7 @@ public class SQLManager {
                     if (columnType.isVarChar()) {
                         int maxCharLength = columnsRes.getInt("CHARACTER_MAXIMUM_LENGTH"); // get max char length from varchar column
                         if (maxCharLength != 0) {
-                            columnType = ColumnType.getColumnType(maxCharLength); // adjust columnType
+                            columnType = ColumnType.getColumnType(columnDataType , maxCharLength); // adjust columnType
                         }
                     }
                     table.loadColumn(new SQLColumn(columnName, columnType));
@@ -122,14 +142,27 @@ public class SQLManager {
         }
     }
 
+    /**
+     * Create a new table in the database
+     * @param name Name of the newly created table
+     * @return The newly created table, null if there was an error
+     */
     private SQLTable addTable(String name) {
-        executeQuery("CREATE TABLE " + name + " (" + SQLTable.KEY + "varchar(255))");
+        executeQuery("CREATE TABLE " + name + " (" + SQLTable.KEY + "varchar(64))");
         loadTables();
-        if (tables.containsKey(name))
+        if (tables.containsKey(name)){
+            GameAPI.printConsole("Table " + name + " has been created in the mysql database.");
             return tables.get(name);
+        }
+        GameAPI.error("Table " + name + " failed to create for some reason.");
         return null;
     }
 
+    /**
+     * Executes a query on the remote mysql database
+     * @param query The query which has to be executed
+     * @return ResultSet returned by this query, null if there was an issue.
+     */
     public ResultSet executeQuery(String query) {
         try {
             refresh();

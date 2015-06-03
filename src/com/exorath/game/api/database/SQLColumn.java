@@ -10,9 +10,19 @@ public class SQLColumn {
         this.key = key;
         this.type = type;
     }
+
+    /**
+     * Get the name of this column
+     * @return The name of this column
+     */
     public String getKey(){
         return key;
     }
+
+    /**
+     * Get the type of this column
+     * @return The type of this column
+     */
     public ColumnType getType(){
         return type;
     }

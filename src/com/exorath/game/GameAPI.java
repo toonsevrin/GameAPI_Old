@@ -30,10 +30,12 @@ public class GameAPI extends JavaPlugin {
      * @param error
      *            message you want to print.
      */
-    public static void error( String error ) {
+    public static void error( String error) {
         System.out.println( "GameAPI ERROR: " + error );
     }
-
+    public static void printConsole( String message) {
+        System.out.println( "GameAPI console: " + message);
+    }
     public static GameAPI getInstance(){
         return instance;
     }
