@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import com.exorath.game.api.behaviour.LeaveBehaviour;
 import com.exorath.game.api.events.GameStateChangedEvent;
 import com.exorath.game.api.lobby.Lobby;
 import com.exorath.game.api.player.GamePlayer;
@@ -32,6 +33,7 @@ public abstract class Game {
     private final Set<GameListener> listeners = Sets.newHashSet();
     
     private GameState state = GameState.WAITING;
+    private LeaveBehaviour leaveBehaviour = LeaveBehaviour.DO_NOTHING;
     
     public Game() {
         this.teamManager = new TeamManager( this );
@@ -45,6 +47,14 @@ public abstract class Game {
         for ( GameListener listener : this.listeners ) {
             listener.onGameStateChange( event );
         }
+    }
+    
+    public LeaveBehaviour getLeaveBehaviour() {
+        return this.leaveBehaviour;
+    }
+    
+    protected void setLeaveBehaviour( LeaveBehaviour behaviour ) {
+        this.leaveBehaviour = behaviour;
     }
     
     public Lobby getLobby() {

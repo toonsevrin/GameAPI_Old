@@ -12,6 +12,9 @@ public final class GameUtil {
     
     @SuppressWarnings( "unchecked" )
     public static <S> S cast( Object object, Class<S> clazz ) {
+        if ( object == null ) {
+            return null;
+        }
         if ( clazz == Object.class ) {
             return (S) object;
         }

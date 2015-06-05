@@ -8,6 +8,6 @@ import com.exorath.game.api.Property;
  */
 public class RepeatingMinigame extends Minigame {
     
-    public static final Property REPEAT_DELAY = new Property( "repeating.delay", "The time between when a game ends and starts again", 45 );
+    public static final Property REPEAT_DELAY = Property.get( "repeating.delay", "Time in seconds before the game repeats", 60 );
     
 }

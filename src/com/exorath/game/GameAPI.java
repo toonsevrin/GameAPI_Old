@@ -6,13 +6,12 @@ import org.bukkit.plugin.java.JavaPlugin;
  * The main class
  */
 public class GameAPI extends JavaPlugin {
-    private static GameAPI instance;
-    public static final String PREFIX = "GAPI_";
-
+    
+    public static final Version CURRENT_VERSION = Version.from( "GameAPI", "0.0.1", 1, 0 ); // API Version 0 means in Development. Change for Alpha/Beta.
     
     @Override
     public void onEnable() {
-        instance = this;
+        
     }
     
     @Override
@@ -24,13 +23,13 @@ public class GameAPI extends JavaPlugin {
      * Prints an error to the console
      * 
      * @param error
-     *            message you want to print.
+     *            The error message to print.
      */
     public static void error( String error ) {
-        System.out.println( "GameAPI ERROR: " + error );
+        GameAPI.getInstance().getLogger().severe( error );
     }
-
-    public static GameAPI getInstance(){
-        return instance;
+    
+    public static GameAPI getInstance() {
+        return JavaPlugin.getPlugin( GameAPI.class );
     }
 }

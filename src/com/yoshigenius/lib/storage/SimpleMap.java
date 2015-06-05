@@ -71,4 +71,9 @@ public class SimpleMap<K, V> extends HashMap<K, V> {
         return super.put( key, value );
     }
     
+    public V get( K key, V def ) {
+        V val = this.get( key );
+        return val == null ? def : val;
+    }
+    
 }

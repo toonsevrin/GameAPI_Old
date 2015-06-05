@@ -5,5 +5,5 @@ package com.exorath.game.api.npc;
  * TODO: Create an npc control layer
  */
 public abstract class GNPC {
-
+    
 }
