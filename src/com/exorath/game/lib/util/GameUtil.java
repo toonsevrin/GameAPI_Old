@@ -53,20 +53,26 @@ public final class GameUtil {
         }
         return null;
     }
-    public static int cycle(int current, int max){
-        return cycle(current, 0, max);
+    
+    public static int cycle( int current, int max ) {
+        return cycle( current, 0, max );
     }
-
+    
     /**
      * Get next integer, starts from 0 if max reached
-     * @param current current integer
-     * @param min minimum integer to start from
-     * @param max maximum integer. Restart from min when exceeded
+     * 
+     * @param current
+     *            current integer
+     * @param min
+     *            minimum integer to start from
+     * @param max
+     *            maximum integer. Restart from min when exceeded
      * @return next integer in cycle
      */
-    public static int cycle(int current,int min, int max){
+    public static int cycle( int current, int min, int max ) {
         current++;
-        if(current > max) current = min;
+        if ( current > max )
+            current = min;
         return current;
     }
     

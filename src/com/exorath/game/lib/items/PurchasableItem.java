@@ -1,10 +1,9 @@
 package com.exorath.game.lib.items;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.exorath.game.api.players.GPlayer;
+import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.lib.Rank;
 import com.exorath.game.lib.UnlockRequirements;
 import com.yoshigenius.lib.util.ItemStackBuilder;
@@ -15,15 +14,16 @@ import com.yoshigenius.lib.util.ItemStackBuilder;
  * it's better to do once.
  */
 public class PurchasableItem extends ItemStack {
-    private GPlayer player;
+    private GamePlayer player;
     private String name;
-    private Material material;
+    private ItemStack item;
     private String[] description;
     private UnlockRequirements requirements;
     
-    public PurchasableItem( String name, Material material, String[] description, UnlockRequirements requirements, GPlayer player, boolean unlocked ) {
+    public PurchasableItem( String name, ItemStack itemStack, String[] description, UnlockRequirements requirements, GamePlayer player,
+            boolean unlocked ) {
         this.name = name;
-        this.material = material;
+        this.item = itemStack;
         this.description = description;
         this.requirements = requirements;
         this.player = player;
@@ -95,12 +95,12 @@ public class PurchasableItem extends ItemStack {
         this.requirements = requirements;
     }
     
-    public Material getMaterial() {
-        return this.material;
+    public ItemStack getItemStack() {
+        return this.item;
     }
     
-    public void setMaterial( Material material ) {
-        this.material = material;
+    public void setItemStack( ItemStack item ) {
+        this.item = item;
     }
     
     public String[] getDescription() {

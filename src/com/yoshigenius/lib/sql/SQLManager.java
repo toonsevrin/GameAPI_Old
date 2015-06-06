@@ -59,8 +59,7 @@ public final class SQLManager {
             if ( this.connection != null && !this.connection.isClosed() ) {
                 return true;
             }
-        } catch ( SQLException e ) {
-        }
+        } catch ( SQLException e ) {}
         return false;
     }
     
