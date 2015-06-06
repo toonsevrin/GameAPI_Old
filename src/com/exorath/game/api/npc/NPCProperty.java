@@ -8,9 +8,9 @@ import org.bukkit.entity.EntityType;
  */
 public class NPCProperty {
     public static final Property
-        NAME = Property.get("name", "Display name of this NPC", ""),
-        SKIN = Property.get("skin", "Username of the skin", null),
-        TYPE = Property.get("type", "Entity type of this npc", EntityType.PLAYER),
-        PROTECTED = Property.get("protected", "Whether or not this npc is invulnerable", true);
-
+            NAME = Property.get( "name", "Display name of this NPC", "" ),
+            SKIN = Property.get( "skin", "Username of the skin", null ),
+            TYPE = Property.get( "type", "Entity type of this npc", EntityType.PLAYER ),
+            PROTECTED = Property.get( "protected", "Whether or not this npc is invulnerable", true );
+    
 }

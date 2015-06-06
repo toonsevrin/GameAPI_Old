@@ -9,6 +9,8 @@ import com.exorath.game.api.database.SQLManager;
  */
 public class GameAPI extends JavaPlugin {
     
+    public static final Version CURRENT_VERSION = Version.from( "GameAPI", "0.0.1", 1, 0 ); // API Version 0 means in Development. Change for Alpha/Beta.
+    
     private static SQLManager sqlManager;
     
     @Override

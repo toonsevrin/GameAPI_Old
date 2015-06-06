@@ -14,8 +14,7 @@ public class SafeField {
         }
         
         @Override
-        public void set( Object owner, Object value ) {
-        }
+        public void set( Object owner, Object value ) {}
     };
     
     protected static SafeField get( Class<?> owner, String field ) {
@@ -49,7 +48,6 @@ public class SafeField {
     public void set( Object owner, Object value ) {
         try {
             this.field.set( owner, value );
-        } catch ( IllegalArgumentException | IllegalAccessException e ) {
-        }
+        } catch ( IllegalArgumentException | IllegalAccessException e ) {}
     }
 }

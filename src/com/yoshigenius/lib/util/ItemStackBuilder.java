@@ -332,8 +332,7 @@ public class ItemStackBuilder {
     public ItemStackBuilder addUnsafeEnchantment( Enchantment ench, int level ) {
         try {
             this.itemStack.addUnsafeEnchantment( ench, level );
-        } catch ( Exception ex ) {
-        }
+        } catch ( Exception ex ) {}
         return this;
     }
     

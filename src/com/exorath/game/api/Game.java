@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
 import com.exorath.game.GameAPI;
+import com.exorath.game.api.behaviour.LeaveBehaviour;
 import com.exorath.game.api.events.GameStateChangedEvent;
 import com.exorath.game.api.lobby.Lobby;
 import com.exorath.game.api.player.GamePlayer;
@@ -36,6 +37,7 @@ public abstract class Game implements Listener {
     private final Set<GameListener> listeners = Sets.newHashSet();
     
     private GameState state = GameState.WAITING;
+    private LeaveBehaviour leaveBehaviour = LeaveBehaviour.DO_NOTHING;
     
     public Game() {
         this.teamManager = new TeamManager( this );
@@ -50,6 +52,14 @@ public abstract class Game implements Listener {
         for ( GameListener listener : this.listeners ) {
             listener.onGameStateChange( event );
         }
+    }
+    
+    public LeaveBehaviour getLeaveBehaviour() {
+        return this.leaveBehaviour;
+    }
+    
+    protected void setLeaveBehaviour( LeaveBehaviour behaviour ) {
+        this.leaveBehaviour = behaviour;
     }
     
     public Lobby getLobby() {

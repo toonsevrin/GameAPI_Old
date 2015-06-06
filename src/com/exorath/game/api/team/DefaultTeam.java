@@ -12,6 +12,7 @@ public class DefaultTeam extends Team {
     
     public DefaultTeam() {
         this.getProperties().set( TeamProperty.NAME, DefaultTeam.DEFAULT_TEAM_NAME );
-        this.getProperties().set( BasePlayerProperty.INTERACT, true );
+        this.getProperties().set( BasePlayerProperty.ENTITY_INTERACT, true );
+        this.getProperties().set( BasePlayerProperty.BLOCK_INTERACT, true );
     }
 }

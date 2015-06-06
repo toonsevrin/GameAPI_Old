@@ -4,7 +4,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.exorath.game.GameAPI;
-import com.exorath.game.api.GameProperty;
 import com.exorath.game.api.GameState;
 import com.exorath.game.api.Property;
 import com.exorath.game.api.events.GameStateChangedEvent;
@@ -14,6 +13,7 @@ import com.exorath.game.api.events.GameStateChangedEvent;
  * A minigame that keeps repeating when finished
  */
 public class RepeatingMinigame extends Minigame {
+    public static final Property REPEAT_DELAY = Property.get( "repeating.delay", "Time in seconds before the game repeats", 60 );
     
     public RepeatingMinigame() {
         
@@ -32,21 +32,17 @@ public class RepeatingMinigame extends Minigame {
     }
     
     public int getDelay() {
-        return this.getProperties().as( RepeatingGameProperty.DELAY, int.class );
+        return this.getProperties().as( RepeatingMinigame.REPEAT_DELAY, int.class );
     }
     
     public void setDelay( int delay ) {
-        this.getProperties().set( RepeatingGameProperty.DELAY, delay );
-    }
-    
-    public static class RepeatingGameProperty extends GameProperty {
-        public static final Property DELAY = Property.get( "delay", "Seconds between two games, 0 if none", 45 );
+        this.getProperties().set( RepeatingMinigame.REPEAT_DELAY, delay );
     }
     
     private class DelayedStartTask extends BukkitRunnable {
         @Override
         public void run() {
-            startGame();
+            RepeatingMinigame.this.startGame();
         }
     }
     

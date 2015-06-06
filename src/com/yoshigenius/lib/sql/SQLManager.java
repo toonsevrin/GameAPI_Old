@@ -59,8 +59,7 @@ public final class SQLManager {
             if ( this.connection != null && !this.connection.isClosed() ) {
                 return true;
             }
-        } catch ( SQLException e ) {
-        }
+        } catch ( SQLException e ) {}
         return false;
     }
     
@@ -87,7 +86,7 @@ public final class SQLManager {
             ResultSet res = statement.executeQuery();
             while ( res.next() ) {
                 String tableName = res.getString( "Tables_in_" + this.database );
-
+                
                 this.tables.put( tableName, new SQLTable( this, tableName ) );
                 
             }

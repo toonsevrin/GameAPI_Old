@@ -4,7 +4,7 @@ import com.yoshigenius.lib.serializable.Serializable;
 import com.yoshigenius.lib.serializable.Serializer;
 
 /**
- * A utility class housing some helper methods.
+ * A utility class containing some helper methods.
  *
  * @author Nick Robson
  */
@@ -12,6 +12,9 @@ public final class GameUtil {
     
     @SuppressWarnings( "unchecked" )
     public static <S> S cast( Object object, Class<S> clazz ) {
+        if ( object == null ) {
+            return null;
+        }
         if ( clazz == Object.class ) {
             return (S) object;
         }

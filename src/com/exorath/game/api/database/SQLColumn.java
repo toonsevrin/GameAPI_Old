@@ -6,24 +6,27 @@ package com.exorath.game.api.database;
 public class SQLColumn {
     private String key;
     private ColumnType type;
-    public SQLColumn(String key, ColumnType type){
+    
+    public SQLColumn( String key, ColumnType type ) {
         this.key = key;
         this.type = type;
     }
-
+    
     /**
      * Get the name of this column
+     * 
      * @return The name of this column
      */
-    public String getKey(){
+    public String getKey() {
         return key;
     }
-
+    
     /**
      * Get the type of this column
+     * 
      * @return The type of this column
      */
-    public ColumnType getType(){
+    public ColumnType getType() {
         return type;
     }
 }
