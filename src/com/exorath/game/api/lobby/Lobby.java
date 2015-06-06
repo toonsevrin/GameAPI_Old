@@ -62,7 +62,6 @@ public class Lobby {
     public void teleport( GamePlayer player ) {
         if ( player.isOnline() ) {
             player.getBukkitPlayer().teleport( this.getSpawnLocation() );
-            player.getBukkitPlayer().get
         }
     }
     

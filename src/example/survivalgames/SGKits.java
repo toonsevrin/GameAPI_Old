@@ -35,6 +35,7 @@ public class SGKits {
         @Override
         public Map<Integer, ItemStack> getArmour() {
             Map<Integer, ItemStack> armour = new HashMap<>();
+            armour.put( 2, new ItemStack( Material.IRON_CHESTPLATE ) );
             return armour;
         }
         
@@ -65,6 +66,8 @@ public class SGKits {
         @Override
         public Map<Integer, ItemStack> getArmour() {
             Map<Integer, ItemStack> armour = new HashMap<>();
+            armour.put( 1, new ItemStack( Material.LEATHER_HELMET ) );
+            armour.put( 4, new ItemStack( Material.LEATHER_BOOTS ) );
             return armour;
         }
         

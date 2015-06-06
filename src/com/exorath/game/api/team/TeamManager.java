@@ -22,6 +22,10 @@ public class TeamManager {
         this.teams.add( new DefaultTeam() );
     }
     
+    public Game getGame() {
+        return this.game;
+    }
+    
     /**
      * Add team to player teams.
      * 

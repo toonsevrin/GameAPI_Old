@@ -14,6 +14,10 @@ public class SpectateManager {
         this.game = game;
     }
     
+    public Game getGame() {
+        return this.game;
+    }
+    
     public boolean isSpectating( GamePlayer player ) {
         // TODO
         return false;
