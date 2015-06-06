@@ -1,6 +1,8 @@
 package example.survivalgames;
 
 import com.exorath.game.api.events.GameStateChangedEvent;
+import com.exorath.game.lib.util.GameUtil;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -8,6 +10,8 @@ import com.exorath.game.api.Game;
 import com.exorath.game.api.GameListener;
 import com.exorath.game.api.GameState;
 import com.exorath.game.api.player.GamePlayer;
+
+import java.util.UUID;
 
 /**
  * @author Nick Robson
@@ -23,14 +27,26 @@ public class SGListener implements GameListener {
     }
 
     /**
+     * Reward a player with 70 honor points when he kills another player
+     */
+    @Override
+    public void onPlayerKillPlayer(PlayerKillPlayerEvent event){
+        GamePlayer killer = event.getKiller();
+        GameMessenger.sendStructured(killer, "player.onKill");
+        killer.addHonorPoints(70);
+    }
+
+    /**
      * When game starts, generate all the chests contents.
      */
     @Override
     public void onGameStateChange(GameStateChangedEvent event) {
-        if(!event.getNewState().is(GameState.INGAME))
-            return;
-        SurvivalGames sg = (SurvivalGames) event.getGame();
-
-        new SGChests(sg); //Generates chest contents in the selected game world.
+        if (event.getNewState().is(GameState.INGAME)) {
+            final SurvivalGames sg = (SurvivalGames) event.getGame();
+            sg.start();
+        }else if (event.getNewState().is(GameState.FINISHING)) {
+            final SurvivalGames sg = (SurvivalGames) event.getGame();
+            sg.stop(event.getStopCause());
+        }
     }
 }

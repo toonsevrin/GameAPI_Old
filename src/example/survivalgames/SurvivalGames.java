@@ -9,11 +9,14 @@ import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.team.FreeForAllTeam;
 import com.exorath.game.api.team.Team;
 import com.exorath.game.api.team.TeamProperty;
+import com.exorath.game.lib.util.GameUtil;
 import javafx.geometry.Point3D;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -86,6 +89,7 @@ public class SurvivalGames extends RepeatingMinigame {
         team.getProperties().set(TeamProperty.SPAWNS, spawns); //Set the spawn points of the players. setupSpawns() generates these spawns.
         team.setMinTeamSize(8); //Set the minimum team size before countdown.
         team.setMaxTeamSize(16); //set the maximum team size.
+        team.setFriendlyFireEnabled(false);
 
         this.getTeamManager().addTeam(team);
     }
@@ -117,17 +121,77 @@ public class SurvivalGames extends RepeatingMinigame {
         this.getLobby().addNPC(archerSelector, new Point3D(5,60,6)); //Add the archer kit selector to the lobby
     }
     //game functions
-    protected void die(GamePlayer player){
-        Team team = player.getTeam(); //get the players team
-        if(team != null) { //Make sure the player has a team
-            team.setPlaying(player, false); //Makes sure no events are triggered on this player, but at the end of the game he will still receive rewards.
-        }
-        getSpectateManager().addSpectator(player); //Make the player a spectator until the end of the game
+    protected void start(){
+        new SGChests(this); //Generates chest contents in the selected game world.
 
-        GameMessages.sendStructuredMessage(player, "player.onDead");
-
+        scheduleEndGrace(); //Ends the grace period (After 30 seconds)
+        scheduleStandoff(); //Teleports all players to center of map (After 10 minutes)
     }
-    protected void leave(GamePlayer player){
+    protected void stop(StopCause cause){
+        Team team = getTeamManager().getTeam();
+        for(GamePlayer player : team.getAllPlayers()){
+                if(!player.isOnline()) continue;
+            if(cause == StopCause.TIME_UP){ //If the time is up, it means that the game tied.
+                if(team.isAlive(player)) { //Send the players which are still alive a victory reward and message
+                    GameMessenger.sendStructured(player, "player.onTie.alive");
+                    player.addHonorPoints(100);
+                }else{ //Send the losers a message and a smaller reward
+                    GameMessenger.sendStructured(player, "player.onTie.dead");
+                    player.addHonorPoints(50);
+                }
+            }
+            if(cause == StopCause.VICTORY){
+                if(team.isAlive(player)) { //Send the victor a big reward and victory message
+                    GameMessenger.sendStructured(player, "player.onVictory.alive");
+                    player.addHonorPoints(250);
+                }else{ //Send the losers a message and a smaller reward
+                    GameMessenger.sendStructured(player, "player.onVictory.dead");
+                    player.addHonorPoints(50);
+                }
+            }
+        }
+    }
+    protected void die(GamePlayer player){
+        GameMessenger.sendStructured(player, "player.onDead");
+    }
 
+    /**
+     * Enable pvp after 30 seconds
+     */
+    protected void scheduleEndGrace(){
+        getGame().getScheduler().runTaskLater(new Runnable() { //Enable pvp after 30 seconds
+            @Override
+            public void run() {
+                GameMessenger.sendStructured(this, "Grace period has ran out.");
+                this.getTeamManager().getTeam().setFriendlyFire(true);
+            }
+        }, 30 * 20);
+    }
+    /**
+     * Teleport all players back to middle after 10 minutes for a big end fight
+     */
+    protected void scheduleStandoff(){
+        int[] standoffMessageTime = new int[]{60,30,20,10,5,4,3,2,1}; //Times before standoff to send a scheduled message
+        for(int time : standoffMessageTime){ //Schedule a countdown message
+            scheduleStandoffMessage(time);
+        }
+
+        this.getGame().getScheduler().runTaskLater(new Runnable(){ //Start the standoff and tp all players to center
+            @Override
+            public void run(){
+                GameMessenger.sendInfo(this, "Standoff started! Players are teleported to the center.");
+                int cycle = 0;
+                for(GamePlayer player : this.getTeamManager().getTeam().getPlayers()){ //Teleport all active players back to a spawn location.
+                    player.getBukkitPlayer().teleport(this.getTeamManager().getTeam().getSpawns().get(cycle));
+                    cycle = GameUtil.cycle(cycle, this.getTeamManager().getTeam().getSpawns().length() - 1);
+                }
+            }
+        }, 20* 60 * 10);
+    }
+    private void scheduleStandoffMessage(int time){ //Send a countdown message
+        getGame().getScheduler().runTaskLater(new Runnable(){
+            @Override
+            public void run(){GameMessenger.sendInfo(this, "Standoff in " + time + " seconds");}
+        }, 20* 60 * 10 - 20 * time);
     }
 }
