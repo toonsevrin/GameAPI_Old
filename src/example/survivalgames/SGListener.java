@@ -1,5 +1,6 @@
 package example.survivalgames;
 
+import com.exorath.game.api.events.GameStateChangedEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -12,37 +13,24 @@ import com.exorath.game.api.player.GamePlayer;
  * @author Nick Robson
  */
 public class SGListener implements GameListener {
-    
+    //REPLACED WITH AN ACTION
     @Override
-    public void onDeath( PlayerDeathEvent event, Game game, GamePlayer player ) {
-        if ( game instanceof SurvivalGames ) {
-            SurvivalGames sg = (SurvivalGames) game;
-            if ( game.isPlaying( player ) ) {
-                sg.die( player );
-            }
+    public void onDeath(PlayerDeathEvent event, Game game, GamePlayer player) {
+        SurvivalGames sg = (SurvivalGames) game;
+        if (game.isPlaying(player)) {
+            GameMessenger.sendStructured(player, "You died, hopefully you win next time!", "This round you earned " + player.getWonHonorPoints() + " honor points!");
         }
     }
-    
+
+    /**
+     * When game starts, generate all the chests contents.
+     */
     @Override
-    public void onJoin( PlayerJoinEvent event, Game game, GamePlayer player ) {
-        if ( game instanceof SurvivalGames ) {
-            SurvivalGames sg = (SurvivalGames) game;
-            if ( game.getState().is( GameState.INGAME, GameState.FINISHING ) ) {
-                sg.getSpectateManager().addSpectator( player );
-            } else {
-                sg.getLobby().teleport( player );
-            }
-        }
+    public void onGameStateChange(GameStateChangedEvent event) {
+        if(!event.getNewState().is(GameState.INGAME))
+            return;
+        SurvivalGames sg = (SurvivalGames) event.getGame();
+
+        new SGChests(sg); //Generates chest contents in the selected game world.
     }
-    
-    @Override
-    public void onForceLeave( Game game, GamePlayer player ) {
-        if ( game instanceof SurvivalGames ) {
-            SurvivalGames sg = (SurvivalGames) game;
-            if ( game.isPlaying( player ) ) {
-                sg.die( player );
-            }
-        }
-    }
-    
 }
