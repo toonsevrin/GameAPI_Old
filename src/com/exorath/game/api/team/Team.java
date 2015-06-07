@@ -1,6 +1,7 @@
 package com.exorath.game.api.team;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -50,20 +51,20 @@ public class Team {
     }
     
     public void startGame() {
-        this.updatePlayers();
+        this.removeOfflinePlayers();
         for ( GamePlayer player : this.players ) {
             
         }
     }
     
-    public void updatePlayers() {
-        Set<GamePlayer> tempPlayers = new HashSet<GamePlayer>();
-        for ( GamePlayer player : this.players ) {
+    public void removeOfflinePlayers() {
+        Iterator<GamePlayer> it = this.players.iterator();
+        while ( it.hasNext() ) {
+            GamePlayer player = it.next();
             if ( !player.isOnline() ) {
-                tempPlayers.add( player );
+                it.remove();
             }
         }
-        this.players.removeAll( tempPlayers );
     }
     
     public Properties getProperties() {
@@ -92,6 +93,14 @@ public class Team {
     
     public int getTeamSize() {
         return this.properties.as( TeamProperty.SIZE, int.class );
+    }
+    
+    public boolean isFriendlyFire() {
+        return this.properties.as( TeamProperty.FRIENDLY_FIRE, boolean.class );
+    }
+    
+    public void setFriendlyFire( boolean ff ) {
+        this.properties.set( TeamProperty.FRIENDLY_FIRE, ff );
     }
     
     public void addSpawnPoint( Location spawn ) {

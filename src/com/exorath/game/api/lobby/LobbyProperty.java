@@ -10,9 +10,9 @@ import com.exorath.game.api.Property;
 public class LobbyProperty extends BasePlayerProperty {
     
     public static final Property
-            
-            SPAWN = Property.get( "spawn", "Default spawn in lobby", null ),
-            WORLD = Property.get( "world", "Lobby world. World named 'Lobby' by default", null ),
-            ENABLED = Property.get( "enabled", "Whether or not the lobby is enabled", true );
+    
+    SPAWN = Property.get( "spawn", "Default spawn in lobby", null ),
+    WORLD = Property.get( "world", "Lobby world. World named 'lobby' by default", "lobby" ),
+    ENABLED = Property.get( "enabled", "Whether or not the lobby is enabled", true );
     
 }

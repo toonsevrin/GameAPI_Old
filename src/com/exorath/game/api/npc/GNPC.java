@@ -1,7 +1,7 @@
 package com.exorath.game.api.npc;
 
 import com.exorath.game.api.Properties;
-import com.exorath.game.api.npc.navigator.Navigator;
+import com.exorath.game.api.npc.navigator.NPCNavigator;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
@@ -124,7 +124,7 @@ public interface GNPC {
      * 
      * @return The npcs navigator
      */
-    public Navigator getNavigator();
+    public NPCNavigator getNavigator();
     
     /**
      * Set the npcs navigator
@@ -132,7 +132,7 @@ public interface GNPC {
      * @param navigator
      *            Npcs navigator
      */
-    public void setNavigator( Navigator navigator );
+    public void setNavigator( NPCNavigator navigator );
     
     //START inventory methods (Only affect entities that can hold these items)
     

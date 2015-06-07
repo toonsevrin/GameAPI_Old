@@ -57,11 +57,12 @@ public class GamePlayer {
     }
     
     public OfflinePlayer getOfflinePlayer() {
-        return Bukkit.getOfflinePlayer( this.uuid );
+        Player p = Bukkit.getPlayer( this.uuid );
+        return p != null ? p : Bukkit.getOfflinePlayer( this.uuid );
     }
     
     public boolean isOnline() {
-        return getOfflinePlayer().isOnline();
+        return this.getOfflinePlayer().isOnline();
     }
     
     public Player getBukkitPlayer() {
@@ -97,19 +98,19 @@ public class GamePlayer {
         return 0;
     }
     
-    public void addHonorPoints( int honorPoints ) {}
-    
     public void addCredits( int credits ) {}
-    
-    public void removeHonorPoints( int honorPoints ) {}
     
     public void removeCredits( int credits ) {}
     
-    public boolean hasHonorPoints( int honorPoints ) {
+    public boolean hasCredits( int credits ) {
         return true;
     }
     
-    public boolean hasCredits( int credits ) {
+    public void addHonorPoints( int honorPoints ) {}
+    
+    public void removeHonorPoints( int honorPoints ) {}
+    
+    public boolean hasHonorPoints( int honorPoints ) {
         return true;
     }
     //End currency functions
