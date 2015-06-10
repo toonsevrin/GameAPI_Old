@@ -3,6 +3,7 @@ package com.exorath.game.api.config;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,6 +20,14 @@ public class ConfigurationManager {
     public static final ConfigurationManager INSTANCE = new ConfigurationManager();
     
     private ConfigurationManager() {}
+    
+    public FileConfiguration getResource( Plugin plugin, String resource ) {
+        InputStream res = plugin.getResource( resource );
+        if ( res == null ) {
+            return null;
+        }
+        return YamlConfiguration.loadConfiguration( new InputStreamReader( res ) );
+    }
     
     public void saveResource( Plugin plugin, String resource, String file, boolean overwrite ) {
         this.saveResource( plugin, resource, this.getConfigFile( plugin, file ), overwrite );
