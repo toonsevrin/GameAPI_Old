@@ -1,8 +1,14 @@
 package com.exorath.game;
 
+import java.io.File;
+
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.exorath.game.api.config.ConfigurationManager;
 import com.exorath.game.api.database.SQLManager;
+import com.exorath.game.api.nms.NMS;
+import com.exorath.game.api.nms.v1_8.MC18NMSProvider;
 
 /**
  * The main class
@@ -15,8 +21,22 @@ public class GameAPI extends JavaPlugin {
     
     @Override
     public void onEnable() {
-        //TODO: Load these from config
-        GameAPI.sqlManager = new SQLManager( "localhost", 1234, "database", "username", "password" );
+        
+        File databaseConfigFile = GameAPI.getConfigurationManager().getConfigFile( this, "database" );
+        
+        GameAPI.getConfigurationManager().saveResource( this, "configs/database", databaseConfigFile, false );
+        
+        FileConfiguration databaseConfig = GameAPI.getConfigurationManager().getConfig( databaseConfigFile );
+        
+        GameAPI.sqlManager = new SQLManager( databaseConfig.getString( "host" ), databaseConfig.getInt( "port" ),
+                databaseConfig.getString( "database" ), databaseConfig.getString( "username" ),
+                databaseConfig.getString( "password" ) );
+        
+        try {
+            Class.forName( "org.bukkit.craftbukkit.v1_8_R2.CraftServer" );
+            NMS.set( new MC18NMSProvider() );
+        } catch ( Exception ex ) {}
+        
     }
     
     @Override
@@ -45,4 +65,9 @@ public class GameAPI extends JavaPlugin {
     public static SQLManager getSQLManager() {
         return GameAPI.sqlManager;
     }
+    
+    public static ConfigurationManager getConfigurationManager() {
+        return ConfigurationManager.INSTANCE;
+    }
+    
 }

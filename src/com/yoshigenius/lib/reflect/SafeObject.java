@@ -2,7 +2,11 @@ package com.yoshigenius.lib.reflect;
 
 public class SafeObject<T> {
     
-    private T o;
+    public static SafeObject<Object> get( Object object ) {
+        return new SafeObject<Object>( object );
+    }
+    
+    private final T o;
     
     public SafeObject( T o ) {
         this.o = o;
