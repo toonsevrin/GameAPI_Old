@@ -11,6 +11,7 @@ import com.exorath.game.GameAPI;
  * Created by too on 31/05/2015.
  */
 public class SQLTable {
+    
     public static final String KEY = "Key";
     private String name;
     private HashMap<String, SQLColumn> columns = new HashMap<String, SQLColumn>();
