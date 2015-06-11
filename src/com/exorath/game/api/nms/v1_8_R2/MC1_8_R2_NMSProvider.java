@@ -1,4 +1,4 @@
-package com.exorath.game.api.nms.v1_8;
+package com.exorath.game.api.nms.v1_8_R2;
 
 import net.minecraft.server.v1_8_R2.Block;
 import net.minecraft.server.v1_8_R2.BlockPosition;
@@ -20,7 +20,7 @@ import com.exorath.game.api.nms.NMSProvider;
 /**
  * @author Nick Robson
  */
-public class MC18NMSProvider implements NMSProvider {
+public class MC1_8_R2_NMSProvider implements NMSProvider {
     
     @Override
     public Class<?> getMinecraftServerClass() {

@@ -8,7 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.exorath.game.api.config.ConfigurationManager;
 import com.exorath.game.api.database.SQLManager;
 import com.exorath.game.api.nms.NMS;
-import com.exorath.game.api.nms.v1_8.MC18NMSProvider;
+import com.exorath.game.api.nms.v1_8_R2.MC1_8_R2_NMSProvider;
 
 /**
  * The main class
@@ -34,7 +34,7 @@ public class GameAPI extends JavaPlugin {
         
         try {
             Class.forName( "org.bukkit.craftbukkit.v1_8_R2.CraftServer" );
-            NMS.set( new MC18NMSProvider() );
+            NMS.set( new MC1_8_R2_NMSProvider() );
         } catch ( Exception ex ) {}
         
     }
