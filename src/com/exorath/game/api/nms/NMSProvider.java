@@ -1,8 +1,10 @@
 package com.exorath.game.api.nms;
 
+import org.bukkit.Location;
 import org.bukkit.WeatherType;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -64,5 +66,9 @@ public interface NMSProvider {
     public void setTimeOffset( Player player, long timeOffset );
     
     public void setWeather( Player player, WeatherType weather );
+    
+    public void setInvisible( Entity e, boolean invisible );
+    
+    public void navigate( Creature entity, Location location, Runnable run );
     
 }

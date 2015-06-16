@@ -1,23 +1,23 @@
-package com.exorath.game.api.nms.v1_8_R2;
+package com.exorath.game.api.nms.v1_8_R3;
 
-import net.minecraft.server.v1_8_R2.Block;
-import net.minecraft.server.v1_8_R2.BlockPosition;
-import net.minecraft.server.v1_8_R2.EntityPlayer;
-import net.minecraft.server.v1_8_R2.MethodProfiler;
-import net.minecraft.server.v1_8_R2.MinecraftServer;
-import net.minecraft.server.v1_8_R2.PathfinderGoalMoveTowardsTarget;
-import net.minecraft.server.v1_8_R2.PathfinderGoalSelector;
-import net.minecraft.server.v1_8_R2.World;
+import net.minecraft.server.v1_8_R3.Block;
+import net.minecraft.server.v1_8_R3.BlockPosition;
+import net.minecraft.server.v1_8_R3.EntityPlayer;
+import net.minecraft.server.v1_8_R3.MethodProfiler;
+import net.minecraft.server.v1_8_R3.MinecraftServer;
+import net.minecraft.server.v1_8_R3.PathfinderGoalMoveTowardsTarget;
+import net.minecraft.server.v1_8_R3.PathfinderGoalSelector;
+import net.minecraft.server.v1_8_R3.World;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.WeatherType;
-import org.bukkit.craftbukkit.v1_8_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_8_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_8_R2.entity.CraftCreature;
-import org.bukkit.craftbukkit.v1_8_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_8_R2.entity.CraftOcelot;
-import org.bukkit.craftbukkit.v1_8_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.CraftServer;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftCreature;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftOcelot;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Ocelot;
@@ -30,7 +30,7 @@ import com.yoshigenius.lib.reflect.Reflection;
 /**
  * @author Nick Robson
  */
-public class MC1_8_R2_NMSProvider implements NMSProvider {
+public class MC1_8_R3_NMSProvider implements NMSProvider {
     
     @Override
     public Class<?> getMinecraftServerClass() {
@@ -154,7 +154,7 @@ public class MC1_8_R2_NMSProvider implements NMSProvider {
     
     @Override
     public void navigate( Creature entity, Location location, Runnable run ) {
-        net.minecraft.server.v1_8_R2.EntityCreature ent = ( (CraftCreature) entity ).getHandle();
+        net.minecraft.server.v1_8_R3.EntityCreature ent = ( (CraftCreature) entity ).getHandle();
         MethodProfiler profiler = (MethodProfiler) Reflection.getField( PathfinderGoalSelector.class, "d" ).get( ent.goalSelector )
                 .getObject();
         Ocelot ocelot = GameUtil.spawn( Ocelot.class, location, true, null );

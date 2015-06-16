@@ -16,6 +16,16 @@ public class SafeObject<T> {
         return this.o;
     }
     
+    @SuppressWarnings( "unchecked" )
+    public <S> S getObjectAs( Class<S> desired ) {
+        T o = this.getObject();
+        try {
+            return (S) o;
+        } catch ( ClassCastException ex ) {
+            return null;
+        }
+    }
+    
     public SafeField getField( String name ) {
         if ( this.o == null ) {
             return SafeField.NULL;
