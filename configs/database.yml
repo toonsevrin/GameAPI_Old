@@ -1,0 +1,5 @@
+host: localhost
+port: 3316
+database: games
+username: root
+password: lol

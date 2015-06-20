@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -42,7 +44,9 @@ public class ConfigurationManager {
             return;
         }
         try {
-            Files.copy( in, file.toPath() );
+            CopyOption[] options = overwrite ? new CopyOption[] { StandardCopyOption.REPLACE_EXISTING }
+                    : new CopyOption[] {};
+            Files.copy( in, file.toPath(), options );
         } catch ( IOException e ) {}
     }
     
