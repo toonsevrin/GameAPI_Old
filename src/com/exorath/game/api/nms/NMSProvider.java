@@ -4,8 +4,8 @@ import org.bukkit.Location;
 import org.bukkit.WeatherType;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 /**
@@ -69,6 +69,6 @@ public interface NMSProvider {
     
     public void setInvisible( Entity e, boolean invisible );
     
-    public void navigate( Creature entity, Location location, Runnable run );
+    public void navigate( LivingEntity entity, Location location, double speed, Runnable callback );
     
 }
