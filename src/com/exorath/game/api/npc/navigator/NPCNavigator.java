@@ -2,62 +2,104 @@ package com.exorath.game.api.npc.navigator;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.scheduler.BukkitTask;
 
 import com.exorath.game.api.Properties;
-import com.exorath.game.api.npc.GNPC;
+import com.exorath.game.api.nms.NMS;
+import com.exorath.game.api.npc.SpawnedNPC;
+import com.yoshigenius.lib.util.GameUtil;
 
 /**
- * Created by too on 31/05/2015.
+ * @author toon
+ * @author Nick Robson
  */
 public class NPCNavigator {
     
-    private GNPC npc;
-    private boolean navigating = false;
-    private Properties properties;
+    private final SpawnedNPC npc;
+    private Properties properties = new Properties();
     
-    public NPCNavigator( GNPC npc ) {
+    private Entity targetEnt;
+    private Location targetLoc;
+    
+    private BukkitTask navigationTask = null;
+    
+    public NPCNavigator( SpawnedNPC npc ) {
         this.npc = npc;
-        this.properties = new Properties();
     }
     
-    public GNPC getNPC() {
+    /**
+     * Gets the NPC this navigator is for.
+     * 
+     * @return The NPC.
+     */
+    public SpawnedNPC getNPC() {
         return this.npc;
+    }
+    
+    /**
+     * Makes the NPC start walking, if the target location is valid.
+     */
+    public void navigate() {
+        this.stop();
+        this.navigationTask = GameUtil.scheduleTimer( ( ) -> {
+            NMS.get().navigate( this.npc.getBukkitEntity(), this.getTargetLocation(), this.getSpeed() );
+        }, 5, 5 );
+    }
+    
+    /**
+     * Gets the target's current location.
+     * 
+     * @return The target's location.
+     */
+    public Location getTargetLocation() {
+        if ( this.targetEnt != null && this.targetEnt.isValid() && !this.targetEnt.isDead() ) {
+            return this.targetEnt.getLocation();
+        } else if ( this.targetEnt != null ) {
+            this.targetEnt.remove();
+            this.targetEnt = null;
+        }
+        return this.targetLoc;
     }
     
     /**
      * Stop any active navigation
      */
-    public void stopNavigating() {
-        this.navigating = false;
+    public void stop() {
+        if ( this.navigationTask == null ) {
+            this.navigationTask.cancel();
+            this.navigationTask = null;
+        }
     }
     
     /**
-     * Whether or not this npc is moving towards a target
+     * Whether or not this NPC is moving towards a target
      * 
-     * @return Whether or not this npc is moving towards a target
+     * @return Whether or not this NPC is moving towards a target
      */
     public boolean isNavigating() {
-        return this.navigating;
+        return this.navigationTask != null;
     }
     
     /**
-     * Make the npc navigate to a location
+     * Make the NPC navigate to a location
      * 
      * @param loc
-     *            Location to navigate too
+     *            Location to navigate to
      */
     public void setTarget( Location loc ) {
-        this.navigating = true;
+        this.targetEnt = null;
+        this.targetLoc = loc;
     }
     
     /**
-     * Make the npc target an entity
+     * Make the NPC target an entity
      * 
      * @param entity
-     *            Entity to navigate to, will not stop untill reached.
+     *            Entity to navigate to, will not stop until reached.
      */
     public void setTarget( Entity entity ) {
-        this.navigating = true;
+        this.targetEnt = entity;
+        this.targetLoc = null;
     }
     
     /**

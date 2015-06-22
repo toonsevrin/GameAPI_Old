@@ -59,7 +59,7 @@ public class Properties {
         if ( property.isStrict() && !property.getDefault().getClass().isAssignableFrom( value.getClass() ) ) {
             throw new IllegalArgumentException( String.format(
                     "Property %s is strict, and provided value of type %s does not match required type of %s.", property.getKey(), value.getClass()
-                            .getSimpleName(), property.getDefault().getClass().getSimpleName() ) );
+                    .getSimpleName(), property.getDefault().getClass().getSimpleName() ) );
         }
         this.properties.put( property, value );
     }

@@ -1,16 +1,17 @@
 package com.exorath.game.api.npc;
 
+import org.bukkit.entity.Player;
+
 import com.exorath.game.api.Property;
-import org.bukkit.entity.EntityType;
 
 /**
- * Created by too on 31/05/2015.
+ * @author toon
  */
 public class NPCProperty {
-    public static final Property
-            NAME = Property.get( "name", "Display name of this NPC", "" ),
-            SKIN = Property.get( "skin", "Username of the skin", null ),
-            TYPE = Property.get( "type", "Entity type of this npc", EntityType.PLAYER ),
-            PROTECTED = Property.get( "protected", "Whether or not this npc is invulnerable", true );
+    
+    public static final Property NAME = Property.get( "name", "Display name of this NPC", "" );
+    public static final Property SKIN = Property.get( "skin", "Username of the skin", null );
+    public static final Property TYPE = Property.get( "type", "Entity class of this npc", Player.class );
+    public static final Property PROTECTED = Property.get( "protected", "Whether or not this npc is invulnerable", true );
     
 }

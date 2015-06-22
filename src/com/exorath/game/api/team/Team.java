@@ -5,9 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.stream.Location;
-
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 
 import com.exorath.game.api.BasePlayerProperty;
 import com.exorath.game.api.GameListener;

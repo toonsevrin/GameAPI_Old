@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 
 import com.exorath.game.GameAPI;
 
@@ -51,7 +51,7 @@ public class SQLManager {
      *            name of table.
      * @return Existing or new SQLTable with the formatted name.
      */
-    public SQLTable getTable( JavaPlugin plugin, String tableName ) {
+    public SQLTable getTable( Plugin plugin, String tableName ) {
         return this.getTable( plugin.getName(), tableName );
     }
     

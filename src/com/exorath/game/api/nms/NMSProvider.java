@@ -69,6 +69,6 @@ public interface NMSProvider {
     
     public void setInvisible( Entity e, boolean invisible );
     
-    public void navigate( LivingEntity entity, Location location, double speed, Runnable callback );
+    public void navigate( LivingEntity entity, Location location, double speed );
     
 }

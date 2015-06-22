@@ -146,7 +146,7 @@ public class MC1_8_R3_NMSProvider implements NMSProvider {
     }
     
     @Override
-    public void navigate( LivingEntity entity, Location location, double speed, Runnable callback ) {
+    public void navigate( LivingEntity entity, Location location, double speed ) {
         Object handle = this.getEntity( entity );
         if ( handle instanceof EntityInsentient ) {
             EntityInsentient ent = (EntityInsentient) handle;
