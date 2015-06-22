@@ -175,7 +175,7 @@ public class SQLManager {
     }
     
     /**
-     * Executes a query on the remote mysql database
+     * Executes a query on the remote SQL database
      * 
      * @param query
      *            The query which has to be executed
@@ -190,5 +190,23 @@ public class SQLManager {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    /**
+     * Executes an update on the remote SQL database
+     * 
+     * @param update
+     *            The update to be run
+     * @return Number of rows changed, or -1 if unsuccessful.
+     */
+    public int executeUpdate( String update ) {
+        try {
+            this.refresh();
+            PreparedStatement statement = this.connection.prepareStatement( update );
+            return statement.executeUpdate();
+        } catch ( SQLException e ) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 }

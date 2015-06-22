@@ -2,6 +2,11 @@ package com.exorath.game.lib.util;
 
 import java.io.Serializable;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+
+import com.exorath.game.api.nms.NMS;
+
 /**
  * A utility class housing some helper methods.
  *
@@ -55,7 +60,7 @@ public final class GameUtil {
     }
     
     public static int cycle( int current, int max ) {
-        return cycle( current, 0, max );
+        return GameUtil.cycle( current, 0, max );
     }
     
     /**
@@ -71,9 +76,19 @@ public final class GameUtil {
      */
     public static int cycle( int current, int min, int max ) {
         current++;
-        if ( current > max )
+        if ( current > max ) {
             current = min;
+        }
         return current;
     }
     
+    public static <T extends Entity> T spawn( Class<T> entity, Location loc, boolean invisible, String customName ) {
+        T e = loc.getWorld().spawn( loc, entity );
+        NMS.get().setInvisible( e, invisible );
+        if ( customName != null ) {
+            e.setCustomName( customName );
+            e.setCustomNameVisible( true );
+        }
+        return e;
+    }
 }

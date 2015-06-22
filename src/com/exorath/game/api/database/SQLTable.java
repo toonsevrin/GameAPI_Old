@@ -11,6 +11,7 @@ import com.exorath.game.GameAPI;
  * Created by too on 31/05/2015.
  */
 public class SQLTable {
+    
     public static final String KEY = "Key";
     private String name;
     private HashMap<String, SQLColumn> columns = new HashMap<String, SQLColumn>();
@@ -94,8 +95,12 @@ public class SQLTable {
      * @param data
      */
     public void createRow( String key, SQLData data ) {
-        ResultSet rs = GameAPI.getSQLManager().executeQuery( "INSERT INTO " + this.name + " " + data.getValuesString() + ";" );//create new row with data
-        GameAPI.printConsole( "Created row " + key + " in table " + this.name + " successfully." );
+        int rowsChanged = GameAPI.getSQLManager().executeUpdate( "INSERT INTO " + this.name + " " + data.getValuesString() + ";" );//create new row with data
+        if ( rowsChanged >= 0 ) {
+            GameAPI.printConsole( "Created row " + key + " in table " + this.name + " successfully." );
+        } else {
+            GameAPI.printConsole( "Attempt to create row " + key + " in table " + this.name + " failed." );
+        }
         //TODO: Add error reporting
     }
     
@@ -117,7 +122,7 @@ public class SQLTable {
         }
         query.append( "WHERE " + SQLTable.KEY + "=" + "'" + key + "'" );
         
-        ResultSet rs = GameAPI.getSQLManager().executeQuery( query.toString() );//update row with data
+        GameAPI.getSQLManager().executeUpdate( query.toString() );//update row with data
         
         GameAPI.printConsole( "Updated row " + key + " in table " + this.name + " successfully." );
         //TODO: Add error reporting

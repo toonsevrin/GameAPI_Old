@@ -17,6 +17,10 @@ public class SQLData {
         this.dataKey = dataKey;
     }
     
+    public String getKey() {
+        return this.dataKey;
+    }
+    
     /**
      * Add data to this data collection
      * 

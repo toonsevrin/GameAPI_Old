@@ -9,15 +9,19 @@ import com.exorath.game.api.npc.GNPC;
 /**
  * Created by too on 31/05/2015.
  */
-public class Navigator {
+public class NPCNavigator {
     
     private GNPC npc;
     private boolean navigating = false;
     private Properties properties;
     
-    public Navigator( GNPC npc ) {
+    public NPCNavigator( GNPC npc ) {
         this.npc = npc;
         this.properties = new Properties();
+    }
+    
+    public GNPC getNPC() {
+        return this.npc;
     }
     
     /**
@@ -66,22 +70,22 @@ public class Navigator {
     }
     
     /**
-     * Set walking/flying speed of npc
+     * Set walking/flying speed of the NPC
      * 
      * @param speed
-     *            Walking/flying speed of npc
+     *            Walking/flying speed of the NPC
      */
     public void setSpeed( double speed ) {
-        this.properties.set( NavigatorProperty.SPEED, speed );
+        this.properties.set( NPCNavigatorProperty.SPEED, speed );
     }
     
     /**
-     * Get walking/flying speed of npc
+     * Get walking/flying speed of the NPC
      * 
-     * @return Walking/flying speed of npc
+     * @return Walking/flying speed of the NPC
      */
     public double getSpeed() {
-        return this.properties.as( NavigatorProperty.SPEED, Double.class );
+        return this.properties.as( NPCNavigatorProperty.SPEED, double.class );
     }
     
 }

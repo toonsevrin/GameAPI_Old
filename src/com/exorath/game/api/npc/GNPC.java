@@ -1,12 +1,13 @@
 package com.exorath.game.api.npc;
 
-import com.exorath.game.api.Properties;
-import com.exorath.game.api.npc.navigator.Navigator;
+import java.util.UUID;
+
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.EntityEquipment;
 
-import java.util.UUID;
+import com.exorath.game.api.Properties;
+import com.exorath.game.api.npc.navigator.NPCNavigator;
 
 /**
  * Created by too on 24/05/2015.
@@ -124,7 +125,7 @@ public interface GNPC {
      * 
      * @return The npcs navigator
      */
-    public Navigator getNavigator();
+    public NPCNavigator getNavigator();
     
     /**
      * Set the npcs navigator
@@ -132,30 +133,14 @@ public interface GNPC {
      * @param navigator
      *            Npcs navigator
      */
-    public void setNavigator( Navigator navigator );
+    public void setNavigator( NPCNavigator navigator );
     
-    //START inventory methods (Only affect entities that can hold these items)
-    
-    public void setItemInHand( ItemStack itemInHand );
-    
-    public ItemStack getItemInHand();
-    
-    public void setHelmet( ItemStack helmet );
-    
-    public ItemStack getHelmet();
-    
-    public void setChestPlate( ItemStack chestPlate );
-    
-    public ItemStack getChestPlate();
-    
-    public void setLeggings( ItemStack leggings );
-    
-    public ItemStack getLeggings();
-    
-    public void setBoots( ItemStack boots );
-    
-    public ItemStack getBoots();
-    
-    //END inventory methods
+    /**
+     * Gets the NPC's EntityEquipment object.
+     * 
+     * @return If the NPC can have equipment, then it will return the NPC's equipment, otherwise
+     *         null.
+     */
+    public EntityEquipment getEquipment();
     
 }

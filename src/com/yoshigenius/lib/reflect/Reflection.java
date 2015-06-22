@@ -5,6 +5,10 @@ package com.yoshigenius.lib.reflect;
  */
 public class Reflection {
     
+    public static <T> SafeObject<T> getObject( T object ) {
+        return new SafeObject<T>( object );
+    }
+    
     public static SafeField getField( Class<?> owner, String field ) {
         return SafeField.get( owner, field );
     }

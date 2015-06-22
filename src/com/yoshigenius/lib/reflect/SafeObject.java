@@ -2,7 +2,11 @@ package com.yoshigenius.lib.reflect;
 
 public class SafeObject<T> {
     
-    private T o;
+    public static SafeObject<Object> get( Object object ) {
+        return new SafeObject<Object>( object );
+    }
+    
+    private final T o;
     
     public SafeObject( T o ) {
         this.o = o;
@@ -10,6 +14,16 @@ public class SafeObject<T> {
     
     public T getObject() {
         return this.o;
+    }
+    
+    @SuppressWarnings( "unchecked" )
+    public <S> S getObjectAs( Class<S> desired ) {
+        T o = this.getObject();
+        try {
+            return (S) o;
+        } catch ( ClassCastException ex ) {
+            return null;
+        }
     }
     
     public SafeField getField( String name ) {
