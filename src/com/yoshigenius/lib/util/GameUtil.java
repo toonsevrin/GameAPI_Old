@@ -1,5 +1,11 @@
 package com.yoshigenius.lib.util;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.scheduler.BukkitTask;
+
+import com.exorath.game.GameAPI;
+import com.exorath.game.api.nms.NMS;
 import com.yoshigenius.lib.serializable.Serializable;
 import com.yoshigenius.lib.serializable.Serializer;
 
@@ -94,5 +100,31 @@ public final class GameUtil {
             current -= max - min + 1; // 7 -> 2
         }
         return current;
+    }
+    
+    public static <T extends Entity> T spawn( Class<T> entity, Location loc, boolean invisible, String customName ) {
+        T e = loc.getWorld().spawn( loc, entity );
+        NMS.get().setInvisible( e, invisible );
+        if ( customName != null ) {
+            e.setCustomName( customName );
+            e.setCustomNameVisible( true );
+        }
+        return e;
+    }
+    
+    public static BukkitTask scheduleTimer( final Runnable runnable, int start, int period ) {
+        return GameAPI.getInstance().getServer().getScheduler().runTaskTimer( GameAPI.getInstance(), ( ) -> {
+            try {
+                runnable.run();
+            } catch ( Exception ex ) {
+                if ( GameUtil.isDebugMode() ) {
+                    ex.printStackTrace();
+                }
+            }
+        }, start, period );
+    }
+    
+    public static boolean isDebugMode() {
+        return GameAPI.getInstance().getConfig().getBoolean( "dev.debug", false );
     }
 }

@@ -134,7 +134,7 @@ public class MissingNMSProvider implements NMSProvider {
     }
     
     @Override
-    public void navigate( LivingEntity entity, Location location, double speed, Runnable callback ) {
+    public void navigate( LivingEntity entity, Location location, double speed ) {
         throw new UnsupportedOperationException( "There is no NMSProvider for this version of Minecraft." );
     }
     

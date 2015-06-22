@@ -1,13 +1,13 @@
 package com.exorath.game.api.team;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.stream.Location;
-
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 
 import com.exorath.game.api.BasePlayerProperty;
 import com.exorath.game.api.GameListener;
@@ -27,6 +27,10 @@ public class Team {
     private Properties properties = new Properties();
     private Set<GamePlayer> players = new HashSet<GamePlayer>();
     private final Set<GameListener> listeners = Sets.newHashSet();
+    
+    public Team() {
+        this.properties.set( TeamProperty.SPAWNS, new ArrayList<Location>() );
+    }
     
     public Set<GamePlayer> getPlayers() {
         return this.players;
