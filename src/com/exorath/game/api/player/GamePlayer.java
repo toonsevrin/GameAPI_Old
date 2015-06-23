@@ -62,7 +62,8 @@ public class GamePlayer {
     }
     
     public boolean isOnline() {
-        return this.getOfflinePlayer().isOnline();
+        OfflinePlayer offline = this.getOfflinePlayer();
+        return offline == null ? false : offline.isOnline();
     }
     
     public Player getBukkitPlayer() {

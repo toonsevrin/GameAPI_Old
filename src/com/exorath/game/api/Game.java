@@ -1,49 +1,40 @@
 package com.exorath.game.api;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
-import org.bukkit.Bukkit;
-import org.bukkit.event.Listener;
-
-import com.exorath.game.GameAPI;
 import com.exorath.game.api.behaviour.LeaveBehaviour;
 import com.exorath.game.api.events.GameStateChangedEvent;
 import com.exorath.game.api.lobby.Lobby;
-import com.exorath.game.api.player.GamePlayer;
+import com.exorath.game.api.player.Players;
 import com.exorath.game.api.spectate.SpectateManager;
 import com.exorath.game.api.team.TeamManager;
 import com.google.common.collect.Sets;
 
 /**
- * Created by too on 23/05/2015.
- * Gamemode, RepeatingMinigame and Minigame will extend this.
+ * The class representing a single Game instance.
+ * Gamemode, RepeatingMinigame and Minigame extend this.
+ * 
+ * @author toon
+ * @author Nick Robson
  */
 
-public abstract class Game implements Listener {
+public abstract class Game {
     
     public static final String DEFAULT_GAME_NAME = "Game";
     public static final String DEFAULT_GAME_DESCRIPTION = "Default game description";
     
     private Lobby lobby = new Lobby();
     private Properties properties = new Properties();
-    private TeamManager teamManager;
-    private SpectateManager spectateManager;
-    
-    private final Map<UUID, PlayerState> playerStates = new HashMap<>();
+    private TeamManager teamManager = new TeamManager( this );
+    private SpectateManager spectateManager = new SpectateManager( this );
+    private Players players = new Players( this );
     
     private final Set<GameListener> listeners = Sets.newHashSet();
     
     private GameState state = GameState.WAITING;
     private LeaveBehaviour leaveBehaviour = LeaveBehaviour.DO_NOTHING;
     
-    public Game() {
-        this.teamManager = new TeamManager( this );
-        this.spectateManager = new SpectateManager( this );
-        Bukkit.getPluginManager().registerEvents( this, GameAPI.getInstance() );
-    }
+    public Game() {}
     
     public void setState( GameState state ) {
         GameState old = this.state;
@@ -112,17 +103,8 @@ public abstract class Game implements Listener {
         }
     }
     
-    public PlayerState getPlayerState( GamePlayer player ) {
-        PlayerState state = this.playerStates.get( player.getUUID() );
-        if ( state == null ) {
-            state = PlayerState.UNKNOWN;
-            this.playerStates.put( player.getUUID(), state );
-        }
-        return state;
-    }
-    
-    public boolean isPlaying( GamePlayer player ) {
-        return this.getPlayerState( player ) == PlayerState.PLAYING;
+    public Players getPlayers() {
+        return this.players;
     }
     
     public SpectateManager getSpectateManager() {
@@ -134,7 +116,7 @@ public abstract class Game implements Listener {
     }
     
     protected void startGame() {
-        
+        this.setState( GameState.STARTING );
     }
     
 }

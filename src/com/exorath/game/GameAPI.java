@@ -3,16 +3,20 @@ package com.exorath.game;
 import java.io.File;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.exorath.game.api.config.ConfigurationManager;
 import com.exorath.game.api.database.SQLManager;
 import com.exorath.game.api.nms.NMS;
-import com.exorath.game.api.nms.v1_8_R2.MC1_8_R2_NMSProvider;
-import com.exorath.game.api.nms.v1_8_R3.MC1_8_R3_NMSProvider;
+import com.exorath.game.api.nms.NMSProvider;
+import com.exorath.game.api.player.GamePlayer;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
+import com.yoshigenius.lib.util.GameUtil;
 
 /**
- * The main class
+ * The main class.
  */
 public class GameAPI extends JavaPlugin {
     
@@ -33,20 +37,25 @@ public class GameAPI extends JavaPlugin {
                 databaseConfig.getString( "database" ), databaseConfig.getString( "username" ),
                 databaseConfig.getString( "password" ) );
         
+        String serverPackage = this.getServer().getClass().getPackage().getName();
+        String versionPackage = serverPackage.substring( serverPackage.lastIndexOf( '.' ) );
         try {
-            Class.forName( "org.bukkit.craftbukkit.v1_8_R2.CraftServer" );
-            NMS.set( new MC1_8_R2_NMSProvider() );
-        } catch ( Exception ex ) {}
-        try {
-            Class.forName( "org.bukkit.craftbukkit.v1_8_R3.CraftServer" );
-            NMS.set( new MC1_8_R3_NMSProvider() );
-        } catch ( Exception ex ) {}
+            Class<? extends NMSProvider> c = Class.forName( NMSProvider.class.getPackage() + "." + versionPackage + ".NMSProviderImpl" )
+                    .asSubclass( NMSProvider.class );
+            NMSProvider provider = c.newInstance();
+            NMS.set( provider );
+        } catch ( ClassNotFoundException | InstantiationException | IllegalAccessException ex ) {}
         
     }
     
     @Override
     public void onDisable() {
         
+    }
+    
+    @Override
+    public File getFile() {
+        return super.getFile();
     }
     
     /**
@@ -73,6 +82,21 @@ public class GameAPI extends JavaPlugin {
     
     public static ConfigurationManager getConfigurationManager() {
         return ConfigurationManager.INSTANCE;
+    }
+    
+    public static void sendPlayerToServer( Player player, String server ) {
+        if ( player != null && server != null ) {
+            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            out.writeUTF( "Connect" );
+            out.writeUTF( server );
+            GameUtil.sendPluginMessage( player, "BungeeCord", out.toByteArray() );
+        }
+    }
+    
+    public static void sendPlayerToServer( GamePlayer player, String server ) {
+        if ( player != null && player.isOnline() ) {
+            GameAPI.sendPlayerToServer( player.getBukkitPlayer(), server );
+        }
     }
     
 }

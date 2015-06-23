@@ -71,4 +71,6 @@ public interface NMSProvider {
     
     public void navigate( LivingEntity entity, Location location, double speed );
     
+    public void revive( Player p );
+    
 }
