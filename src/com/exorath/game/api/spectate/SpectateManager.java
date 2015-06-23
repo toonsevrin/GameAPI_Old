@@ -2,6 +2,7 @@ package com.exorath.game.api.spectate;
 
 import com.exorath.game.api.Game;
 import com.exorath.game.api.player.GamePlayer;
+import com.exorath.game.api.player.PlayerState;
 
 /**
  * @author Nick Robson
@@ -19,8 +20,7 @@ public class SpectateManager {
     }
     
     public boolean isSpectating( GamePlayer player ) {
-        // TODO
-        return false;
+        return this.game.getPlayers().getPlayerState( player ) == PlayerState.SPECTATING;
     }
     
     public void setSpectating( GamePlayer player, boolean spectating ) {
@@ -32,11 +32,11 @@ public class SpectateManager {
     }
     
     public void addSpectator( GamePlayer player ) {
-        // TODO
+        this.game.getPlayers().setState( player, PlayerState.SPECTATING );
     }
     
     public void removeSpectator( GamePlayer player ) {
-        // TODO
+        this.game.getPlayers().remove( player );
     }
     
 }

@@ -15,4 +15,18 @@ public abstract class QuitAction {
     
     public abstract void onQuit( PlayerKickEvent event, GamePlayer player, Game game );
     
+    public static class LeaveGame extends QuitAction {
+        
+        @Override
+        public void onQuit( PlayerQuitEvent event, GamePlayer player, Game game ) {
+            game.getPlayers().remove( player );
+        }
+        
+        @Override
+        public void onQuit( PlayerKickEvent event, GamePlayer player, Game game ) {
+            game.getPlayers().remove( player );
+        }
+        
+    }
+    
 }

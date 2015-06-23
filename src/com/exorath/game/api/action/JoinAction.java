@@ -12,4 +12,23 @@ public abstract class JoinAction {
     
     public abstract void onJoin( PlayerJoinEvent event, GamePlayer player, Game game );
     
+    public static class SpectateIngame extends JoinAction {
+        
+        @Override
+        public void onJoin( PlayerJoinEvent event, GamePlayer player, Game game ) {
+            switch ( game.getState() ) {
+                case WAITING:
+                case STARTING:
+                    
+                    break;
+                case INGAME:
+                case FINISHING:
+                case RESETTING:
+                case RESTARTING:
+                    
+                    break;
+            }
+        }
+    }
+    
 }

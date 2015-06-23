@@ -1,7 +1,10 @@
 package com.yoshigenius.lib.util;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.exorath.game.GameAPI;
@@ -112,6 +115,13 @@ public final class GameUtil {
         return e;
     }
     
+    public static void sendPluginMessage( Player player, String tag, byte[] message ) {
+        if ( !Bukkit.getMessenger().isOutgoingChannelRegistered( GameAPI.getInstance(), tag ) ) {
+            Bukkit.getMessenger().registerOutgoingPluginChannel( GameAPI.getInstance(), tag );
+        }
+        player.sendPluginMessage( GameAPI.getInstance(), tag, message );
+    }
+    
     public static BukkitTask scheduleTimer( final Runnable runnable, int start, int period ) {
         return GameAPI.getInstance().getServer().getScheduler().runTaskTimer( GameAPI.getInstance(), ( ) -> {
             try {
@@ -126,5 +136,14 @@ public final class GameUtil {
     
     public static boolean isDebugMode() {
         return GameAPI.getInstance().getConfig().getBoolean( "dev.debug", false );
+    }
+    
+    public static void revive( PlayerDeathEvent event ) {
+        if ( event != null ) {
+            Player p = event.getEntity();
+            p.setHealth( p.getMaxHealth() );
+            
+            NMS.get().revive( p );
+        }
     }
 }

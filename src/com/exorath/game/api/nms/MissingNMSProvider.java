@@ -138,4 +138,9 @@ public class MissingNMSProvider implements NMSProvider {
         throw new UnsupportedOperationException( "There is no NMSProvider for this version of Minecraft." );
     }
     
+    @Override
+    public void revive( Player p ) {
+        throw new UnsupportedOperationException( "There is no NMSProvider for this version of Minecraft." );
+    }
+    
 }

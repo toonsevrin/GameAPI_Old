@@ -13,6 +13,7 @@ import com.exorath.game.api.events.GameStateChangedEvent;
  * A minigame that keeps repeating when finished
  */
 public class RepeatingMinigame extends Minigame {
+    
     public static final Property REPEAT_DELAY = Property.get( "repeating.delay", "Time in seconds before the game repeats", 60 );
     
     public RepeatingMinigame() {
