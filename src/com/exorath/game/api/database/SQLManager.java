@@ -22,7 +22,7 @@ public class SQLManager {
     private String user;
     private String password;
     
-    private Map<String, SQLTable> tables = new HashMap<>();
+    private Map<String, SQLTable> tables = new HashMap<String, SQLTable>();
     private Connection connection;
     
     public SQLManager( String host, int port, String database, String user, String password ) {
