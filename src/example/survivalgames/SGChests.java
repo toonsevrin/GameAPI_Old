@@ -2,6 +2,7 @@ package example.survivalgames;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -24,7 +25,7 @@ public class SGChests {
     private Set<SGChest> chests = new HashSet<SGChest>(); //A list with all loaded chests
     
     public SGChests( SurvivalGames game ) {
-        World world = game.getBaseGameWorld(); //Get the default/main Game World
+        World world = game.getGameWorld(); //Get the default/main Game World
         
         FileConfiguration chestConfig = game.getConfig( "chests" ); //Get the config file "chests.yml"
         if ( !chestConfig.contains( world.getName() ) )
@@ -74,9 +75,9 @@ public class SGChests {
         private final int MIN_ITEMS = 1;
         private final int MAX_ITEMS = 10;
         
-        private Point3D coordinates; //Coordinates of the first part, mandatory!
-        private Point3D secondCoordinates; //Coordinates of the second part.
-        private HashMap<Integer, ItemStack> items = new HashMap<Integer, ItemStack>(); //HashMap with slot and item
+        private Point3D coordinates; // Coordinates of the first part, mandatory!
+        private Point3D secondCoordinates; // Coordinates of the second part.
+        private Map<Integer, ItemStack> items = new HashMap<Integer, ItemStack>(); // Map with slot and item
         
         public SGChest( ConfigurationSection section ) {
             if ( !this.isDouble( section, "x", "y", "z" ) ) {
@@ -130,8 +131,8 @@ public class SGChests {
         private void generateItems( int minSlot ) {
             int itemAmount = this.MIN_ITEMS + SGChests.RANDOM.nextInt( this.MAX_ITEMS - this.MIN_ITEMS + 1 ); //Generate random number with and between min and max
             for ( int i = 0; i < itemAmount; i++ ) {
-                int slot = minSlot + SGChests.RANDOM.nextInt( 27 ); //generate random int between and with minSlot and minSlot + 26
-                this.items.put( slot, this.getRandomItem() ); //Place a random item in the slot
+                int slot = minSlot + SGChests.RANDOM.nextInt( 27 ); // Generate random integer between and with minSlot and minSlot + 26
+                this.items.put( slot, this.getRandomItem() ); // Place a random item in the slot
             }
         }
         
@@ -155,8 +156,10 @@ public class SGChests {
             return this.secondCoordinates;
         }
         
-        public HashMap<Integer, ItemStack> getItems() {
+        public Map<Integer, ItemStack> getItems() {
             return this.items;
         }
+        
     }
+    
 }

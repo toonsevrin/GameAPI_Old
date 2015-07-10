@@ -1,9 +1,10 @@
 package com.exorath.game.api.npc;
 
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.inventory.EntityEquipment;
 
+import com.exorath.game.api.Game;
 import com.exorath.game.api.Properties;
+import com.exorath.game.api.player.GamePlayer;
 
 /**
  * @author toon
@@ -19,27 +20,11 @@ public interface NPC {
     public String getName();
     
     /**
-     * Set the NPCs display name.
-     * 
-     * @param name
-     *            The NPCs display name.
-     */
-    public void setName( String name );
-    
-    /**
      * Get NPCs skin name if a Player NPC, otherwise null.
      * 
      * @return NPCs skin name.
      */
     public String getSkin();
-    
-    /**
-     * Set NPCs skin name if this entity is a Player NPC.
-     * 
-     * @param skin
-     *            NPCs skin name.
-     */
-    public void setSkin( String skin );
     
     /**
      * Get NPCs entity type
@@ -75,11 +60,23 @@ public interface NPC {
     }
     
     /**
-     * Gets the NPC's EntityEquipment object.
+     * Gets the NPC's NPCEquipment object.
      * 
      * @return If the NPC can have equipment, then it will return the NPC's equipment, otherwise
      *         null.
      */
-    public EntityEquipment getEquipment();
+    public NPCEquipment getEquipment();
+    
+    /**
+     * Called when a player clicks the NPC.
+     * 
+     * @param game
+     *            The game the player is in.
+     * @param player
+     *            The player.
+     * @param npc
+     *            The NPC.
+     */
+    public void onClicked( Game game, GamePlayer player, SpawnedNPC npc );
     
 }

@@ -3,15 +3,20 @@ package example.survivalgames;
 import java.util.ArrayList;
 import java.util.List;
 
-import javafx.geometry.Point3D;
-
 import org.bukkit.Location;
+import org.bukkit.util.Vector;
 
 import com.exorath.game.api.BasePlayerProperty;
 import com.exorath.game.api.GameProperty;
+import com.exorath.game.api.action.DieAction;
+import com.exorath.game.api.action.GameEndAction;
+import com.exorath.game.api.action.JoinAction;
+import com.exorath.game.api.action.QuitAction;
 import com.exorath.game.api.behaviour.HungerBehaviour;
-import com.exorath.game.api.behaviour.LeaveBehaviour;
 import com.exorath.game.api.gametype.RepeatingMinigame;
+import com.exorath.game.api.message.GameMessenger;
+import com.exorath.game.api.npc.types.KitSelector;
+import com.exorath.game.api.npc.types.SpectatorNPC;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.team.FreeForAllTeam;
 import com.exorath.game.api.team.Team;
@@ -30,13 +35,14 @@ public class SurvivalGames extends RepeatingMinigame {
         this.setupLobby();
         this.setupSpawns();
         this.setupTeams();
-        this.setupGame();
+        this.addListener( new SGListener() ); //Adds a custom event listener (See SGListener class).
     }
     
     /**
      * Sets the base properties and behaviour in this game up
      */
     private void setupGameProperties() {
+        
         /*Game properties*/
         this.setName( "Survival Games" ); //Name of the gamemode
         this.setDescription( "Tributes fight to the death in the arena." ); //Description of the gamemode
@@ -46,12 +52,13 @@ public class SurvivalGames extends RepeatingMinigame {
         
         /*Player properties*/
         this.getProperties().set( BasePlayerProperty.HUNGER, HungerBehaviour.DEFAULT );
-        this.setLeaveBehaviour( LeaveBehaviour.REMOVE );
         
         /*Actions*/
-        this.getActions().setDieAction( new GameAction.Spectate() ); //This is to avoid having to write basic actions again on each gamemode.
-        this.getActions().setJoinAction( new GameAction.SpectateIngame() ); //This is to avoid having to write basic actions again on each gamemode.
-        this.getActions().setFinishAction( new GameAction.kickSpectators() ); //This is to avoid having to write basic actions again on each gamemode.
+        this.getActions().setDieAction( new DieAction.Spectate() ); //This is to avoid having to write basic actions again on each gamemode.
+        this.getActions().setJoinAction( new JoinAction.SpectateIngame() ); //This is to avoid having to write basic actions again on each gamemode.
+        this.getActions().setQuitAction( new QuitAction.LeaveGame() );
+        this.getActions().setGameEndAction( new GameEndAction.SendToServer( "hub" ) ); //This is to avoid having to write basic actions again on each gamemode.
+        
     }
     
     /**
@@ -61,7 +68,7 @@ public class SurvivalGames extends RepeatingMinigame {
         this.getLobby().enable(); //Enable the lobby
         this.getLobby().setSpawnLocation( 0, 60, 0 ); //Spawn location in the lobby
         
-        this.getLobby().addNPC( new SpectatorNPC(), 0, 60, 10 );//When this npc gets right clicked, you become a spectator.
+        this.getLobby().addNPC( new SpectatorNPC(), new Vector( 0, 60, 10 ) ); //When this npc gets right clicked, you become a spectator.
         
         this.setupKits();
     }
@@ -77,7 +84,7 @@ public class SurvivalGames extends RepeatingMinigame {
                 { 2, 60, -2 }, { 2, 60, -1 }, { 2, 60, 0 }, { 2, 60, 1 },
         };
         for ( int[] coords : locs ) {
-            this.spawns.add( new Location( this.getBaseGameWorld(), coords[ 0 ], coords[ 1 ], coords[ 2 ] ) );
+            this.spawns.add( new Location( this.getGameWorld(), coords[ 0 ], coords[ 1 ], coords[ 2 ] ) );
         }
     }
     
@@ -88,17 +95,10 @@ public class SurvivalGames extends RepeatingMinigame {
         FreeForAllTeam team = new FreeForAllTeam(); //The base team where all players will be put into
         team.getProperties().set( TeamProperty.SPAWNS, this.spawns ); //Set the spawn points of the players. setupSpawns() generates these spawns.
         team.setMinTeamSize( 8 ); //Set the minimum team size before countdown.
-        team.setMaxTeamSize( 16 ); //set the maximum team size.
-        team.setFriendlyFire( false );
+        team.setMaxTeamSize( 16 ); //Set the maximum team size.
+        team.setFriendlyFire( true ); // Turn friendly fire on, since tributes should be able to kill eachother!
         
         this.getTeamManager().addTeam( team );
-    }
-    
-    /**
-     * Any other things that have to be setup
-     */
-    private void setupGame() {
-        this.addListener( new SGListener() ); //Adds a custom event listener (See SGListener class).
     }
     
     /**
@@ -116,40 +116,40 @@ public class SurvivalGames extends RepeatingMinigame {
         KitSelector warriorSelector = new KitSelector( warriorKit ); //Create a warrior kit selector npc, on right click the kit will be selected
         KitSelector archerSelector = new KitSelector( archerKit ); //Create an archer kit selector npc, on right click the kit will be selected
         
-        this.getLobby().addNPC( selector, new Point3D( 0, 60, 5 ) );//Add the kit selector to the lobby
-        this.getLobby().addNPC( warriorSelector, new Point3D( -5, 60, 6 ) ); //Add the warrior kit selector to the lobby
-        this.getLobby().addNPC( archerSelector, new Point3D( 5, 60, 6 ) ); //Add the archer kit selector to the lobby
+        this.getLobby().addNPC( selector, new Vector( 0, 60, 5 ) ); //Add the kit selector to the lobby
+        this.getLobby().addNPC( warriorSelector, new Vector( -5, 60, 6 ) ); //Add the warrior kit selector to the lobby
+        this.getLobby().addNPC( archerSelector, new Vector( 5, 60, 6 ) ); //Add the archer kit selector to the lobby
     }
     
     //game functions
     protected void start() {
         new SGChests( this ); //Generates chest contents in the selected game world.
         
-        this.scheduleEndGrace(); //Ends the grace period (After 30 seconds)
-        this.scheduleStandoff(); //Teleports all players to center of map (After 10 minutes)
+        this.scheduleEndGrace(); // Ends the grace period (After 30 seconds)
+        this.scheduleStandoff(); // Teleports all players to center of map (After 10 minutes)
     }
     
     protected void stop( StopCause cause ) {
         Team team = this.getTeamManager().getTeam();
-        for ( GamePlayer player : team.getAllPlayers() ) {
+        for ( GamePlayer player : team.getPlayers() ) {
             if ( !player.isOnline() ) {
                 continue;
             }
-            if ( cause == StopCause.TIME_UP ) { //If the time is up, it means that the game tied.
-                if ( team.isAlive( player ) ) { //Send the players which are still alive a victory reward and message
-                    GameMessenger.sendStructured( player, "player.onTie.alive" );
+            if ( cause == StopCause.TIME_UP ) { // If the time is up, it means that the game tied.
+                if ( team.isAlive( player ) ) { // Send the players which are still alive a victory reward and message
+                    GameMessenger.sendStructured( this, player, "player.onTie.alive" );
                     player.addHonorPoints( 100 );
-                } else { //Send the losers a message and a smaller reward
-                    GameMessenger.sendStructured( player, "player.onTie.dead" );
+                } else { // Send the losers a message and a smaller reward
+                    GameMessenger.sendStructured( this, player, "player.onTie.dead" );
                     player.addHonorPoints( 50 );
                 }
             }
             if ( cause == StopCause.VICTORY ) {
-                if ( team.isAlive( player ) ) { //Send the victor a big reward and victory message
-                    GameMessenger.sendStructured( player, "player.onVictory.alive" );
+                if ( team.isAlive( player ) ) { // Send the victor a big reward and victory message
+                    GameMessenger.sendStructured( this, player, "player.onVictory.alive" );
                     player.addHonorPoints( 250 );
-                } else { //Send the losers a message and a smaller reward
-                    GameMessenger.sendStructured( player, "player.onVictory.dead" );
+                } else { // Send the losers a message and a smaller reward
+                    GameMessenger.sendStructured( this, player, "player.onVictory.dead" );
                     player.addHonorPoints( 50 );
                 }
             }
@@ -157,19 +157,16 @@ public class SurvivalGames extends RepeatingMinigame {
     }
     
     protected void die( GamePlayer player ) {
-        GameMessenger.sendStructured( player, "player.onDead" );
+        GameMessenger.sendStructured( this, player, "player.onDead" );
     }
     
     /**
      * Enable pvp after 30 seconds
      */
     protected void scheduleEndGrace() {
-        getGame().getScheduler().runTaskLater( new Runnable() { //Enable pvp after 30 seconds
-            @Override
-            public void run() {
-                GameMessenger.sendStructured( this, "Grace period has ran out." );
-                this.getTeamManager().getTeam().setFriendlyFire( true );
-            }
+        this.getScheduler().runTaskLater( ( ) -> {
+            GameMessenger.sendInfo( SurvivalGames.this, "Grace period has ran out." );
+            SurvivalGames.this.getTeamManager().getTeam().setFriendlyFire( true );
         }, 30 * 20 );
     }
     
@@ -182,25 +179,19 @@ public class SurvivalGames extends RepeatingMinigame {
             this.scheduleStandoffMessage( time );
         }
         
-        this.getGame().getScheduler().runTaskLater( new Runnable() { //Start the standoff and tp all players to center
-            @Override
-            public void run() {
-                GameMessenger.sendInfo( this, "Standoff started! Players are teleported to the center." );
-                int cycle = 0;
-                for ( GamePlayer player : this.getTeamManager().getTeam().getPlayers() ) { //Teleport all active players back to a spawn location.
-                    player.getBukkitPlayer().teleport( this.getTeamManager().getTeam().getSpawns().get( cycle ) );
-                    cycle = GameUtil.cycle( cycle, this.getTeamManager().getTeam().getSpawns().length() - 1 );
-                }
+        this.getScheduler().runTaskLater( ( ) -> {
+            GameMessenger.sendInfo( SurvivalGames.this, "Standoff started! Players are teleported to the center." );
+            int cycle = 0;
+            for ( GamePlayer player : SurvivalGames.this.getTeamManager().getTeam().getPlayers() ) { //Teleport all active players back to a spawn location.
+                player.getBukkitPlayer().teleport( SurvivalGames.this.getTeamManager().getTeam().getSpawns().get( cycle ) );
+                cycle = GameUtil.cycle( cycle, SurvivalGames.this.getTeamManager().getTeam().getSpawns().size() - 1 );
             }
         }, 20 * 60 * 10 );
     }
     
     private void scheduleStandoffMessage( int time ) { //Send a countdown message
-        getGame().getScheduler().runTaskLater( new Runnable() {
-            @Override
-            public void run() {
-                GameMessenger.sendInfo( this, "Standoff in " + time + " seconds" );
-            }
-        }, 20 * 60 * 10 - 20 * time );
+        this.getScheduler().runTaskLater( ( ) -> GameMessenger.sendInfo( SurvivalGames.this, "Standoff in " + time + " seconds" ),
+                20 * 60 * 10 - 20 * time );
     }
+    
 }

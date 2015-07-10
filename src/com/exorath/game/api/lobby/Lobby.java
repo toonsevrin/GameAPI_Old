@@ -3,8 +3,11 @@ package com.exorath.game.api.lobby;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.util.Vector;
 
 import com.exorath.game.api.Properties;
+import com.exorath.game.api.npc.NPC;
+import com.exorath.game.api.npc.SpawnedNPC;
 import com.exorath.game.api.player.GamePlayer;
 
 /**
@@ -65,5 +68,11 @@ public class Lobby {
         }
     }
     
-    //npc management
+    public void addNPC( NPC npc, Vector vector ) {
+        World w = this.getWorld();
+        if ( w != null ) {
+            SpawnedNPC.spawn( npc, vector.toLocation( w ) );
+        }
+    }
+    
 }

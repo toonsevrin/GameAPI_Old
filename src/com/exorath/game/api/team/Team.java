@@ -91,12 +91,20 @@ public class Team {
         return this.properties.as( BasePlayerProperty.PVP, boolean.class );
     }
     
-    public void setTeamSize( int amount ) {
-        this.properties.set( TeamProperty.SIZE, amount );
+    public void setMaxTeamSize( int amount ) {
+        this.properties.set( TeamProperty.MAX_SIZE, amount );
     }
     
-    public int getTeamSize() {
-        return this.properties.as( TeamProperty.SIZE, int.class );
+    public int getMaxTeamSize() {
+        return this.properties.as( TeamProperty.MAX_SIZE, int.class );
+    }
+    
+    public void setMinTeamSize( int amount ) {
+        this.properties.set( TeamProperty.MIN_SIZE, amount );
+    }
+    
+    public int getMinTeamSize() {
+        return this.properties.as( TeamProperty.MIN_SIZE, int.class );
     }
     
     public boolean isFriendlyFire() {

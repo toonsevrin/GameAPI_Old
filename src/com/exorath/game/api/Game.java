@@ -1,13 +1,22 @@
 package com.exorath.game.api;
 
+import java.io.File;
 import java.util.Set;
 
-import com.exorath.game.api.behaviour.LeaveBehaviour;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import com.exorath.game.GameAPI;
+import com.exorath.game.api.action.Actions;
 import com.exorath.game.api.events.GameStateChangedEvent;
+import com.exorath.game.api.kit.KitManager;
 import com.exorath.game.api.lobby.Lobby;
 import com.exorath.game.api.player.Players;
 import com.exorath.game.api.spectate.SpectateManager;
 import com.exorath.game.api.team.TeamManager;
+import com.exorath.game.lib.util.FileUtils;
 import com.google.common.collect.Sets;
 
 /**
@@ -23,18 +32,59 @@ public abstract class Game {
     public static final String DEFAULT_GAME_NAME = "Game";
     public static final String DEFAULT_GAME_DESCRIPTION = "Default game description";
     
+    private final Set<GameListener> listeners = Sets.newHashSet();
+    
     private Lobby lobby = new Lobby();
     private Properties properties = new Properties();
     private TeamManager teamManager = new TeamManager( this );
+    private KitManager kitManager = new KitManager( this );
     private SpectateManager spectateManager = new SpectateManager( this );
     private Players players = new Players( this );
-    
-    private final Set<GameListener> listeners = Sets.newHashSet();
-    
+    private Actions actions = new Actions();
     private GameState state = GameState.WAITING;
-    private LeaveBehaviour leaveBehaviour = LeaveBehaviour.DO_NOTHING;
+    private String world = null;
     
     public Game() {}
+    
+    public GameScheduler getScheduler() {
+        return GameScheduler.INSTANCE;
+    }
+    
+    public World getGameWorld() {
+        return Bukkit.getWorld( this.world );
+    }
+    
+    public void setGameWorld( World world ) {
+        this.world = world.getName();
+    }
+    
+    public GameState getState() {
+        return this.state;
+    }
+    
+    public Lobby getLobby() {
+        return this.lobby;
+    }
+    
+    public TeamManager getTeamManager() {
+        return this.teamManager;
+    }
+    
+    public KitManager getKitManager() {
+        return this.kitManager;
+    }
+    
+    public Properties getProperties() {
+        return this.properties;
+    }
+    
+    public Actions getActions() {
+        return this.actions;
+    }
+    
+    public Players getPlayers() {
+        return this.players;
+    }
     
     public void setState( GameState state ) {
         GameState old = this.state;
@@ -43,30 +93,6 @@ public abstract class Game {
         for ( GameListener listener : this.listeners ) {
             listener.onGameStateChange( event );
         }
-    }
-    
-    public LeaveBehaviour getLeaveBehaviour() {
-        return this.leaveBehaviour;
-    }
-    
-    protected void setLeaveBehaviour( LeaveBehaviour behaviour ) {
-        this.leaveBehaviour = behaviour;
-    }
-    
-    public Lobby getLobby() {
-        return this.lobby;
-    }
-    
-    public GameState getState() {
-        return this.state;
-    }
-    
-    public TeamManager getTeamManager() {
-        return this.teamManager;
-    }
-    
-    public Properties getProperties() {
-        return this.properties;
     }
     
     protected void setLobby( Lobby lobby ) {
@@ -103,10 +129,6 @@ public abstract class Game {
         }
     }
     
-    public Players getPlayers() {
-        return this.players;
-    }
-    
     public SpectateManager getSpectateManager() {
         return this.spectateManager;
     }
@@ -117,6 +139,12 @@ public abstract class Game {
     
     protected void startGame() {
         this.setState( GameState.STARTING );
+    }
+    
+    public FileConfiguration getConfig( String filename ) {
+        File file = new File( GameAPI.getInstance().getDataFolder( this ), filename + ( filename.endsWith( ".yml" ) ? "" : ".yml" ) );
+        FileUtils.createIfMissing( file, FileUtils.FileType.FILE );
+        return YamlConfiguration.loadConfiguration( file );
     }
     
 }
