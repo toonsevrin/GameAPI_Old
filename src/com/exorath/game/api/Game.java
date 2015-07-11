@@ -29,6 +29,12 @@ import com.google.common.collect.Sets;
 
 public abstract class Game {
     
+    public static enum StopCause {
+        VICTORY,
+        DRAW,
+        TIME_UP;
+    }
+    
     public static final String DEFAULT_GAME_NAME = "Game";
     public static final String DEFAULT_GAME_DESCRIPTION = "Default game description";
     

@@ -54,13 +54,6 @@ public class Team {
         this.players.remove( player );
     }
     
-    public void startGame() {
-        this.removeOfflinePlayers();
-        for ( GamePlayer player : this.players ) {
-            
-        }
-    }
-    
     public void removeOfflinePlayers() {
         Iterator<GamePlayer> it = this.players.iterator();
         while ( it.hasNext() ) {

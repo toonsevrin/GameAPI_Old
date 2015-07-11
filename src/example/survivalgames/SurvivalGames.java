@@ -78,7 +78,7 @@ public class SurvivalGames extends RepeatingMinigame {
      */
     private void setupSpawns() {
         int[][] locs = new int[][] { //TODO: Use the config for this.
-                { -1, 60, -2 }, { -1, 60, -1 }, { -1, 60, 0 }, { -1, 60, 1 },
+        { -1, 60, -2 }, { -1, 60, -1 }, { -1, 60, 0 }, { -1, 60, 1 },
                 { 0, 60, -2 }, { 0, 60, -1 }, { 0, 60, 0 }, { 0, 60, 1 },
                 { 1, 60, -2 }, { 1, 60, -1 }, { 1, 60, 0 }, { 1, 60, 1 },
                 { 2, 60, -2 }, { 2, 60, -1 }, { 2, 60, 0 }, { 2, 60, 1 },
@@ -136,16 +136,16 @@ public class SurvivalGames extends RepeatingMinigame {
                 continue;
             }
             if ( cause == StopCause.TIME_UP ) { // If the time is up, it means that the game tied.
-                if ( team.isAlive( player ) ) { // Send the players which are still alive a victory reward and message
+                if ( player.isAlive( this ) ) { // Send the players which are still alive a victory reward and message
                     GameMessenger.sendStructured( this, player, "player.onTie.alive" );
-                    player.addHonorPoints( 100 );
+                    player.addHonorPoints( 150 );
                 } else { // Send the losers a message and a smaller reward
                     GameMessenger.sendStructured( this, player, "player.onTie.dead" );
                     player.addHonorPoints( 50 );
                 }
             }
             if ( cause == StopCause.VICTORY ) {
-                if ( team.isAlive( player ) ) { // Send the victor a big reward and victory message
+                if ( player.isAlive( this ) ) { // Send the victor a big reward and victory message
                     GameMessenger.sendStructured( this, player, "player.onVictory.alive" );
                     player.addHonorPoints( 250 );
                 } else { // Send the losers a message and a smaller reward
@@ -183,13 +183,13 @@ public class SurvivalGames extends RepeatingMinigame {
             GameMessenger.sendInfo( SurvivalGames.this, "Standoff started! Players are teleported to the center." );
             int cycle = 0;
             for ( GamePlayer player : SurvivalGames.this.getTeamManager().getTeam().getPlayers() ) { //Teleport all active players back to a spawn location.
-                player.getBukkitPlayer().teleport( SurvivalGames.this.getTeamManager().getTeam().getSpawns().get( cycle ) );
-                cycle = GameUtil.cycle( cycle, SurvivalGames.this.getTeamManager().getTeam().getSpawns().size() - 1 );
-            }
-        }, 20 * 60 * 10 );
+                    player.getBukkitPlayer().teleport( SurvivalGames.this.getTeamManager().getTeam().getSpawns().get( cycle ) );
+                    cycle = GameUtil.cycle( cycle, SurvivalGames.this.getTeamManager().getTeam().getSpawns().size() - 1 );
+                }
+            }, 20 * 60 * 10 );
     }
     
-    private void scheduleStandoffMessage( int time ) { //Send a countdown message
+    private void scheduleStandoffMessage( int time ) { // Send a countdown message
         this.getScheduler().runTaskLater( ( ) -> GameMessenger.sendInfo( SurvivalGames.this, "Standoff in " + time + " seconds" ),
                 20 * 60 * 10 - 20 * time );
     }

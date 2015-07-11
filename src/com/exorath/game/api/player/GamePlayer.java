@@ -9,17 +9,14 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import com.exorath.game.api.Game;
 import com.exorath.game.api.Properties;
 import com.exorath.game.api.menu.Menu;
 import com.exorath.game.lib.Rank;
 
-/**
- * Created by too on 23/05/2015.
- * Base player object in GameAPI
- */
-public class GamePlayer {
+public final class GamePlayer {
     
     private static final List<UUID> PLAYER_CACHE_ADDED = new LinkedList<>();
     private static final Map<UUID, GamePlayer> PLAYER_CACHE = new HashMap<>( 150 );
@@ -84,6 +81,10 @@ public class GamePlayer {
             return player.getPlayer();
         }
         return null;
+    }
+    
+    public boolean isAlive( Game game ) {
+        return game.getPlayers().getPlayerState( this ) == PlayerState.PLAYING;
     }
     
     public Rank getRank() {
@@ -151,7 +152,12 @@ public class GamePlayer {
     }
     
     public void openMenu( Menu menu ) {
-        // TODO
+        Player p = this.getBukkitPlayer();
+        if ( p != null ) {
+            Inventory inv = Bukkit.createInventory( null, menu.getSize() );
+            menu.dump( inv );
+            p.openInventory( inv );
+        }
     }
     
 }
