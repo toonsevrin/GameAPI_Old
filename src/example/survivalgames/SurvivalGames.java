@@ -183,10 +183,10 @@ public class SurvivalGames extends RepeatingMinigame {
             GameMessenger.sendInfo( SurvivalGames.this, "Standoff started! Players are teleported to the center." );
             int cycle = 0;
             for ( GamePlayer player : SurvivalGames.this.getTeamManager().getTeam().getPlayers() ) { //Teleport all active players back to a spawn location.
-                    player.getBukkitPlayer().teleport( SurvivalGames.this.getTeamManager().getTeam().getSpawns().get( cycle ) );
-                    cycle = GameUtil.cycle( cycle, SurvivalGames.this.getTeamManager().getTeam().getSpawns().size() - 1 );
-                }
-            }, 20 * 60 * 10 );
+                player.getBukkitPlayer().teleport( SurvivalGames.this.getTeamManager().getTeam().getSpawns().get( cycle ) );
+                cycle = GameUtil.cycle( cycle, SurvivalGames.this.getTeamManager().getTeam().getSpawns().size() - 1 );
+            }
+        }, 20 * 60 * 10 );
     }
     
     private void scheduleStandoffMessage( int time ) { // Send a countdown message

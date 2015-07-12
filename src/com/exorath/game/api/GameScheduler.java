@@ -15,13 +15,31 @@ public class GameScheduler {
     private GameScheduler() {}
     
     /**
+     * Runs a task later.
+     * 
      * @param runnable
      *            The runnable to be run.
-     * @param ticks
+     * @param delay
      *            The delay in ticks.
+     * @return The BukkitTask.
      */
-    public BukkitTask runTaskLater( Runnable runnable, long ticks ) {
-        return Bukkit.getScheduler().runTaskLater( GameAPI.getInstance(), runnable, ticks );
+    public BukkitTask runTaskLater( Runnable runnable, long delay ) {
+        return Bukkit.getScheduler().runTaskLater( GameAPI.getInstance(), runnable, delay );
+    }
+    
+    /**
+     * Runs a task timer.
+     * 
+     * @param runnable
+     *            The runnable to be run.
+     * @param delay
+     *            The delay in ticks before starting.
+     * @param period
+     *            The delay in ticks between executions.
+     * @return The BukkitTask.
+     */
+    public BukkitTask runTaskTimer( Runnable runnable, long delay, long period ) {
+        return Bukkit.getScheduler().runTaskTimer( GameAPI.getInstance(), runnable, delay, period );
     }
     
 }
