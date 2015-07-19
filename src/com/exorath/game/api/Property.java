@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class Property {
     
-    private static Map<String, Property> properties = new HashMap<>();
+    private static Map<String, Property> properties = new HashMap<String, Property>();
     
     public static Property get( String name, String desc, Object def ) {
         return Property.get( name, desc, def, false );

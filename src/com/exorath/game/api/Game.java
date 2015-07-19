@@ -22,7 +22,6 @@ import com.google.common.collect.Sets;
 /**
  * The class representing a single Game instance.
  * Gamemode, RepeatingMinigame and Minigame extend this.
- * 
  * @author toon
  * @author Nick Robson
  */
@@ -135,6 +134,14 @@ public abstract class Game {
         }
     }
     
+<<<<<<< HEAD
+=======
+    public Players getPlayers() {
+        return this.players;
+    }
+    public int getPlayerCount(){return this.players.getPlayingAmount();}
+    
+>>>>>>> origin/Maps
     public SpectateManager getSpectateManager() {
         return this.spectateManager;
     }
@@ -146,6 +153,7 @@ public abstract class Game {
     protected void startGame() {
         this.setState( GameState.STARTING );
     }
+    protected void stopGame() { this.setState(GameState.FINISHING);}
     
     public FileConfiguration getConfig( String filename ) {
         File file = new File( GameAPI.getInstance().getDataFolder( this ), filename + ( filename.endsWith( ".yml" ) ? "" : ".yml" ) );

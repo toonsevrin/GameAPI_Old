@@ -13,7 +13,7 @@ public class Players {
     
     private final Game game;
     
-    private final Map<UUID, PlayerState> playerStates = new HashMap<>();
+    private final Map<UUID, PlayerState> playerStates = new HashMap<UUID, PlayerState>();
     
     public Players( Game game ) {
         this.game = game;
@@ -30,6 +30,13 @@ public class Players {
             this.playerStates.put( player.getUUID(), state );
         }
         return state;
+    }
+    public int getPlayingAmount(){
+        int amount = 0;
+        for(UUID id : playerStates.keySet()){
+            if(playerStates.get(id) == PlayerState.PLAYING) amount ++;
+        }
+        return amount;
     }
     
     public boolean isPlaying( GamePlayer player ) {
