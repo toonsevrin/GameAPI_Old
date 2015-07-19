@@ -12,6 +12,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.exorath.game.api.GameListener;
 import com.exorath.game.api.Properties;
+import com.exorath.game.api.npc.NPCEquipment;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.lib.UnlockRequirements;
 import com.exorath.game.lib.items.PurchasableItem;
@@ -125,5 +126,15 @@ public abstract class Kit {
     
     public static String greenOrRedString( String name, boolean green ) {
         return ( green ? ChatColor.GREEN : ChatColor.RED ) + name;
+    }
+    
+    public NPCEquipment toNPCEquipment() {
+        NPCEquipment eq = new NPCEquipment();
+        eq.setItemInHand( this.getIcon() );
+        eq.setHelmet( this.getArmour().get( 0 ) );
+        eq.setChestplate( this.getArmour().get( 1 ) );
+        eq.setLeggings( this.getArmour().get( 2 ) );
+        eq.setBoots( this.getArmour().get( 3 ) );
+        return eq;
     }
 }

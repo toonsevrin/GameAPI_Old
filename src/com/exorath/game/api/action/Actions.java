@@ -5,9 +5,10 @@ package com.exorath.game.api.action;
  */
 public class Actions {
     
-    private JoinAction join;
-    private QuitAction quit;
-    private DieAction die;
+    private JoinAction join = new JoinAction.SpectateIngame();
+    private QuitAction quit = new QuitAction.LeaveGame();
+    private DieAction die = new DieAction.Spectate();
+    private GameEndAction gameEnd = new GameEndAction.SendToServer( "hub" );
     
     public JoinAction getJoinAction() {
         return this.join;
@@ -33,6 +34,15 @@ public class Actions {
     
     public Actions setDieAction( DieAction action ) {
         this.die = action;
+        return this;
+    }
+    
+    public GameEndAction getGameEndAction() {
+        return this.gameEnd;
+    }
+    
+    public Actions setGameEndAction( GameEndAction action ) {
+        this.gameEnd = action;
         return this;
     }
     

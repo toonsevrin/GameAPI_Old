@@ -12,6 +12,7 @@ public class SpawnedNPC {
     
     public static SpawnedNPC spawn( NPC npc, Location location ) {
         LivingEntity entity = location.getWorld().spawn( location, npc.getEntityClass() );
+        // TODO: Set names, skins, player NPC handling.
         SpawnedNPC snpc = new SpawnedNPC( npc, entity );
         return snpc;
     }

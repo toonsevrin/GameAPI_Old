@@ -9,15 +9,14 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
+import com.exorath.game.api.Game;
 import com.exorath.game.api.Properties;
+import com.exorath.game.api.menu.Menu;
 import com.exorath.game.lib.Rank;
 
-/**
- * Created by too on 23/05/2015.
- * Base player object in GameAPI
- */
-public class GamePlayer {
+public final class GamePlayer {
     
     private static final List<UUID> PLAYER_CACHE_ADDED = new LinkedList<>();
     private static final Map<UUID, GamePlayer> PLAYER_CACHE = new HashMap<>( 150 );
@@ -42,6 +41,8 @@ public class GamePlayer {
     }
     
     private UUID uuid;
+    private Rank rank = Rank.NONE;
+    private int honor = 0, wonHonor = 0, credits = 0;
     private Properties properties = new Properties();
     
     public GamePlayer( UUID id ) {
@@ -50,6 +51,14 @@ public class GamePlayer {
     
     public GamePlayer( Player player ) {
         this( player.getUniqueId() );
+    }
+    
+    public Properties getProperties() {
+        return this.properties;
+    }
+    
+    protected void setProperties( Properties properties ) {
+        this.properties = properties;
     }
     
     public UUID getUUID() {
@@ -74,46 +83,81 @@ public class GamePlayer {
         return null;
     }
     
-    public Properties getProperties() {
-        return this.properties;
+    public boolean isAlive( Game game ) {
+        return game.getPlayers().getPlayerState( this ) == PlayerState.PLAYING;
     }
     
-    protected void setProperties( Properties properties ) {
-        this.properties = properties;
-    }
-    
-    //TODO: ADD CONTENT TO THESE METHODS!!
     public Rank getRank() {
-        return Rank.NONE;
+        return this.rank;
     }
     
-    public void setRank( Rank rank ) {}
-    
-    //Start currency functions
-    //TODO: Implement currency functions
-    public int getHonorPoints() {
-        return 0;
+    public void setRank( Rank rank ) {
+        this.rank = rank;
     }
     
     public int getCredits() {
-        return 0;
+        return this.credits;
     }
     
-    public void addCredits( int credits ) {}
+    public void addCredits( int credits ) {
+        this.credits += credits;
+    }
     
-    public void removeCredits( int credits ) {}
+    public void removeCredits( int credits ) {
+        this.credits -= credits;
+    }
     
     public boolean hasCredits( int credits ) {
-        return true;
+        return this.credits >= credits;
     }
     
-    public void addHonorPoints( int honorPoints ) {}
+    public int getHonorPoints() {
+        return this.honor;
+    }
     
-    public void removeHonorPoints( int honorPoints ) {}
+    public int getWonHonorPoints() {
+        return this.wonHonor;
+    }
+    
+    public void addHonorPoints( int honorPoints ) {
+        this.honor += honorPoints;
+        this.wonHonor += honorPoints;
+    }
+    
+    public void removeHonorPoints( int honorPoints ) {
+        this.honor -= honorPoints;
+        this.wonHonor -= honorPoints;
+    }
     
     public boolean hasHonorPoints( int honorPoints ) {
-        return true;
+        return this.honor >= honorPoints;
     }
-    //End currency functions
+    
+    public void sendMessage( String message ) {
+        Player p = this.getBukkitPlayer();
+        if ( p != null ) {
+            p.sendMessage( message );
+        }
+    }
+    
+    public void sendMessage( String format, Object... params ) {
+        Player p = this.getBukkitPlayer();
+        if ( p != null ) {
+            p.sendMessage( String.format( format, params ) );
+        }
+    }
+    
+    public PlayerState getState( Game game ) {
+        return game.getPlayers().getPlayerState( this );
+    }
+    
+    public void openMenu( Menu menu ) {
+        Player p = this.getBukkitPlayer();
+        if ( p != null ) {
+            Inventory inv = Bukkit.createInventory( null, menu.getSize() );
+            menu.dump( inv );
+            p.openInventory( inv );
+        }
+    }
     
 }

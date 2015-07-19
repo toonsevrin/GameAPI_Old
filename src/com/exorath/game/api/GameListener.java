@@ -31,6 +31,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
 
+import com.exorath.game.api.events.GamePlayerKillPlayerEvent;
 import com.exorath.game.api.events.GameStateChangedEvent;
 import com.exorath.game.api.player.GamePlayer;
 
@@ -98,6 +99,8 @@ public interface GameListener {
     public default void onBlockPlace( BlockPlaceEvent event, Game game, GamePlayer player ) {}
     
     public default void onSignChange( SignChangeEvent event, Game game, GamePlayer player ) {}
+    
+    public default void onPlayerKillPlayer( GamePlayerKillPlayerEvent event ) {}
     
     /**
      * Called when an {@link EntityDamageEvent} is called.

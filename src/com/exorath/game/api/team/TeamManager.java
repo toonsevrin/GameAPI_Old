@@ -57,6 +57,15 @@ public class TeamManager {
     }
     
     /**
+     * Returns a non-null object iff there is only one team.
+     * 
+     * @return The only team if there is only one; otherwise null.
+     */
+    public Team getTeam() {
+        return this.teams.size() == 1 ? this.teams.toArray( new Team[1] )[ 0 ] : null;
+    }
+    
+    /**
      * if there is one team and its a DefaultTeam remove it. DefaultTeam only exists while no other
      * teams are added.
      */
@@ -77,4 +86,5 @@ public class TeamManager {
             }
         }
     }
+    
 }
