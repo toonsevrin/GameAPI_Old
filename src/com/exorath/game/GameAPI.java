@@ -3,6 +3,7 @@ package com.exorath.game;
 import java.io.File;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -23,6 +24,8 @@ public class GameAPI extends JavaPlugin {
     public static final Version CURRENT_VERSION = Version.from( "GameAPI", "0.0.1", 1, 0 ); // API Version 0 means in Development. Change for Alpha/Beta.
     
     private static SQLManager sqlManager;
+
+    private FileConfiguration versionsConfig;
     
     @Override
     public void onEnable() {
@@ -44,15 +47,15 @@ public class GameAPI extends JavaPlugin {
                     .asSubclass( NMSProvider.class );
             NMSProvider provider = c.newInstance();
             NMS.set( provider );
-        } catch ( ClassNotFoundException | InstantiationException | IllegalAccessException ex ) {}
-        
+        } catch ( Exception e) {e.printStackTrace();}
+
+        versionsConfig =  YamlConfiguration.loadConfiguration(new File(getDataFolder(), "versions.yml"));
     }
     
     @Override
     public void onDisable() {
-        
+
     }
-    
     @Override
     public File getFile() {
         return super.getFile();
@@ -83,7 +86,14 @@ public class GameAPI extends JavaPlugin {
     public static ConfigurationManager getConfigurationManager() {
         return ConfigurationManager.INSTANCE;
     }
-    
+
+    public FileConfiguration getVersionsConfig(){
+        return versionsConfig;
+    }
+    public void saveVersionsConfig(){
+        
+    }
+
     public static void sendPlayerToServer( Player player, String server ) {
         if ( player != null && server != null ) {
             ByteArrayDataOutput out = ByteStreams.newDataOutput();
@@ -98,5 +108,4 @@ public class GameAPI extends JavaPlugin {
             GameAPI.sendPlayerToServer( player.getBukkitPlayer(), server );
         }
     }
-    
 }

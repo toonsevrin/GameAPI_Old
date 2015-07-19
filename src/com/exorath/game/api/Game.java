@@ -13,7 +13,6 @@ import com.google.common.collect.Sets;
 /**
  * The class representing a single Game instance.
  * Gamemode, RepeatingMinigame and Minigame extend this.
- * 
  * @author toon
  * @author Nick Robson
  */
@@ -106,6 +105,7 @@ public abstract class Game {
     public Players getPlayers() {
         return this.players;
     }
+    public int getPlayerCount(){return this.players.getPlayingAmount();}
     
     public SpectateManager getSpectateManager() {
         return this.spectateManager;
@@ -118,5 +118,6 @@ public abstract class Game {
     protected void startGame() {
         this.setState( GameState.STARTING );
     }
+    protected void stopGame() { this.setState(GameState.FINISHING);}
     
 }
