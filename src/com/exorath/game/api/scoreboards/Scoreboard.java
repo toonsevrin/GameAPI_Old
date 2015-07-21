@@ -1,48 +1,152 @@
 package com.exorath.game.api.scoreboards;
 
 import com.exorath.game.api.player.GamePlayer;
+import com.exorath.game.api.scoreboards.displayeffects.DisplayEffect;
+import com.exorath.game.api.scoreboards.displayeffects.NoneEffect;
 import com.google.common.base.Splitter;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 /**
- * Created by TOON on 7/3/2015.
+ * Created by Toon Sevrin on 7/3/2015.
+ * This is an object oriented way of handling the sidebar scoreboard
+ * TODO: Still a lot of stuff
  */
 public class Scoreboard {
-    GamePlayer owner;
+    private GamePlayer owner; //The owner of this scoreboard
+    private BiMap<String, ScoreboardLine> lines = HashBiMap.create(); //All registered lines for this scoreboard, note that only the highest priority ones display!
 
     public Scoreboard(GamePlayer owner) {
         this.owner = owner;
     }
 
+    /**
+     * Add a new line to the lines
+     */
+    public ScoreboardLine addLine(String value){
+        return addLine(null, value, 0, new NoneEffect(), false);
+    }
+    public ScoreboardLine addLine(String value, int priority){
+        return addLine(null, value, priority, new NoneEffect(), false);
+    }
+    public ScoreboardLine addLine(String value, int priority, DisplayEffect displayEffect){
+        return addLine(null, value, priority, displayEffect, true);
+    }
 
-    /* Bare scoreboard library - Created by ParaPenguin */
+    public ScoreboardLine addLine(String value, int priority, DisplayEffect displayEffect, boolean visible){
+        return addLine(null, value, priority, displayEffect, visible);
+    }
+    public ScoreboardLine addLine(String key, String value){
+        return addLine(key, value, 0, new NoneEffect(), true);
+    }
+    public ScoreboardLine addLine(String key, String value, int priority){
+        return addLine(key, value, priority, new NoneEffect(), true);
+    }
+    public ScoreboardLine addLine(String key, String value, int priority, DisplayEffect displayEffect){
+        return addLine(key, value, priority, displayEffect, true);
+    }
+    public ScoreboardLine addLine(String key, String value, int priority, DisplayEffect displayEffect, boolean visible){
+        if(key == null) key = UUID.randomUUID().toString();
+        if(lines.containsKey(key)) return lines.get(key);
+        ScoreboardLine line = new ScoreboardLine(this, key, value, priority, displayEffect, visible);
+        return line;
+    }
+    public ScoreboardLine getLine(String key){
+        return lines.getOrDefault(key, null);
+    }
+    public void deleteLine(ScoreboardLine line){
+        if(lines.inverse().containsKey(line))
+        lines.inverse().remove(line);
+        //TODO: Delete the visual line
+    }
+    /**
+     * Add this line to the updated
+     * @param line Line that should be updated
+     */
+    protected void addUpdated(ScoreboardLine line){
+        //TODO: Make sure this line updates
+    }
+
+    /**
+     * Returns a sorted list of all visible lines (up to ~16)
+     * @return
+     */
+    private List<ScoreboardLine> getVisibleLines(){
+        TreeMap<Integer, List<ScoreboardLine>> sortedLines = new TreeMap<>();
+        for(ScoreboardLine line : lines.values()){
+            List<ScoreboardLine> lines = sortedLines.get(line.getPriority());
+            if(lines == null)
+                lines = new ArrayList<>();
+            lines.add(line);
+            sortedLines.put(line.getPriority(), lines);
+        }
+        List<ScoreboardLine> lines = new ArrayList<>();
+        loop:
+        for(int priority : sortedLines.descendingMap().keySet()){
+            for(ScoreboardLine line : sortedLines.get(priority)){
+                if(lines.size() >= 16){
+                    break loop;
+                }
+                lines.add(line);
+            }
+        }
+        return lines;
+    }
+    private class UpdateTask extends BukkitRunnable {
+        public UpdateTask(){
+
+        }
+        @Override
+        public void run(){
+            updateLines();
+            updateScoreboard();
+        }
+        private void updateLines(){
+
+        }
+        private void updateScoreboard(){
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Bare scoreboard library - Created by ParaPenguin
+     * This is the connection to the BukkitAPI with longer lines (Team prefix & suffix) and no flickering (entries)
+     * https://github.com/ParaPenguin/Spigboard
+     */
     private class BaseScoreboard {
-
-        private org.bukkit.scoreboard.Scoreboard scoreboard;
-        private Objective objective;
-        private BiMap<String, SpigboardEntry> entries;
+        private org.bukkit.scoreboard.Scoreboard scoreboard; //The Bukkit scoreboard
+        private Objective objective; //The Bukkit objective
+        private BiMap<String, SpigboardEntry> entries; //All the entries (Double backed HashMap with 16 entries, both key and values can be null)
 
         private int teamId;
 
         public BaseScoreboard(String title) {
             this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-            this.objective = scoreboard.registerNewObjective("spigobjective", "dummy");
-            this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+            this.objective = scoreboard.registerNewObjective("spigobjective", "dummy"); //Register a new dummy objective on the scoreboard
+            this.objective.setDisplaySlot(DisplaySlot.SIDEBAR); //Make sure the objective displays on the sidebar
             setTitle(title);
 
-            this.entries = HashBiMap.create();
-            this.teamId = 1;
+            this.entries = HashBiMap.create(); //Create a HashBiMap for the entries (Double backed HashMap with 16 entries, both key and values can be null)
+            this.teamId = 1; //TODO: Find out what this is
         }
 
         public org.bukkit.scoreboard.Scoreboard getScoreboard() {
