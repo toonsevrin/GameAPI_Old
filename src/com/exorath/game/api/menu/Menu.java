@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public abstract class Menu {
     
-    private int size;
+    private final int size;
     private Map<Integer, ItemStack> items = new HashMap<>();
     
     public Menu( int size ) {
@@ -40,7 +40,7 @@ public abstract class Menu {
     }
     
     public void dump( Inventory inventory ) {
-        Validate.isTrue( inventory.getSize() >= this.getSize() );
+        Validate.isTrue( inventory.getSize() >= this.getSize(), "Inventory cannot fit this menu." );
         for ( Entry<Integer, ItemStack> entry : this.items.entrySet() ) {
             inventory.setItem( entry.getKey(), entry.getValue() );
         }
