@@ -3,10 +3,14 @@ package com.exorath.game.api.npc.types;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Zombie;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 
 import com.exorath.game.api.Game;
 import com.exorath.game.api.kit.Kit;
-import com.exorath.game.api.menu.Menu;
+import com.exorath.game.api.menu.EasyMenu;
+import com.exorath.game.api.menu.EasyMenu.EasyMenuItem;
 import com.exorath.game.api.npc.NPCEquipment;
 import com.exorath.game.api.npc.SpawnedNPC;
 import com.exorath.game.api.player.GamePlayer;
@@ -36,21 +40,46 @@ public class KitSelector extends AbstractNPC {
     @Override
     public void onClicked( Game game, GamePlayer player, SpawnedNPC npc ) {
         if ( this.kit != null ) {
-            this.kit.give( player );
+            this.kit.give( player, game );
             player.sendMessage( ChatColor.GREEN + "Now using kit: " + this.kit.getName() );
         } else {
             player.openMenu( new KitSelectorMenu( game ) );
         }
     }
     
-    public static class KitSelectorMenu extends Menu {
+    public static class KitMenuItem implements EasyMenuItem {
+        
+        private final Kit kit;
+        
+        public KitMenuItem( Kit kit ) {
+            this.kit = kit;
+        }
+        
+        @Override
+        public void onClick( InventoryClickEvent event, Game game, GamePlayer player ) {
+            this.kit.give( player, game );
+        }
+        
+    }
+    
+    public static class KitSelectorMenu extends EasyMenu {
         
         public KitSelectorMenu( Game game ) {
             super( 36 );
             int slot = 0;
             for ( Kit kit : game.getKitManager().getKits() ) {
-                this.setItem( slot++, kit.getIcon() );
+                this.setItem( slot++, kit.getIcon(), new KitMenuItem( kit ) );
             }
+        }
+        
+        @Override
+        public void onOpen( InventoryOpenEvent event, Game game, GamePlayer player ) {
+            
+        }
+        
+        @Override
+        public void onClose( InventoryCloseEvent event, Game game, GamePlayer player ) {
+            
         }
         
     }
