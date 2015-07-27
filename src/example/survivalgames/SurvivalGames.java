@@ -194,4 +194,10 @@ public class SurvivalGames extends RepeatingMinigame {
                 20 * 60 * 10 - 20 * time );
     }
     
+    @Override
+    public void finish() {
+        // TODO Auto-generated method stub
+        
+    }
+    
 }
