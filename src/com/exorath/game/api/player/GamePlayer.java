@@ -44,6 +44,7 @@ public final class GamePlayer {
     private Rank rank = Rank.NONE;
     private int honor = 0, wonHonor = 0, credits = 0;
     private Properties properties = new Properties();
+    private Menu menu;
     
     public GamePlayer( UUID id ) {
         this.uuid = id;
@@ -151,13 +152,36 @@ public final class GamePlayer {
         return game.getPlayers().getPlayerState( this );
     }
     
-    public void openMenu( Menu menu ) {
+    public boolean openMenu( Menu menu ) {
+        this.menu = menu;
         Player p = this.getBukkitPlayer();
-        if ( p != null ) {
+        if ( p != null && p.getOpenInventory() == null ) { //  we don't want to aggressively open a menu if they shouldn't be opening...
             Inventory inv = Bukkit.createInventory( null, menu.getSize() );
             menu.dump( inv );
             p.openInventory( inv );
+            return true;
         }
+        return false;
+    }
+    
+    public boolean closeMenu() {
+        Player p = this.getBukkitPlayer();
+        if ( p != null ) {
+            if ( this.menu != null ) {
+                p.closeInventory();
+            } else {
+                return false;
+            }
+        }
+        this.menu = null;
+        if ( p == null ) {
+            return false;
+        }
+        return true;
+    }
+    
+    public Menu getCurrentMenu() {
+        return this.menu;
     }
     
 }
