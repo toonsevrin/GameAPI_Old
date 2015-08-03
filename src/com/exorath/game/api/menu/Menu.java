@@ -1,6 +1,5 @@
 package com.exorath.game.api.menu;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -14,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.exorath.game.api.Game;
 import com.exorath.game.api.player.GamePlayer;
+import com.google.common.collect.Maps;
 
 /**
  * @author Nick Robson
@@ -21,12 +21,12 @@ import com.exorath.game.api.player.GamePlayer;
 public abstract class Menu {
     
     private final int size;
-    private Map<Integer, ItemStack> items = new HashMap<>();
+    private Map<Integer, ItemStack> items = Maps.newHashMap();
     
     public Menu( int size ) {
         this.size = size;
         Validate.isTrue( size > 0, "Size must be greater than 0" );
-        Validate.isTrue( size % 9 == 0, "Size must be divisible by 9" ); // I'm lazy. You're lazy. We're all lazy, right?
+        Validate.isTrue( size % 9 == 0, "Size must be divisible by 9" );// I'm lazy. You're lazy. We're all lazy, right?
     }
     
     public int getSize() {
@@ -34,9 +34,8 @@ public abstract class Menu {
     }
     
     public Menu setItem( int index, ItemStack item ) {
-        if ( index >= 0 && index < this.size ) {
-            this.items.put( index, item == null ? new ItemStack( Material.AIR ) : item );
-        }
+        Validate.isTrue( index >= 0 && index < this.size );
+        this.items.put( index, item == null ? new ItemStack( Material.AIR ) : item );
         return this;
     }
     

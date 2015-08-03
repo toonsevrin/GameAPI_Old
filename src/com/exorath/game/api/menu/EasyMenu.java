@@ -3,6 +3,8 @@ package com.exorath.game.api.menu;
 import java.util.Map;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.exorath.game.api.Game;
@@ -41,4 +43,11 @@ public abstract class EasyMenu extends Menu {
             }
         }
     }
+    
+    @Override
+    public void onOpen( InventoryOpenEvent event, Game game, GamePlayer player ) {}
+    
+    @Override
+    public void onClose( InventoryCloseEvent event, Game game, GamePlayer player ) {}
+    
 }

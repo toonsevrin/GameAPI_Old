@@ -1,7 +1,5 @@
 package com.exorath.game.api;
 
-import com.exorath.game.api.behaviour.HungerBehaviour;
-
 /**
  * @author toon
  * @author Nick Robson
@@ -14,6 +12,5 @@ public class BasePlayerProperty {
     public static final Property BLOCK_INTERACT = Property.get( "block.interact", "Whether or not interaction with blocks is allowed", false );
     public static final Property ENTITY_INTERACT = Property.get( "entity.interact", "Whether or not interaction with entities is allowed", false );
     public static final Property CHAT = Property.get( "chat", "Whether or not chat is allowed", true );
-    public static final Property HUNGER = Property.get( "hunger", "Whether or not players get hungry", HungerBehaviour.DEFAULT );
     
 }

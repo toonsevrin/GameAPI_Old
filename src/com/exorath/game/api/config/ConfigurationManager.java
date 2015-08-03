@@ -44,8 +44,7 @@ public class ConfigurationManager {
             return;
         }
         try {
-            CopyOption[] options = overwrite ? new CopyOption[] { StandardCopyOption.REPLACE_EXISTING }
-                    : new CopyOption[] {};
+            CopyOption[] options = overwrite ? new CopyOption[] { StandardCopyOption.REPLACE_EXISTING } : new CopyOption[] {};
             Files.copy( in, file.toPath(), options );
         } catch ( IOException e ) {}
     }

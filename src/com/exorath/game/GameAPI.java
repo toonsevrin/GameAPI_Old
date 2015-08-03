@@ -22,7 +22,7 @@ import com.yoshigenius.lib.util.GameUtil;
  */
 public class GameAPI extends JavaPlugin {
     
-    public static final Version CURRENT_VERSION = Version.from( "GameAPI", "0.0.1", 1, 0 ); // API Version 0 means in Development. Change for Alpha/Beta.
+    public static final Version CURRENT_VERSION = Version.from( "GameAPI", "0.0.1", 1, 0 );// API Version 0 means in Development. Change for Alpha/Beta.
     
     private static SQLManager sqlManager;
     
@@ -40,7 +40,7 @@ public class GameAPI extends JavaPlugin {
         GameAPI.sqlManager = new SQLManager( databaseConfig.getString( "host" ), databaseConfig.getInt( "port" ),
                 databaseConfig.getString( "database" ), databaseConfig.getString( "username" ),
                 databaseConfig.getString( "password" ) );
-        
+                
         String serverPackage = this.getServer().getClass().getPackage().getName();
         String versionPackage = serverPackage.substring( serverPackage.lastIndexOf( '.' ) );
         try {
@@ -57,7 +57,7 @@ public class GameAPI extends JavaPlugin {
     
     @Override
     public void onDisable() {
-        
+    
     }
     
     @Override
@@ -96,7 +96,7 @@ public class GameAPI extends JavaPlugin {
     }
     
     public void saveVersionsConfig() {
-        
+    
     }
     
     public static void sendPlayerToServer( Player player, String server ) {
