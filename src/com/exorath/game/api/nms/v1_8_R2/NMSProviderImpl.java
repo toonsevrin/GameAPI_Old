@@ -1,12 +1,5 @@
 package com.exorath.game.api.nms.v1_8_R2;
 
-import net.minecraft.server.v1_8_R2.Block;
-import net.minecraft.server.v1_8_R2.BlockPosition;
-import net.minecraft.server.v1_8_R2.EntityInsentient;
-import net.minecraft.server.v1_8_R2.EntityPlayer;
-import net.minecraft.server.v1_8_R2.MinecraftServer;
-import net.minecraft.server.v1_8_R2.World;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.WeatherType;
@@ -14,11 +7,22 @@ import org.bukkit.craftbukkit.v1_8_R2.CraftServer;
 import org.bukkit.craftbukkit.v1_8_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_8_R2.entity.CraftPlayer;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.exorath.game.api.nms.NMSProvider;
+import com.mojang.authlib.GameProfile;
+
+import net.minecraft.server.v1_8_R2.Block;
+import net.minecraft.server.v1_8_R2.BlockPosition;
+import net.minecraft.server.v1_8_R2.Entity;
+import net.minecraft.server.v1_8_R2.EntityInsentient;
+import net.minecraft.server.v1_8_R2.EntityPlayer;
+import net.minecraft.server.v1_8_R2.MinecraftServer;
+import net.minecraft.server.v1_8_R2.NetworkManager;
+import net.minecraft.server.v1_8_R2.PlayerInteractManager;
+import net.minecraft.server.v1_8_R2.World;
+import net.minecraft.server.v1_8_R2.WorldServer;
 
 /**
  * @author Nick Robson
@@ -36,6 +40,11 @@ public class NMSProviderImpl implements NMSProvider {
     }
     
     @Override
+    public Class<?> getBukkitPlayerClass() {
+        return CraftPlayer.class;
+    }
+    
+    @Override
     public Class<?> getBlockClass() {
         return Block.class;
     }
@@ -43,6 +52,11 @@ public class NMSProviderImpl implements NMSProvider {
     @Override
     public Class<?> getWorldClass() {
         return World.class;
+    }
+    
+    @Override
+    public Class<?> getWorldServerClass() {
+        return WorldServer.class;
     }
     
     @Override
@@ -56,6 +70,16 @@ public class NMSProviderImpl implements NMSProvider {
     }
     
     @Override
+    public Class<?> getGameProfileClass() {
+        return GameProfile.class;
+    }
+    
+    @Override
+    public Class<?> getPlayerInteractManagerClass() {
+        return PlayerInteractManager.class;
+    }
+    
+    @Override
     public Object getMinecraftServer() {
         return MinecraftServer.getServer();
     }
@@ -63,6 +87,11 @@ public class NMSProviderImpl implements NMSProvider {
     @Override
     public Object getBukkitServer() {
         return Bukkit.getServer();
+    }
+    
+    @Override
+    public Object createPlayerInteractManager( org.bukkit.World world ) {
+        return new PlayerInteractManager( ( (CraftWorld) world ).getHandle() );
     }
     
     @Override
@@ -141,7 +170,7 @@ public class NMSProviderImpl implements NMSProvider {
     }
     
     @Override
-    public void setInvisible( Entity entity, boolean invisible ) {
+    public void setInvisible( org.bukkit.entity.Entity entity, boolean invisible ) {
         ( (CraftEntity) entity ).getHandle().setInvisible( invisible );
     }
     
@@ -156,7 +185,18 @@ public class NMSProviderImpl implements NMSProvider {
     
     @Override
     public void revive( Player p ) {
-        
+    
+    }
+    
+    @Override
+    public Object createNetworkManager() {
+        return new FakePlayerNetworkManager();
+    }
+    
+    @Override
+    public Object createNetServerHandler( Object nms_DedicatedServer, Object nms_NetworkManager, Object nms_Player ) {
+        return new FakePlayerNetServerHandler( (MinecraftServer) nms_DedicatedServer, (NetworkManager) nms_NetworkManager,
+                (EntityPlayer) nms_Player );
     }
     
 }

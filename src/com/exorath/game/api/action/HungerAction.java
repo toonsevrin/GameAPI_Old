@@ -116,11 +116,11 @@ public interface HungerAction {
         
     }
     
-    public class RangedAmount implements HungerAction {
+    public class BoundedAmount implements HungerAction {
         
         private final int min, max;
         
-        public RangedAmount( int a, int b ) {
+        public BoundedAmount( int a, int b ) {
             this.min = Math.min( a, b );
             this.max = Math.max( a, b );
             Validate.isTrue( this.min >= 0 && this.min <= 20 );

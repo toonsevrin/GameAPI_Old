@@ -2,8 +2,12 @@ package com.exorath.game.api.npc;
 
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 
+import com.exorath.game.api.nms.NMS;
 import com.exorath.game.api.npc.navigator.NPCNavigator;
+import com.exorath.game.api.npc.player.FakePlayer;
+import com.yoshigenius.lib.reflect.Reflection;
 
 /**
  * @author Nick Robson
@@ -11,9 +15,26 @@ import com.exorath.game.api.npc.navigator.NPCNavigator;
 public class SpawnedNPC {
     
     public static SpawnedNPC spawn( NPC npc, Location location ) {
-        LivingEntity entity = location.getWorld().spawn( location, npc.getEntityClass() );
+        LivingEntity entity = null;
+        Object nms_Player = null;
+        FakePlayer player = null;
+        if ( npc.getEntityClass() == Player.class ) {
+            player = new FakePlayer( npc.getName(), npc.getSkin() );
+            nms_Player = player.spawnPlayer( location );
+            entity = (Player) Reflection.getMethod( NMS.get().getPlayerClass(), "getBukkitEntity" ).invoke( nms_Player );
+        } else {
+            entity = location.getWorld().spawn( location, npc.getEntityClass() );
+        }
         // TODO: Set names, skins, player NPC handling.
         SpawnedNPC snpc = new SpawnedNPC( npc, entity );
+        
+        if ( npc.getName() != null && nms_Player == null ) {
+            entity.setCustomName( npc.getName() );
+            entity.setCustomNameVisible( true );
+        }
+        
+        npc.getEquipment().apply( entity );
+        
         return snpc;
     }
     
@@ -57,7 +78,9 @@ public class SpawnedNPC {
      * Despawns this NPC.
      */
     public void despawn() {
-        this.entity.remove();
+        if ( this.isValid() ) {
+            this.entity.remove();
+        }
         this.entity = null;
     }
     
