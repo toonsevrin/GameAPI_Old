@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import com.exorath.game.api.nms.NMS;
 import com.yoshigenius.lib.reflect.Reflection;
@@ -80,6 +81,13 @@ public class FakePlayer {
     
     public String getSkin() {
         return this.skin;
+    }
+    
+    public static Player getBukkitPlayer( Object nms_EntityPlayer ) {
+        if ( NMS.get().getPlayerClass().isAssignableFrom( nms_EntityPlayer.getClass() ) ) {
+            return Reflection.getMethod( NMS.get().getPlayerClass(), "getBukkitEntity" ).invoke( nms_EntityPlayer ).getObjectAs( Player.class );
+        }
+        return null;
     }
     
 }
