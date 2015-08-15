@@ -25,6 +25,7 @@ public class Scoreboard {
     private GamePlayer owner; //The owner of this scoreboard
     private BiMap<String, ScoreboardLine> lines = HashBiMap.create(); //All registered lines for this scoreboard, note that only the highest priority ones display!
 
+
     public Scoreboard(GamePlayer owner) {
         this.owner = owner;
     }
