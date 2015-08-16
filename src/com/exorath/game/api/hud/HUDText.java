@@ -1,6 +1,7 @@
 package com.exorath.game.api.hud;
 
 import com.exorath.game.api.hud.effects.HUDEffect;
+import com.exorath.game.api.hud.locations.scoreboard.Scoreboard;
 
 /**
  * Created by TOON on 8/9/2015.
@@ -21,15 +22,21 @@ public class HUDText implements Comparable<HUDText>{
     public void setText(String text){
         this.text = text;
         displayText =(effect==null)? text : effect.getDisplayText();
-        if(location != null)
-        location.updated(this);
+        updateLocation();
     }
     public void setPriority(HUDPriority priority){
         if(this.priority == priority)
             return;
         this.priority = priority;
-        if(location != null)
-            location.updated(this);
+        updateLocation();
+    }
+    public void updateLocation(){
+        if(location == null)
+            return;
+        if(location instanceof HUDDisplay){
+            HUDDisplay display = (HUDDisplay) location;
+            display.updated(this);
+        }
     }
     public HUDPriority getPriority(){
         return priority;
@@ -55,9 +62,12 @@ public class HUDText implements Comparable<HUDText>{
     public void setDisplayText(String displayText){
         this.displayText = displayText;
     }
-    protected void setLocation(HUDLocation location){
+    public void setLocation(HUDLocation location){
         this.location = location;
         sequence = location.getNewSequence();
+    }
+    public HUDLocation getLocation(){
+        return location;
     }
     public void setEffect(HUDEffect effect){this.effect = effect;}
     public HUDEffect getEffect(){return effect;}

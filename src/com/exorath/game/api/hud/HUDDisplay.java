@@ -1,5 +1,6 @@
 package com.exorath.game.api.hud;
 
+import com.exorath.game.api.hud.locations.scoreboard.ScoreboardText;
 import com.exorath.game.api.player.GamePlayer;
 import javafx.collections.transformation.SortedList;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -12,13 +13,18 @@ import java.util.PriorityQueue;
 public abstract class HUDDisplay extends HUDLocation{
     private int maxChars;
     private HUDText currentText;
-
+    private PriorityQueue<HUDText> texts = new PriorityQueue<HUDText>();
     public HUDDisplay(GamePlayer player, int maxChars){
         super(player);
         this.maxChars = maxChars;
-
     }
 
+    /**
+     * @return The texts in the queue to display here
+     */
+    protected PriorityQueue<HUDText> getTexts(){
+        return texts;
+    }
     /**
      * Adds the text to the current queue if there is any, displays it if it has the highest priority
      * @param text HUDText to display/add to queue
@@ -80,7 +86,6 @@ public abstract class HUDDisplay extends HUDLocation{
             removeCurrent();
         }
     }
-    @Override
     public void updated(HUDText text){
         if(text == currentText)
             displayText(text);

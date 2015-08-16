@@ -12,5 +12,6 @@ public class HUDManager {
     public HUDManager(){
         bossBarAPI = new BossBarAPI();
         Bukkit.getServer().getPluginManager().registerEvents(bossBarAPI, GameAPI.getInstance());
+
     }
 }

@@ -1,5 +1,6 @@
 package com.exorath.game.api.hud.locations.scoreboard;
 
+import com.exorath.game.api.hud.HUDDisplay;
 import com.exorath.game.api.hud.HUDLocation;
 import com.exorath.game.api.hud.HUDPriority;
 import com.exorath.game.api.hud.HUDText;
@@ -41,6 +42,13 @@ public class ScoreboardText extends HUDText {
         this.setLocation(loc);
         Scoreboard sb = (Scoreboard) loc;
         ScoreboardBase base = sb.getScoreboard();
+    }
+    @Override
+    public void updateLocation(){
+        if(getLocation() == null)
+            return;
+        Scoreboard sb = (Scoreboard) getLocation();
+        sb.updated(this);
     }
     protected boolean isTextUpdated(){
         return textUpdated;

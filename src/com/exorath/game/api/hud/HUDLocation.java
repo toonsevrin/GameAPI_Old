@@ -1,7 +1,9 @@
 package com.exorath.game.api.hud;
 
+import com.exorath.game.GameAPI;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.scoreboards.ScoreboardLine;
+import org.bukkit.Bukkit;
 
 import java.util.PriorityQueue;
 
@@ -12,10 +14,10 @@ public abstract class HUDLocation implements Runnable{
     protected boolean active;
     protected GamePlayer player;
     private int currentSequence = Integer.MIN_VALUE; //This is for HUDText's with the same priority (FIFO behaviour!)
-    private PriorityQueue<HUDText> texts = new PriorityQueue<HUDText>();
 
     public HUDLocation(GamePlayer player){
         this.player = player;
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(GameAPI.getInstance(), this, 0, 1);
     }
     public boolean isActive(){
         return active;
@@ -24,10 +26,7 @@ public abstract class HUDLocation implements Runnable{
         return player;
     }
     public abstract void setActive(boolean active);
-    public abstract void updated(HUDText text);
-    public PriorityQueue<HUDText> getTexts(){
-        return texts;
-    }
+
 
     /**
      * @return currentSequence + 1 and adds 1 to the currentSequence

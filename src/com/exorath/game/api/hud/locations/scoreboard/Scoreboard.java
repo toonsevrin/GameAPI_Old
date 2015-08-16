@@ -8,6 +8,8 @@ import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.lib.hud.scoreboard.ScoreboardBase;
 import org.bukkit.ChatColor;
 
+import java.util.PriorityQueue;
+
 /**
  * Created by TOON on 8/11/2015.
  * TODO: CREATE THIS CLASS
@@ -15,13 +17,15 @@ import org.bukkit.ChatColor;
 public class Scoreboard extends HUDLocation{
     private HUDText title = new HUDText(ChatColor.BOLD + "Title", HUDPriority.GAME_API);
     private ScoreboardBase scoreboard;
-
+    private PriorityQueue<ScoreboardText> texts = new PriorityQueue<>();
     public Scoreboard(GamePlayer player){
         super(player);
         scoreboard = new ScoreboardBase(title.getDisplayText());
         scoreboard.add(player.getBukkitPlayer());
     }
-
+    protected PriorityQueue<ScoreboardText> getTexts(){
+        return texts;
+    }
     public void addText(ScoreboardText text) {
         if(!isActive())
             return;
@@ -37,11 +41,9 @@ public class Scoreboard extends HUDLocation{
         if(!getTexts().contains(text))
             return;
         getTexts().remove(text);
-        //update scoreboard etc.
+        scoreboard.remove(text.getEntry());
     }
-
-    @Override
-    public void updated(HUDText text) {//A text has updated on the scoreboard
+    public void updated(ScoreboardText text) {//A text has updated on the scoreboard
         if(!isActive())
             return;
         if(text == title){
@@ -50,13 +52,9 @@ public class Scoreboard extends HUDLocation{
         }
         if(!getTexts().contains(text))
             return;
-        if(!(text instanceof ScoreboardText))
-            return;
-
-        ScoreboardText sbText = (ScoreboardText) text;
-        if(sbText.isTextUpdated()){//Text updated
-            sbText.getEntry().update(sbText.getDisplayText());
-        }else if(sbText.isPriorityUpdated()){//Priority updated
+        if(text.isTextUpdated()){//Text updated
+            text.getEntry().update(text.getDisplayText());
+        }else if(text.isPriorityUpdated()){//Priority updated
             priorityUpdated();
         }
     }
@@ -91,13 +89,13 @@ public class Scoreboard extends HUDLocation{
 
     }
     private ScoreboardText[] getVisibleTexts(){
-        HUDText[] texts = getTexts().toArray(new HUDText[getTexts().size()]);
+        ScoreboardText[] texts = getTexts().toArray(new ScoreboardText[getTexts().size()]);
         if(getTexts().size() <= 16) {
-            return (ScoreboardText[]) texts;
+            return texts;
         }else{
             ScoreboardText[] scoreboardTexts = new ScoreboardText[16];
             for(int i = 0; i < 16; i++){
-                scoreboardTexts[i] = (ScoreboardText) texts[i];
+                scoreboardTexts[i] = texts[i];
             }
             return scoreboardTexts;
         }
