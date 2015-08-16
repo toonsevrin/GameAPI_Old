@@ -6,13 +6,12 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
-import com.exorath.game.api.BasePlayerProperty;
 import com.exorath.game.api.GameProperty;
 import com.exorath.game.api.action.DieAction;
 import com.exorath.game.api.action.GameEndAction;
+import com.exorath.game.api.action.HungerAction;
 import com.exorath.game.api.action.JoinAction;
 import com.exorath.game.api.action.QuitAction;
-import com.exorath.game.api.behaviour.HungerBehaviour;
 import com.exorath.game.api.gametype.RepeatingMinigame;
 import com.exorath.game.api.message.GameMessenger;
 import com.exorath.game.api.npc.types.KitSelector;
@@ -50,14 +49,16 @@ public class SurvivalGames extends RepeatingMinigame {
         this.getProperties().set( GameProperty.MAX_DURATION, 900 ); //Set the max game duration to 15 minutes, after this time game will be terminated.
         this.getProperties().set( GameProperty.ALLOW_SPECTATING, true ); //Set the max game duration to 15 minutes, after this time game will be terminated.
         
-        /*Player properties*/
-        this.getProperties().set( BasePlayerProperty.HUNGER, HungerBehaviour.DEFAULT );
-        
         /*Actions*/
         this.getActions().setDieAction( new DieAction.Spectate() ); //This is to avoid having to write basic actions again on each gamemode.
         this.getActions().setJoinAction( new JoinAction.SpectateIngame() ); //This is to avoid having to write basic actions again on each gamemode.
         this.getActions().setQuitAction( new QuitAction.LeaveGame() );
+<<<<<<< HEAD
         this.getActions().setGameEndAction( new GameEndAction.SendToServer( "hub" ) ); //Needs to change
+=======
+        this.getActions().setGameEndAction( new GameEndAction.SendToServer( "hub" ) ); //This is to avoid having to write basic actions again on each gamemode.
+        this.getActions().setHungerAction( new HungerAction.Default() );
+>>>>>>> 3c6cb170422f96b558c798bb0d62b44511000675
         
     }
     
@@ -192,6 +193,12 @@ public class SurvivalGames extends RepeatingMinigame {
     private void scheduleStandoffMessage( int time ) { // Send a countdown message
         this.getScheduler().runTaskLater( ( ) -> GameMessenger.sendInfo( SurvivalGames.this, "Standoff in " + time + " seconds" ),
                 20 * 60 * 10 - 20 * time );
+    }
+    
+    @Override
+    public void finish() {
+        // TODO Auto-generated method stub
+        
     }
     
 }

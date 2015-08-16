@@ -1,5 +1,7 @@
 package com.yoshigenius.lib.reflect;
 
+import com.yoshigenius.lib.util.GameUtil;
+
 public class SafeObject<T> {
     
     public static SafeObject<Object> get( Object object ) {
@@ -16,14 +18,9 @@ public class SafeObject<T> {
         return this.o;
     }
     
-    @SuppressWarnings( "unchecked" )
     public <S> S getObjectAs( Class<S> desired ) {
         T o = this.getObject();
-        try {
-            return (S) o;
-        } catch ( ClassCastException ex ) {
-            return null;
-        }
+        return GameUtil.cast( o, desired );
     }
     
     public SafeField getField( String name ) {

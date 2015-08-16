@@ -17,6 +17,8 @@ public interface NMSProvider {
     
     public Class<?> getBukkitServerClass();
     
+    public Class<?> getBukkitPlayerClass();
+    
     public default Package getNMSPackage() {
         return this.getMinecraftServerClass().getPackage();
     }
@@ -25,13 +27,27 @@ public interface NMSProvider {
         return this.getBukkitServerClass().getPackage();
     }
     
+    default public Class<?> getClass( String name ) {
+        try {
+            return Class.forName( this.getNMSPackage().getName() + "." + name );
+        } catch ( Throwable t ) {
+            return null;
+        }
+    }
+    
     public Class<?> getBlockClass();
     
     public Class<?> getWorldClass();
     
+    public Class<?> getWorldServerClass();
+    
     public Class<?> getEntityClass();
     
     public Class<?> getPlayerClass();
+    
+    public Class<?> getGameProfileClass();
+    
+    public Class<?> getPlayerInteractManagerClass();
     
     public Object getMinecraftServer();
     
@@ -40,6 +56,12 @@ public interface NMSProvider {
     public Object getBlock( Block block );
     
     public Object getWorld( World world );
+    
+    public Object createPlayerInteractManager( World world );
+    
+    public Object createNetworkManager();
+    
+    public Object createNetServerHandler( Object nms_DedicatedServer, Object nms_NetworkManager, Object nms_Player );
     
     public Object getEntity( Entity entity );
     
