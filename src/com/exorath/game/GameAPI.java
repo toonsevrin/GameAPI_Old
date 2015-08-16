@@ -2,6 +2,7 @@ package com.exorath.game;
 
 import java.io.File;
 
+import com.exorath.game.api.database.SQLManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -9,7 +10,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.exorath.game.api.Game;
 import com.exorath.game.api.config.ConfigurationManager;
-import com.exorath.game.api.database.SQLManager;
 import com.exorath.game.api.nms.NMS;
 import com.exorath.game.api.nms.NMSProvider;
 import com.exorath.game.api.player.GamePlayer;
