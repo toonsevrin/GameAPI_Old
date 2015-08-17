@@ -1,11 +1,9 @@
 package com.exorath.game.api.hud;
 
-import com.exorath.game.GameAPI;
-import com.exorath.game.api.player.GamePlayer;
-import com.exorath.game.api.scoreboards.ScoreboardLine;
 import org.bukkit.Bukkit;
 
-import java.util.PriorityQueue;
+import com.exorath.game.GameAPI;
+import com.exorath.game.api.player.GamePlayer;
 
 /**
  * Created by TOON on 8/9/2015.
