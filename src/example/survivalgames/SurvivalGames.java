@@ -53,12 +53,9 @@ public class SurvivalGames extends RepeatingMinigame {
         this.getActions().setDieAction( new DieAction.Spectate() ); //This is to avoid having to write basic actions again on each gamemode.
         this.getActions().setJoinAction( new JoinAction.SpectateIngame() ); //This is to avoid having to write basic actions again on each gamemode.
         this.getActions().setQuitAction( new QuitAction.LeaveGame() );
-<<<<<<< HEAD
         this.getActions().setGameEndAction( new GameEndAction.SendToServer( "hub" ) ); //Needs to change
-=======
         this.getActions().setGameEndAction( new GameEndAction.SendToServer( "hub" ) ); //This is to avoid having to write basic actions again on each gamemode.
         this.getActions().setHungerAction( new HungerAction.Default() );
->>>>>>> 3c6cb170422f96b558c798bb0d62b44511000675
         
     }
     
