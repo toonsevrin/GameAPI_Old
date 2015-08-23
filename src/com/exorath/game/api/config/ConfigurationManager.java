@@ -18,11 +18,11 @@ import com.exorath.game.GameAPI;
  * @author Nick Robson
  */
 public class ConfigurationManager {
-    
+
     public static final ConfigurationManager INSTANCE = new ConfigurationManager();
-    
+
     private ConfigurationManager() {}
-    
+
     public FileConfiguration getResource( Plugin plugin, String resource ) {
         InputStream res = plugin.getResource( resource );
         if ( res == null ) {
@@ -30,11 +30,11 @@ public class ConfigurationManager {
         }
         return YamlConfiguration.loadConfiguration( new InputStreamReader( res ) );
     }
-    
+
     public void saveResource( Plugin plugin, String resource, String file, boolean overwrite ) {
         this.saveResource( plugin, resource, this.getConfigFile( plugin, file ), overwrite );
     }
-    
+
     public void saveResource( Plugin plugin, String resource, File file, boolean overwrite ) {
         InputStream in = plugin.getResource( resource );
         if ( in == null && !resource.endsWith( ".yml" ) ) {
@@ -48,21 +48,20 @@ public class ConfigurationManager {
             Files.copy( in, file.toPath(), options );
         } catch ( IOException e ) {}
     }
-    
+
     public File getConfigFile( Plugin plugin, String file ) {
         return new File( GameAPI.getInstance().getDataFolder(), plugin.getName() + "/" + file + ( file.endsWith( ".yml" ) ? "" : ".yml" ) );
     }
-    
+
     public FileConfiguration getConfig( Plugin plugin, String file ) {
         return this.getConfig( this.getConfigFile( plugin, file ) );
     }
-    
+
     public FileConfiguration getConfig( File f ) {
         if ( f.exists() ) {
             return YamlConfiguration.loadConfiguration( f );
-        } else {
-            return null;
         }
+        return null;
     }
-    
+
 }

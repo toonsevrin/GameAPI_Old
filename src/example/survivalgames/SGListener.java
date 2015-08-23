@@ -15,17 +15,16 @@ import com.exorath.game.api.player.PlayerState;
  * @author Nick Robson
  */
 public class SGListener implements GameListener {
-    
+
     //REPLACED WITH AN ACTION
     @Override
     public void onDeath( PlayerDeathEvent event, Game game, GamePlayer player ) {
-        SurvivalGames sg = (SurvivalGames) game;
         if ( player.getState( game ) == PlayerState.PLAYING ) {
             GameMessenger.sendStructured( game, player, "You died, hopefully you win next time!",
                     "This round you earned " + player.getCoinsWon() + " honor points!" );
         }
     }
-    
+
     /**
      * Reward a player with 70 honor points when he kills another player
      */
@@ -35,7 +34,7 @@ public class SGListener implements GameListener {
         GameMessenger.sendStructured( event.getGame(), killer, "player.onKill" );
         killer.addCoins( 70 );
     }
-    
+
     /**
      * When game starts, generate all the chests contents.
      */
@@ -48,5 +47,5 @@ public class SGListener implements GameListener {
             sg.stop( event.getStopCause() );
         }
     }
-    
+
 }

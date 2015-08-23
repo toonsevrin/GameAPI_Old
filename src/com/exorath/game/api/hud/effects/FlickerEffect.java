@@ -28,12 +28,7 @@ public class FlickerEffect extends IntervalEffect {
     public String getDisplayText() {
         if ( visible ) {
             return getText();
-        } else {
-            if ( replaceColor == null ) {
-                return "";
-            } else {
-                return replaceColor + ChatColor.stripColor( getText() );
-            }
         }
+        return replaceColor != null ? replaceColor + ChatColor.stripColor( getText() ) : null;
     }
 }

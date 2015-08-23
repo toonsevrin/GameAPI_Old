@@ -25,22 +25,22 @@ import com.exorath.game.lib.util.Schematic;
  */
 public class MapManager {
     private static final String SCHEMATIC_PREFIX = "SCHEM_";
-    
+
     private File mapsFolder;
     ConfigurationSection mapsSection;
-    
+
     private Set<String> worldNames = new HashSet<String>();
     private World defaultWorld;
-    
+
     public MapManager() {
         this.mapsFolder = new File( GameAPI.getInstance().getDataFolder(), "maps" );//Should be the folder maps under GameAPI
         this.mapsSection = GameAPI.getInstance().getVersionsConfig().getConfigurationSection( "" );
-        
+
         this.loadMaps();//load all maps and update schematics if they have changed
-        
+
         GameAPI.getInstance().saveVersionsConfig();//Save the config, as some maps "updated" status might have changed
     }
-    
+
     /**
      * Check whether or not the schematics have been updated (Normal worlds will be updated by the
      * startupScript.
@@ -68,10 +68,10 @@ public class MapManager {
             if ( this.worldNames.size() == 1 ) {
                 this.defaultWorld = this.getWorld( worldName );
             }
-            
+
         }
     }
-    
+
     /**
      * This method creates a new world for a schematic that has been updated
      * TODO: USE VOID GENERATOR
@@ -87,12 +87,12 @@ public class MapManager {
         if ( file.exists() && file.isDirectory() ) {
             FileUtils.deleteDirectory( file );
         }
-        
+
         World world = GameAPI.getInstance().getServer().createWorld( new WorldCreator( worldName ) );
         this.loadSchematicInWorld( schematic, world );
     }
-    
-    private void loadSchematicInWorld( String schemName, World world ) throws IOException {
+
+    private void loadSchematicInWorld( String schemName, World world ) {
         File schematicFile = new File( this.mapsFolder, schemName );//This is the schematic file loaded by the startup script
         if ( schematicFile.isFile() ) {//Double check if the file has been loaded in by the startup script
             try {
@@ -105,14 +105,14 @@ public class MapManager {
         GameAPI.error( "Schematic file not found (GameAPI/maps/" + schemName
                 + ") while it does appear in versions.yml. Is the startupScript configured? Have the maps been prepared on the main dedi?" );
     }
-    
+
     public Set<String> getWorldNames() {
         return this.worldNames;
     }
-    
+
     /**
      * Returns the map by name, if theres no map with this name, return null
-     * 
+     *
      * @param name
      *            name of the map
      * @return The map by name, if theres no map with this name, return null
@@ -126,7 +126,7 @@ public class MapManager {
         }
         return null;
     }
-    
+
     public Set<World> getWorlds() {
         Set<World> worlds = new HashSet<World>();
         for ( String name : this.worldNames ) {

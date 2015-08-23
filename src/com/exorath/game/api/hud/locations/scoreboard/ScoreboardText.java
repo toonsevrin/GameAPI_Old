@@ -1,6 +1,5 @@
 package com.exorath.game.api.hud.locations.scoreboard;
 
-import com.exorath.game.api.hud.HUDDisplay;
 import com.exorath.game.api.hud.HUDLocation;
 import com.exorath.game.api.hud.HUDPriority;
 import com.exorath.game.api.hud.HUDText;
@@ -14,46 +13,57 @@ public class ScoreboardText extends HUDText {
     private SpigboardEntry entry;
     private boolean textUpdated = false;
     private boolean priorityUpdated = false;
-    public ScoreboardText(String text, HUDPriority priority){
-        super(text,priority);
+
+    public ScoreboardText( String text, HUDPriority priority ) {
+        super( text, priority );
     }
-    protected void setEntry(SpigboardEntry entry){
+
+    protected void setEntry( SpigboardEntry entry ) {
         this.entry = entry;
     }
-    protected SpigboardEntry getEntry(){
+
+    protected SpigboardEntry getEntry() {
         return entry;
     }
+
     @Override
-    public void setText(String text){
+    public void setText( String text ) {
         textUpdated = true;
         priorityUpdated = false;
-        super.setText(text);
+        super.setText( text );
     }
+
     @Override
-    public void setPriority(HUDPriority priority){
+    public void setPriority( HUDPriority priority ) {
         textUpdated = false;
         priorityUpdated = true;
-        super.setPriority(priority);
+        super.setPriority( priority );
     }
+
     @Override
-    public void setLocation(HUDLocation loc){
-        if(!(loc instanceof Scoreboard))
+    public void setLocation( HUDLocation loc ) {
+        if ( !( loc instanceof Scoreboard ) ) {
             return;
-        this.setLocation(loc);
+        }
+        this.setLocation( loc );
         Scoreboard sb = (Scoreboard) loc;
         ScoreboardBase base = sb.getScoreboard();
     }
+
     @Override
-    public void updateLocation(){
-        if(getLocation() == null)
+    public void updateLocation() {
+        if ( getLocation() == null ) {
             return;
+        }
         Scoreboard sb = (Scoreboard) getLocation();
-        sb.updated(this);
+        sb.updated( this );
     }
-    protected boolean isTextUpdated(){
+
+    protected boolean isTextUpdated() {
         return textUpdated;
     }
-    protected boolean isPriorityUpdated(){
+
+    protected boolean isPriorityUpdated() {
         return priorityUpdated;
     }
 }

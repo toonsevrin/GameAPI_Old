@@ -11,9 +11,9 @@ import com.yoshigenius.lib.util.GameUtil;
  */
 
 public class Properties {
-    
+
     private SimpleMap<Property, Object> properties = new SimpleMap<Property, Object>();
-    
+
     /**
      * @param property
      *            The property
@@ -24,14 +24,13 @@ public class Properties {
     public Object get( Property property, Object def ) {
         if ( this.properties.containsKey( property ) ) {
             return this.properties.get( property );
-        } else {
-            return def;
         }
+        return def;
     }
-    
+
     /**
      * Gets a property's value as a specific type
-     * 
+     *
      * @param property
      *            The property
      * @param clazz
@@ -46,7 +45,7 @@ public class Properties {
         T t = GameUtil.cast( o, clazz );
         return t == null ? (T) property.getDefault() : t;
     }
-    
+
     /**
      * Set a property to a value
      *
@@ -59,7 +58,8 @@ public class Properties {
         if ( property.isStrict() && !property.getDefault().getClass().isAssignableFrom( value.getClass() ) ) {
             throw new IllegalArgumentException( String.format(
                     "Property %s is strict, and provided value of type %s does not match required type of %s.", property.getKey(), value.getClass()
-                    .getSimpleName(), property.getDefault().getClass().getSimpleName() ) );
+                            .getSimpleName(),
+                    property.getDefault().getClass().getSimpleName() ) );
         }
         this.properties.put( property, value );
     }
