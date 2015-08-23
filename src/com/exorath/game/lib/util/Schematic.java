@@ -240,7 +240,7 @@ public class Schematic {
         }
         
         byte[] blockId = Schematic.getChildTag( schematic, "Blocks", ByteArrayTag.class ).getValue();
-        byte[] blockData = Schematic.getChildTag( schematic, "Data", ByteArrayTag.class ).getValue();
+        byte[] blockData = Schematic.getChildTag( schematic, "SQLData", ByteArrayTag.class ).getValue();
         byte[] addId = new byte[0];
         short[] blocks = new short[blockId.length]; // Have to later combine IDs
         

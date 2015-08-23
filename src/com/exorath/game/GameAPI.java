@@ -2,14 +2,15 @@ package com.exorath.game;
 
 import java.io.File;
 
+import com.exorath.game.api.database.SQLManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.exorath.game.api.Game;
 import com.exorath.game.api.config.ConfigurationManager;
-import com.exorath.game.api.database.SQLManager;
 import com.exorath.game.api.nms.NMS;
 import com.exorath.game.api.nms.NMSProvider;
 import com.exorath.game.api.player.GamePlayer;
@@ -25,6 +26,8 @@ public class GameAPI extends JavaPlugin {
     public static final Version CURRENT_VERSION = Version.from( "GameAPI", "0.0.1", 1, 0 );// API Version 0 means in Development. Change for Alpha/Beta.
     
     private static SQLManager sqlManager;
+
+    private static Plugin hostPlugin; //Todo add this
     
     private FileConfiguration versionsConfig;
     
@@ -116,6 +119,11 @@ public class GameAPI extends JavaPlugin {
     
     public File getDataFolder( Game game ) {
         return new File( this.getDataFolder(), game.getName().toLowerCase().replaceAll( " ", "_" ) );
+    }
+    public static Plugin getHostPlugin(){
+        if(hostPlugin == null)
+            error("Host plugin not loaded, every API needs a host!");
+        return hostPlugin;
     }
     
 }
