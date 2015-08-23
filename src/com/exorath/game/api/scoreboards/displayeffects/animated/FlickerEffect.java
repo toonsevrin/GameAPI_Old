@@ -11,7 +11,8 @@ import net.md_5.bungee.api.ChatColor;
 public class FlickerEffect extends CountdownEffect {
     private boolean bold = true;
     public FlickerEffect(ScoreboardLine line, int flickerDelay){
-        super(line, flickerDelay);
+        super(flickerDelay);
+        this.setLine( line );
     }
     @Override
     public void updateVariables(){
@@ -19,7 +20,7 @@ public class FlickerEffect extends CountdownEffect {
     }
     @Override
     public void updateText(){
-        String content = getLine().getContent().replace("§l","");
+        String content = getLine().getContent().replace("Â§l","");
         if(bold){
             getLine().setDisplayContent(ChatColor.BOLD + getLine().getContent());
         }else{
