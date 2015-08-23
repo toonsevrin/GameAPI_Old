@@ -9,6 +9,7 @@ public class Actions {
     private QuitAction quit = new QuitAction.LeaveGame();
     private DieAction die = new DieAction.Spectate();
     private GameEndAction gameEnd = new GameEndAction.SendToServer( "hub" );
+    private HungerAction hunger = new HungerAction.Default();
     
     public JoinAction getJoinAction() {
         return this.join;
@@ -43,6 +44,15 @@ public class Actions {
     
     public Actions setGameEndAction( GameEndAction action ) {
         this.gameEnd = action;
+        return this;
+    }
+    
+    public HungerAction getHungerAction() {
+        return this.hunger;
+    }
+    
+    public Actions setHungerAction( HungerAction action ) {
+        this.hunger = action;
         return this;
     }
     

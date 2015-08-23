@@ -135,6 +135,10 @@ public abstract class Game {
         }
     }
     
+    public int getPlayerCount() {
+        return this.players.getPlayingAmount();
+    }
+    
     public SpectateManager getSpectateManager() {
         return this.spectateManager;
     }
@@ -145,6 +149,10 @@ public abstract class Game {
     
     protected void startGame() {
         this.setState( GameState.STARTING );
+    }
+    
+    protected void stopGame() {
+        this.setState( GameState.FINISHING );
     }
     
     public FileConfiguration getConfig( String filename ) {

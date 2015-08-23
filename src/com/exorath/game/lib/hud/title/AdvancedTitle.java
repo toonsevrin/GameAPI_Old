@@ -1,6 +1,7 @@
-package com.exorath.game.lib.util;
+package com.exorath.game.lib.hud.title;
 
-import net.md_5.bungee.api.ChatColor;
+import com.exorath.game.lib.util.ReflectionUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
@@ -255,7 +256,7 @@ public class AdvancedTitle {
             InvocationTargetException, NoSuchFieldException,
             SecurityException, ClassNotFoundException, NoSuchMethodException, InstantiationException {
         
-        Field playerConnection = ReflectionUtils.getField( "EntityPlayer", ReflectionUtils.PackageType.MINECRAFT_SERVER, false, "playerConnection" );
+        Field playerConnection = ReflectionUtils.getField("EntityPlayer", ReflectionUtils.PackageType.MINECRAFT_SERVER, false, "playerConnection");
         Constructor<?> packetConstructor = ReflectionUtils.getConstructor( ReflectionUtils.PackageType.MINECRAFT_SERVER
                 .getClass( "PacketPlayOutTitle" ) );
         Method getIChatBaseComponent = ReflectionUtils.getMethod( "ChatSerializer", ReflectionUtils.PackageType.MINECRAFT_SERVER, "a", String.class );

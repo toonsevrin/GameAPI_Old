@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
+import com.exorath.game.api.Game;
 import com.exorath.game.api.GameListener;
 import com.exorath.game.api.Properties;
 import com.exorath.game.api.npc.NPCEquipment;
@@ -103,7 +104,7 @@ public abstract class Kit {
     
     public abstract Map<PotionEffectType, Integer> getPotionEffects();
     
-    public void give( GamePlayer player ) {
+    public void give( GamePlayer player, Game game ) {
         //TODO: Go into GPlayer and add methods addKit, delKit, clearKits and getKits.
     }
     
