@@ -3,12 +3,27 @@ package com.exorath.game.api.maps;
 /**
  * Created by TOON on 7/2/2015.
  * These are the ways a new map is selected at the end of a minigame
+ * 
+ * @author Toon Sevrin
+ * @author Nick Robson
  */
 public enum MapSelection {
-    
-    DEFAULT, //Always run the default map
-    CYCLE, //Cycle through all maps
-    VOTE, //Let the players vote for the next map
-    RANDOM;//Each time a random map is selected
-    
+
+    /**
+     * Always run the same map.
+     */
+    SAME,
+    /**
+     * Cycle through maps (non-random).
+     */
+    CYCLE,
+    /**
+     * Cycle through maps (randomly, not the same map twice in a row, though)
+     */
+    RANDOM,
+    /**
+     * Let players vote for the map.
+     */
+    VOTE,
+
 }
