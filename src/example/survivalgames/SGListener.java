@@ -22,7 +22,7 @@ public class SGListener implements GameListener {
         SurvivalGames sg = (SurvivalGames) game;
         if ( player.getState( game ) == PlayerState.PLAYING ) {
             GameMessenger.sendStructured( game, player, "You died, hopefully you win next time!",
-                    "This round you earned " + player.getWonHonorPoints() + " honor points!" );
+                    "This round you earned " + player.getCoinsWon() + " honor points!" );
         }
     }
     
@@ -33,7 +33,7 @@ public class SGListener implements GameListener {
     public void onPlayerKillPlayer( GamePlayerKillPlayerEvent event ) {
         GamePlayer killer = event.getKiller();
         GameMessenger.sendStructured( event.getGame(), killer, "player.onKill" );
-        killer.addHonorPoints( 70 );
+        killer.addCoins( 70 );
     }
     
     /**

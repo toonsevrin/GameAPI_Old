@@ -19,7 +19,7 @@ public class PurchasableItem extends ItemStack {
     private ItemStack item;
     private String[] description;
     private UnlockRequirements requirements;
-    
+
     public PurchasableItem( String name, ItemStack itemStack, String[] description, UnlockRequirements requirements, GamePlayer player,
             boolean unlocked ) {
         this.name = name;
@@ -29,30 +29,30 @@ public class PurchasableItem extends ItemStack {
         this.player = player;
         this.buildItem( unlocked );
     }
-    
+
     /**
      * Update the ItemStack
-     * 
+     *
      * @param unlocked
      *            Whether the item has been unlocked already
      */
     public void update( boolean unlocked ) {
         this.buildItem( unlocked );
     }
-    
+
     public void update() {
         this.buildItem();
     }
-    
+
     private void buildItem() {
         this.buildItem( false );
     }
-    
+
     /**
      * Generate a purchasable ItemStack with possible cost and restriction
      * Ugly method handy to avoid repetition
      * TODO: Add possible amount support
-     * 
+     *
      * @param unlocked
      *            Whether the item has been unlocked already
      */
@@ -65,9 +65,9 @@ public class PurchasableItem extends ItemStack {
             meta.setDisplayName( ChatColor.BOLD.toString() + ChatColor.GREEN + this.name );
         } else {
             meta.setDisplayName( PurchasableItem.getRedOrGreen( ChatColor.BOLD + this.name, this.requirements.canUnlock( this.player ) ) );
-            if ( this.requirements.getHonorPoints() > 0 ) {
-                meta.addLore( PurchasableItem.getRedOrGreen( "Cost: " + this.requirements.getHonorPoints() + " honor points",
-                        this.player.hasHonorPoints( this.requirements.getHonorPoints() ) ) );
+            if ( this.requirements.getCoins() > 0 ) {
+                meta.addLore( PurchasableItem.getRedOrGreen( "Cost: " + this.requirements.getCoins() + " honor points",
+                        this.player.hasCoins( this.requirements.getCoins() ) ) );
             }
             if ( this.requirements.getCredits() > 0 ) {
                 meta.addLore( PurchasableItem.getRedOrGreen( "Cost: " + this.requirements.getCredits() + " credits",
@@ -79,42 +79,42 @@ public class PurchasableItem extends ItemStack {
             }
         }
     }
-    
+
     private static String getRedOrGreen( String line, boolean green ) {
         if ( green ) {
             return ChatColor.GREEN + line;
         }
         return ChatColor.RED + line;
     }
-    
+
     public UnlockRequirements getRequirements() {
         return this.requirements;
     }
-    
+
     public void setRequirements( UnlockRequirements requirements ) {
         this.requirements = requirements;
     }
-    
+
     public ItemStack getItemStack() {
         return this.item;
     }
-    
+
     public void setItemStack( ItemStack item ) {
         this.item = item;
     }
-    
+
     public String[] getDescription() {
         return this.description;
     }
-    
+
     public void setDescription( String[] description ) {
         this.description = description;
     }
-    
+
     public String getName() {
         return this.name;
     }
-    
+
     public void setName( String name ) {
         this.name = name;
     }

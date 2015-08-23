@@ -11,24 +11,24 @@ import com.exorath.game.api.server.GameServer;
  * @author Nick Robson
  */
 public class GameMessenger {
-    
+
     /**
      * Sends a formatted message to all online players.
-     * 
+     *
      * @param game
      *            The game sending the message.
      * @param path
      *            The format string path in the game's config.
      */
     public static void sendStructured( Game game, String path, Object... params ) {
-        for ( GamePlayer player : GameServer.getOnlinePlayers() ) {
+        for ( GamePlayer player : GameServer.get().getOnlinePlayers() ) {
             GameMessenger.sendStructured( game, player, path, params );
         }
     }
-    
+
     /**
      * Sends a formatted message to a player.
-     * 
+     *
      * @param game
      *            The game sending the message.
      * @param player
@@ -42,15 +42,15 @@ public class GameMessenger {
                 config.getString( path ), params );
         player.sendMessage( message );
     }
-    
+
     public static void sendInfo( Game game, String message ) {
-        for ( GamePlayer player : GameServer.getOnlinePlayers() ) {
+        for ( GamePlayer player : GameServer.get().getOnlinePlayers() ) {
             GameMessenger.sendInfo( game, player, message );
         }
     }
-    
+
     public static void sendInfo( Game game, GamePlayer player, String message ) {
         player.sendMessage( message );
     }
-    
+
 }

@@ -14,58 +14,73 @@ public class SQLTable {
     
     public static final String KEY = "Key";
     private String name;
-    private HashMap<String, SQLColumn> columns = new HashMap<String, SQLColumn>();
+    private HashMap<String, SQLColumn> columns = new HashMap<>();
     
-    public SQLTable( String name ) {
+    public SQLTable(String name) {
         this.name = name;
     }
-    
+
+
     /**
-     * Get the data of the given key in this database
-     * 
-     * @param key
-     *            Key to receive data from
-     * @return data of key, null if it doesn't exist.
+     * loads the data from the database of the given key
      */
-    public SQLData getData( String key ) {
+    public boolean load(SQLData data) {
         //TODO: If exists: load and return. Else: return null;
-        ResultSet rs = GameAPI.getSQLManager().executeQuery( "SELECT * FROM " + this.name + " WHERE " + SQLTable.KEY + "='" + key + "' LIMIT 1" );
-        SQLData data = new SQLData( key );
+        ResultSet rs = GameAPI.getSQLManager().executeQuery( "SELECT * FROM " + this.name + " WHERE " + SQLTable.KEY + "='" + data.getUuid() + "' LIMIT 1" );
         try {
             if ( rs.next() ) {
                 ResultSetMetaData rsMeta = rs.getMetaData();
-                int columns = rsMeta.getColumnCount();
-                for ( int i = 0; i < columns; i++ ) {
+                for ( int i = 0; i < rsMeta.getColumnCount(); i++ ) {
                     String columnName = rsMeta.getColumnName( i );
                     Object obj = rs.getObject( columnName );
-                    if ( obj == null ) {
+                    if ( obj == null )
                         continue;
-                    }
-                    data.addData( columnName, obj );
+                    data.setData(columnName, obj);
                 }
             } else {
-                GameAPI.error( "SQLTable.getData with key " + key + " failed to load data. Data doesn't exist." );
+                GameAPI.printConsole("SQLTable.getData with key " + data.getUuid() + " failed to load data. SQLData doesn't exist.");
+            }
+        } catch ( SQLException e ) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    /**
+     * loads the data from the database of the given key
+     */
+    public void save(SQLData data) {
+        //TODO: If exists: load and return. Else: return null;
+        ResultSet rs = GameAPI.getSQLManager().executeQuery( "SELECT * FROM " + this.name + " WHERE " + SQLTable.KEY + "='" + data.getUuid() + "' LIMIT 1" );
+        try {
+            if ( rs.next() ) {
+                ResultSetMetaData rsMeta = rs.getMetaData();
+                for ( int i = 0; i < rsMeta.getColumnCount(); i++ ) {
+                    String columnName = rsMeta.getColumnName( i );
+                    Object obj = rs.getObject( columnName );
+                    if ( obj == null )
+                        continue;
+                    data.setData(columnName, obj);
+                }
+            } else {
+                GameAPI.error( "SQLTable.getData with key " + data.getUuid() + " failed to load data. SQLData doesn't exist." );
             }
         } catch ( SQLException e ) {
             e.printStackTrace();
         }
-        
-        return data;
     }
-    
+
     /**
      * Update or insert data into database
-     * 
-     * @param key
-     *            Row key you want to insert or update
+     *
      * @param data
-     *            Data you want to insert or update
+     *            SQLData you want to insert or update
      */
-    public void setData( String key, SQLData data ) {
-        if ( this.rowExists( key ) ) {
-            this.createRow( key, data );
+    public void setData(SQLData data ) {
+        if ( this.rowExists( data.getUuid().toString() ) ) {
+            this.createRow(data);
         } else {
-            this.updateRow( key, data );
+            this.updateRow(data );
         }
     }
     
@@ -90,29 +105,25 @@ public class SQLTable {
     
     /**
      * Create a new row, this will only happen if the row key doesn't exist yet.
-     * 
-     * @param key
+     *
      * @param data
      */
-    public void createRow( String key, SQLData data ) {
+    public void createRow(SQLData data ) {
         int rowsChanged = GameAPI.getSQLManager().executeUpdate( "INSERT INTO " + this.name + " " + data.getValuesString() + ";" );//create new row with data
         if ( rowsChanged >= 0 ) {
-            GameAPI.printConsole( "Created row " + key + " in table " + this.name + " successfully." );
+            GameAPI.printConsole( "Created row " + data.getUuid().toString() + " in table " + this.name + " successfully." );
         } else {
-            GameAPI.printConsole( "Attempt to create row " + key + " in table " + this.name + " failed." );
+            GameAPI.printConsole( "Attempt to create row " + data.getUuid().toString() + " in table " + this.name + " failed." );
         }
         //TODO: Add error reporting
     }
     
     /**
      * Update an already existing row
-     * 
-     * @param key
-     *            Row you want to update.
      * @param data
      *            SQLData you want to update
      */
-    public void updateRow( String key, SQLData data ) {
+    public void updateRow(SQLData data ) {
         StringBuilder query = new StringBuilder( "UPDATE " + this.name + " SET " );
         for ( String dataKey : data.getData().keySet() ) {
             query.append( dataKey );
@@ -120,11 +131,11 @@ public class SQLTable {
             query.append( data.getData().get( dataKey ).toString() );
             query.append( "' " );
         }
-        query.append( "WHERE " + SQLTable.KEY + "=" + "'" + key + "'" );
+        query.append( "WHERE " + KEY + "=" + "'" + data.getUuid() + "'" );
         
         GameAPI.getSQLManager().executeUpdate( query.toString() );//update row with data
         
-        GameAPI.printConsole( "Updated row " + key + " in table " + this.name + " successfully." );
+        GameAPI.printConsole( "Updated row " + data.getUuid() + " in table " + this.name + " successfully." );
         //TODO: Add error reporting
     }
     
@@ -138,7 +149,7 @@ public class SQLTable {
     public boolean rowExists( String key ) {
         try {
             ResultSet rs = GameAPI.getSQLManager().executeQuery(
-                    "SELECT EXISTS(SELECT 1 FROM" + this.name + " WHERE " + SQLTable.KEY + "='" + key + "');" );
+                    "SELECT EXISTS(SELECT 1 FROM" + this.name + " WHERE " + KEY + "='" + key + "');" );
             if ( rs == null ) {
                 return false;
             }

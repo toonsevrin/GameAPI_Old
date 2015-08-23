@@ -8,29 +8,31 @@ import org.bukkit.ChatColor;
 public class FlickerEffect extends IntervalEffect {
     boolean visible = true;
     ChatColor replaceColor;
-    public FlickerEffect(int interval){
-        super(interval);
+
+    public FlickerEffect( int interval ) {
+        super( interval );
     }
-    public FlickerEffect(int interval, ChatColor replaceColor){
-        super(interval);
-        replaceColor = replaceColor;
+
+    public FlickerEffect( int interval, ChatColor replaceColor ) {
+        super( interval );
+        this.replaceColor = replaceColor;
     }
 
     @Override
     public void run() {
         visible = !visible;
-        setText(getDisplayText());
+        setText( getDisplayText() );
     }
 
     @Override
     public String getDisplayText() {
-        if (visible) {
+        if ( visible ) {
             return getText();
         } else {
-            if (replaceColor == null) {
+            if ( replaceColor == null ) {
                 return "";
             } else {
-                return replaceColor + ChatColor.stripColor(getText());
+                return replaceColor + ChatColor.stripColor( getText() );
             }
         }
     }

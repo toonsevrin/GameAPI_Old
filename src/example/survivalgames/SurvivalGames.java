@@ -53,7 +53,6 @@ public class SurvivalGames extends RepeatingMinigame {
         this.getActions().setDieAction( new DieAction.Spectate() ); //This is to avoid having to write basic actions again on each gamemode.
         this.getActions().setJoinAction( new JoinAction.SpectateIngame() ); //This is to avoid having to write basic actions again on each gamemode.
         this.getActions().setQuitAction( new QuitAction.LeaveGame() );
-        this.getActions().setGameEndAction( new GameEndAction.SendToServer( "hub" ) ); //Needs to change
         this.getActions().setGameEndAction( new GameEndAction.SendToServer( "hub" ) ); //This is to avoid having to write basic actions again on each gamemode.
         this.getActions().setHungerAction( new HungerAction.Default() );
         
@@ -136,19 +135,19 @@ public class SurvivalGames extends RepeatingMinigame {
             if ( cause == StopCause.TIME_UP ) { // If the time is up, it means that the game tied.
                 if ( player.isAlive( this ) ) { // Send the players which are still alive a victory reward and message
                     GameMessenger.sendStructured( this, player, "player.onTie.alive" );
-                    player.addHonorPoints( 150 );
+                    player.addCoins( 150 );
                 } else { // Send the losers a message and a smaller reward
                     GameMessenger.sendStructured( this, player, "player.onTie.dead" );
-                    player.addHonorPoints( 50 );
+                    player.addCoins( 50 );
                 }
             }
             if ( cause == StopCause.VICTORY ) {
                 if ( player.isAlive( this ) ) { // Send the victor a big reward and victory message
                     GameMessenger.sendStructured( this, player, "player.onVictory.alive" );
-                    player.addHonorPoints( 250 );
+                    player.addCoins( 250 );
                 } else { // Send the losers a message and a smaller reward
                     GameMessenger.sendStructured( this, player, "player.onVictory.dead" );
-                    player.addHonorPoints( 50 );
+                    player.addCoins( 50 );
                 }
             }
         }

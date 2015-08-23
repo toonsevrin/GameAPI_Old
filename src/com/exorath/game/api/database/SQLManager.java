@@ -1,16 +1,11 @@
 package com.exorath.game.api.database;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.exorath.game.GameAPI;
 import org.bukkit.plugin.Plugin;
 
-import com.exorath.game.GameAPI;
+import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Modified by toon on 31/05/2015. Created by Nick
@@ -22,10 +17,10 @@ public class SQLManager {
     private String user;
     private String password;
     
-    private Map<String, SQLTable> tables = new HashMap<String, SQLTable>();
+    private Map<String, SQLTable> tables = new HashMap<>();
     private Connection connection;
     
-    public SQLManager( String host, int port, String database, String user, String password ) {
+    public SQLManager(String host, int port, String database, String user, String password) {
         try {
             Class.forName( "com.mysql.jdbc.Driver" );
             this.host = host;
@@ -56,11 +51,14 @@ public class SQLManager {
     }
     
     public SQLTable getTable( String pluginName, String tableName ) {
-        String name = pluginName + "__" + tableName;
-        if ( this.tables.containsKey( name ) ) {
-            return this.tables.get( pluginName );
+        return(getTable(pluginName + "_" + tableName));
+
+    }
+    public SQLTable getTable(String name){
+        if ( this.tables.containsKey(name)) {
+            return this.tables.get(name);
         }
-        return this.addTable( name );
+        return this.addTable(name);
     }
     
     /**

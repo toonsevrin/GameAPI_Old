@@ -1,9 +1,5 @@
 package com.exorath.game.api.player;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -11,43 +7,28 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
+import com.exorath.game.GameAPI;
 import com.exorath.game.api.Game;
 import com.exorath.game.api.Properties;
+import com.exorath.game.api.database.SQLData;
 import com.exorath.game.api.menu.Menu;
 import com.exorath.game.lib.Rank;
 
 public final class GamePlayer {
-    
-    private static final List<UUID> PLAYER_CACHE_ADDED = new LinkedList<>();
-    private static final Map<UUID, GamePlayer> PLAYER_CACHE = new HashMap<>( 150 );
-    
-    public static GamePlayer fromUUID( UUID uuid ) {
-        GamePlayer player = GamePlayer.PLAYER_CACHE.get( uuid );
-        if ( player == null ) {
-            player = new GamePlayer( uuid );
-            if ( GamePlayer.PLAYER_CACHE_ADDED.size() == 150 ) {
-                int i = 0;
-                UUID u = null;
-                while ( u == null || Bukkit.getPlayer( u ) != null ) {
-                    u = GamePlayer.PLAYER_CACHE_ADDED.get( i++ );
-                }
-                GamePlayer.PLAYER_CACHE_ADDED.remove( u );
-                GamePlayer.PLAYER_CACHE.remove( u );
-            }
-            GamePlayer.PLAYER_CACHE_ADDED.add( uuid );
-            GamePlayer.PLAYER_CACHE.put( uuid, player );
-        }
-        return player;
-    }
-    
+
     private UUID uuid;
     private Rank rank = Rank.NONE;
-    private int honor = 0, wonHonor = 0, credits = 0;
+    private int coins = 0, credits = 0, wonCoins = 0;
     private Properties properties = new Properties();
     private Menu menu;
+
+    private SQLData sqlData;
+    private SQLData gSqlData;
     
     public GamePlayer( UUID id ) {
         this.uuid = id;
+        sqlData = new SQLData(GameAPI.getHostPlugin(), "players", id, false);
+        gSqlData = new SQLData(GameAPI.getInstance(), "players", id, false);
     }
     
     public GamePlayer( Player player ) {
@@ -87,53 +68,54 @@ public final class GamePlayer {
     public boolean isAlive( Game game ) {
         return game.getPlayers().getPlayerState( this ) == PlayerState.PLAYING;
     }
-    
+    //** Rank Methods *//
     public Rank getRank() {
-        return this.rank;
+        if(getSqlData().contains("rank"))
+            return Rank.valueOf(getSqlData().getString("rank"));
+        return Rank.NONE;
     }
-    
     public void setRank( Rank rank ) {
-        this.rank = rank;
+        getSqlData().setString("rank", rank.toString());
     }
-    
+
+    //** Currency Methods **//
     public int getCredits() {
-        return this.credits;
+        return gSqlData.getInt("credits",0);
     }
     
     public void addCredits( int credits ) {
-        this.credits += credits;
+        gSqlData.setInt("credits", gSqlData.getInt("credits",0) + credits);
     }
     
     public void removeCredits( int credits ) {
-        this.credits -= credits;
+        gSqlData.setInt("credits", gSqlData.getInt("credits",0) - credits);
     }
     
     public boolean hasCredits( int credits ) {
-        return this.credits >= credits;
+        return gSqlData.getInt("credits",0) >= credits;
     }
-    
-    public int getHonorPoints() {
-        return this.honor;
+
+    public void addCoins( int coins ) {
+        wonCoins += coins;
+        gSqlData.setInt("coins", gSqlData.getInt("coins", 0) + coins);
     }
-    
-    public int getWonHonorPoints() {
-        return this.wonHonor;
+    public void removeCoins( int coins ) {
+        wonCoins -= Math.min( coins, this.coins );
+        gSqlData.setInt("coins", gSqlData.getInt("coins",0) - coins);
+        this.coins -= coins;
     }
-    
-    public void addHonorPoints( int honorPoints ) {
-        this.honor += honorPoints;
-        this.wonHonor += honorPoints;
+    public int getCoins() {
+        return gSqlData.getInt("coins",0);
     }
-    
-    public void removeHonorPoints( int honorPoints ) {
-        this.honor -= honorPoints;
-        this.wonHonor -= honorPoints;
+
+    public int getCoinsWon() {
+        return wonCoins - getCoins();
     }
-    
-    public boolean hasHonorPoints( int honorPoints ) {
-        return this.honor >= honorPoints;
+
+    public boolean hasCoins( int coins ) {
+        return gSqlData.getInt("coins",0) >= coins;
     }
-    
+    //** Messaging Methods *//
     public void sendMessage( String message ) {
         Player p = this.getBukkitPlayer();
         if ( p != null ) {
@@ -147,11 +129,12 @@ public final class GamePlayer {
             p.sendMessage( String.format( format, params ) );
         }
     }
-    
+    //** Player State Methods *//
     public PlayerState getState( Game game ) {
         return game.getPlayers().getPlayerState( this );
     }
-    
+
+    //** Menu Methods *//
     public boolean openMenu( Menu menu ) {
         this.menu = menu;
         Player p = this.getBukkitPlayer();
@@ -163,7 +146,6 @@ public final class GamePlayer {
         }
         return false;
     }
-    
     public boolean closeMenu() {
         Player p = this.getBukkitPlayer();
         if ( p != null ) {
@@ -179,9 +161,16 @@ public final class GamePlayer {
         }
         return true;
     }
-    
     public Menu getCurrentMenu() {
         return this.menu;
+    }
+
+    //** SQLData Methods**//
+    public SQLData getSqlData(){
+        return sqlData;
+    }
+    public SQLData getApiSqlData(){
+        return gSqlData;
     }
     
 }
