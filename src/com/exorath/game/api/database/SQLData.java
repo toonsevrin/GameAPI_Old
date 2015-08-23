@@ -12,7 +12,7 @@ import java.util.UUID;
 /**
  * Created by TOON on 8/16/2015.
  */
-public class Data {
+public class SQLData {
     private static final Class[] allowedTypes = new Class[]{String.class, Integer.class, Float.class, Double.class, Long.class, Date.class};
     private UUID uuid;
     private String tableName;
@@ -20,7 +20,7 @@ public class Data {
     private HashMap<String, Object> data = new HashMap<>();
     private boolean loaded = false;
 
-    public Data(Plugin host, String tableName, UUID uuid, boolean sync) {
+    public SQLData(Plugin host, String tableName, UUID uuid, boolean sync) {
         this.uuid = uuid;
         tableName = host.getName() + "_" + tableName; //eg. GolemWarfare_Players
 
@@ -84,7 +84,7 @@ public class Data {
     //** Setters **//
     public void setString(String key, String value) {
         if (key == null) {
-            GameAPI.error("Data: tried to set key with null value");
+            GameAPI.error("SQLData: tried to set key with null value");
             return;
         }
         data.put(key, value);
@@ -92,7 +92,7 @@ public class Data {
 
     public void setInt(String key, int value) {
         if (key == null) {
-            GameAPI.error("Data: tried to set key with null value");
+            GameAPI.error("SQLData: tried to set key with null value");
             return;
         }
         data.put(key, value);
@@ -100,7 +100,7 @@ public class Data {
 
     public void setFloat(String key, float value) {
         if (key == null) {
-            GameAPI.error("Data: tried to set key with null value");
+            GameAPI.error("SQLData: tried to set key with null value");
             return;
         }
         data.put(key, value);
@@ -108,7 +108,7 @@ public class Data {
 
     public void setDouble(String key, double value) {
         if (key == null) {
-            GameAPI.error("Data: tried to set key with null value");
+            GameAPI.error("SQLData: tried to set key with null value");
             return;
         }
         data.put(key, value);
@@ -116,7 +116,7 @@ public class Data {
 
     public void setLong(String key, long value) {
         if (key == null) {
-            GameAPI.error("Data: tried to set key with null value");
+            GameAPI.error("SQLData: tried to set key with null value");
             return;
         }
         data.put(key, value);
@@ -124,7 +124,7 @@ public class Data {
 
     public void setDate(String key, Date value) {
         if (key == null) {
-            GameAPI.error("Data: tried to set key with null value");
+            GameAPI.error("SQLData: tried to set key with null value");
             return;
         }
         data.put(key, value);
@@ -132,13 +132,13 @@ public class Data {
 
     protected void setData(String key, Object value){
         if (key == null) {
-            GameAPI.error("Data: tried to set key with null value");
+            GameAPI.error("SQLData: tried to set key with null value");
             return;
         }
         data.put(key, value);
     }
-    //** Getters **//
 
+    //** Getters **//
     /**
      * @return null if key is not found, otherwise the saved value
      */
@@ -150,7 +150,17 @@ public class Data {
             return null;
         return (String) value;
     }
-
+    /**
+     * @return def if key is not found, otherwise the saved value
+     */
+    public String getString(String key, String def) {
+        if (!data.containsKey(key))
+            return def;
+        Object value = data.get(key);
+        if (!(value instanceof String))
+            return def;
+        return (String) value;
+    }
     /**
      * @return null if key is not found, otherwise the saved value
      */
@@ -162,7 +172,17 @@ public class Data {
             return null;
         return (Integer) value;
     }
-
+    /**
+     * @return def if key is not found, otherwise the saved value
+     */
+    public int getInt(String key, int def) {
+        if (!data.containsKey(key))
+            return def;
+        Object value = data.get(key);
+        if (!(value instanceof Integer))
+            return def;
+        return (int) value;
+    }
     /**
      * @return null if key is not found, otherwise the saved value
      */
@@ -173,6 +193,17 @@ public class Data {
         if (!(value instanceof Float))
             return null;
         return (Float) value;
+    }
+    /**
+     * @return def if key is not found, otherwise the saved value
+     */
+    public float getFloat(String key, float def) {
+        if (!data.containsKey(key))
+            return def;
+        Object value = data.get(key);
+        if (!(value instanceof Float))
+            return def;
+        return (float) value;
     }
 
     /**
@@ -186,7 +217,17 @@ public class Data {
             return null;
         return (Double) value;
     }
-
+    /**
+     * @return def if key is not found, otherwise the saved value
+     */
+    public double getDouble(String key, double def) {
+        if (!data.containsKey(key))
+            return def;
+        Object value = data.get(key);
+        if (!(value instanceof Double))
+            return def;
+        return (double) value;
+    }
     /**
      * @return null if key is not found, otherwise the saved value
      */
@@ -198,7 +239,17 @@ public class Data {
             return null;
         return (Long) value;
     }
-
+    /**
+     * @return def if key is not found, otherwise the saved value
+     */
+    public long getLong(String key, long def) {
+        if (!data.containsKey(key))
+            return def;
+        Object value = data.get(key);
+        if (!(value instanceof Long))
+            return def;
+        return (long) value;
+    }
     /**
      * @return null if key is not found, otherwise the saved value
      */
@@ -210,7 +261,17 @@ public class Data {
             return null;
         return (Date) value;
     }
-
+    /**
+     * @return def if key is not found, otherwise the saved value
+     */
+    public Date getDate(String key, Date def) {
+        if (!data.containsKey(key))
+            return def;
+        Object value = data.get(key);
+        if (!(value instanceof Date))
+            return def;
+        return (Date) value;
+    }
 
     public boolean contains(String key){
         if(key == null)
@@ -238,7 +299,7 @@ public class Data {
             if(!table.rowExists(uuid.toString()))
                 return;
             //Load all cells
-            if(table.load(Data.this))
+            if(table.load(SQLData.this))
                 setLoaded();
         }
 
@@ -262,7 +323,7 @@ public class Data {
             SQLTable table = GameAPI.getSQLManager().getTable(tableName);
 
             if(table.rowExists(uuid.toString())) {//Update row
-                table.updateRow(Data.this);
+                table.updateRow(SQLData.this);
             } else{//create row
                 //Create not existing columns
                 for(String key : data.keySet()){
@@ -270,7 +331,7 @@ public class Data {
                         continue;
                     addColumn(table, key, data.get(key));
                 }
-                table.createRow(Data.this);
+                table.createRow(SQLData.this);
             }
         }
         private void addColumn(SQLTable table, String key, Object value){

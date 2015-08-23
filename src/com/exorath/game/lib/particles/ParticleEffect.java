@@ -863,7 +863,7 @@ public enum ParticleEffect {
      * within a certain range in the world of @param center
      * 
      * @param data
-     *            Data of the effect
+     *            SQLData of the effect
      * @param offsetX
      *            Maximum distance particles can fly away from the center on the x-axis
      * @param offsetY
@@ -905,7 +905,7 @@ public enum ParticleEffect {
      * specified players
      * 
      * @param data
-     *            Data of the effect
+     *            SQLData of the effect
      * @param offsetX
      *            Maximum distance particles can fly away from the center on the x-axis
      * @param offsetY
@@ -948,7 +948,7 @@ public enum ParticleEffect {
      * specified players
      * 
      * @param data
-     *            Data of the effect
+     *            SQLData of the effect
      * @param offsetX
      *            Maximum distance particles can fly away from the center on the x-axis
      * @param offsetY
@@ -981,7 +981,7 @@ public enum ParticleEffect {
      * center
      * 
      * @param data
-     *            Data of the effect
+     *            SQLData of the effect
      * @param direction
      *            Direction of the particle
      * @param speed
@@ -1017,7 +1017,7 @@ public enum ParticleEffect {
      * direction and is only visible for the specified players
      * 
      * @param data
-     *            Data of the effect
+     *            SQLData of the effect
      * @param direction
      *            Direction of the particle
      * @param speed
@@ -1053,7 +1053,7 @@ public enum ParticleEffect {
      * direction and is only visible for the specified players
      * 
      * @param data
-     *            Data of the effect
+     *            SQLData of the effect
      * @param direction
      *            Direction of the particle
      * @param speed
@@ -1121,7 +1121,7 @@ public enum ParticleEffect {
          * @param material
          *            Material of the item/block
          * @param data
-         *            Data value of the item/block
+         *            SQLData value of the item/block
          */
         @SuppressWarnings( "deprecation" )
         public ParticleData( Material material, byte data ) {
@@ -1182,7 +1182,7 @@ public enum ParticleEffect {
          * @param material
          *            Material of the item
          * @param data
-         *            Data value of the item
+         *            SQLData value of the item
          * @see ParticleData#ParticleData(Material, byte)
          */
         public ItemData( Material material, byte data ) {
@@ -1206,7 +1206,7 @@ public enum ParticleEffect {
          * @param material
          *            Material of the block
          * @param data
-         *            Data value of the block
+         *            SQLData value of the block
          * @throws IllegalArgumentException
          *             If the material is not a block
          * @see ParticleData#ParticleData(Material, byte)
@@ -1535,7 +1535,7 @@ public enum ParticleEffect {
          * @param longDistance
          *            Indicates whether the maximum distance is increased from 256 to 65536
          * @param data
-         *            Data of the effect
+         *            SQLData of the effect
          * @throws IllegalArgumentException
          *             If the speed or amount is lower than 0
          * @see #initialize()
@@ -1571,7 +1571,7 @@ public enum ParticleEffect {
          * @param longDistance
          *            Indicates whether the maximum distance is increased from 256 to 65536
          * @param data
-         *            Data of the effect
+         *            SQLData of the effect
          * @throws IllegalArgumentException
          *             If the speed is lower than 0
          */
