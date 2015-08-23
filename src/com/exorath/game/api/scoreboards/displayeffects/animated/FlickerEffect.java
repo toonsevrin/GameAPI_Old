@@ -22,9 +22,9 @@ public class FlickerEffect extends CountdownEffect {
     public void updateText(){
         String content = getLine().getContent().replace("§l","");
         if(bold){
-            getLine().setDisplayContent(ChatColor.BOLD + getLine().getContent());
+            getLine().setDisplayContent(ChatColor.BOLD + content);
         }else{
-            getLine().setDisplayContent(getLine().getContent());
+            getLine().setDisplayContent(content);
         }
     }
 }
