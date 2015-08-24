@@ -2,6 +2,7 @@ package com.exorath.game.api.voting;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
 
@@ -14,11 +15,11 @@ import com.google.common.collect.Maps;
 public class VoteSession {
 
     String title;
-    List<String> options;
+    List<VoteOption> options;
     Map<String, Vote> votes = Maps.newHashMap();// values are indices in options list.
     boolean revoteAllowed = false, open = false;
 
-    public VoteSession( String title, List<String> options ) {
+    public VoteSession( String title, List<VoteOption> options ) {
         this.title = title;
         this.options = options;
     }
@@ -27,7 +28,7 @@ public class VoteSession {
         return title;
     }
 
-    public List<String> getOptions() {
+    public List<VoteOption> getOptions() {
         return options;
     }
 
@@ -37,15 +38,6 @@ public class VoteSession {
 
     public void setRevoteAllowed( boolean allowed ) {
         this.revoteAllowed = allowed;
-    }
-
-    public void open() {
-        this.open = true;
-        votes.clear();
-    }
-
-    public void close() {
-        this.open = false;
     }
 
     public Vote getVote( GamePlayer player ) {
@@ -76,6 +68,31 @@ public class VoteSession {
         for ( int i = 0; i < options.size(); i++ ) {
             player.sendMessage( ChatColor.YELLOW + "" + ( i + 1 ) + ". " + options.get( i ) );
         }
+    }
+
+    public void open() {
+        this.open = true;
+        votes.clear();
+    }
+
+    public void close() {
+        this.open = false;
+    }
+
+    public VoteOption getWinner() {
+        if ( open ) {
+            return null;
+        }
+        Map<Integer, Integer> numVotes = Maps.newHashMap();
+        votes.entrySet().forEach( e -> numVotes.put( e.getValue().option, numVotes.getOrDefault( e.getValue().option, 0 ) + 1 ) );
+
+        int winner = -1;
+        for ( Entry<Integer, Integer> entry : numVotes.entrySet() ) {
+            if ( winner == -1 || entry.getValue() > numVotes.get( winner ) ) {
+                winner = entry.getKey();
+            }
+        }
+        return options.get( winner );
     }
 
 }
