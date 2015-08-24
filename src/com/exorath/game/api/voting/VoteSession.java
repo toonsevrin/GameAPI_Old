@@ -84,7 +84,7 @@ public class VoteSession {
             return null;
         }
         Map<Integer, Integer> numVotes = Maps.newHashMap();
-        votes.entrySet().forEach( e -> numVotes.put( e.getValue().option, numVotes.getOrDefault( e.getValue().option, 0 ) + 1 ) );
+        votes.entrySet().forEach( e -> numVotes.put( e.getValue().option, numVotes.getOrDefault( e.getValue().option, 0 ) + e.getValue().weight ) );
 
         int winner = -1;
         for ( Entry<Integer, Integer> entry : numVotes.entrySet() ) {
