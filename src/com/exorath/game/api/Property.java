@@ -12,8 +12,7 @@ public class Property {
     }
 
     public static Property get(String name, String desc, Object def, boolean strict) {
-        return name != null && Property.properties.containsKey(name.toLowerCase()) ? Property.properties.get(name.toLowerCase()) : new Property(
-                name, desc, def, strict);
+        return name != null && Property.properties.containsKey(name.toLowerCase()) ? Property.properties.get(name.toLowerCase()) : new Property(name, desc, def, strict);
     }
 
     private final String name, desc;

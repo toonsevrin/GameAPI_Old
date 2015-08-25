@@ -55,10 +55,8 @@ public abstract class Game {
 
     private UUID gameID;
 
-    public Game(Plugin host) {
+    public Game() {
         GameAPI.getInstance().setGame(this);
-
-        this.host = host;
         gameID = UUID.randomUUID();
 
         addManager(new TeamManager(this));
@@ -67,6 +65,9 @@ public abstract class Game {
     }
 
     /* Plugin Host */
+    protected void setHost(GamePlugin host){
+        this.host = host;
+    }
     public Plugin getHost() {
         return host;
     }
