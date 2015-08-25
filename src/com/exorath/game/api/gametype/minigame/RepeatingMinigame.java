@@ -6,7 +6,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.exorath.game.GameAPI;
-import com.exorath.game.api.GameState;
+import com.exorath.game.api.gamestates.GameState;
 import com.exorath.game.api.Property;
 
 /**

@@ -10,10 +10,11 @@ import java.util.HashMap;
 import java.util.UUID;
 
 /**
- * Created by TOON on 8/16/2015.
+ * Created by Toon Sevrin on 8/16/2015.
  */
 public class SQLData {
     private static final Class[] allowedTypes = new Class[]{String.class, Integer.class, Float.class, Double.class, Long.class, Date.class};
+
     private UUID uuid;
     private String tableName;
 
@@ -43,7 +44,6 @@ public class SQLData {
     public void reload(boolean sync) {
         boolean loaded = false;
         data.clear();
-
         load(sync);
     }
 
@@ -61,7 +61,6 @@ public class SQLData {
      * Get a string with keys and values formatted like this:
      * KEY1,KEY2,KEY3...='VALUE1','VALUE2','VALUE3'
      * TODO: Remove apostrophes if not a string.
-     *
      * @return A string with keys and values, formatted for insert
      */
     public String getValuesString() {

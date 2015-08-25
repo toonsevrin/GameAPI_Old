@@ -104,23 +104,16 @@ public interface GameListener {
     
     /**
      * Called when an {@link EntityDamageEvent} is called.
-     * 
-     * @param event
-     *            The handled event.
-     * @param player
-     *            The player being damaged (or null if it isn't a player).
+     * @param event The handled event.
+     * @param player The player being damaged (or null if it isn't a player).
      */
     public default void onEntityDamage( EntityDamageEvent event, Game game, GamePlayer player ) {}
     
     /**
      * Called when an {@link EntityDamageByEntityEvent} is called.
-     * 
-     * @param event
-     *            The handled event.
-     * @param attacker
-     *            The player attacking (or null if it isn't a player).
-     * @param defender
-     *            The player defending (or null if it isn't a player).
+     * @param event The handled event.
+     * @param attacker The player attacking (or null if it isn't a player).
+     * @param defender The player defending (or null if it isn't a player).
      */
     public default void onEntityDamageByEntity( EntityDamageByEntityEvent event, Game game, GamePlayer attacker, GamePlayer defender ) {}
     

@@ -32,8 +32,6 @@ public abstract class HUDLocation implements Runnable{
     protected int getNewSequence(){
         if(currentSequence == Integer.MAX_VALUE)
             currentSequence = Integer.MIN_VALUE;
-
-        currentSequence++;
-        return currentSequence;
+        return currentSequence++;
     }
 }

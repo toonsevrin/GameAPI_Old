@@ -29,7 +29,7 @@ public class Team {
     private Set<GamePlayer> players = new HashSet<>();
     private Set<GamePlayer> activePlayers = new HashSet<>();
 
-    private final Set<GameListener> listeners = Sets.newHashSet();
+    private final Set<GameListener> listeners = new HashSet<>();
 
     public Team() {
         //TODO: This should be set with the map system
@@ -78,7 +78,7 @@ public class Team {
     public void removePlayer(GamePlayer player) {
         if (players.contains(player))
             players.remove(player);
-        if(activePlayers.contains(player))
+        if (activePlayers.contains(player))
             activePlayers.remove(player);
     }
 
@@ -91,7 +91,7 @@ public class Team {
             GamePlayer player = it.next();
             if (!player.isOnline()) {
                 it.remove();
-                if(activePlayers.contains(player))
+                if (activePlayers.contains(player))
                     activePlayers.remove(player);
             }
         }
@@ -137,8 +137,8 @@ public class Team {
         return this.properties.as(TeamProperty.FRIENDLY_FIRE, boolean.class);
     }
 
-    public void setFriendlyFire(boolean ff) {
-        this.properties.set(TeamProperty.FRIENDLY_FIRE, ff);
+    public void setFriendlyFire(boolean friendlyFire) {
+        this.properties.set(TeamProperty.FRIENDLY_FIRE, friendlyFire);
     }
 
     public void addSpawnPoint(Location spawn) {
@@ -146,9 +146,8 @@ public class Team {
     }
 
     public void removeSpawnPoint(Location spawn) {
-        if (!this.getSpawns().contains(spawn)) {
+        if (!this.getSpawns().contains(spawn))
             return;
-        }
         this.getSpawns().remove(spawn);
     }
 
@@ -158,9 +157,8 @@ public class Team {
     }
 
     protected void addListener(GameListener listener) {
-        if (listener != null) {
-            this.listeners.add(listener);
-        }
+        if (listener != null)
+            listeners.add(listener);
     }
 
 }

@@ -1,19 +1,21 @@
 package com.exorath.game.api.hud;
 
 import com.exorath.game.GameAPI;
+import com.exorath.game.api.Manager;
 import com.exorath.game.lib.hud.bossBar.BossBarAPI;
 import org.bukkit.Bukkit;
 
 /**
- * Created by TOON on 8/11/2015.
+ * Created by Toon Sevrin on 8/11/2015.
  */
-public class HUDManager {
-    public static final HUDManager INSTANCE = new HUDManager();//Lol this will crash the plugin and I know it. - Toon
-
+public class HUDManager implements Manager {
+    public static HUDManager instance;
     private BossBarAPI bossBarAPI;
+
     public HUDManager(){
+        instance = this;
+
         bossBarAPI = new BossBarAPI();
         Bukkit.getServer().getPluginManager().registerEvents(bossBarAPI, GameAPI.getInstance());
-
     }
 }

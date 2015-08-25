@@ -8,6 +8,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 
 /**
+ * The GameEndAction is ran when the game ends, this is to add base behaviour to this event
  * @author Nick Robson
  */
 public abstract class GameEndAction {
@@ -15,17 +16,15 @@ public abstract class GameEndAction {
     public abstract void end();
     
     public static class SendToServer extends GameEndAction {
-        
         private String server;
-        
+
         public SendToServer( String server ) {
             this.server = server;
         }
         
         @Override
         public void end() {
-            GameAPI.sendPlayersToServer(this.server, Bukkit.getOnlinePlayers());
-
+            GameAPI.sendPlayersToServer(server, Bukkit.getOnlinePlayers());
         }
     }
     

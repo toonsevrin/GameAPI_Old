@@ -4,7 +4,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 import com.exorath.game.api.Game;
 import com.exorath.game.api.GameListener;
-import com.exorath.game.api.GameState;
+import com.exorath.game.api.gamestates.GameState;
 import com.exorath.game.api.events.GamePlayerKillPlayerEvent;
 import com.exorath.game.api.events.GameStateChangedEvent;
 import com.exorath.game.api.message.GameMessenger;

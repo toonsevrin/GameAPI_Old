@@ -13,7 +13,7 @@ import java.util.PriorityQueue;
 public abstract class HUDDisplay extends HUDLocation{
     private int maxChars;
     private HUDText currentText;
-    private PriorityQueue<HUDText> texts = new PriorityQueue<HUDText>();
+    private PriorityQueue<HUDText> texts = new PriorityQueue<>();
     public HUDDisplay(GamePlayer player, int maxChars){
         super(player);
         this.maxChars = maxChars;
@@ -45,7 +45,7 @@ public abstract class HUDDisplay extends HUDLocation{
     }
 
     /**
-     * Removes
+     * Removes texts from the display queue/display
      * @param text HUDText to remove from queue (and from displaying)
      */
     public void removeText(HUDText text){

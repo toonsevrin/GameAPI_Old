@@ -28,147 +28,153 @@ public final class GamePlayer {
 
     private SQLData sqlData;
     private SQLData gSqlData;
-    
-    public GamePlayer( UUID id ) {
+
+    public GamePlayer(UUID id) {
         this.uuid = id;
-        sqlData = new SQLData(GameAPI.getHostPlugin(), "players", id, false);
+        sqlData = new SQLData(GameAPI.getHost(), "players", id, false);
         gSqlData = new SQLData(GameAPI.getInstance(), "players", id, false);
     }
-    
-    public GamePlayer( Player player ) {
-        this( player.getUniqueId() );
+
+    public GamePlayer(Player player) {
+        this(player.getUniqueId());
     }
-    
+
     public Properties getProperties() {
         return this.properties;
     }
-    
-    protected void setProperties( Properties properties ) {
+
+    protected void setProperties(Properties properties) {
         this.properties = properties;
     }
-    
+
     public UUID getUUID() {
         return this.uuid;
     }
-    
+
     public OfflinePlayer getOfflinePlayer() {
-        Player p = Bukkit.getPlayer( this.uuid );
-        return p != null ? p : Bukkit.getOfflinePlayer( this.uuid );
+        Player p = Bukkit.getPlayer(this.uuid);
+        return p != null ? p : Bukkit.getOfflinePlayer(this.uuid);
     }
-    
+
     public boolean isOnline() {
         OfflinePlayer offline = this.getOfflinePlayer();
         return offline == null ? false : offline.isOnline();
     }
-    
+
     public Player getBukkitPlayer() {
         OfflinePlayer player = this.getOfflinePlayer();
-        if ( player != null && player.isOnline() ) {
+        if (player != null && player.isOnline())
             return player.getPlayer();
-        }
         return null;
     }
-    
-    public boolean isAlive( Game game ) {
-        return game.getPlayers().getPlayerState( this ) == PlayerState.PLAYING;
+
+    public boolean isAlive(Game game) {
+        return game.getPlayers().getPlayerState(this) == PlayerState.PLAYING;
     }
+
     //** Rank Methods *//
     public Rank getRank() {
-        if(getSqlData().contains("rank"))
+        if (getSqlData().contains("rank"))
             return Rank.valueOf(getSqlData().getString("rank"));
         return Rank.NONE;
     }
-    public void setRank( Rank rank ) {
+
+    public void setRank(Rank rank) {
         getSqlData().setString("rank", rank.toString());
     }
 
     //** Currency Methods **//
     public int getCredits() {
-        return gSqlData.getInt("credits",0);
-    }
-    
-    public void addCredits( int credits ) {
-        gSqlData.setInt("credits", gSqlData.getInt("credits",0) + credits);
-    }
-    
-    public void removeCredits( int credits ) {
-        gSqlData.setInt("credits", gSqlData.getInt("credits",0) - credits);
-    }
-    
-    public boolean hasCredits( int credits ) {
-        return gSqlData.getInt("credits",0) >= credits;
+        return gSqlData.getInt("credits", 0);
     }
 
-    public void addCoins( int coins ) {
+    public void addCredits(int credits) {
+        gSqlData.setInt("credits", gSqlData.getInt("credits", 0) + credits);
+    }
+
+    public void removeCredits(int credits) {
+        gSqlData.setInt("credits", gSqlData.getInt("credits", 0) - credits);
+    }
+
+    public boolean hasCredits(int credits) {
+        return gSqlData.getInt("credits", 0) >= credits;
+    }
+
+    public void addCoins(int coins) {
         gSqlData.setInt("coins", gSqlData.getInt("coins", 0) + coins);
     }
-    public void removeCoins( int coins ) {
-        gSqlData.setInt("coins", gSqlData.getInt("coins",0) - coins);
+
+    public void removeCoins(int coins) {
+        gSqlData.setInt("coins", gSqlData.getInt("coins", 0) - coins);
         this.coins -= coins;
     }
+
     public int getCoins() {
-        return gSqlData.getInt("coins",0);
+        return gSqlData.getInt("coins", 0);
     }
 
-    public boolean hasCoins( int coins ) {
-        return gSqlData.getInt("coins",0) >= coins;
+    public boolean hasCoins(int coins) {
+        return gSqlData.getInt("coins", 0) >= coins;
     }
+
     //** Messaging Methods *//
-    public void sendMessage( String message ) {
+    public void sendMessage(String message) {
         Player p = this.getBukkitPlayer();
-        if ( p != null ) {
-            p.sendMessage( message );
-        }
+        if (p != null)
+            p.sendMessage(message);
     }
-    
-    public void sendMessage( String format, Object... params ) {
+
+    public void sendMessage(String format, Object... params) {
         Player p = this.getBukkitPlayer();
-        if ( p != null ) {
-            p.sendMessage( String.format( format, params ) );
-        }
+        if (p != null)
+            p.sendMessage(String.format(format, params));
     }
+
     //** Player State Methods *//
-    public PlayerState getState( Game game ) {
-        return game.getPlayers().getPlayerState( this );
+    public PlayerState getState(Game game) {
+        return game.getPlayers().getPlayerState(this);
     }
 
     //** Menu Methods *//
-    public boolean openMenu( Menu menu ) {
+    public boolean openMenu(Menu menu) {
         this.menu = menu;
         Player p = this.getBukkitPlayer();
-        if ( p != null && p.getOpenInventory() == null ) { //  we don't want to aggressively open a menu if they shouldn't be opening...
-            Inventory inv = Bukkit.createInventory( null, menu.getSize() );
-            menu.dump( inv );
-            p.openInventory( inv );
+        if (p != null && p.getOpenInventory() == null) { //  we don't want to aggressively open a menu if they shouldn't be opening...
+            Inventory inv = Bukkit.createInventory(null, menu.getSize());
+            menu.dump(inv);
+            p.openInventory(inv);
             return true;
         }
         return false;
     }
+
     public boolean closeMenu() {
         Player p = this.getBukkitPlayer();
-        if ( p != null ) {
-            if ( this.menu != null ) {
+        if (p != null) {
+            if (this.menu != null) {
                 p.closeInventory();
             } else {
                 return false;
             }
         }
         this.menu = null;
-        if ( p == null ) {
+        if (p == null) {
             return false;
         }
         return true;
     }
+
     public Menu getCurrentMenu() {
         return this.menu;
     }
 
     //** SQLData Methods**//
-    public SQLData getSqlData(){
+    public SQLData getSqlData() {
         return sqlData;
     }
-    public SQLData getApiSqlData(){
+
+    public SQLData getApiSqlData() {
         return gSqlData;
     }
-    
+
 }

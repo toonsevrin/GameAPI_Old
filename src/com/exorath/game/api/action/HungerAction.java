@@ -5,6 +5,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 /**
+ * This action adds base behaviour to the hunger events
  * @author Nick Robson
  */
 public interface HungerAction {

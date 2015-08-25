@@ -3,24 +3,24 @@ package com.exorath.game.api;
 import com.exorath.game.GameAPI;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.UUID;
-
 /**
- * Created by TOON on 8/23/2015.
+ * Created by Toon Sevrin on 8/23/2015.
+ * Runnable that will not run if the game that was currently running has stopped
  */
 public abstract class GameRunnable extends BukkitRunnable {
-    private UUID currentUuid;
+    private String currentUuid;
     public GameRunnable(){
-        currentUuid = GameAPI.getInstance().getGame().getUUID();//TODO: Set this to currentGame
+        currentUuid = GameAPI.getInstance().getGame().getGameID().toString();
     }
     private boolean isRunnable() {
-        //if(currentUuid != GameAPI.getInstance().getGame().getUUID())
-        //  return false
+        if(!currentUuid.toString().equals( GameAPI.getInstance().getGame().getGameID().toString()))
+            return false;
         return true;
     }
     @Override
     public void run(){
-        if(!isRunnable()) return;
+        if(!isRunnable())
+            return;
         runThisGame();
     }
     public abstract void runThisGame();

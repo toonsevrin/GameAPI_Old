@@ -29,15 +29,15 @@ public class GameAPI extends JavaPlugin {
     
     private static SQLManager sqlManager;
 
-        private static Plugin host; //TODO: add this
+    private static Game game;
     
     private FileConfiguration versionsConfig;
 
     /**
      * This method should register the game plugin in the gameAPI
      */
-    public void register(Plugin plugin){
-        host = plugin;
+    public void setGame(Game game){
+        this.game = game;
     }
     @Override
     public void onEnable() {
@@ -152,10 +152,13 @@ public class GameAPI extends JavaPlugin {
     public File getDataFolder( Game game ) {
         return new File( this.getDataFolder(), game.getName().toLowerCase().replaceAll( " ", "_" ) );
     }
-    public static Plugin getHostPlugin(){
-        if(host == null)
+    public Game getGame(){
+        return game;
+    }
+    public static Plugin getHost(){
+        if(game == null)
             throw new NullPointerException("Host plugin not loaded, every API needs a host!");
-        return host;
+        return game.getHost();
     }
     
 }
