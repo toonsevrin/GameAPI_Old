@@ -1,4 +1,4 @@
-package com.exorath.game.api.kit;
+package com.exorath.game.api.gametype.minigame.kit;
 
 import java.util.Map;
 
@@ -14,7 +14,7 @@ public class ItemKit extends Kit {
     
     private Map<Integer, ItemStack> items = Maps.newHashMap();
     private ItemStack helmet;
-    private ItemStack chestplate;
+    private ItemStack chestPlate;
     private ItemStack leggings;
     private ItemStack boots;
     
@@ -32,8 +32,8 @@ public class ItemKit extends Kit {
         this.helmet = helmet;
     }
     
-    public void setChestplate( ItemStack chestplate ) {
-        this.chestplate = chestplate;
+    public void setChestPlate( ItemStack chestPlate ) {
+        this.chestPlate = chestPlate;
     }
     
     public void setLeggings( ItemStack leggings ) {
@@ -45,7 +45,7 @@ public class ItemKit extends Kit {
     }
     
     public ItemStack[] getArmor() {
-        return new ItemStack[] { this.helmet, this.chestplate, this.leggings, this.boots };
+        return new ItemStack[] { this.helmet, this.chestPlate, this.leggings, this.boots };
     }
     
     @Override
@@ -57,7 +57,7 @@ public class ItemKit extends Kit {
     public Map<Integer, ItemStack> getArmour() {
         Map<Integer, ItemStack> armour = Maps.newHashMap();
         armour.put( 1, this.helmet );
-        armour.put( 2, this.chestplate );
+        armour.put( 2, this.chestPlate );
         armour.put( 3, this.leggings );
         armour.put( 4, this.boots );
         return armour;

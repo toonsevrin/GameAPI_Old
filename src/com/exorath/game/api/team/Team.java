@@ -20,114 +20,147 @@ import com.google.common.collect.Sets;
  * Base object for a Team.
  */
 public class Team {
-    
+
     protected static final String DEFAULT_NAME = "team";
     protected static final int DEFAULT_MAX_PLAYER_AMOUNT = Bukkit.getServer().getMaxPlayers();
-    
+
     private Properties properties = new Properties();
-    private Set<GamePlayer> players = new HashSet<GamePlayer>();
+
+    private Set<GamePlayer> players = new HashSet<>();
+    private Set<GamePlayer> activePlayers = new HashSet<>();
+
     private final Set<GameListener> listeners = Sets.newHashSet();
-    
+
     public Team() {
-        this.properties.set( TeamProperty.SPAWNS, new ArrayList<Location>() );
+        //TODO: This should be set with the map system
+        this.properties.set(TeamProperty.SPAWNS, new ArrayList<Location>());
     }
-    
+
+    /**
+     * @return a collection of all online players in this team
+     */
     public Set<GamePlayer> getPlayers() {
         return this.players;
     }
-    
-    public void addPlayer( GamePlayer player ) {
-        this.players.add( player );
+
+    /**
+     * @return a collection of all online players in this team which haven't been set inactive
+     */
+    public Set<GamePlayer> getActivePlayers() {
+        return activePlayers;
     }
-    
-    public boolean containsPlayer( GamePlayer player ) {
-        if ( this.players.contains( player ) ) {
-            return true;
-        }
-        return false;
+
+    /**
+     * Adds a player to the team
+     */
+    public void addPlayer(GamePlayer player) {
+        players.add(player);
+        activePlayers.add(player);
     }
-    
-    public void removePlayer( GamePlayer player ) {
-        if ( !this.players.contains( player ) ) {
-            return;
-        }
-        this.players.remove( player );
+
+    /**
+     * @return Checks if the given player is in this team
+     */
+    public boolean containsPlayer(GamePlayer player) {
+        return players.contains(player);
     }
-    
+
+    /**
+     * @return Checks if the given player is in this team and still active
+     */
+    public boolean containsActivePlayer(GamePlayer player) {
+        return players.contains(player);
+    }
+
+    /**
+     * Removes player from this team completely
+     */
+    public void removePlayer(GamePlayer player) {
+        if (players.contains(player))
+            players.remove(player);
+        if(activePlayers.contains(player))
+            activePlayers.remove(player);
+    }
+
+    /**
+     * Removes all offline players from this team
+     */
     public void removeOfflinePlayers() {
         Iterator<GamePlayer> it = this.players.iterator();
-        while ( it.hasNext() ) {
+        while (it.hasNext()) {
             GamePlayer player = it.next();
-            if ( !player.isOnline() ) {
+            if (!player.isOnline()) {
                 it.remove();
+                if(activePlayers.contains(player))
+                    activePlayers.remove(player);
             }
         }
     }
-    
+
     public Properties getProperties() {
         return this.properties;
     }
-    
-    public void setName( String name ) {
-        this.properties.set( TeamProperty.NAME, name );
+
+    public void setName(String name) {
+        this.properties.set(TeamProperty.NAME, name);
     }
-    
+
     public String getName() {
-        return this.properties.as( TeamProperty.NAME, String.class );
+        return this.properties.as(TeamProperty.NAME, String.class);
     }
-    
-    public void setPvpEnabled( boolean enabled ) {
-        this.properties.set( BasePlayerProperty.PVP, enabled );
+
+    public void setPvpEnabled(boolean enabled) {
+        this.properties.set(BasePlayerProperty.PVP, enabled);
     }
-    
+
     public boolean isPvpEnabled() {
-        return this.properties.as( BasePlayerProperty.PVP, boolean.class );
+        return this.properties.as(BasePlayerProperty.PVP, boolean.class);
     }
-    
-    public void setMaxTeamSize( int amount ) {
-        this.properties.set( TeamProperty.MAX_SIZE, amount );
+
+    public void setMaxTeamSize(int amount) {
+        this.properties.set(TeamProperty.MAX_SIZE, amount);
     }
-    
+
     public int getMaxTeamSize() {
-        return this.properties.as( TeamProperty.MAX_SIZE, int.class );
+        return this.properties.as(TeamProperty.MAX_SIZE, int.class);
     }
-    
-    public void setMinTeamSize( int amount ) {
-        this.properties.set( TeamProperty.MIN_SIZE, amount );
+
+    public void setMinTeamSize(int amount) {
+        this.properties.set(TeamProperty.MIN_SIZE, amount);
     }
-    
+
     public int getMinTeamSize() {
-        return this.properties.as( TeamProperty.MIN_SIZE, int.class );
+        return this.properties.as(TeamProperty.MIN_SIZE, int.class);
     }
-    
+
     public boolean isFriendlyFire() {
-        return this.properties.as( TeamProperty.FRIENDLY_FIRE, boolean.class );
+        return this.properties.as(TeamProperty.FRIENDLY_FIRE, boolean.class);
     }
-    
-    public void setFriendlyFire( boolean ff ) {
-        this.properties.set( TeamProperty.FRIENDLY_FIRE, ff );
+
+    public void setFriendlyFire(boolean ff) {
+        this.properties.set(TeamProperty.FRIENDLY_FIRE, ff);
     }
-    
-    public void addSpawnPoint( Location spawn ) {
-        this.getSpawns().add( spawn );
+
+    public void addSpawnPoint(Location spawn) {
+        this.getSpawns().add(spawn);
     }
-    
-    public void removeSpawnPoint( Location spawn ) {
-        if ( !this.getSpawns().contains( spawn ) ) {
+
+    public void removeSpawnPoint(Location spawn) {
+        if (!this.getSpawns().contains(spawn)) {
             return;
         }
-        this.getSpawns().remove( spawn );
+        this.getSpawns().remove(spawn);
     }
-    
-    @SuppressWarnings( "unchecked" )
+
+    @SuppressWarnings("unchecked")
     public List<Location> getSpawns() {
-        return this.properties.as( TeamProperty.SPAWNS, List.class );
+        return this.properties.as(TeamProperty.SPAWNS, List.class);
     }
-    
-    protected void addListener( GameListener listener ) {
-        if ( listener != null ) {
-            this.listeners.add( listener );
+
+    protected void addListener(GameListener listener) {
+        if (listener != null) {
+            this.listeners.add(listener);
         }
     }
-    
+
 }

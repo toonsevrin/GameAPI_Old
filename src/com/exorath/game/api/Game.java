@@ -11,7 +11,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.action.Actions;
 import com.exorath.game.api.events.GameStateChangedEvent;
-import com.exorath.game.api.kit.KitManager;
+import com.exorath.game.api.gametype.minigame.kit.KitManager;
 import com.exorath.game.api.lobby.Lobby;
 import com.exorath.game.api.player.Players;
 import com.exorath.game.api.spectate.SpectateManager;

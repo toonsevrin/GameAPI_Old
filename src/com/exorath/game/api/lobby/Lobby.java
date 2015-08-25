@@ -16,8 +16,8 @@ import com.exorath.game.api.player.GamePlayer;
  * between games).
  */
 public class Lobby {
-    
     public static final String DEFAULT_WORLD_NAME = "Lobby";
+
     private Properties properties = new Properties();
     
     public Lobby() {

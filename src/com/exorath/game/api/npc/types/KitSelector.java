@@ -6,7 +6,7 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import com.exorath.game.api.Game;
-import com.exorath.game.api.kit.Kit;
+import com.exorath.game.api.gametype.minigame.kit.Kit;
 import com.exorath.game.api.menu.EasyMenu;
 import com.exorath.game.api.menu.EasyMenu.EasyMenuItem;
 import com.exorath.game.api.npc.NPCEquipment;

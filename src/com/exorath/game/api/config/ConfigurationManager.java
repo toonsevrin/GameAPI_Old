@@ -16,13 +16,14 @@ import com.exorath.game.GameAPI;
 
 /**
  * @author Nick Robson
+ * Edited by TOON SEVRIN, needs Reviewing by Nick
  */
 public class ConfigurationManager {
     
     public static final ConfigurationManager INSTANCE = new ConfigurationManager();
     
     private ConfigurationManager() {}
-    
+
     public FileConfiguration getResource( Plugin plugin, String resource ) {
         InputStream res = plugin.getResource( resource );
         if ( res == null ) {
@@ -50,19 +51,15 @@ public class ConfigurationManager {
     }
     
     public File getConfigFile( Plugin plugin, String file ) {
-        return new File( GameAPI.getInstance().getDataFolder(), plugin.getName() + "/" + file + ( file.endsWith( ".yml" ) ? "" : ".yml" ) );
+        return new File(plugin.getDataFolder(), file);
     }
     
-    public FileConfiguration getConfig( Plugin plugin, String file ) {
-        return this.getConfig( this.getConfigFile( plugin, file ) );
+    public FileConfiguration getConfig(Plugin plugin, String file) {
+        return getConfig(getConfigFile(plugin, file));
     }
     
-    public FileConfiguration getConfig( File f ) {
-        if ( f.exists() ) {
-            return YamlConfiguration.loadConfiguration( f );
-        } else {
-            return null;
-        }
+    public FileConfiguration getConfig(File f) {
+            return YamlConfiguration.loadConfiguration(f);
     }
     
 }

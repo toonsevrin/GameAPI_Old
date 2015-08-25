@@ -12,7 +12,7 @@ import com.exorath.game.api.action.GameEndAction;
 import com.exorath.game.api.action.HungerAction;
 import com.exorath.game.api.action.JoinAction;
 import com.exorath.game.api.action.QuitAction;
-import com.exorath.game.api.gametype.RepeatingMinigame;
+import com.exorath.game.api.gametype.minigame.RepeatingMinigame;
 import com.exorath.game.api.message.GameMessenger;
 import com.exorath.game.api.npc.types.KitSelector;
 import com.exorath.game.api.npc.types.SpectatorNPC;

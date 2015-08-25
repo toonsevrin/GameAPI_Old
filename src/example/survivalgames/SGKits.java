@@ -8,7 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
-import com.exorath.game.api.kit.Kit;
+import com.exorath.game.api.gametype.minigame.kit.Kit;
 import com.yoshigenius.lib.util.ItemStackBuilder;
 
 /**

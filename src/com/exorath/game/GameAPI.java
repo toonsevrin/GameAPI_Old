@@ -1,8 +1,10 @@
 package com.exorath.game;
 
 import java.io.File;
+import java.util.Collection;
 
 import com.exorath.game.api.database.SQLManager;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -27,10 +29,16 @@ public class GameAPI extends JavaPlugin {
     
     private static SQLManager sqlManager;
 
-    private static Plugin hostPlugin; //Todo add this
+        private static Plugin host; //TODO: add this
     
     private FileConfiguration versionsConfig;
-    
+
+    /**
+     * This method should register the game plugin in the gameAPI
+     */
+    public void register(Plugin plugin){
+        host = plugin;
+    }
     @Override
     public void onEnable() {
         
@@ -110,10 +118,34 @@ public class GameAPI extends JavaPlugin {
             GameUtil.sendPluginMessage( player, "BungeeCord", out.toByteArray() );
         }
     }
-    
     public static void sendPlayerToServer( GamePlayer player, String server ) {
         if ( player != null && player.isOnline() ) {
             GameAPI.sendPlayerToServer( player.getBukkitPlayer(), server );
+        }
+    }
+    public static void sendPlayersToServer(String server, Collection<? extends Player> players){
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF( "Connect" );
+        out.writeUTF( server );
+        byte[] bytes = out.toByteArray();
+        if ( !Bukkit.getMessenger().isOutgoingChannelRegistered( GameAPI.getInstance(), "BungeeCord" ) ) {
+            Bukkit.getMessenger().registerOutgoingPluginChannel( GameAPI.getInstance(), "BungeeCord" );
+        }
+        for ( Player player : players ) {
+            player.sendPluginMessage( GameAPI.getInstance(), "BungeeCord", bytes );
+        }
+    }
+    public static void sendGamePlayersToServer(String server, Collection<? extends GamePlayer> players){
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF( "Connect" );
+        out.writeUTF( server );
+        byte[] bytes = out.toByteArray();
+        if ( !Bukkit.getMessenger().isOutgoingChannelRegistered( GameAPI.getInstance(), "BungeeCord" ) ) {
+            Bukkit.getMessenger().registerOutgoingPluginChannel( GameAPI.getInstance(), "BungeeCord" );
+        }
+        for ( GamePlayer player : players ) {
+            if(player.isOnline())
+            player.getBukkitPlayer().sendPluginMessage( GameAPI.getInstance(), "BungeeCord", bytes );
         }
     }
     
@@ -121,9 +153,9 @@ public class GameAPI extends JavaPlugin {
         return new File( this.getDataFolder(), game.getName().toLowerCase().replaceAll( " ", "_" ) );
     }
     public static Plugin getHostPlugin(){
-        if(hostPlugin == null)
-            error("Host plugin not loaded, every API needs a host!");
-        return hostPlugin;
+        if(host == null)
+            throw new NullPointerException("Host plugin not loaded, every API needs a host!");
+        return host;
     }
     
 }
