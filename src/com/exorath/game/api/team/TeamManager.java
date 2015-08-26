@@ -3,6 +3,8 @@ package com.exorath.game.api.team;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.bukkit.entity.Player;
+
 import com.exorath.game.api.Game;
 import com.exorath.game.api.Manager;
 import com.exorath.game.api.maps.GameMap;
@@ -80,8 +82,12 @@ public class TeamManager implements Manager {
         GameMap map = this.getGame().getManager( MapManager.class ).getCurrent();
         for (Team team : this.teams) {
             int spawn = 0;
-            for (GamePlayer player : team.getPlayers())
-                map.getSpawn( team, spawn++ );
+            for ( GamePlayer player : team.getPlayers() ) {
+                Player pl = player.getBukkitPlayer();
+                if (pl != null) {
+                    pl.teleport(map.getSpawn( team, spawn++ ).getBukkitLocation());
+                }
+            }
         }
     }
 
