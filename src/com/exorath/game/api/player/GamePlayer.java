@@ -154,12 +154,12 @@ public final class GamePlayer {
         if (p != null) {
             if (this.menu != null) {
                 p.closeInventory();
+                this.menu = null;
             } else {
                 return false;
             }
-        }
-        this.menu = null;
-        if (p == null) {
+        } else {
+            this.menu = null;
             return false;
         }
         return true;
