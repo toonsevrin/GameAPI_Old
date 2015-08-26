@@ -1,6 +1,5 @@
 package example.simpleffa;
 
-import com.exorath.game.api.Game;
 import com.exorath.game.api.GamePlugin;
 
 /**

@@ -116,16 +116,16 @@ public class JSONArray implements Iterable<Object> {
                     this.myArrayList.add(x.nextValue());
                 }
                 switch (x.nextClean()) {
-                case ',':
-                    if (x.nextClean() == ']') {
+                    case ',':
+                        if (x.nextClean() == ']') {
+                            return;
+                        }
+                        x.back();
+                        break;
+                    case ']':
                         return;
-                    }
-                    x.back();
-                    break;
-                case ']':
-                    return;
-                default:
-                    throw x.syntaxError("Expected a ',' or ']'");
+                    default:
+                        throw x.syntaxError("Expected a ',' or ']'");
                 }
             }
         }
@@ -216,12 +216,12 @@ public class JSONArray implements Iterable<Object> {
     public boolean getBoolean(int index) throws JSONException {
         Object object = this.get(index);
         if (object.equals(Boolean.FALSE)
-                || (object instanceof String && ((String) object)
-                        .equalsIgnoreCase("false"))) {
+                || object instanceof String && ((String) object)
+                .equalsIgnoreCase("false")) {
             return false;
         } else if (object.equals(Boolean.TRUE)
-                || (object instanceof String && ((String) object)
-                        .equalsIgnoreCase("true"))) {
+                || object instanceof String && ((String) object)
+                .equalsIgnoreCase("true")) {
             return true;
         }
         throw new JSONException("JSONArray[" + index + "] is not a boolean.");
@@ -248,17 +248,17 @@ public class JSONArray implements Iterable<Object> {
     }
 
     /**
-    * Get the enum value associated with an index.
-    * 
-    * @param clazz
-    *            The type of enum to retrieve.
-    * @param index
-    *            The index must be between 0 and length() - 1.
-    * @return The enum value at the index location
-    * @throws JSONException
-    *            if the key is not found or if the value cannot be converted
-    *            to an enum.
-    */
+     * Get the enum value associated with an index.
+     *
+     * @param clazz
+     *            The type of enum to retrieve.
+     * @param index
+     *            The index must be between 0 and length() - 1.
+     * @return The enum value at the index location
+     * @throws JSONException
+     *            if the key is not found or if the value cannot be converted
+     *            to an enum.
+     */
     public <E extends Enum<E>> E getEnum(Class<E> clazz, int index) throws JSONException {
         E val = optEnum(clazz, index);
         if(val==null) {
@@ -266,8 +266,8 @@ public class JSONArray implements Iterable<Object> {
             // If it did, I would re-implement this with the Enum.valueOf
             // method and place any thrown exception in the JSONException
             throw new JSONException("JSONObject[" + JSONObject.quote(Integer.toString(index))
-                    + "] is not an enum of type " + JSONObject.quote(clazz.getSimpleName())
-                    + ".");
+            + "] is not an enum of type " + JSONObject.quote(clazz.getSimpleName())
+            + ".");
         }
         return val;
     }
@@ -456,7 +456,7 @@ public class JSONArray implements Iterable<Object> {
      * @return An object value, or null if there is no object at that index.
      */
     public Object opt(int index) {
-        return (index < 0 || index >= this.length()) ? null : this.myArrayList
+        return index < 0 || index >= this.length() ? null : this.myArrayList
                 .get(index);
     }
 
@@ -558,7 +558,7 @@ public class JSONArray implements Iterable<Object> {
 
     /**
      * Get the enum value associated with a key.
-     * 
+     *
      * @param clazz
      *            The type of enum to retrieve.
      * @param index
@@ -571,7 +571,7 @@ public class JSONArray implements Iterable<Object> {
 
     /**
      * Get the enum value associated with a key.
-     * 
+     *
      * @param clazz
      *            The type of enum to retrieve.
      * @param index
@@ -601,8 +601,8 @@ public class JSONArray implements Iterable<Object> {
 
 
     /**
-     * Get the optional BigInteger value associated with an index. The 
-     * defaultValue is returned if there is no value for the index, or if the 
+     * Get the optional BigInteger value associated with an index. The
+     * defaultValue is returned if there is no value for the index, or if the
      * value is not a number and cannot be converted to a number.
      *
      * @param index
@@ -620,8 +620,8 @@ public class JSONArray implements Iterable<Object> {
     }
 
     /**
-     * Get the optional BigDecimal value associated with an index. The 
-     * defaultValue is returned if there is no value for the index, or if the 
+     * Get the optional BigDecimal value associated with an index. The
+     * defaultValue is returned if there is no value for the index, or if the
      * value is not a number and cannot be converted to a number.
      *
      * @param index
@@ -967,8 +967,8 @@ public class JSONArray implements Iterable<Object> {
      */
     public Object remove(int index) {
         return index >= 0 && index < this.length()
-            ? this.myArrayList.remove(index)
-            : null;
+                ? this.myArrayList.remove(index)
+                        : null;
     }
 
     /**
@@ -1038,6 +1038,7 @@ public class JSONArray implements Iterable<Object> {
      * @return a printable, displayable, transmittable representation of the
      *         array.
      */
+    @Override
     public String toString() {
         try {
             return this.toString(0);

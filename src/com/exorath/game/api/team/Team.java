@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -12,8 +13,9 @@ import org.bukkit.Location;
 import com.exorath.game.api.BasePlayerProperty;
 import com.exorath.game.api.GameListener;
 import com.exorath.game.api.Properties;
+import com.exorath.game.api.maps.GameMap;
 import com.exorath.game.api.player.GamePlayer;
-import com.google.common.collect.Sets;
+import com.google.common.collect.Maps;
 
 /**
  * Created by too on 23/05/2015.
@@ -23,6 +25,15 @@ public class Team {
 
     protected static final String DEFAULT_NAME = "team";
     protected static final int DEFAULT_MAX_PLAYER_AMOUNT = Bukkit.getServer().getMaxPlayers();
+
+    public static Map<TeamColor, Team> teams = Maps.newHashMap();
+
+    public static Team getTeam( TeamColor color, boolean create ) {
+        if ( create && !Team.teams.containsKey( color ) ) {
+            Team.teams.put( color, new Team().setTeamColor( color ) );
+        }
+        return Team.teams.get( color );
+    }
 
     private Properties properties = new Properties();
 
@@ -37,7 +48,7 @@ public class Team {
     }
 
     /**
-     * @return a collection of all online players in this team
+     * @return A collection of all online players in this team
      */
     public Set<GamePlayer> getPlayers() {
         return this.players;
@@ -101,32 +112,36 @@ public class Team {
         return this.properties;
     }
 
-    public void setName(String name) {
-        this.properties.set(TeamProperty.NAME, name);
+    public Team setName( String name ) {
+        this.properties.set( TeamProperty.NAME, name );
+        return this;
     }
 
     public String getName() {
         return this.properties.as(TeamProperty.NAME, String.class);
     }
 
-    public void setPvpEnabled(boolean enabled) {
-        this.properties.set(BasePlayerProperty.PVP, enabled);
+    public Team setPvpEnabled( boolean enabled ) {
+        this.properties.set( BasePlayerProperty.PVP, enabled );
+        return this;
     }
 
     public boolean isPvpEnabled() {
         return this.properties.as(BasePlayerProperty.PVP, boolean.class);
     }
 
-    public void setMaxTeamSize(int amount) {
-        this.properties.set(TeamProperty.MAX_SIZE, amount);
+    public Team setMaxTeamSize( int amount ) {
+        this.properties.set( TeamProperty.MAX_SIZE, amount );
+        return this;
     }
 
     public int getMaxTeamSize() {
         return this.properties.as(TeamProperty.MAX_SIZE, int.class);
     }
 
-    public void setMinTeamSize(int amount) {
-        this.properties.set(TeamProperty.MIN_SIZE, amount);
+    public Team setMinTeamSize( int amount ) {
+        this.properties.set( TeamProperty.MIN_SIZE, amount );
+        return this;
     }
 
     public int getMinTeamSize() {
@@ -137,28 +152,42 @@ public class Team {
         return this.properties.as(TeamProperty.FRIENDLY_FIRE, boolean.class);
     }
 
-    public void setFriendlyFire(boolean friendlyFire) {
-        this.properties.set(TeamProperty.FRIENDLY_FIRE, friendlyFire);
+    public Team setFriendlyFire( boolean ff ) {
+        this.properties.set( TeamProperty.FRIENDLY_FIRE, ff );
+        return this;
     }
 
-    public void addSpawnPoint(Location spawn) {
-        this.getSpawns().add(spawn);
+    public Team addSpawnPoint( GameMap map, Location spawn ) {
+        this.getSpawns( map ).add( spawn );
+        return this;
     }
 
-    public void removeSpawnPoint(Location spawn) {
-        if (!this.getSpawns().contains(spawn))
-            return;
-        this.getSpawns().remove(spawn);
+    public Team removeSpawnPoint( GameMap map, Location spawn ) {
+        if ( !this.getSpawns( map ).contains( spawn ) ) {
+            return this;
+        }
+        this.getSpawns( map ).remove( spawn );
+        return this;
     }
 
-    @SuppressWarnings("unchecked")
-    public List<Location> getSpawns() {
+    @SuppressWarnings( "unchecked" )
+    public List<Location> getSpawns( GameMap map ) {
         return this.properties.as(TeamProperty.SPAWNS, List.class);
     }
 
-    protected void addListener(GameListener listener) {
-        if (listener != null)
-            listeners.add(listener);
+    protected void addListener( GameListener listener ) {
+        if ( listener != null ) {
+            this.listeners.add( listener );
+        }
+    }
+
+    public TeamColor getTeamColor() {
+        return this.properties.as( TeamProperty.COLOR, TeamColor.class );
+    }
+
+    public Team setTeamColor( TeamColor color ) {
+        this.properties.set( TeamProperty.COLOR, color );
+        return this;
     }
 
 }

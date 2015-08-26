@@ -1,4 +1,4 @@
-package com.exorath.game.api.gamestates;
+package com.exorath.game.api;
 
 public enum GameState {
 

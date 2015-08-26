@@ -131,6 +131,7 @@ public class JSONObject {
          *
          * @return The string "null".
          */
+        @Override
         public String toString() {
             return "null";
         }
@@ -200,16 +201,16 @@ public class JSONObject {
         for (;;) {
             c = x.nextClean();
             switch (c) {
-            case 0:
-                throw x.syntaxError("A JSONObject text must end with '}'");
-            case '}':
-                return;
-            default:
-                x.back();
-                key = x.nextValue().toString();
+                case 0:
+                    throw x.syntaxError("A JSONObject text must end with '}'");
+                case '}':
+                    return;
+                default:
+                    x.back();
+                    key = x.nextValue().toString();
             }
 
-// The key is followed by ':'.
+            // The key is followed by ':'.
 
             c = x.nextClean();
             if (c != ':') {
@@ -217,20 +218,20 @@ public class JSONObject {
             }
             this.putOnce(key, x.nextValue());
 
-// Pairs are separated by ','.
+            // Pairs are separated by ','.
 
             switch (x.nextClean()) {
-            case ';':
-            case ',':
-                if (x.nextClean() == '}') {
+                case ';':
+                case ',':
+                    if (x.nextClean() == '}') {
+                        return;
+                    }
+                    x.back();
+                    break;
+                case '}':
                     return;
-                }
-                x.back();
-                break;
-            case '}':
-                return;
-            default:
-                throw x.syntaxError("Expected a ',' or '}'");
+                default:
+                    throw x.syntaxError("Expected a ',' or '}'");
             }
         }
     }
@@ -340,16 +341,16 @@ public class JSONObject {
         ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale,
                 Thread.currentThread().getContextClassLoader());
 
-// Iterate through the keys in the bundle.
+        // Iterate through the keys in the bundle.
 
         Enumeration<String> keys = bundle.getKeys();
         while (keys.hasMoreElements()) {
             Object key = keys.nextElement();
             if (key != null) {
 
-// Go through the path, ensuring that there is a nested JSONObject for each
-// segment except the last. Add the value using the last segment's name into
-// the deepest nested JSONObject.
+                // Go through the path, ensuring that there is a nested JSONObject for each
+                // segment except the last. Add the value using the last segment's name into
+                // the deepest nested JSONObject.
 
                 String[] path = ((String) key).split("\\.");
                 int last = path.length - 1;
@@ -444,7 +445,7 @@ public class JSONObject {
             return "null";
         }
 
-// Shave off trailing zeros and decimal point, if possible.
+        // Shave off trailing zeros and decimal point, if possible.
 
         String string = Double.toString(d);
         if (string.indexOf('.') > 0 && string.indexOf('e') < 0
@@ -480,17 +481,17 @@ public class JSONObject {
     }
 
     /**
-    * Get the enum value associated with a key.
-    * 
-    * @param clazz
-    *           The type of enum to retrieve.
-    * @param key
-    *           A key string.
-    * @return The enum value associated with the key
-    * @throws JSONException
-    *             if the key is not found or if the value cannot be converted
-    *             to an enum.
-    */
+     * Get the enum value associated with a key.
+     *
+     * @param clazz
+     *           The type of enum to retrieve.
+     * @param key
+     *           A key string.
+     * @return The enum value associated with the key
+     * @throws JSONException
+     *             if the key is not found or if the value cannot be converted
+     *             to an enum.
+     */
     public <E extends Enum<E>> E getEnum(Class<E> clazz, String key) throws JSONException {
         E val = optEnum(clazz, key);
         if(val==null) {
@@ -498,8 +499,8 @@ public class JSONObject {
             // If it did, I would re-implement this with the Enum.valueOf
             // method and place any thrown exception in the JSONException
             throw new JSONException("JSONObject[" + quote(key)
-                    + "] is not an enum of type " + quote(clazz.getSimpleName())
-                    + ".");
+            + "] is not an enum of type " + quote(clazz.getSimpleName())
+            + ".");
         }
         return val;
     }
@@ -517,16 +518,16 @@ public class JSONObject {
     public boolean getBoolean(String key) throws JSONException {
         Object object = this.get(key);
         if (object.equals(Boolean.FALSE)
-                || (object instanceof String && ((String) object)
-                        .equalsIgnoreCase("false"))) {
+                || object instanceof String && ((String) object)
+                        .equalsIgnoreCase("false")) {
             return false;
         } else if (object.equals(Boolean.TRUE)
-                || (object instanceof String && ((String) object)
-                        .equalsIgnoreCase("true"))) {
+                || object instanceof String && ((String) object)
+                        .equalsIgnoreCase("true")) {
             return true;
         }
         throw new JSONException("JSONObject[" + quote(key)
-                + "] is not a Boolean.");
+        + "] is not a Boolean.");
     }
 
     /**
@@ -536,7 +537,7 @@ public class JSONObject {
      *            A key string.
      * @return The numeric value.
      * @throws JSONException
-     *             if the key is not found or if the value cannot 
+     *             if the key is not found or if the value cannot
      *             be converted to BigInteger.
      */
     public BigInteger getBigInteger(String key) throws JSONException {
@@ -545,7 +546,7 @@ public class JSONObject {
             return new BigInteger(object.toString());
         } catch (Exception e) {
             throw new JSONException("JSONObject[" + quote(key)
-                    + "] could not be converted to BigInteger.");
+            + "] could not be converted to BigInteger.");
         }
     }
 
@@ -565,7 +566,7 @@ public class JSONObject {
             return new BigDecimal(object.toString());
         } catch (Exception e) {
             throw new JSONException("JSONObject[" + quote(key)
-                    + "] could not be converted to BigDecimal.");
+            + "] could not be converted to BigDecimal.");
         }
     }
 
@@ -586,7 +587,7 @@ public class JSONObject {
                     : Double.parseDouble((String) object);
         } catch (Exception e) {
             throw new JSONException("JSONObject[" + quote(key)
-                    + "] is not a number.");
+            + "] is not a number.");
         }
     }
 
@@ -607,7 +608,7 @@ public class JSONObject {
                     : Integer.parseInt((String) object);
         } catch (Exception e) {
             throw new JSONException("JSONObject[" + quote(key)
-                    + "] is not an int.");
+            + "] is not an int.");
         }
     }
 
@@ -626,7 +627,7 @@ public class JSONObject {
             return (JSONArray) object;
         }
         throw new JSONException("JSONObject[" + quote(key)
-                + "] is not a JSONArray.");
+        + "] is not a JSONArray.");
     }
 
     /**
@@ -644,7 +645,7 @@ public class JSONObject {
             return (JSONObject) object;
         }
         throw new JSONException("JSONObject[" + quote(key)
-                + "] is not a JSONObject.");
+        + "] is not a JSONObject.");
     }
 
     /**
@@ -664,7 +665,7 @@ public class JSONObject {
                     : Long.parseLong((String) object);
         } catch (Exception e) {
             throw new JSONException("JSONObject[" + quote(key)
-                    + "] is not a long.");
+            + "] is not a long.");
         }
     }
 
@@ -843,7 +844,7 @@ public class JSONObject {
         }
         testValidity(number);
 
-// Shave off trailing zeros and decimal point, if possible.
+        // Shave off trailing zeros and decimal point, if possible.
 
         String string = number.toString();
         if (string.indexOf('.') > 0 && string.indexOf('e') < 0
@@ -871,7 +872,7 @@ public class JSONObject {
 
     /**
      * Get the enum value associated with a key.
-     * 
+     *
      * @param clazz
      *            The type of enum to retrieve.
      * @param key
@@ -884,7 +885,7 @@ public class JSONObject {
 
     /**
      * Get the enum value associated with a key.
-     * 
+     *
      * @param clazz
      *            The type of enum to retrieve.
      * @param key
@@ -1134,7 +1135,7 @@ public class JSONObject {
     private void populateMap(Object bean) {
         Class<?> klass = bean.getClass();
 
-// If klass is a System class then set includeSuperClass to false.
+        // If klass is a System class then set includeSuperClass to false.
 
         boolean includeSuperClass = klass.getClassLoader() != null;
 
@@ -1381,42 +1382,42 @@ public class JSONObject {
             b = c;
             c = string.charAt(i);
             switch (c) {
-            case '\\':
-            case '"':
-                w.write('\\');
-                w.write(c);
-                break;
-            case '/':
-                if (b == '<') {
+                case '\\':
+                case '"':
                     w.write('\\');
-                }
-                w.write(c);
-                break;
-            case '\b':
-                w.write("\\b");
-                break;
-            case '\t':
-                w.write("\\t");
-                break;
-            case '\n':
-                w.write("\\n");
-                break;
-            case '\f':
-                w.write("\\f");
-                break;
-            case '\r':
-                w.write("\\r");
-                break;
-            default:
-                if (c < ' ' || (c >= '\u0080' && c < '\u00a0')
-                        || (c >= '\u2000' && c < '\u2100')) {
-                    w.write("\\u");
-                    hhhh = Integer.toHexString(c);
-                    w.write("0000", 0, 4 - hhhh.length());
-                    w.write(hhhh);
-                } else {
                     w.write(c);
-                }
+                    break;
+                case '/':
+                    if (b == '<') {
+                        w.write('\\');
+                    }
+                    w.write(c);
+                    break;
+                case '\b':
+                    w.write("\\b");
+                    break;
+                case '\t':
+                    w.write("\\t");
+                    break;
+                case '\n':
+                    w.write("\\n");
+                    break;
+                case '\f':
+                    w.write("\\f");
+                    break;
+                case '\r':
+                    w.write("\\r");
+                    break;
+                default:
+                    if (c < ' ' || c >= '\u0080' && c < '\u00a0'
+                            || c >= '\u2000' && c < '\u2100') {
+                        w.write("\\u");
+                        hhhh = Integer.toHexString(c);
+                        w.write("0000", 0, 4 - hhhh.length());
+                        w.write(hhhh);
+                    } else {
+                        w.write(c);
+                    }
             }
         }
         w.write('"');
@@ -1504,7 +1505,7 @@ public class JSONObject {
          */
 
         char b = string.charAt(0);
-        if ((b >= '0' && b <= '9') || b == '-') {
+        if (b >= '0' && b <= '9' || b == '-') {
             try {
                 if (string.indexOf('.') > -1 || string.indexOf('e') > -1
                         || string.indexOf('E') > -1) {
@@ -1517,9 +1518,8 @@ public class JSONObject {
                     if (string.equals(myLong.toString())) {
                         if (myLong == myLong.intValue()) {
                             return myLong.intValue();
-                        } else {
-                            return myLong;
                         }
+                        return myLong;
                     }
                 }
             } catch (Exception ignore) {
@@ -1586,6 +1586,7 @@ public class JSONObject {
      *         brace)</small> and ending with <code>}</code>&nbsp;<small>(right
      *         brace)</small>.
      */
+    @Override
     public String toString() {
         try {
             return this.toString(0);
@@ -1722,12 +1723,12 @@ public class JSONObject {
             Package objectPackage = object.getClass().getPackage();
             String objectPackageName = objectPackage != null ? objectPackage
                     .getName() : "";
-            if (objectPackageName.startsWith("java.")
-                    || objectPackageName.startsWith("javax.")
-                    || object.getClass().getClassLoader() == null) {
-                return object.toString();
-            }
-            return new JSONObject(object);
+                    if (objectPackageName.startsWith("java.")
+                            || objectPackageName.startsWith("javax.")
+                            || object.getClass().getClassLoader() == null) {
+                        return object.toString();
+                    }
+                    return new JSONObject(object);
         } catch (Exception exception) {
             return null;
         }

@@ -2,8 +2,6 @@ package com.exorath.game.api.player;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-
 import com.exorath.game.api.Game;
 
 /**
@@ -13,9 +11,9 @@ public class Players {
 
     private final Game game;
 
-    private final Map<UUID, PlayerState> playerStates = new HashMap<UUID, PlayerState>();
+    private final Map<String, PlayerState> playerStates = new HashMap<>();
 
-    public Players(Game game) {
+    public Players( Game game ) {
         this.game = game;
     }
 
@@ -24,17 +22,17 @@ public class Players {
     }
 
     public PlayerState getPlayerState(GamePlayer player) {
-        PlayerState state = this.playerStates.get(player.getUUID());
+        PlayerState state = this.playerStates.get( player.getUUID().toString() );
         if (state == null) {
             state = PlayerState.UNKNOWN;
-            this.playerStates.put(player.getUUID(), state);
+            this.playerStates.put( player.getUUID().toString(), state );
         }
         return state;
     }
 
     public int getPlayingAmount() {
         int amount = 0;
-        for (UUID id : playerStates.keySet()) {
+        for ( String id : playerStates.keySet() ) {
             if (playerStates.get(id) == PlayerState.PLAYING)
                 amount++;
         }
@@ -46,7 +44,7 @@ public class Players {
     }
 
     public void setState(GamePlayer player, PlayerState state) {
-        this.playerStates.put(player.getUUID(), state);
+        this.playerStates.put( player.getUUID().toString(), state );
     }
 
     public void add(GamePlayer player, PlayerState state) {

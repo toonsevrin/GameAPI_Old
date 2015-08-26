@@ -26,56 +26,56 @@ import com.yoshigenius.lib.util.RegexUtil;
  * Base class for all GPlayer kits.
  */
 public abstract class Kit {
-    
+
     public static final String DEFAULT_NAME = "Kit";
     public static final ItemStack DEFAULT_ICON = new ItemStack( Material.WORKBENCH );
     public static final String[] DEFAULT_DESCRIPTION = new String[] { ChatColor.WHITE + "Default kit description" };
-    
+
     private Properties properties = new Properties();
     private final Set<GameListener> listeners = Sets.newHashSet();
-    
+
     public Kit( String name, ItemStack item ) {
         this.setName( name );
         this.setIcon( item );
     }
-    
+
     public void setName( String name ) {
         this.properties.set( KitProperty.NAME, name );
     }
-    
+
     public String getName() {
         return this.properties.as( KitProperty.NAME, String.class );
     }
-    
+
     public void setIcon( ItemStack item ) {
         this.properties.set( KitProperty.ICON, item );
     }
-    
+
     public ItemStack getIcon() {
         return this.properties.as( KitProperty.ICON, ItemStack.class );
     }
-    
+
     public void setDescription( String[] description ) {
         this.properties.set( KitProperty.DESCRIPTION, description );
     }
-    
+
     public String[] getDescription() {
         return this.properties.as( KitProperty.DESCRIPTION, String[].class );
     }
-    
+
     public UnlockRequirements getUnlockRequirements() {
         return this.properties.as( KitProperty.UNLOCK_REQUIREMENTS, UnlockRequirements.class );
     }
-    
+
     public void setUnlockRequirements( UnlockRequirements reqs ) {
         this.properties.set( KitProperty.UNLOCK_REQUIREMENTS, reqs );
     }
-    
+
     public PurchasableItem getKitItem( GamePlayer player ) {
         return new PurchasableItem( this.getName(), this.getIcon(), this.getDescription(), this.getUnlockRequirements(), player,
                 this.isUnlocked( player ) );
     }
-    
+
     /**
      * Gets the itemStack for this kit to be displayed in the shop inventory
      *
@@ -97,38 +97,37 @@ public abstract class Kit {
         }
         return new ItemStackBuilder( this.getIcon() ).getMeta().setDisplayName( ChatColor.GOLD + name ).getBuilder().get();
     }
-    
+
     public abstract Map<Integer, ItemStack> getItems();
-    
+
     public abstract Map<Integer, ItemStack> getArmour();
-    
+
     public abstract Map<PotionEffectType, Integer> getPotionEffects();
-    
+
     public void give( GamePlayer player, Game game ) {
         //TODO: Go into GPlayer and add methods addKit, delKit, clearKits and getKits.
     }
-    
+
     public boolean isUnlocked( GamePlayer player ) {
         UnlockRequirements reqs = this.getUnlockRequirements();
         if ( reqs == null ) {
             return true;
-        } else {
-            return reqs.isUnlocked( player );
         }
+        return reqs.isUnlocked( player );
     }
-    
+
     protected void addListener( GameListener listener ) {
         if ( listener != null ) {
             this.listeners.add( listener );
         }
     }
-    
+
     /* End Events */
-    
+
     public static String greenOrRedString( String name, boolean green ) {
         return ( green ? ChatColor.GREEN : ChatColor.RED ) + name;
     }
-    
+
     public NPCEquipment toNPCEquipment() {
         NPCEquipment eq = new NPCEquipment();
         eq.setItemInHand( this.getIcon() );

@@ -4,7 +4,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 import com.exorath.game.api.Game;
 import com.exorath.game.api.GameListener;
-import com.exorath.game.api.gamestates.GameState;
+import com.exorath.game.api.GameState;
 import com.exorath.game.api.events.GamePlayerKillPlayerEvent;
 import com.exorath.game.api.events.GameStateChangedEvent;
 import com.exorath.game.api.message.GameMessenger;
@@ -15,17 +15,16 @@ import com.exorath.game.api.player.PlayerState;
  * @author Nick Robson
  */
 public class SGListener implements GameListener {
-    
+
     //REPLACED WITH AN ACTION
     @Override
     public void onDeath( PlayerDeathEvent event, Game game, GamePlayer player ) {
-        SurvivalGames sg = (SurvivalGames) game;
         if ( player.getState( game ) == PlayerState.PLAYING ) {
             GameMessenger.sendStructured( game, player, "You died, hopefully you win next time!",
-                    "This round you earned " + player.getWonHonorPoints() + " honor points!" );
+                    "This round you earned " + player.getCoinsWon() + " honor points!" );
         }
     }
-    
+
     /**
      * Reward a player with 70 honor points when he kills another player
      */
@@ -33,9 +32,9 @@ public class SGListener implements GameListener {
     public void onPlayerKillPlayer( GamePlayerKillPlayerEvent event ) {
         GamePlayer killer = event.getKiller();
         GameMessenger.sendStructured( event.getGame(), killer, "player.onKill" );
-        killer.addHonorPoints( 70 );
+        killer.addCoins( 70 );
     }
-    
+
     /**
      * When game starts, generate all the chests contents.
      */
@@ -48,5 +47,5 @@ public class SGListener implements GameListener {
             sg.stop( event.getStopCause() );
         }
     }
-    
+
 }

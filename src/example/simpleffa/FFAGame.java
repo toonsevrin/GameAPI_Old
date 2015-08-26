@@ -3,6 +3,8 @@ package example.simpleffa;
 import com.exorath.game.api.GameProperty;
 import com.exorath.game.api.action.DieAction;
 import com.exorath.game.api.gametype.minigame.RepeatingMinigame;
+import com.exorath.game.api.maps.MapManager;
+import com.exorath.game.api.maps.MapSelection;
 import com.exorath.game.api.team.FreeForAllTeam;
 import com.exorath.game.api.team.Team;
 import com.exorath.game.api.team.TeamManager;
@@ -37,10 +39,10 @@ public class FFAGame extends RepeatingMinigame {
      * TODO: Confirm how Nick implemented maps
      */
     public void setupMaps() {
-        getMapManager.addMap("mapName1");
-        getMapManager.addMap("mapName2");
-        getMapManager.addMap("mapName3");
-        getMapManager.setMapCycling(MapCycler.VOTING);
+        this.getManager( MapManager.class ).setSelection( MapSelection.VOTE );
+        this.getManager( MapManager.class ).addMap( "mapName1" );
+        this.getManager( MapManager.class ).addMap( "mapName2" );
+        this.getManager( MapManager.class ).addMap( "mapName3" );
     }
 
     public void setupLobby() {

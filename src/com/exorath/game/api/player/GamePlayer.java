@@ -1,20 +1,16 @@
 package com.exorath.game.api.player;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import com.exorath.game.GameAPI;
-import com.exorath.game.api.database.SQLData;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
+import com.exorath.game.GameAPI;
 import com.exorath.game.api.Game;
 import com.exorath.game.api.Properties;
+import com.exorath.game.api.database.SQLData;
 import com.exorath.game.api.menu.Menu;
 import com.exorath.game.lib.Rank;
 
@@ -22,7 +18,7 @@ public final class GamePlayer {
 
     private UUID uuid;
     private Rank rank = Rank.NONE;
-    private int coins = 0, credits = 0;
+    private int coins = 0, credits = 0, wonCoins = 0;
     private Properties properties = new Properties();
     private Menu menu;
 
@@ -100,12 +96,13 @@ public final class GamePlayer {
         return gSqlData.getInt("credits", 0) >= credits;
     }
 
-    public void addCoins(int coins) {
+    public void addCoins( int coins ) {
+        wonCoins += coins;
         gSqlData.setInt("coins", gSqlData.getInt("coins", 0) + coins);
     }
-
-    public void removeCoins(int coins) {
-        gSqlData.setInt("coins", gSqlData.getInt("coins", 0) - coins);
+    public void removeCoins( int coins ) {
+        wonCoins -= Math.min( coins, this.coins );
+        gSqlData.setInt( "coins", gSqlData.getInt( "coins", 0 ) - coins );
         this.coins -= coins;
     }
 
@@ -113,7 +110,11 @@ public final class GamePlayer {
         return gSqlData.getInt("coins", 0);
     }
 
-    public boolean hasCoins(int coins) {
+    public int getCoinsWon() {
+        return wonCoins - getCoins();
+    }
+
+    public boolean hasCoins( int coins ) {
         return gSqlData.getInt("coins", 0) >= coins;
     }
 

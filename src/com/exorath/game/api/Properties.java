@@ -19,19 +19,28 @@ public class Properties {
      * @param def      Default value to return if key not found
      * @return Returns the value out of properties or def if value not found.
      */
-    public Object get(Property property, Object def) {
-        if (this.properties.containsKey(property))
-            return this.properties.get(property);
-        else
-            return def;
+    public Object get( Property property, Object def ) {
+        if ( this.properties.containsKey( property ) ) {
+            return this.properties.get( property );
+        }
+        return def;
     }
 
     /**
      * Gets a property's value as a specific type
      *
+<<<<<<< HEAD
+     * @param property
+     *            The property
+     * @param clazz
+     *            The type to get the value as
+     * @param <T>
+     *            The type
+=======
      * @param property The property
      * @param clazz    The type to get the value as
      * @param <T>      The type
+>>>>>>> master
      * @return The property's value as the given type.
      */
     @SuppressWarnings("unchecked")
@@ -50,8 +59,10 @@ public class Properties {
     public void set(Property property, Object value) {
         if (property.isStrict() && !property.getDefault().getClass().isAssignableFrom(value.getClass())) {
             throw new IllegalArgumentException(String.format(
-                    "Property %s is strict, and provided value of type %s does not match required type of %s.", property.getKey(), value.getClass()
-                            .getSimpleName(), property.getDefault().getClass().getSimpleName()));
+                    "Property %s is strict, and provided value of type %s does not match required type of %s.",
+                    property.getKey(),
+                    value.getClass().getSimpleName(),
+                    property.getDefault().getClass().getSimpleName() ) );
         }
         this.properties.put(property, value);
     }

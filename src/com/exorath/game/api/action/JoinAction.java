@@ -1,11 +1,10 @@
 package com.exorath.game.api.action;
 
-import com.exorath.game.api.gamestates.GameState;
-import com.exorath.game.api.gamestates.StateManager;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.exorath.game.api.Game;
+import com.exorath.game.api.GameState;
 import com.exorath.game.api.player.GamePlayer;
 
 /**
@@ -21,7 +20,7 @@ public abstract class JoinAction {
 
         @Override
         public void onJoin(PlayerJoinEvent event, GamePlayer player, Game game) {
-            if(!ArrayUtils.contains(SPECTATE_STATES, StateManager.getInstance().getState()))
+            if ( !ArrayUtils.contains( SPECTATE_STATES, game.getState() ) )
                 return;
             //TODO: Set the GamePlayer in spectator mode
         }

@@ -1,13 +1,9 @@
 package com.exorath.game.api.inventory;
 
-import com.exorath.game.lib.json.JSONObject;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+
+import com.exorath.game.lib.json.JSONObject;
 
 /**
  * Created by TOON on 8/25/2015.

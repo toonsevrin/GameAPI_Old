@@ -5,23 +5,22 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import com.exorath.game.api.gamestates.GameState;
-import com.exorath.game.api.gamestates.StateManager;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.action.Actions;
 import com.exorath.game.api.events.GameStateChangedEvent;
+import com.exorath.game.api.gametype.minigame.kit.KitManager;
 import com.exorath.game.api.lobby.Lobby;
 import com.exorath.game.api.player.Players;
 import com.exorath.game.api.spectate.SpectateManager;
 import com.exorath.game.api.team.TeamManager;
 import com.exorath.game.lib.util.FileUtils;
 import com.google.common.collect.Sets;
-import org.bukkit.plugin.Plugin;
 
 /**
  * The class representing a single Game instance.
@@ -54,14 +53,15 @@ public abstract class Game {
     private String world = null;
 
     private UUID gameID;
+    private GameState state;
 
     public Game() {
         GameAPI.getInstance().setGame(this);
         gameID = UUID.randomUUID();
 
-        addManager(new TeamManager(this));
-        addManager(new SpectateManager(this));
-        addManager(new StateManager(this));
+        addManager( new TeamManager( this ) );
+        addManager( new SpectateManager( this ) );
+        addManager( new KitManager( this ) );
     }
 
     /* Plugin Host */
@@ -70,6 +70,18 @@ public abstract class Game {
     }
     public Plugin getHost() {
         return host;
+    }
+
+    public GameState getState() {
+        return this.state;
+    }
+
+    public void setState( GameState state ) {
+        GameState old = this.state;
+        this.state = state;
+        GameStateChangedEvent event = new GameStateChangedEvent( this, old, state );
+        for ( GameListener listener : getListeners() )
+            listener.onGameStateChange( event );
     }
 
     /* Game Map */
@@ -93,8 +105,19 @@ public abstract class Game {
     public Set<Manager> getManagers() {
         return managers;
     }
+
     public void addManager(Manager manager) {
         managers.add(manager);
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public <T extends Manager> T getManager( Class<T> clazz ) {
+        for ( Manager manager : managers ) {
+            if ( clazz.isAssignableFrom( manager.getClass() ) ) {
+                return (T) manager;
+            }
+        }
+        return null;
     }
 
     /* Properties */

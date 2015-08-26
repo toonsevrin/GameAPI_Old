@@ -24,26 +24,26 @@ import org.xml.sax.SAXException;
  * @author Nick Robson
  */
 public class VersionChecker {
-    
+
     public static enum VersionFormat {
         XML,
         JSON;
     }
-    
+
     public static class VersionResult {
-        
+
         public static final VersionResult CURRENT = new VersionResult( true );
         public static final VersionResult FAILED = new VersionResult( "Failed to retrieve version information" );
         public static final VersionResult UNSUPPORTED_FORMAT = new VersionResult( "Unsupported Version Format" );
-        
+
         private boolean current = false;
-        
+
         private int versionNumber = 0;
         private String name = null, version = null, url = null, minecraftVersion = null;
         private List<String> notes = null;
-        
+
         private String error = null;
-        
+
         public VersionResult( String name, int versionNumber, String version, String minecraftVersion, String url, List<String> notes ) {
             this.name = name;
             this.versionNumber = versionNumber;
@@ -52,78 +52,76 @@ public class VersionChecker {
             this.url = url;
             this.notes = notes;
         }
-        
+
         protected VersionResult( String error ) {
             this.error = error;
         }
-        
+
         protected VersionResult( boolean current ) {
             this.current = current;
         }
-        
+
         public boolean isSuccess() {
             return this.error == null;
         }
-        
+
         public boolean isCurrent() {
             return this.current && this.isSuccess();
         }
-        
+
         public String getError() {
             return this.error;
         }
-        
+
         public String getVersionName() {
             return this.name;
         }
-        
+
         public int getVersionNumber() {
             return this.versionNumber;
         }
-        
+
         public String getVersion() {
             return this.version;
         }
-        
+
         public String getMinecraftVersion() {
             return this.minecraftVersion;
         }
-        
+
         public String getUpdateURL() {
             return this.url;
         }
-        
+
         public List<String> getUpdateNotes() {
             return this.notes;
         }
-        
+
         @Override
         public String toString() {
             if ( this.isSuccess() ) {
                 if ( this.isCurrent() ) {
                     return "VersionResult{current=true}";
-                } else {
-                    return "VersionResult{name=" + this.name + ",number=" + this.versionNumber + ",version=" + this.version + ",mcversion="
-                            + this.minecraftVersion + ",url=" + this.url + "}";
                 }
-            } else {
-                return "VersionResult{error=" + this.error + "}";
+                return "VersionResult{name=" + this.name + ",number=" + this.versionNumber + ",version=" + this.version + ",mcversion="
+                        + this.minecraftVersion + ",url=" + this.url + "}";
             }
+            return "VersionResult{error=" + this.error + "}";
         }
     }
-    
+
     public static enum VersionBranch {
-        
+
         DEV,
         ALPHA,
         BETA,
         PRE_RELEASE,
         RELEASE;
-        
+
         public boolean isMoreStable( VersionBranch branch ) {
             return branch.ordinal() >= this.ordinal();
         }
-        
+
         public static VersionBranch from( String string, boolean overrideNull ) {
             try {
                 return VersionBranch.valueOf( string.toUpperCase().replaceAll( " ", "_" ) );
@@ -132,9 +130,9 @@ public class VersionChecker {
             }
         }
     }
-    
+
     public static interface VersionCheckCallback {
-        
+
         /**
          * This function is called when a {@link VersionCheckThread} has finished checking for an
          * update and has a result.
@@ -143,11 +141,11 @@ public class VersionChecker {
          *            The version check result.
          */
         public void result( VersionResult result );
-        
+
     }
-    
+
     protected static class VersionCheckThread extends Thread {
-        
+
         String surl;
         VersionFormat format;
         VersionBranch branch;
@@ -155,9 +153,9 @@ public class VersionChecker {
         long lastCheck;
         int currentVersionNumber;
         VersionCheckCallback callback;
-        
+
         VersionResult result;
-        
+
         protected VersionCheckThread( String surl, VersionFormat format, VersionBranch branch, String minecraftVersion, long lastCheck,
                 int currentVersionNumber, VersionCheckCallback callback ) {
             this.surl = surl;
@@ -168,11 +166,11 @@ public class VersionChecker {
             this.currentVersionNumber = currentVersionNumber;
             this.callback = callback;
         }
-        
+
         public VersionResult getResult() {
             return this.result;
         }
-        
+
         @Override
         public void run() {
             URL url;
@@ -252,7 +250,7 @@ public class VersionChecker {
             } else {
                 this.result = VersionResult.UNSUPPORTED_FORMAT;
             }
-            
+
             if ( versionNumber > this.currentVersionNumber ) {
                 this.result = new VersionResult( name, versionNumber, version, minecraftVersion, updateURL, notes );
             } else {
@@ -261,10 +259,10 @@ public class VersionChecker {
             this.callback.result( this.result );
         }
     }
-    
+
     public static void check( String surl, VersionFormat format, VersionBranch branch, String minecraftVersion, long lastCheck, boolean forceCheck,
             int currentVersionNumber, VersionCheckCallback callback ) {
-        if ( System.currentTimeMillis() - lastCheck < 1000 * 60 * 30 && !forceCheck ) { // only check once every 30 minutes (at most)
+        if ( System.currentTimeMillis() - lastCheck < 1000 * 60 * 30 && !forceCheck ) {// only check once every 30 minutes (at most)
             return;
         }
         VersionCheckThread thread = new VersionCheckThread( surl, format, branch, minecraftVersion, lastCheck, currentVersionNumber, callback );

@@ -1,8 +1,8 @@
 package com.exorath.game.api;
 
-import com.exorath.game.GameAPI;
-import com.exorath.game.api.gamestates.StateManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.exorath.game.GameAPI;
 
 /**
  * Created by TOON on 8/23/2015.
