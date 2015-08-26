@@ -12,10 +12,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import com.exorath.game.GameAPI;
-
 /**
  * @author Nick Robson
+ *         Edited by TOON SEVRIN, needs Reviewing by Nick
  */
 public class ConfigurationManager {
 
@@ -28,7 +27,7 @@ public class ConfigurationManager {
         if ( res == null ) {
             return null;
         }
-        return YamlConfiguration.loadConfiguration( new InputStreamReader( res ) );
+        return YamlConfiguration.loadConfiguration(new InputStreamReader(res));
     }
 
     public void saveResource( Plugin plugin, String resource, String file, boolean overwrite ) {
@@ -45,12 +44,14 @@ public class ConfigurationManager {
         }
         try {
             CopyOption[] options = overwrite ? new CopyOption[] { StandardCopyOption.REPLACE_EXISTING } : new CopyOption[] {};
-            Files.copy( in, file.toPath(), options );
-        } catch ( IOException e ) {}
+            Files.copy(in, file.toPath(), options);
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        }
     }
 
     public File getConfigFile( Plugin plugin, String file ) {
-        return new File( GameAPI.getInstance().getDataFolder(), plugin.getName() + "/" + file + ( file.endsWith( ".yml" ) ? "" : ".yml" ) );
+        return new File( plugin.getDataFolder(), file + ( file.endsWith( ".yml" ) ? "" : ".yml" ) );
     }
 
     public FileConfiguration getConfig( Plugin plugin, String file ) {

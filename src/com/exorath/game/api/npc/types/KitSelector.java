@@ -4,7 +4,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Zombie;
 import com.exorath.game.api.Game;
-import com.exorath.game.api.kit.Kit;
+import com.exorath.game.api.gametype.minigame.kit.Kit;
+import com.exorath.game.api.gametype.minigame.kit.KitManager;
 import com.exorath.game.api.menu.EasyMenu;
 import com.exorath.game.api.npc.NPCEquipment;
 import com.exorath.game.api.npc.SpawnedNPC;
@@ -47,7 +48,7 @@ public class KitSelector extends AbstractNPC {
         public KitSelectorMenu( Game game ) {
             super( 36 );
             int slot = 0;
-            for ( Kit kit : game.getKitManager().getKits() ) {
+            for ( Kit kit : game.getManager( KitManager.class ).getKits() ) {
                 if ( slot < 36 ) {// TODO: Pages
                     this.setItem( slot++, kit.getIcon(), ( e, g, p ) -> kit.give( p, g ) );
                 }

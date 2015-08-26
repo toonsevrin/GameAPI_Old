@@ -15,7 +15,6 @@ import com.exorath.game.api.GameListener;
 import com.exorath.game.api.Properties;
 import com.exorath.game.api.player.GamePlayer;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 /**
  * Created by too on 23/05/2015.
@@ -36,41 +35,74 @@ public class Team {
     }
 
     private Properties properties = new Properties();
-    private Set<GamePlayer> players = new HashSet<GamePlayer>();
-    private final Set<GameListener> listeners = Sets.newHashSet();
+
+    private Set<GamePlayer> players = new HashSet<>();
+    private Set<GamePlayer> activePlayers = new HashSet<>();
+
+    private final Set<GameListener> listeners = new HashSet<>();
 
     public Team() {
-        this.properties.set( TeamProperty.SPAWNS, new ArrayList<Location>() );
+        //TODO: This should be set with the map system
+        this.properties.set(TeamProperty.SPAWNS, new ArrayList<Location>());
     }
 
+    /**
+     * @return A collection of all online players in this team
+     */
     public Set<GamePlayer> getPlayers() {
         return this.players;
     }
 
-    public void addPlayer( GamePlayer player ) {
-        this.players.add( player );
+    /**
+     * @return a collection of all online players in this team which haven't been set inactive
+     */
+    public Set<GamePlayer> getActivePlayers() {
+        return activePlayers;
     }
 
-    public boolean containsPlayer( GamePlayer player ) {
-        if ( this.players.contains( player ) ) {
-            return true;
-        }
-        return false;
+    /**
+     * Adds a player to the team
+     */
+    public void addPlayer(GamePlayer player) {
+        players.add(player);
+        activePlayers.add(player);
     }
 
-    public void removePlayer( GamePlayer player ) {
-        if ( !this.players.contains( player ) ) {
-            return;
-        }
-        this.players.remove( player );
+    /**
+     * @return Checks if the given player is in this team
+     */
+    public boolean containsPlayer(GamePlayer player) {
+        return players.contains(player);
     }
 
+    /**
+     * @return Checks if the given player is in this team and still active
+     */
+    public boolean containsActivePlayer(GamePlayer player) {
+        return players.contains(player);
+    }
+
+    /**
+     * Removes player from this team completely
+     */
+    public void removePlayer(GamePlayer player) {
+        if (players.contains(player))
+            players.remove(player);
+        if (activePlayers.contains(player))
+            activePlayers.remove(player);
+    }
+
+    /**
+     * Removes all offline players from this team
+     */
     public void removeOfflinePlayers() {
         Iterator<GamePlayer> it = this.players.iterator();
-        while ( it.hasNext() ) {
+        while (it.hasNext()) {
             GamePlayer player = it.next();
-            if ( !player.isOnline() ) {
+            if (!player.isOnline()) {
                 it.remove();
+                if (activePlayers.contains(player))
+                    activePlayers.remove(player);
             }
         }
     }
@@ -85,7 +117,7 @@ public class Team {
     }
 
     public String getName() {
-        return this.properties.as( TeamProperty.NAME, String.class );
+        return this.properties.as(TeamProperty.NAME, String.class);
     }
 
     public Team setPvpEnabled( boolean enabled ) {
@@ -94,7 +126,7 @@ public class Team {
     }
 
     public boolean isPvpEnabled() {
-        return this.properties.as( BasePlayerProperty.PVP, boolean.class );
+        return this.properties.as(BasePlayerProperty.PVP, boolean.class);
     }
 
     public Team setMaxTeamSize( int amount ) {
@@ -103,7 +135,7 @@ public class Team {
     }
 
     public int getMaxTeamSize() {
-        return this.properties.as( TeamProperty.MAX_SIZE, int.class );
+        return this.properties.as(TeamProperty.MAX_SIZE, int.class);
     }
 
     public Team setMinTeamSize( int amount ) {
@@ -112,11 +144,11 @@ public class Team {
     }
 
     public int getMinTeamSize() {
-        return this.properties.as( TeamProperty.MIN_SIZE, int.class );
+        return this.properties.as(TeamProperty.MIN_SIZE, int.class);
     }
 
     public boolean isFriendlyFire() {
-        return this.properties.as( TeamProperty.FRIENDLY_FIRE, boolean.class );
+        return this.properties.as(TeamProperty.FRIENDLY_FIRE, boolean.class);
     }
 
     public Team setFriendlyFire( boolean ff ) {
@@ -139,7 +171,7 @@ public class Team {
 
     @SuppressWarnings( "unchecked" )
     public List<Location> getSpawns() {
-        return this.properties.as( TeamProperty.SPAWNS, List.class );
+        return this.properties.as(TeamProperty.SPAWNS, List.class);
     }
 
     protected void addListener( GameListener listener ) {

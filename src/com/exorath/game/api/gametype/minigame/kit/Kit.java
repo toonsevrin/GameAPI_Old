@@ -1,4 +1,4 @@
-package com.exorath.game.api.kit;
+package com.exorath.game.api.gametype.minigame.kit;
 
 import java.util.Map;
 import java.util.Set;

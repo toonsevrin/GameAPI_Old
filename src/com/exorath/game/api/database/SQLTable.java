@@ -25,9 +25,9 @@ public class SQLTable {
      */
     public boolean load( SQLData data ) {
         //TODO: If exists: load and return. Else: return null;
-        ResultSet rs = GameAPI.getSQLManager().executeQuery( "SELECT * FROM " + this.name + " WHERE " + SQLTable.KEY + "='" + data.getUuid() + "' LIMIT 1" );
+        ResultSet rs = GameAPI.getSQLManager().executeQuery("SELECT * FROM " + this.name + " WHERE " + SQLTable.KEY + "='" + data.getUuid() + "' LIMIT 1");
         try {
-            if ( rs.next() ) {
+            if (rs.next()) {
                 ResultSetMetaData rsMeta = rs.getMetaData();
                 for ( int i = 0; i < rsMeta.getColumnCount(); i++ ) {
                     String columnName = rsMeta.getColumnName( i );
@@ -40,7 +40,7 @@ public class SQLTable {
             } else {
                 GameAPI.printConsole( "SQLTable.getData with key " + data.getUuid() + " failed to load data. SQLData doesn't exist." );
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
@@ -52,9 +52,9 @@ public class SQLTable {
      */
     public void save( SQLData data ) {
         //TODO: If exists: load and return. Else: return null;
-        ResultSet rs = GameAPI.getSQLManager().executeQuery( "SELECT * FROM " + this.name + " WHERE " + SQLTable.KEY + "='" + data.getUuid() + "' LIMIT 1" );
+        ResultSet rs = GameAPI.getSQLManager().executeQuery("SELECT * FROM " + this.name + " WHERE " + SQLTable.KEY + "='" + data.getUuid() + "' LIMIT 1");
         try {
-            if ( rs.next() ) {
+            if (rs.next()) {
                 ResultSetMetaData rsMeta = rs.getMetaData();
                 for ( int i = 0; i < rsMeta.getColumnCount(); i++ ) {
                     String columnName = rsMeta.getColumnName( i );
@@ -65,9 +65,9 @@ public class SQLTable {
                     data.setData( columnName, obj );
                 }
             } else {
-                GameAPI.error( "SQLTable.getData with key " + data.getUuid() + " failed to load data. SQLData doesn't exist." );
+                GameAPI.error("SQLTable.getData with key " + data.getUuid() + " failed to load data. SQLData doesn't exist.");
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -75,8 +75,7 @@ public class SQLTable {
     /**
      * Update or insert data into database
      *
-     * @param data
-     *            SQLData you want to insert or update
+     * @param data SQLData you want to insert or update
      */
     public void setData( SQLData data ) {
         if ( this.rowExists( data.getUuid().toString() ) ) {
@@ -91,9 +90,9 @@ public class SQLTable {
      *
      * @param column
      */
-    public void addColumn( SQLColumn column ) {
-        GameAPI.getSQLManager().executeQuery( "ALTER TABLE " + this.name + " ADD " + column.getKey() + column.getType().getDataTypeStructured() );
-        this.loadColumn( column );
+    public void addColumn(SQLColumn column) {
+        GameAPI.getSQLManager().executeQuery("ALTER TABLE " + this.name + " ADD " + column.getKey() + column.getType().getDataTypeStructured());
+        this.loadColumn(column);
     }
 
     /**
@@ -101,8 +100,8 @@ public class SQLTable {
      *
      * @param column
      */
-    protected void loadColumn( SQLColumn column ) {
-        this.columns.put( column.getKey(), column );
+    protected void loadColumn(SQLColumn column) {
+        this.columns.put(column.getKey(), column);
     }
 
     /**
@@ -117,11 +116,11 @@ public class SQLTable {
         } else {
             GameAPI.printConsole( "Attempt to create row " + data.getUuid().toString() + " in table " + this.name + " failed." );
         }
-        //TODO: Add error reporting
     }
 
     /**
      * Update an already existing row
+<<<<<<< HEAD
      * 
      * @param data
      *            SQLData you want to update
@@ -145,21 +144,23 @@ public class SQLTable {
     /**
      * Check if the row with given key exists in the table
      *
+<<<<<<< HEAD
      * @param key
      *            Key that should be checked
+=======
+     * @param key Key that should be checked
+>>>>>>> master
      * @return whether or not the row exists.
      */
-    public boolean rowExists( String key ) {
+    public boolean rowExists(String key) {
         try {
             ResultSet rs = GameAPI.getSQLManager().executeQuery(
-                    "SELECT EXISTS(SELECT 1 FROM" + this.name + " WHERE " + KEY + "='" + key + "');" );
-            if ( rs == null ) {
+                    "SELECT EXISTS(SELECT 1 FROM" + this.name + " WHERE " + KEY + "='" + key + "');");
+            if (rs == null)
                 return false;
-            }
-            if ( rs.next() ) {
+            if (rs.next())
                 return true;
-            }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
@@ -169,6 +170,7 @@ public class SQLTable {
     /**
      * Add a column to the MYSQL Table
      *
+<<<<<<< HEAD
      * @param columnName
      *            name this column should have
      * @param type

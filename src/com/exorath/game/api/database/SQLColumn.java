@@ -26,7 +26,7 @@ public class SQLColumn {
      *
      * @return The type of this column
      */
-    public com.exorath.game.api.database.ColumnType getType() {
+    public ColumnType getType() {
         return type;
     }
 }

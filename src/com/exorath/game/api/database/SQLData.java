@@ -1,19 +1,24 @@
 package com.exorath.game.api.database;
 
-import com.exorath.game.GameAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import com.exorath.game.GameAPI;
+
 /**
- * Created by TOON on 8/16/2015.
+ * Created by Toon Sevrin on 8/16/2015.
  */
 public class SQLData {
-    private static final Class<?>[] allowedTypes = new Class[] { String.class, Integer.class, Float.class, Double.class, Long.class, Date.class };
+
+    private static final Class<?>[] allowedTypes = new Class[] {
+            String.class, Integer.class, Float.class, Double.class, Long.class, Date.class
+    };
+
     private UUID uuid;
     private String tableName;
 
@@ -30,7 +35,7 @@ public class SQLData {
     //** Database manipulators **//
     /**
      * Loads data from database
-     * 
+     *
      * @param sync
      *            whether or not the data should be loaded synchronous with the main thread or not
      */
@@ -46,9 +51,7 @@ public class SQLData {
      * Reload data from database
      */
     public void reload( boolean sync ) {
-        boolean loaded = false;
         data.clear();
-
         load( sync );
     }
 
@@ -68,7 +71,6 @@ public class SQLData {
      * Get a string with keys and values formatted like this:
      * KEY1,KEY2,KEY3...='VALUE1','VALUE2','VALUE3'
      * TODO: Remove apostrophes if not a string.
-     *
      * @return A string with keys and values, formatted for insert
      */
     public String getValuesString() {
@@ -370,7 +372,7 @@ public class SQLData {
             if ( table.rowExists( uuid.toString() ) ) {//Update row
                 table.updateRow( SQLData.this );
             } else {//create row
-                    //Create not existing columns
+                //Create not existing columns
                 for ( String key : data.keySet() ) {
                     if ( table.getColumns().containsKey( key ) ) {
                         continue;

@@ -10,10 +10,10 @@ import com.exorath.game.api.player.GamePlayer;
 public abstract class HUDDisplay extends HUDLocation {
     private int maxChars;
     private HUDText currentText;
-    private PriorityQueue<HUDText> texts = new PriorityQueue<HUDText>();
 
-    public HUDDisplay( GamePlayer player, int maxChars ) {
-        super( player );
+    private PriorityQueue<HUDText> texts = new PriorityQueue<>();
+    public HUDDisplay(GamePlayer player, int maxChars){
+        super(player);
         this.maxChars = maxChars;
     }
 
@@ -48,10 +48,15 @@ public abstract class HUDDisplay extends HUDLocation {
     }
 
     /**
+<<<<<<< HEAD
      * Removes
      * 
      * @param text
      *            HUDText to remove from queue (and from displaying)
+=======
+     * Removes texts from the display queue/display
+     * @param text HUDText to remove from queue (and from displaying)
+>>>>>>> master
      */
     public void removeText( HUDText text ) {
         if ( !active ) {

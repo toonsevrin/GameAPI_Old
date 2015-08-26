@@ -5,13 +5,14 @@ import org.bukkit.entity.Player;
 
 import com.exorath.game.api.Game;
 import com.exorath.game.api.GameProperty;
+import com.exorath.game.api.Manager;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.player.PlayerState;
 
 /**
  * @author Nick Robson
  */
-public class SpectateManager {
+public class SpectateManager implements Manager {
 
     private Game game;
 

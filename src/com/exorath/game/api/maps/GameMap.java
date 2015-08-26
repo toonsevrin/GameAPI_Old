@@ -86,6 +86,12 @@ public class GameMap {
         return map;
     }
 
+    public static void loadWorlds() {
+        for ( World world : Bukkit.getWorlds() ) {
+            loadFrom( world );
+        }
+    }
+
     private String name;
     private File folder;
     private FileConfiguration config;

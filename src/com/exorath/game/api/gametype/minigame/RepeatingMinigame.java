@@ -1,4 +1,4 @@
-package com.exorath.game.api.gametype;
+package com.exorath.game.api.gametype.minigame;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
