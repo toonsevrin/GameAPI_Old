@@ -4,15 +4,19 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.exorath.game.api.team.Team;
-import com.yoshigenius.lib.serializable.Serializable;
+import com.exorath.game.api.team.TeamColor;
 import com.yoshigenius.lib.serializable.Serializer;
 
 public class GameMap {
@@ -64,20 +68,23 @@ public class GameMap {
 
         GameMap map = new GameMap( cfg.getString( "name" ), world );
 
-        List<String> spawns = cfg.getStringList( "spawns" );
-        List<String> spectators = cfg.getStringList( "spectators" );
+        map.spectatorSpawns = cfg.getStringList( "spectators" ).stream().map( Serializer::deserialize ).filter( s -> s instanceof GameSpawn ).map( s -> (GameSpawn) s ).collect( Collectors.toList() );
 
-        for ( String spawn : spawns ) {
-            Serializable s = Serializer.deserialize( spawn );
-            if ( s != null && s instanceof GameSpawn ) {
-                map.spawns.add( (GameSpawn) s );
-            }
-        }
+        ConfigurationSection ss = cfg.getConfigurationSection( "spawns" );
 
-        for ( String spawn : spectators ) {
-            Serializable s = Serializer.deserialize( spawn );
-            if ( s != null && s instanceof GameSpawn ) {
-                map.spectatorSpawns.add( (GameSpawn) s );
+        for ( String key : ss.getKeys( false ) ) {
+            if ( ss.isList( key ) ) {
+                List<GameSpawn> list = ss.getStringList( "global" ).stream().map( Serializer::deserialize ).filter( s -> s instanceof GameSpawn ).map( s -> (GameSpawn) s ).collect( Collectors.toList() );
+                if ( key.equals( "global" ) ) {
+                    map.global = list;
+                } else {
+                    try {
+                        Team team = Team.getTeam(TeamColor.valueOf( key.toUpperCase() ), false);
+                        if ( team != null ) {
+                            map.spawns.put( team, list );
+                        }
+                    } catch ( Exception ex ) {}
+                }
             }
         }
 
@@ -113,15 +120,41 @@ public class GameMap {
         return this.folder;
     }
 
+    public void save() {
+        FileConfiguration cfg = this.getConfig();
+        cfg.set( "name", this.getName() );
+        cfg.set( "spectators", this.spectatorSpawns.stream().map( Serializer::serialize ).collect( Collectors.toList() ) );
+        cfg.set( "spawns.global", this.global.stream().map( Serializer::serialize ).collect( Collectors.toList() ) );
+        for ( Entry<Team, List<GameSpawn>> entry : spawns.entrySet() ) {
+            if ( entry.getKey() != null && entry.getValue() != null && !entry.getValue().isEmpty() ) {
+                cfg.set( "spawns." + entry.getKey().getTeamColor().name().toLowerCase(), entry.getValue().stream().map( Serializer::serialize ).collect( Collectors.toList() ) );
+            }
+        }
+        this.saveConfig();
+    }
+
     // ADVANCED
 
-    private List<GameSpawn> spawns = new LinkedList<>();
     private List<GameSpawn> spectatorSpawns = new LinkedList<>();
+
+    private List<GameSpawn> global = new LinkedList<>();
+    private final Map<Team, List<GameSpawn>> spawns = new HashMap<>();
 
     // spawns
 
-    public GameSpawn[] getSpawns() {
-        return this.spawns.toArray( new GameSpawn[this.spawns.size()] );
+    private List<GameSpawn> getSpawnsList( Team team ) {
+        if ( team == null ) {
+            return global;
+        }
+        if ( !spawns.containsKey( team ) ) {
+            spawns.put( team, new LinkedList<>() );
+        }
+        return spawns.get( team );
+    }
+
+    public GameSpawn[] getSpawns( Team team ) {
+        List<GameSpawn> spawns = getSpawnsList( team );
+        return spawns == null ? new GameSpawn[0] : spawns.toArray( new GameSpawn[spawns.size()] );
     }
 
     public GameSpawn getSpawn( int x ) {
@@ -129,23 +162,36 @@ public class GameMap {
     }
 
     public GameSpawn getSpawn( Team team, int x ) {
-        return GameSpawns.getSpawns( team ).getSpawn( x );
-    }
-
-    public void setSpawn( int spawn, Location loc ) {
-        this.setSpawn( null, spawn, loc );
+        if ( x < 0 ) {
+            return null;
+        }
+        List<GameSpawn> spawns = getSpawnsList( team );
+        while ( x >= spawns.size() ) {// e.g. if x = 10, spawns = 4, it will say to use 6, which
+            // will then say to use 2, which is valid.
+            x -= spawns.size();// e.g. if x = 4, spawns = 4, it will say to use 0, which is valid.
+        }
+        return this.getSpawns( team )[ x ];
     }
 
     public void setSpawn( Team team, int spawn, Location loc ) {
-        GameSpawns.getSpawns( team ).setSpawn( spawn, loc );
+        if ( spawn < 0 ) {
+            return;
+        }
+        GameSpawn location = new GameSpawn( loc );
+        List<GameSpawn> spawns = getSpawnsList( team );
+        if ( spawn > spawns.size() ) {
+            spawn = spawns.size();
+        }
+        if ( spawns.size() > spawn ) {
+            spawns.remove( spawn );
+            spawns.add( spawn, location );
+        } else {
+            spawns.add( location );
+        }
     }
 
-    public void addSpawn( Location loc ) {
-        this.addSpawn( null, loc );
-    }
-
-    public void addSpawn( Team team, Location loc ) {
-        GameSpawns.getSpawns( team ).addSpawn( loc );
+    public void addSpawn( Team team, GameSpawn spawn ) {
+        getSpawnsList( team ).add( spawn );
     }
 
     // spectator spawns
@@ -165,25 +211,6 @@ public class GameMap {
         } else {
             this.spectatorSpawns.add( location );
         }
-    }
-
-    public void save() {
-        FileConfiguration cfg = this.getConfig();
-
-        List<String> sspawns = new LinkedList<>();
-        List<String> ssspawns = new LinkedList<>();
-        for ( GameSpawn spawn : this.spawns ) {
-            sspawns.add( Serializer.serialize( spawn ) );
-        }
-        for ( GameSpawn spawn : this.spectatorSpawns ) {
-            ssspawns.add( Serializer.serialize( spawn ) );
-        }
-
-        cfg.set( "name", this.getName() );
-        cfg.set( "spawns", sspawns );
-        cfg.set( "spectators", ssspawns );
-
-        this.saveConfig();
     }
 
     public World getWorld() {
@@ -210,6 +237,10 @@ public class GameMap {
         try {
             this.getConfig().save( new File( this.folder, "gamedata.yml" ) );
         } catch ( Exception ignored ) {}
+    }
+
+    public void reset() {
+        // TODO: Things like undoing changes to the world.
     }
 
 }

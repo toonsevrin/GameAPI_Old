@@ -29,6 +29,10 @@ public class GameSpawn extends SerializableLocation {
         this( team, world, x, y, z, 0, 0 );
     }
 
+    public Team getTeam() {
+        return team;
+    }
+
     @Override
     public String serialize() {
         return super.serialize() + Serializer.SEPARATOR_INFO + this.team.getTeamColor().name().toLowerCase();
@@ -37,7 +41,8 @@ public class GameSpawn extends SerializableLocation {
     @Override
     public void deserialize( String s ) {
         super.deserialize( s );
-        this.team = Team.getTeam( TeamColor.valueOf( s.split( Serializer.SEPARATOR_INFO )[ 6 ] ), true );
+        String[] data = s.split( Serializer.SEPARATOR_INFO );
+        this.team = data.length > 5 ? Team.getTeam( TeamColor.valueOf( data[ 6 ].toUpperCase() ), true ) : null;
     }
 
 }

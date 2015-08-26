@@ -13,6 +13,7 @@ import org.bukkit.Location;
 import com.exorath.game.api.BasePlayerProperty;
 import com.exorath.game.api.GameListener;
 import com.exorath.game.api.Properties;
+import com.exorath.game.api.maps.GameMap;
 import com.exorath.game.api.player.GamePlayer;
 import com.google.common.collect.Maps;
 
@@ -156,21 +157,21 @@ public class Team {
         return this;
     }
 
-    public Team addSpawnPoint( Location spawn ) {
-        this.getSpawns().add( spawn );
+    public Team addSpawnPoint( GameMap map, Location spawn ) {
+        this.getSpawns( map ).add( spawn );
         return this;
     }
 
-    public Team removeSpawnPoint( Location spawn ) {
-        if ( !this.getSpawns().contains( spawn ) ) {
+    public Team removeSpawnPoint( GameMap map, Location spawn ) {
+        if ( !this.getSpawns( map ).contains( spawn ) ) {
             return this;
         }
-        this.getSpawns().remove( spawn );
+        this.getSpawns( map ).remove( spawn );
         return this;
     }
 
     @SuppressWarnings( "unchecked" )
-    public List<Location> getSpawns() {
+    public List<Location> getSpawns( GameMap map ) {
         return this.properties.as(TeamProperty.SPAWNS, List.class);
     }
 

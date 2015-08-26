@@ -5,8 +5,9 @@ import java.util.Set;
 
 import com.exorath.game.api.Game;
 import com.exorath.game.api.Manager;
+import com.exorath.game.api.maps.GameMap;
+import com.exorath.game.api.maps.MapManager;
 import com.exorath.game.api.player.GamePlayer;
-import com.yoshigenius.lib.util.GameUtil;
 
 /**
  * Created by too on 23/05/2015.
@@ -76,10 +77,11 @@ public class TeamManager implements Manager {
     }
 
     public void startGame() {
+        GameMap map = this.getGame().getManager( MapManager.class ).getCurrent();
         for (Team team : this.teams) {
             int spawn = 0;
             for (GamePlayer player : team.getPlayers())
-                spawn = GameUtil.cycle(spawn, team.getSpawns().size() - 1);
+                map.getSpawn( team, spawn++ );
         }
     }
 

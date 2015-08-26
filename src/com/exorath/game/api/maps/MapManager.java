@@ -36,4 +36,12 @@ public class MapManager implements Manager {
         return true;
     }
 
+    public GameMap getCurrent() {
+        return getMapList().getCurrent();
+    }
+
+    public void nextMap() {
+        getMapList().nextMap( this.selection );
+    }
+
 }

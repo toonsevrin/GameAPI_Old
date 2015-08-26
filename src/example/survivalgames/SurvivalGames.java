@@ -16,6 +16,7 @@ import com.exorath.game.api.action.JoinAction;
 import com.exorath.game.api.action.QuitAction;
 import com.exorath.game.api.gametype.minigame.RepeatingMinigame;
 import com.exorath.game.api.gametype.minigame.kit.KitManager;
+import com.exorath.game.api.maps.MapManager;
 import com.exorath.game.api.message.GameMessenger;
 import com.exorath.game.api.npc.types.KitSelector;
 import com.exorath.game.api.npc.types.SpectatorNPC;
@@ -184,8 +185,8 @@ public class SurvivalGames extends RepeatingMinigame {
             GameMessenger.sendInfo( SurvivalGames.this, "Standoff started! Players are teleported to the center." );
             int cycle = 0;
             for ( GamePlayer player : SurvivalGames.this.getManager( TeamManager.class ).getTeam().getPlayers() ) { //Teleport all active players back to a spawn location.
-                player.getBukkitPlayer().teleport( SurvivalGames.this.getManager( TeamManager.class ).getTeam().getSpawns().get( cycle ) );
-                cycle = GameUtil.cycle( cycle, SurvivalGames.this.getManager( TeamManager.class ).getTeam().getSpawns().size() - 1 );
+                player.getBukkitPlayer().teleport( SurvivalGames.this.getManager( TeamManager.class ).getTeam().getSpawns( getManager( MapManager.class ).getCurrent() ).get( cycle ) );
+                cycle = GameUtil.cycle( cycle, SurvivalGames.this.getManager( TeamManager.class ).getTeam().getSpawns( getManager( MapManager.class ).getCurrent() ).size() - 1 );
             }
         }, 20 * 60 * 10 );
     }
