@@ -39,7 +39,7 @@ public abstract class Game {
         TIME_UP;
     }
 
-    private GamePlugin host;
+    private GameProvider host;
 
     private final Set<GameListener> listeners = Sets.newHashSet();
     private Lobby lobby = new Lobby();
@@ -62,11 +62,11 @@ public abstract class Game {
     }
 
     /* Plugin Host */
-    protected void setHost(GamePlugin host){
+    protected void setHost( GameProvider host ) {
         this.host = host;
     }
 
-    public GamePlugin getHost() {
+    public GameProvider getHost() {
         return host;
     }
 

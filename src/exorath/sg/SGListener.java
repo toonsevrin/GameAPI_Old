@@ -1,4 +1,4 @@
-package example.survivalgames;
+package exorath.sg;
 
 import org.bukkit.event.entity.PlayerDeathEvent;
 

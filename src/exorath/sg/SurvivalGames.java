@@ -1,4 +1,4 @@
-package example.survivalgames;
+package exorath.sg;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,8 @@ import com.yoshigenius.lib.util.GameUtil;
  * An example gamemode
  */
 public class SurvivalGames extends RepeatingMinigame {
-    private List<Location> spawns = new ArrayList<Location>();
+
+    private List<Location> spawns = new ArrayList<>();
 
     public SurvivalGames() {
         this.setupGameProperties();

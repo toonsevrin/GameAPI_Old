@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.exorath.game.api.Game;
+import com.exorath.game.api.GameProvider;
 import com.exorath.game.api.config.ConfigurationManager;
 import com.exorath.game.api.database.SQLManager;
 import com.exorath.game.api.nms.NMS;
@@ -35,6 +36,12 @@ public class GameAPI extends JavaPlugin {
 
     private static Map<UUID, GamePlayer> players = Maps.newHashMap();
     private static Map<UUID, Game> games = Maps.newHashMap();
+    private static Set<String> gameProviders = Sets.newHashSet();
+
+    public static void registerGameProvider( GameProvider plugin ) {
+        gameProviders.add( plugin.getName() );
+        plugin.init();
+    }
 
     public static Game getGame( UUID uuid ) {
         return uuid == null ? null : games.get( uuid );

@@ -33,8 +33,11 @@ import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
+import org.bukkit.event.server.PluginEnableEvent;
+import org.bukkit.plugin.Plugin;
 
 import com.exorath.game.api.Game;
+import com.exorath.game.api.GameProvider;
 import com.exorath.game.api.events.GamePlayerKillPlayerEvent;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.team.Team;
@@ -44,6 +47,15 @@ import com.exorath.game.api.team.TeamManager;
  * @author Nick Robson
  */
 public class GameAPIListener implements Listener {
+
+    @EventHandler
+    public void onPluginLoad( PluginEnableEvent event ) {
+        Plugin plg = event.getPlugin();
+        if ( plg instanceof GameProvider ) {
+            GameAPI.registerGameProvider( (GameProvider) plg );
+            GameAPI.getInstance().getLogger().info( "Detected GameAPI provider: " + plg.getName() );
+        }
+    }
 
     @EventHandler
     public void onLogin( PlayerLoginEvent event ) {

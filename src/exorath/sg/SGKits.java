@@ -1,4 +1,4 @@
-package example.survivalgames;
+package exorath.sg;
 
 import java.util.HashMap;
 import java.util.Map;
