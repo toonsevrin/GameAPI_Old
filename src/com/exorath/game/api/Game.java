@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import com.exorath.game.api.gamestates.GameState;
 import com.exorath.game.api.gamestates.StateManager;
+import com.exorath.game.api.hud.HUDManager;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -62,6 +63,7 @@ public abstract class Game {
         addManager(new TeamManager(this));
         addManager(new SpectateManager(this));
         addManager(new StateManager(this));
+        addManager(new HUDManager());
     }
 
     /* Plugin Host */

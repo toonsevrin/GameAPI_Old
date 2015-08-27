@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.database.SQLData;
+import com.exorath.game.api.hud.HUD;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -29,10 +30,15 @@ public final class GamePlayer {
     private SQLData sqlData;
     private SQLData gSqlData;
 
+    private HUD hud;
+
     public GamePlayer(UUID id) {
         this.uuid = id;
+
         sqlData = new SQLData(GameAPI.getHost(), "players", id, false);
         gSqlData = new SQLData(GameAPI.getInstance(), "players", id, false);
+
+        hud = new HUD(this);
     }
 
     public GamePlayer(Player player) {
@@ -115,6 +121,10 @@ public final class GamePlayer {
 
     public boolean hasCoins(int coins) {
         return gSqlData.getInt("coins", 0) >= coins;
+    }
+    //** HUD **//
+    public HUD getHud() {
+        return hud;
     }
 
     //** Messaging Methods *//
