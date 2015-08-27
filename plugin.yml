@@ -1,0 +1,4 @@
+name: GameAPI
+version: 0.01
+main: com.exorath.game.GameAPI
+description: "An Exorath API for Games"
