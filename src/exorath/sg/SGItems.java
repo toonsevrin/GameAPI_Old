@@ -1,4 +1,4 @@
-package example.survivalgames;
+package exorath.sg;
 
 /**
  * Created by too on 6/06/2015.

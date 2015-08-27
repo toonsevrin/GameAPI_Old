@@ -22,13 +22,13 @@ public class TitleBase
     private static Field nmsFieldPlayerConnection;
     private static Field nmsFieldNetworkManager;
     private static Field nmsFieldNetworkManagerI;
-    private static Field nmsFieldNetworkManagerM;
+    //private static Field nmsFieldNetworkManagerM;
     private static double serverVersion = 1.7D;
     private static int VERSION = 47;
 
     public static void sendTitle(Player p, String title)
     {
-        if ((p == null) || (title == null)) {
+        if (p == null || title == null) {
             throw new NullPointerException();
         }
         if (getVersion(p) < VERSION) {
@@ -59,7 +59,7 @@ public class TitleBase
 
     public static void sendSubTitle(Player p, String subtitle)
     {
-        if ((p == null) || (subtitle == null)) {
+        if (p == null || subtitle == null) {
             throw new NullPointerException();
         }
         if (getVersion(p) < VERSION) {
@@ -195,7 +195,7 @@ public class TitleBase
             try
             {
                 nmsChatBaseComponent = Reflection.getNMSClass("IChatBaseComponent");
-                nmsChatSerializer = Reflection.getNMSClass((Reflection.getVersion().contains("1_7")) || (Reflection.getVersion().contains("1_8_R1")) ? "ChatSerializer" : "IChatBaseComponent$ChatSerializer");
+                nmsChatSerializer = Reflection.getNMSClass(Reflection.getVersion().contains("1_7") || Reflection.getVersion().contains("1_8_R1") ? "ChatSerializer" : "IChatBaseComponent$ChatSerializer");
                 if (Reflection.getVersion().contains("1_8"))
                 {
                     nmsPacketTitle = Reflection.getNMSClass("PacketPlayOutTitle");
@@ -212,7 +212,7 @@ public class TitleBase
                 nmsFieldPlayerConnection = Reflection.getField(nmsEntityPlayer, "playerConnection");
                 nmsFieldNetworkManager = Reflection.getField(nmsPlayerConnection, "networkManager");
                 nmsFieldNetworkManagerI = Reflection.getField(nmsFieldNetworkManager.getType(), "i");
-                nmsFieldNetworkManagerM = Reflection.getField(nmsFieldNetworkManager.getType(), "m");
+                //nmsFieldNetworkManagerM = Reflection.getField(nmsFieldNetworkManager.getType(), "m");
 
                 nmsSendPacket = Reflection.getMethod(nmsPlayerConnection, "sendPacket", new Class[0]);
                 nmsChatSerializerA = Reflection.getMethod(nmsChatSerializer, "a", new Class[] { String.class });

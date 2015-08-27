@@ -5,9 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+<<<<<<< HEAD
 import com.exorath.game.api.gamestates.GameState;
 import com.exorath.game.api.gamestates.StateManager;
 import com.exorath.game.api.hud.HUDManager;
+=======
+>>>>>>> 51d54de87afdf0d0e1f68efc8e48194630c22d39
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,18 +19,18 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.action.Actions;
 import com.exorath.game.api.events.GameStateChangedEvent;
+import com.exorath.game.api.gametype.minigame.kit.KitManager;
 import com.exorath.game.api.lobby.Lobby;
+import com.exorath.game.api.maps.MapManager;
 import com.exorath.game.api.player.Players;
 import com.exorath.game.api.spectate.SpectateManager;
 import com.exorath.game.api.team.TeamManager;
 import com.exorath.game.lib.util.FileUtils;
 import com.google.common.collect.Sets;
-import org.bukkit.plugin.Plugin;
 
 /**
  * The class representing a single Game instance.
  * Gamemode, RepeatingMinigame and Minigame extend this.
- * TODO: Add the map manager
  *
  * @author Toon Sevrin
  * @author Nick Robson
@@ -43,35 +46,59 @@ public abstract class Game {
         TIME_UP;
     }
 
-    private Plugin host;
+    private GameProvider host;
 
+    private final UUID gameID;
     private final Set<GameListener> listeners = Sets.newHashSet();
+    private final Set<Manager> managers = new HashSet<>();
+
     private Lobby lobby = new Lobby();
     private Properties properties = new Properties();
-
-    private final Set<Manager> managers = new HashSet<>();
     private Players players = new Players(this);
     private Actions actions = new Actions();
     private String world = null;
-
-    private UUID gameID;
+    private GameState state;
 
     public Game() {
-        GameAPI.getInstance().setGame(this);
-        gameID = UUID.randomUUID();
+        this.gameID = UUID.randomUUID();
 
+<<<<<<< HEAD
         addManager(new TeamManager(this));
         addManager(new SpectateManager(this));
         addManager(new StateManager(this));
         addManager(new HUDManager());
+=======
+        addManager( new TeamManager( this ) );
+        addManager( new SpectateManager( this ) );
+        addManager( new KitManager( this ) );
+        addManager( new MapManager() );
+    }
+
+    /* Game ID */
+    public final UUID getGameID() {
+        return gameID;
+>>>>>>> 51d54de87afdf0d0e1f68efc8e48194630c22d39
     }
 
     /* Plugin Host */
-    protected void setHost(GamePlugin host){
+    public GameProvider getHost() {
+        return host;
+    }
+
+    protected void setHost( GameProvider host ) {
         this.host = host;
     }
-    public Plugin getHost() {
-        return host;
+
+    public GameState getState() {
+        return this.state;
+    }
+
+    public void setState( GameState state ) {
+        GameState old = this.state;
+        this.state = state;
+        GameStateChangedEvent event = new GameStateChangedEvent( this, old, state );
+        for ( GameListener listener : getListeners() )
+            listener.onGameStateChange( event );
     }
 
     /* Game Map */
@@ -95,8 +122,19 @@ public abstract class Game {
     public Set<Manager> getManagers() {
         return managers;
     }
+
     public void addManager(Manager manager) {
         managers.add(manager);
+    }
+
+    @SuppressWarnings( "unchecked" )
+    public <T extends Manager> T getManager( Class<T> clazz ) {
+        for ( Manager manager : managers ) {
+            if ( clazz.isAssignableFrom( manager.getClass() ) ) {
+                return (T) manager;
+            }
+        }
+        return null;
     }
 
     /* Properties */
@@ -130,14 +168,6 @@ public abstract class Game {
     }
     public int getPlayerCount() {
         return this.players.getPlayingAmount();
-    }
-
-    /* Game ID */
-    public UUID getGameID() {
-        return gameID;
-    }
-    public void setGameID(UUID gameID) {
-        this.gameID = gameID;
     }
 
     /* Listeners */

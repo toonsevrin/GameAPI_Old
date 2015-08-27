@@ -21,22 +21,22 @@ import org.bukkit.inventory.meta.SkullMeta;
  * @author Nick Robson
  */
 public class ItemStackBuilder {
-    
+
     /**
      * A builder class to wrap {@link ItemMeta}.
      *
      * @author Nick Robson
      */
     public static class ItemStackBuilderMeta {
-        
+
         private final ItemStackBuilder builder;
         private final ItemMeta meta;
-        
+
         protected ItemStackBuilderMeta( ItemStackBuilder builder, ItemMeta meta ) {
             this.builder = builder;
             this.meta = meta;
         }
-        
+
         /**
          * Adds a line of lore.
          *
@@ -52,7 +52,7 @@ public class ItemStackBuilder {
             lores.add( lore );
             return this.setLore( lores );
         }
-        
+
         /**
          * Adds multiple lines of lore.
          *
@@ -67,7 +67,7 @@ public class ItemStackBuilder {
             }
             return this;
         }
-        
+
         /**
          * Adds a stored enchantment if this is a Enchanted Book.
          *
@@ -86,7 +86,7 @@ public class ItemStackBuilder {
             }
             return this;
         }
-        
+
         /**
          * Clears the lore on this item.
          *
@@ -95,7 +95,7 @@ public class ItemStackBuilder {
         public ItemStackBuilderMeta clearLore() {
             return this.setLore( new ArrayList<String>() );
         }
-        
+
         /**
          * Gets the parent {@link ItemStackBuilder} object.
          *
@@ -105,7 +105,7 @@ public class ItemStackBuilder {
             this.builder.get().setItemMeta( this.meta );
             return this.builder;
         }
-        
+
         /**
          * Gets all stored enchantments if this is an Enchanted Book.
          *
@@ -118,7 +118,7 @@ public class ItemStackBuilder {
             }
             return null;
         }
-        
+
         /**
          * Sets the color if this is leather armour.
          *
@@ -133,7 +133,7 @@ public class ItemStackBuilder {
             }
             return this;
         }
-        
+
         /**
          * Sets the display name of this item.
          *
@@ -145,7 +145,7 @@ public class ItemStackBuilder {
             this.meta.setDisplayName( display );
             return this;
         }
-        
+
         /**
          * Sets the lore of this item.
          *
@@ -157,7 +157,7 @@ public class ItemStackBuilder {
             this.meta.setLore( lore );
             return this;
         }
-        
+
         /**
          * Sets the lore of this item.
          *
@@ -168,7 +168,7 @@ public class ItemStackBuilder {
         public ItemStackBuilderMeta setLore( String... lore ) {
             return this.setLore( Arrays.asList( lore ) );
         }
-        
+
         /**
          * Sets the owner if this is a Skull (to display the skin).
          *
@@ -186,7 +186,7 @@ public class ItemStackBuilder {
             }
             return this;
         }
-        
+
         /**
          * Sets the page at the specified index to have the specified text if this is a Written
          * Book.
@@ -204,7 +204,7 @@ public class ItemStackBuilder {
             }
             return this;
         }
-        
+
         /**
          * Sets the title if this is a Written Book.
          *
@@ -219,11 +219,11 @@ public class ItemStackBuilder {
             }
             return this;
         }
-        
+
     }
-    
+
     private final ItemStack itemStack;
-    
+
     /**
      * Creates a builder wrapping the provided {@link ItemStack}.
      *
@@ -231,9 +231,9 @@ public class ItemStackBuilder {
      *            The item stack.
      */
     public ItemStackBuilder( ItemStack base ) {
-        this.itemStack = base;
+        this. itemStack = base;
     }
-    
+
     /**
      * Creates a builder wrapping an object with the provided {@link Material}.
      *
@@ -243,7 +243,7 @@ public class ItemStackBuilder {
     public ItemStackBuilder( Material m ) {
         this( m, 1 );
     }
-    
+
     /**
      * Creates a builder wrapping an object with the provided {@link Material}.
      *
@@ -255,7 +255,7 @@ public class ItemStackBuilder {
     public ItemStackBuilder( Material m, byte data ) {
         this( m, 1, data );
     }
-    
+
     /**
      * Creates a builder wrapping an object with the provided {@link Material} and amount.
      *
@@ -267,7 +267,7 @@ public class ItemStackBuilder {
     public ItemStackBuilder( Material m, int num ) {
         this( m, num, (byte) 0 );
     }
-    
+
     /**
      * Creates a builder wrapping an object with the provided {@link Material}, amount and data.
      *
@@ -281,7 +281,7 @@ public class ItemStackBuilder {
     public ItemStackBuilder( Material m, int num, byte data ) {
         this( new ItemStack( m, num, data ) );
     }
-    
+
     /**
      * Creates a builder wrapping an object with the provided {@link Material}, amount and data.
      *
@@ -295,7 +295,7 @@ public class ItemStackBuilder {
     public ItemStackBuilder( Material m, int num, short damage ) {
         this( new ItemStack( m, num, damage ) );
     }
-    
+
     /**
      * Adds an enchantment safely to this item.
      *
@@ -314,12 +314,11 @@ public class ItemStackBuilder {
         } catch ( Exception ex ) {
             if ( force ) {
                 return this.addUnsafeEnchantment( ench, level );
-            } else {
-                return this;
             }
+            return this;
         }
     }
-    
+
     /**
      * Adds an enchantment unsafely to this item.
      *
@@ -335,7 +334,7 @@ public class ItemStackBuilder {
         } catch ( Exception ex ) {}
         return this;
     }
-    
+
     /**
      * Gets the wrapped {@link ItemStack}.
      *
@@ -344,7 +343,7 @@ public class ItemStackBuilder {
     public ItemStack get() {
         return this.itemStack;
     }
-    
+
     /**
      * Gets this item's meta as a {@link ItemStackBuilderMeta} object.
      *
@@ -354,7 +353,7 @@ public class ItemStackBuilder {
     public ItemStackBuilderMeta getMeta() {
         return new ItemStackBuilderMeta( this, this.get().getItemMeta() );
     }
-    
+
     /**
      * Sets the amount of items in this item stack.
      *
@@ -366,7 +365,7 @@ public class ItemStackBuilder {
         this.itemStack.setAmount( num );
         return this;
     }
-    
+
     /**
      * Sets the material of this item in this item stack.
      *
@@ -378,5 +377,5 @@ public class ItemStackBuilder {
         this.itemStack.setType( m );
         return this;
     }
-    
+
 }

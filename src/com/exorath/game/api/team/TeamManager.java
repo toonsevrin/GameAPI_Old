@@ -1,12 +1,16 @@
 package com.exorath.game.api.team;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
+
+import org.bukkit.entity.Player;
 
 import com.exorath.game.api.Game;
 import com.exorath.game.api.Manager;
+import com.exorath.game.api.maps.GameMap;
+import com.exorath.game.api.maps.MapManager;
 import com.exorath.game.api.player.GamePlayer;
-import com.yoshigenius.lib.util.GameUtil;
 
 /**
  * Created by too on 23/05/2015.
@@ -64,6 +68,11 @@ public class TeamManager implements Manager {
         return this.teams.size() == 1 ? this.teams.toArray(new Team[1])[0] : null;
     }
 
+    public Team getTeam( GamePlayer gp ) {
+        Optional<Team>team = getTeams().stream().filter( t -> t.getPlayers().contains( gp.getUUID() ) ).findAny();
+        return team.isPresent() ? team.get() : null;
+    }
+
     /**
      * if there is one team and its a DefaultTeam remove it. DefaultTeam only exists while no other
      * teams are added.
@@ -76,11 +85,27 @@ public class TeamManager implements Manager {
     }
 
     public void startGame() {
+        GameMap map = this.getGame().getManager( MapManager.class ).getCurrent();
         for (Team team : this.teams) {
             int spawn = 0;
-            for (GamePlayer player : team.getPlayers())
-                spawn = GameUtil.cycle(spawn, team.getSpawns().size() - 1);
+            for ( GamePlayer player : team.getPlayers() ) {
+                Player pl = player.getBukkitPlayer();
+                if (pl != null) {
+                    pl.teleport(map.getSpawn( team, spawn++ ).getBukkitLocation());
+                }
+            }
         }
+    }
+
+    private Integer getWeight( Team t ) {
+        return t.getPlayers().size() * t.getProperties().as( TeamProperty.PLAYER_WEIGHT, int.class );
+    }
+
+    public Team findTeam( GamePlayer p ) {
+        Optional<Team> opt = getTeams().stream().min( ( t1, t2 ) -> getWeight( t1 ).compareTo( getWeight( t2 ) ) );
+        if ( opt.isPresent() )
+            return opt.get();
+        return null;
     }
 
 }

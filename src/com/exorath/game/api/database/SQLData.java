@@ -1,19 +1,24 @@
 package com.exorath.game.api.database;
 
-import com.exorath.game.GameAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import com.exorath.game.GameAPI;
+
 /**
  * Created by Toon Sevrin on 8/16/2015.
  */
+@SuppressWarnings( "unused" )
 public class SQLData {
-    private static final Class[] allowedTypes = new Class[]{String.class, Integer.class, Float.class, Double.class, Long.class, Date.class};
+
+    private static final Class<?>[] allowedTypes = new Class[] {
+            String.class, Integer.class, Float.class, Double.class, Long.class, Date.class
+    };
 
     private UUID uuid;
     private String tableName;
@@ -21,41 +26,47 @@ public class SQLData {
     private HashMap<String, Object> data = new HashMap<>();
     private boolean loaded = false;
 
-    public SQLData(Plugin host, String tableName, UUID uuid, boolean sync) {
+    public SQLData( Plugin host, String tableName, UUID uuid, boolean sync ) {
         this.uuid = uuid;
-        tableName = host.getName() + "_" + tableName; //eg. GolemWarfare_Players
+        tableName = host.getName() + "_" + tableName;//eg. GolemWarfare_Players
 
-        load(sync);
+        load( sync );
     }
+
     //** Database manipulators **//
     /**
      * Loads data from database
-     * @param sync whether or not the data should be loaded synchronous with the main thread or not
+     *
+     * @param sync
+     *            whether or not the data should be loaded synchronous with the main thread or not
      */
-    private void load(boolean sync){
-        if(sync)
+    private void load( boolean sync ) {
+        if ( sync ) {
             new LoadTask().run();
-        else
-            new LoadTask().runTaskAsynchronously(GameAPI.getInstance());
+        } else {
+            new LoadTask().runTaskAsynchronously( GameAPI.getInstance() );
+        }
     }
+
     /**
      * Reload data from database
      */
-    public void reload(boolean sync) {
-        boolean loaded = false;
+    public void reload( boolean sync ) {
         data.clear();
-        load(sync);
+        load( sync );
     }
 
     /**
      * Save data to database
      */
-    public void save(boolean sync){
-        if(sync)
+    public void save( boolean sync ) {
+        if ( sync ) {
             new SaveTask().run();
-        else
-            new SaveTask().runTaskAsynchronously(GameAPI.getInstance());
+        } else {
+            new SaveTask().runTaskAsynchronously( GameAPI.getInstance() );
+        }
     }
+
     //** Utility **//
     /**
      * Get a string with keys and values formatted like this:
@@ -80,212 +91,252 @@ public class SQLData {
 
         return "(" + keys.toString() + ") VALUES (" + values.toString() + ")";
     }
+
     //** Setters **//
-    public void setString(String key, String value) {
-        if (key == null) {
-            GameAPI.error("SQLData: tried to set key with null value");
+    public void setString( String key, String value ) {
+        if ( key == null ) {
+            GameAPI.error( "SQLData: tried to set key with null value" );
             return;
         }
-        data.put(key, value);
+        data.put( key, value );
     }
 
-    public void setInt(String key, int value) {
-        if (key == null) {
-            GameAPI.error("SQLData: tried to set key with null value");
+    public void setInt( String key, int value ) {
+        if ( key == null ) {
+            GameAPI.error( "SQLData: tried to set key with null value" );
             return;
         }
-        data.put(key, value);
+        data.put( key, value );
     }
 
-    public void setFloat(String key, float value) {
-        if (key == null) {
-            GameAPI.error("SQLData: tried to set key with null value");
+    public void setFloat( String key, float value ) {
+        if ( key == null ) {
+            GameAPI.error( "SQLData: tried to set key with null value" );
             return;
         }
-        data.put(key, value);
+        data.put( key, value );
     }
 
-    public void setDouble(String key, double value) {
-        if (key == null) {
-            GameAPI.error("SQLData: tried to set key with null value");
+    public void setDouble( String key, double value ) {
+        if ( key == null ) {
+            GameAPI.error( "SQLData: tried to set key with null value" );
             return;
         }
-        data.put(key, value);
+        data.put( key, value );
     }
 
-    public void setLong(String key, long value) {
-        if (key == null) {
-            GameAPI.error("SQLData: tried to set key with null value");
+    public void setLong( String key, long value ) {
+        if ( key == null ) {
+            GameAPI.error( "SQLData: tried to set key with null value" );
             return;
         }
-        data.put(key, value);
+        data.put( key, value );
     }
 
-    public void setDate(String key, Date value) {
-        if (key == null) {
-            GameAPI.error("SQLData: tried to set key with null value");
+    public void setDate( String key, Date value ) {
+        if ( key == null ) {
+            GameAPI.error( "SQLData: tried to set key with null value" );
             return;
         }
-        data.put(key, value);
+        data.put( key, value );
     }
 
-    protected void setData(String key, Object value){
-        if (key == null) {
-            GameAPI.error("SQLData: tried to set key with null value");
+    protected void setData( String key, Object value ) {
+        if ( key == null ) {
+            GameAPI.error( "SQLData: tried to set key with null value" );
             return;
         }
-        data.put(key, value);
+        data.put( key, value );
     }
 
     //** Getters **//
     /**
      * @return null if key is not found, otherwise the saved value
      */
-    public String getString(String key) {
-        if (!data.containsKey(key))
+    public String getString( String key ) {
+        if ( !data.containsKey( key ) ) {
             return null;
-        Object value = data.get(key);
-        if (!(value instanceof String))
+        }
+        Object value = data.get( key );
+        if ( !( value instanceof String ) ) {
             return null;
+        }
         return (String) value;
     }
+
     /**
      * @return def if key is not found, otherwise the saved value
      */
-    public String getString(String key, String def) {
-        if (!data.containsKey(key))
+    public String getString( String key, String def ) {
+        if ( !data.containsKey( key ) ) {
             return def;
-        Object value = data.get(key);
-        if (!(value instanceof String))
+        }
+        Object value = data.get( key );
+        if ( !( value instanceof String ) ) {
             return def;
+        }
         return (String) value;
     }
+
     /**
      * @return null if key is not found, otherwise the saved value
      */
-    public Integer getInt(String key) {
-        if (!data.containsKey(key))
+    public Integer getInt( String key ) {
+        if ( !data.containsKey( key ) ) {
             return null;
-        Object value = data.get(key);
-        if (!(value instanceof Integer))
+        }
+        Object value = data.get( key );
+        if ( !( value instanceof Integer ) ) {
             return null;
+        }
         return (Integer) value;
     }
+
     /**
      * @return def if key is not found, otherwise the saved value
      */
-    public int getInt(String key, int def) {
-        if (!data.containsKey(key))
+    public int getInt( String key, int def ) {
+        if ( !data.containsKey( key ) ) {
             return def;
-        Object value = data.get(key);
-        if (!(value instanceof Integer))
+        }
+        Object value = data.get( key );
+        if ( !( value instanceof Integer ) ) {
             return def;
+        }
         return (int) value;
     }
+
     /**
      * @return null if key is not found, otherwise the saved value
      */
-    public Float getFloat(String key) {
-        if (!data.containsKey(key))
+    public Float getFloat( String key ) {
+        if ( !data.containsKey( key ) ) {
             return null;
-        Object value = data.get(key);
-        if (!(value instanceof Float))
+        }
+        Object value = data.get( key );
+        if ( !( value instanceof Float ) ) {
             return null;
+        }
         return (Float) value;
     }
+
     /**
      * @return def if key is not found, otherwise the saved value
      */
-    public float getFloat(String key, float def) {
-        if (!data.containsKey(key))
+    public float getFloat( String key, float def ) {
+        if ( !data.containsKey( key ) ) {
             return def;
-        Object value = data.get(key);
-        if (!(value instanceof Float))
+        }
+        Object value = data.get( key );
+        if ( !( value instanceof Float ) ) {
             return def;
+        }
         return (float) value;
     }
 
     /**
      * @return null if key is not found, otherwise the saved value
      */
-    public Double getDouble(String key) {
-        if (!data.containsKey(key))
+    public Double getDouble( String key ) {
+        if ( !data.containsKey( key ) ) {
             return null;
-        Object value = data.get(key);
-        if (!(value instanceof Double))
+        }
+        Object value = data.get( key );
+        if ( !( value instanceof Double ) ) {
             return null;
+        }
         return (Double) value;
     }
+
     /**
      * @return def if key is not found, otherwise the saved value
      */
-    public double getDouble(String key, double def) {
-        if (!data.containsKey(key))
+    public double getDouble( String key, double def ) {
+        if ( !data.containsKey( key ) ) {
             return def;
-        Object value = data.get(key);
-        if (!(value instanceof Double))
+        }
+        Object value = data.get( key );
+        if ( !( value instanceof Double ) ) {
             return def;
+        }
         return (double) value;
     }
+
     /**
      * @return null if key is not found, otherwise the saved value
      */
-    public Long getLong(String key) {
-        if (!data.containsKey(key))
+    public Long getLong( String key ) {
+        if ( !data.containsKey( key ) ) {
             return null;
-        Object value = data.get(key);
-        if (!(value instanceof Long))
+        }
+        Object value = data.get( key );
+        if ( !( value instanceof Long ) ) {
             return null;
+        }
         return (Long) value;
     }
+
     /**
      * @return def if key is not found, otherwise the saved value
      */
-    public long getLong(String key, long def) {
-        if (!data.containsKey(key))
+    public long getLong( String key, long def ) {
+        if ( !data.containsKey( key ) ) {
             return def;
-        Object value = data.get(key);
-        if (!(value instanceof Long))
+        }
+        Object value = data.get( key );
+        if ( !( value instanceof Long ) ) {
             return def;
+        }
         return (long) value;
     }
+
     /**
      * @return null if key is not found, otherwise the saved value
      */
-    public Date getDate(String key) {
-        if (!data.containsKey(key))
+    public Date getDate( String key ) {
+        if ( !data.containsKey( key ) ) {
             return null;
-        Object value = data.get(key);
-        if (!(value instanceof Date))
+        }
+        Object value = data.get( key );
+        if ( !( value instanceof Date ) ) {
             return null;
-        return (Date) value;
-    }
-    /**
-     * @return def if key is not found, otherwise the saved value
-     */
-    public Date getDate(String key, Date def) {
-        if (!data.containsKey(key))
-            return def;
-        Object value = data.get(key);
-        if (!(value instanceof Date))
-            return def;
+        }
         return (Date) value;
     }
 
-    public boolean contains(String key){
-        if(key == null)
-            return false;
-        return data.containsKey(key);
+    /**
+     * @return def if key is not found, otherwise the saved value
+     */
+    public Date getDate( String key, Date def ) {
+        if ( !data.containsKey( key ) ) {
+            return def;
+        }
+        Object value = data.get( key );
+        if ( !( value instanceof Date ) ) {
+            return def;
+        }
+        return (Date) value;
     }
-    public UUID getUuid(){
+
+    public boolean contains( String key ) {
+        if ( key == null ) {
+            return false;
+        }
+        return data.containsKey( key );
+    }
+
+    public UUID getUuid() {
         return uuid;
     }
-    public String getTableName(){
+
+    public String getTableName() {
         return tableName;
     }
-    protected HashMap<String, Object> getData(){
+
+    protected HashMap<String, Object> getData() {
         return data;
     }
+
     /**
      * Loads data from database into this object
      */
@@ -293,25 +344,23 @@ public class SQLData {
         @Override
         public void run() {
             //Get the table
-            SQLTable table = GameAPI.getSQLManager().getTable(tableName);
+            SQLTable table = GameAPI.getSQLManager().getTable( tableName );
             //Check if uuid exists
-            if(!table.rowExists(uuid.toString()))
+            if ( table == null || !table.rowExists( uuid.toString() ) ) {
                 return;
+            }
             //Load all cells
-            if(table.load(SQLData.this))
+            if ( table.load( SQLData.this ) ) {
                 setLoaded();
+            }
         }
 
         //Change loaded to true, needs testing if this happens before the login event
         private void setLoaded() {
-            Bukkit.getScheduler().runTask(GameAPI.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    loaded = true;
-                }
-            });
+            Bukkit.getScheduler().runTask( GameAPI.getInstance(), () -> loaded = true );
         }
     }
+
     /**
      * Saves data from database into this object
      */
@@ -319,33 +368,35 @@ public class SQLData {
         @Override
         public void run() {
             //Get the table
-            SQLTable table = GameAPI.getSQLManager().getTable(tableName);
+            SQLTable table = GameAPI.getSQLManager().getTable( tableName );
 
-            if(table.rowExists(uuid.toString())) {//Update row
-                table.updateRow(SQLData.this);
-            } else{//create row
+            if ( table.rowExists( uuid.toString() ) ) {//Update row
+                table.updateRow( SQLData.this );
+            } else {//create row
                 //Create not existing columns
-                for(String key : data.keySet()){
-                    if(table.getColumns().containsKey(key))
+                for ( String key : data.keySet() ) {
+                    if ( table.getColumns().containsKey( key ) ) {
                         continue;
-                    addColumn(table, key, data.get(key));
+                    }
+                    addColumn( table, key, data.get( key ) );
                 }
-                table.createRow(SQLData.this);
+                table.createRow( SQLData.this );
             }
         }
-        private void addColumn(SQLTable table, String key, Object value){
-            if(value instanceof String){
-                table.addColumn(key, ColumnType.STRING_128);
-            }else if(value instanceof Integer){
-                table.addColumn(key, ColumnType.INT);
-            }else if(value instanceof Float){
-                table.addColumn(key, ColumnType.FLOAT);
-            }else if(value instanceof Double){
-                table.addColumn(key, ColumnType.DOUBLE);
-            }else if(value instanceof Long){
-                table.addColumn(key, ColumnType.BIG_INT);
-            }else if(value instanceof Date){
-                table.addColumn(key, ColumnType.DATE_TIME);
+
+        private void addColumn( SQLTable table, String key, Object value ) {
+            if ( value instanceof String ) {
+                table.addColumn( key, ColumnType.STRING_128 );
+            } else if ( value instanceof Integer ) {
+                table.addColumn( key, ColumnType.INT );
+            } else if ( value instanceof Float ) {
+                table.addColumn( key, ColumnType.FLOAT );
+            } else if ( value instanceof Double ) {
+                table.addColumn( key, ColumnType.DOUBLE );
+            } else if ( value instanceof Long ) {
+                table.addColumn( key, ColumnType.BIG_INT );
+            } else if ( value instanceof Date ) {
+                table.addColumn( key, ColumnType.DATE_TIME );
             }
         }
     }

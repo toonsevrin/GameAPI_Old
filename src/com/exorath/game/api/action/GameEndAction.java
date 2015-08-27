@@ -1,11 +1,8 @@
 package com.exorath.game.api.action;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import com.exorath.game.GameAPI;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 
 /**
  * The GameEndAction is ran when the game ends, this is to add base behaviour to this event

@@ -19,7 +19,7 @@ public abstract class DieAction {
 
         @Override
         public void onDie(PlayerDeathEvent event, GamePlayer player, Game game) {
-            SpectateManager.getInstance().setSpectating(player, true);
+            game.getManager( SpectateManager.class ).setSpectating( player, true );
         }
 
     }

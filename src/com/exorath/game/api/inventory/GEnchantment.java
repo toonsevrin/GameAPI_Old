@@ -1,6 +1,5 @@
 package com.exorath.game.api.inventory;
 
-import com.yoshigenius.lib.util.EnchantmentType;
 import org.bukkit.enchantments.Enchantment;
 
 /**

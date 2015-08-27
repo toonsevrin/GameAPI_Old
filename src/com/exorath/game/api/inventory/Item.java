@@ -112,11 +112,8 @@ public class Item {
         }
         if(obj.has("e")) {
             JSONObject enchJSON = obj.getJSONObject("e");
-            Set<GEnchantment> enchantments = new HashSet<GEnchantment>();
-
             Iterator<String> keys = enchJSON.keys();
             while(keys.hasNext()){
-
                 String key = keys.next();
                 item.addEnchantment(new GEnchantment(Enchantment.getByName(key), enchJSON.getInt(key)));
             }

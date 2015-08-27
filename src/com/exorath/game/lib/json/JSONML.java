@@ -22,7 +22,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-*/
+ */
 
 import java.util.Iterator;
 
@@ -47,10 +47,10 @@ public class JSONML {
      * @throws JSONException
      */
     private static Object parse(
-        XMLTokener x,
-        boolean    arrayForm,
-        JSONArray  ja
-    ) throws JSONException {
+            XMLTokener x,
+            boolean    arrayForm,
+            JSONArray  ja
+            ) throws JSONException {
         String     attribute;
         char       c;
         String     closeTag = null;
@@ -60,11 +60,11 @@ public class JSONML {
         Object     token;
         String     tagName = null;
 
-// Test for and skip past these forms:
-//      <!-- ... -->
-//      <![  ... ]]>
-//      <!   ...   >
-//      <?   ...  ?>
+        // Test for and skip past these forms:
+        //      <!-- ... -->
+        //      <![  ... ]]>
+        //      <!   ...   >
+        //      <?   ...  ?>
 
         while (true) {
             if (!x.more()) {
@@ -76,13 +76,13 @@ public class JSONML {
                 if (token instanceof Character) {
                     if (token == XML.SLASH) {
 
-// Close tag </
+                        // Close tag </
 
                         token = x.nextToken();
                         if (!(token instanceof String)) {
                             throw new JSONException(
                                     "Expected a closing name instead of '" +
-                                    token + "'.");
+                                            token + "'.");
                         }
                         if (x.nextToken() != XML.GT) {
                             throw x.syntaxError("Misshaped close tag");
@@ -90,7 +90,7 @@ public class JSONML {
                         return token;
                     } else if (token == XML.BANG) {
 
-// <!
+                        // <!
 
                         c = x.next();
                         if (c == '-') {
@@ -123,14 +123,14 @@ public class JSONML {
                         }
                     } else if (token == XML.QUEST) {
 
-// <?
+                        // <?
 
                         x.skipPast("?>");
                     } else {
                         throw x.syntaxError("Misshaped tag");
                     }
 
-// Open tag <
+                    // Open tag <
 
                 } else {
                     if (!(token instanceof String)) {
@@ -162,7 +162,7 @@ public class JSONML {
                             break;
                         }
 
-// attribute = value
+                        // attribute = value
 
                         attribute = (String)token;
                         if (!arrayForm && ("tagName".equals(attribute) || "childNode".equals(attribute))) {
@@ -184,21 +184,17 @@ public class JSONML {
                         newja.put(newjo);
                     }
 
-// Empty tag <.../>
+                    // Empty tag <.../>
 
                     if (token == XML.SLASH) {
                         if (x.nextToken() != XML.GT) {
                             throw x.syntaxError("Misshaped tag");
                         }
                         if (ja == null) {
-                            if (arrayForm) {
-                                return newja;
-                            } else {
-                                return newjo;
-                            }
+                            return arrayForm ? newja : newjo;
                         }
 
-// Content, between <...> and </...>
+                        // Content, between <...> and </...>
 
                     } else {
                         if (token != XML.GT) {
@@ -215,11 +211,7 @@ public class JSONML {
                                 newjo.put("childNodes", newja);
                             }
                             if (ja == null) {
-                                if (arrayForm) {
-                                    return newja;
-                                } else {
-                                    return newjo;
-                                }
+                                return arrayForm ? newja : newjo;
                             }
                         }
                     }
@@ -227,8 +219,8 @@ public class JSONML {
             } else {
                 if (ja != null) {
                     ja.put(token instanceof String
-                        ? XML.stringToValue((String)token)
-                        : token);
+                            ? XML.stringToValue((String)token)
+                                    : token);
                 }
             }
         }
@@ -283,7 +275,7 @@ public class JSONML {
      * @throws JSONException
      */
     public static JSONObject toJSONObject(XMLTokener x) throws JSONException {
-           return (JSONObject)parse(x, false, null);
+        return (JSONObject)parse(x, false, null);
     }
 
 
@@ -322,7 +314,7 @@ public class JSONML {
         String              tagName;
         String               value;
 
-// Emit <tagName
+        // Emit <tagName
 
         tagName = ja.getString(0);
         XML.noSpace(tagName);
@@ -335,7 +327,7 @@ public class JSONML {
             i = 2;
             jo = (JSONObject)object;
 
-// Emit the attributes
+            // Emit the attributes
 
             keys = jo.keys();
             while (keys.hasNext()) {
@@ -355,7 +347,7 @@ public class JSONML {
             i = 1;
         }
 
-// Emit content in body
+        // Emit content in body
 
         length = ja.length();
         if (i >= length) {
@@ -406,7 +398,7 @@ public class JSONML {
         String              tagName;
         String              value;
 
-//Emit <tagName
+        //Emit <tagName
 
         tagName = jo.optString("tagName");
         if (tagName == null) {
@@ -417,7 +409,7 @@ public class JSONML {
         sb.append('<');
         sb.append(tagName);
 
-//Emit the attributes
+        //Emit the attributes
 
         keys = jo.keys();
         while (keys.hasNext()) {
@@ -436,7 +428,7 @@ public class JSONML {
             }
         }
 
-//Emit content in body
+        //Emit content in body
 
         ja = jo.optJSONArray("childNodes");
         if (ja == null) {
