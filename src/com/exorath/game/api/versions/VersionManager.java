@@ -8,6 +8,7 @@ import com.exorath.game.GameAPI;
 
 // TODO: THINK THIS VERSION CONTROL OUT, FINISH, DOCUMENT AND IMPROVE THIS FILE. (I will do this)
 // -Toon
+@SuppressWarnings( "unused" )
 public class VersionManager {
     private static final String VERSIONS_TABLENAME = "dataversions";
     private static final String COLUMN_MAPS = "maps";

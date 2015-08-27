@@ -45,9 +45,9 @@ public class ScoreboardText extends HUDText {
         if ( !( loc instanceof Scoreboard ) ) {
             return;
         }
-        this.setLocation( loc );
         Scoreboard sb = (Scoreboard) loc;
         ScoreboardBase base = sb.getScoreboard();
+        base.getClass(); // TODO
     }
 
     @Override

@@ -13,6 +13,7 @@ import com.exorath.game.GameAPI;
 /**
  * Created by Toon Sevrin on 8/16/2015.
  */
+@SuppressWarnings( "unused" )
 public class SQLData {
 
     private static final Class<?>[] allowedTypes = new Class[] {

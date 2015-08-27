@@ -17,6 +17,7 @@ import com.exorath.game.api.database.SQLData;
 import com.exorath.game.api.menu.Menu;
 import com.exorath.game.lib.Rank;
 
+@SuppressWarnings( "unused" )
 public final class GamePlayer {
 
     private UUID uuid;

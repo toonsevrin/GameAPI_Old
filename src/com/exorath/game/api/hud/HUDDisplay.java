@@ -8,6 +8,7 @@ import com.exorath.game.api.player.GamePlayer;
  * Created by TOON on 8/9/2015.
  */
 public abstract class HUDDisplay extends HUDLocation {
+
     private int maxChars;
     private HUDText currentText;
 
@@ -15,6 +16,10 @@ public abstract class HUDDisplay extends HUDLocation {
     public HUDDisplay(GamePlayer player, int maxChars){
         super(player);
         this.maxChars = maxChars;
+    }
+
+    public int getMaxChars() {
+        return maxChars;
     }
 
     /**
@@ -27,7 +32,7 @@ public abstract class HUDDisplay extends HUDLocation {
     /**
      * Adds the text to the current queue if there is any, displays it if it has the highest
      * priority
-     * 
+     *
      * @param text
      *            HUDText to display/add to queue
      */
@@ -48,15 +53,10 @@ public abstract class HUDDisplay extends HUDLocation {
     }
 
     /**
-<<<<<<< HEAD
      * Removes
-     * 
+     *
      * @param text
      *            HUDText to remove from queue (and from displaying)
-=======
-     * Removes texts from the display queue/display
-     * @param text HUDText to remove from queue (and from displaying)
->>>>>>> master
      */
     public void removeText( HUDText text ) {
         if ( !active ) {
@@ -88,7 +88,7 @@ public abstract class HUDDisplay extends HUDLocation {
 
     /**
      * Sets whether or not the display is active
-     * 
+     *
      * @param active
      *            whether or not the display is active
      */

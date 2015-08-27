@@ -41,13 +41,14 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
     /**
      * Initializes an empty indexed priority queue with indices between <tt>0</tt>
      * and <tt>maxN - 1</tt>.
-     * 
+     *
      * @param maxN
      *            the keys on this priority queue are index from <tt>0</tt>
      *            <tt>maxN - 1</tt>
      * @throws java.lang.IllegalArgumentException
      *             if <tt>maxN</tt> &lt; <tt>0</tt>
      */
+    @SuppressWarnings( "unchecked" )
     public IndexMinPQ( int maxN ) {
         if ( maxN < 0 ) {
             throw new IllegalArgumentException();
@@ -152,7 +153,7 @@ public class IndexMinPQ<Key extends Comparable<Key>> implements Iterable<Integer
 
     /**
      * Removes a minimum key and returns its associated index.
-     * 
+     *
      * @return an index associated with a minimum key
      * @throws java.util.NoSuchElementException
      *             if this priority queue is empty
