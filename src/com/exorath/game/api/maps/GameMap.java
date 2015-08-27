@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
@@ -15,8 +16,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import com.exorath.game.api.Game;
+import com.exorath.game.api.player.GamePlayer;
+import com.exorath.game.api.player.PlayerState;
 import com.exorath.game.api.team.Team;
 import com.exorath.game.api.team.TeamColor;
+import com.exorath.game.api.team.TeamManager;
 import com.yoshigenius.lib.serializable.Serializer;
 
 public class GameMap {
@@ -213,6 +218,24 @@ public class GameMap {
         }
     }
 
+    public GameSpawn findSpawn( GamePlayer player ) {
+        Game game = player.getGame();
+        if ( game != null ) {
+            PlayerState state = player.getState( game );
+            if ( state == PlayerState.PLAYING ) {
+                TeamManager teams = game.getManager( TeamManager.class );
+                Team team = teams == null ? null : teams.getTeam( player );
+                List<GameSpawn> spawns = getSpawnsList( team );
+                if ( spawns != null ) {
+                    return spawns.get( new Random().nextInt( spawns.size() ) );
+                }
+            }
+        }
+        return null;
+    }
+
+    // World
+
     public World getWorld() {
         for ( String worldName : GameMap.worlds.keySet() ) {
             if ( GameMap.worlds.get( worldName ) == this ) {
@@ -221,6 +244,8 @@ public class GameMap {
         }
         return null;
     }
+
+    // Configuration
 
     public FileConfiguration getConfig() {
         if ( this.config != null ) {

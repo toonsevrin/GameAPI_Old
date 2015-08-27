@@ -2,7 +2,13 @@ package com.exorath.game.api.player;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import com.exorath.game.api.Game;
+import com.exorath.game.api.GameState;
+import com.exorath.game.api.maps.GameSpawn;
+import com.exorath.game.api.maps.MapManager;
+import com.exorath.game.api.team.Team;
+import com.exorath.game.api.team.TeamManager;
 
 /**
  * @author Nick Robson
@@ -53,6 +59,31 @@ public class Players {
 
     public void remove(GamePlayer player) {
         this.setState(player, PlayerState.REMOVED);
+    }
+
+    public void join( GamePlayer p ) {
+        PlayerState state;
+        if ( getGame().getState().is( GameState.WAITING, GameState.STARTING ) ) {
+            state = PlayerState.PLAYING;
+        } else {
+            state = PlayerState.SPECTATING;
+        }
+        add( p, state );
+
+        TeamManager teams = getGame().getManager( TeamManager.class );
+        if ( teams != null ) {
+            Team team = teams.findTeam( p );
+            if ( team != null ) {
+                team.addPlayer( p );
+            }
+        }
+
+        MapManager maps = getGame().getManager( MapManager.class );
+        if ( maps != null ) {
+            GameSpawn spawn = maps.getCurrent().findSpawn( p );
+            if ( p.isOnline() && spawn != null )
+                p.getBukkitPlayer().teleport( spawn.getBukkitLocation() );
+        }
     }
 
 }

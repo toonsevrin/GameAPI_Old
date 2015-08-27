@@ -77,6 +77,12 @@ public class GameAPIListener implements Listener {
         GameAPI.refreshOnlinePlayers();
 
         GamePlayer gp = GameAPI.getPlayer( event.getPlayer() );
+
+        Game g = GameAPI.getGame();
+        if ( g != null ) {
+            gp.join( g );
+        }
+
         Game game = gp.getGame();
 
         TeamManager teams = game == null ? null : game.getManager( TeamManager.class );

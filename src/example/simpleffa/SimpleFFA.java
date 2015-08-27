@@ -11,7 +11,7 @@ import com.exorath.game.api.GameProvider;
 public class SimpleFFA extends JavaPlugin implements GameProvider {
 
     @Override
-    public void init() {}
+    public void start() {}
 
     @Override
     public Game create() {

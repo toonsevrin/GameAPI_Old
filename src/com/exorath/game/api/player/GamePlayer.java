@@ -140,7 +140,7 @@ public final class GamePlayer {
 
     //** Player State Methods *//
     public PlayerState getState(Game game) {
-        return game.getPlayers().getPlayerState(this);
+        return game == null ? PlayerState.UNKNOWN : game.getPlayers().getPlayerState( this );
     }
 
     //** Menu Methods *//
@@ -187,6 +187,13 @@ public final class GamePlayer {
 
     public Game getGame() {
         return GameAPI.getGame( gameUID );
+    }
+
+    public void join( Game game ) {
+        if ( getGame() != null ) {
+            getGame().getPlayers().join( this );
+        }
+        this.gameUID = game.getGameID();
     }
 
     public Set<GameListener> getListeners() {

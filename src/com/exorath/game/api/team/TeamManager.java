@@ -97,4 +97,15 @@ public class TeamManager implements Manager {
         }
     }
 
+    private Integer getWeight( Team t ) {
+        return t.getPlayers().size() * t.getProperties().as( TeamProperty.PLAYER_WEIGHT, int.class );
+    }
+
+    public Team findTeam( GamePlayer p ) {
+        Optional<Team> opt = getTeams().stream().min( ( t1, t2 ) -> getWeight( t1 ).compareTo( getWeight( t2 ) ) );
+        if ( opt.isPresent() )
+            return opt.get();
+        return null;
+    }
+
 }

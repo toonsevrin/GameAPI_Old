@@ -10,12 +10,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.exorath.game.api.Game;
 import com.exorath.game.api.GameProvider;
 import com.exorath.game.api.config.ConfigurationManager;
 import com.exorath.game.api.database.SQLManager;
+import com.exorath.game.api.maps.GameMap;
 import com.exorath.game.api.nms.NMS;
 import com.exorath.game.api.nms.NMSProvider;
 import com.exorath.game.api.player.GamePlayer;
@@ -40,7 +42,20 @@ public class GameAPI extends JavaPlugin {
 
     public static void registerGameProvider( GameProvider plugin ) {
         gameProviders.add( plugin.getName() );
-        plugin.init();
+        plugin.start();
+    }
+
+    public static Game getGame() {
+        if ( games.isEmpty() && !gameProviders.isEmpty() ) {
+            Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin(gameProviders.stream().findAny().get());
+            if ( plugin instanceof GameProvider ) {
+                Game g = ( (GameProvider) plugin ).create();
+                if ( g != null ) {
+                    games.put( g.getGameID(), g );
+                }
+            }
+        }
+        return games.size() == 1 ? games.values().stream().findAny().get() : null;
     }
 
     public static Game getGame( UUID uuid ) {
@@ -96,6 +111,7 @@ public class GameAPI extends JavaPlugin {
         this.versionsConfig = YamlConfiguration.loadConfiguration( new File( this.getDataFolder(), "versions.yml" ) );
 
         refreshOnlinePlayers();
+        GameMap.loadWorlds();
 
     }
 

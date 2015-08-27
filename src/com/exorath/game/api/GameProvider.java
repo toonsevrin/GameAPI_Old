@@ -5,7 +5,7 @@ package com.exorath.game.api;
  */
 public interface GameProvider {
 
-    void init();
+    void start();
 
     Game create();
 

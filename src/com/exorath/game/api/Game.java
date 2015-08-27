@@ -9,11 +9,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.action.Actions;
 import com.exorath.game.api.events.GameStateChangedEvent;
 import com.exorath.game.api.gametype.minigame.kit.KitManager;
 import com.exorath.game.api.lobby.Lobby;
+import com.exorath.game.api.maps.MapManager;
 import com.exorath.game.api.player.Players;
 import com.exorath.game.api.spectate.SpectateManager;
 import com.exorath.game.api.team.TeamManager;
@@ -23,7 +25,6 @@ import com.google.common.collect.Sets;
 /**
  * The class representing a single Game instance.
  * Gamemode, RepeatingMinigame and Minigame extend this.
- * TODO: Add the map manager
  *
  * @author Toon Sevrin
  * @author Nick Robson
@@ -41,33 +42,38 @@ public abstract class Game {
 
     private GameProvider host;
 
+    private final UUID gameID;
     private final Set<GameListener> listeners = Sets.newHashSet();
+    private final Set<Manager> managers = new HashSet<>();
+
     private Lobby lobby = new Lobby();
     private Properties properties = new Properties();
-
-    private final Set<Manager> managers = new HashSet<>();
     private Players players = new Players(this);
     private Actions actions = new Actions();
     private String world = null;
-
-    private UUID gameID;
     private GameState state;
 
     public Game() {
-        gameID = UUID.randomUUID();
+        this.gameID = UUID.randomUUID();
 
         addManager( new TeamManager( this ) );
         addManager( new SpectateManager( this ) );
         addManager( new KitManager( this ) );
+        addManager( new MapManager() );
+    }
+
+    /* Game ID */
+    public final UUID getGameID() {
+        return gameID;
     }
 
     /* Plugin Host */
-    protected void setHost( GameProvider host ) {
-        this.host = host;
-    }
-
     public GameProvider getHost() {
         return host;
+    }
+
+    protected void setHost( GameProvider host ) {
+        this.host = host;
     }
 
     public GameState getState() {
@@ -149,14 +155,6 @@ public abstract class Game {
     }
     public int getPlayerCount() {
         return this.players.getPlayingAmount();
-    }
-
-    /* Game ID */
-    public UUID getGameID() {
-        return gameID;
-    }
-    public void setGameID(UUID gameID) {
-        this.gameID = gameID;
     }
 
     /* Listeners */
