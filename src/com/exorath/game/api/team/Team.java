@@ -6,10 +6,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
+import com.exorath.game.GameAPI;
 import com.exorath.game.api.BasePlayerProperty;
 import com.exorath.game.api.GameListener;
 import com.exorath.game.api.Properties;
@@ -37,8 +40,8 @@ public class Team {
 
     private Properties properties = new Properties();
 
-    private Set<GamePlayer> players = new HashSet<>();
-    private Set<GamePlayer> activePlayers = new HashSet<>();
+    private Set<UUID> players = new HashSet<>();
+    private Set<UUID> activePlayers = new HashSet<>();
 
     private final Set<GameListener> listeners = new HashSet<>();
 
@@ -51,13 +54,13 @@ public class Team {
      * @return A collection of all online players in this team
      */
     public Set<GamePlayer> getPlayers() {
-        return this.players;
+        return this.players.stream().map( u -> GameAPI.getPlayer( u ) ).collect( Collectors.toSet() );
     }
 
     /**
      * @return a collection of all online players in this team which haven't been set inactive
      */
-    public Set<GamePlayer> getActivePlayers() {
+    public Set<UUID> getActivePlayers() {
         return activePlayers;
     }
 
@@ -65,8 +68,8 @@ public class Team {
      * Adds a player to the team
      */
     public void addPlayer(GamePlayer player) {
-        players.add(player);
-        activePlayers.add(player);
+        players.add( player.getUUID() );
+        activePlayers.add( player.getUUID() );
     }
 
     /**
@@ -97,13 +100,13 @@ public class Team {
      * Removes all offline players from this team
      */
     public void removeOfflinePlayers() {
-        Iterator<GamePlayer> it = this.players.iterator();
+        Iterator<UUID> it = this.players.iterator();
         while (it.hasNext()) {
-            GamePlayer player = it.next();
-            if (!player.isOnline()) {
+            UUID uuid = it.next();
+            if ( Bukkit.getPlayer( uuid ) == null ) {
                 it.remove();
-                if (activePlayers.contains(player))
-                    activePlayers.remove(player);
+                if ( activePlayers.contains( uuid ) )
+                    activePlayers.remove( uuid );
             }
         }
     }
@@ -175,12 +178,6 @@ public class Team {
         return this.properties.as(TeamProperty.SPAWNS, List.class);
     }
 
-    protected void addListener( GameListener listener ) {
-        if ( listener != null ) {
-            this.listeners.add( listener );
-        }
-    }
-
     public TeamColor getTeamColor() {
         return this.properties.as( TeamProperty.COLOR, TeamColor.class );
     }
@@ -188,6 +185,16 @@ public class Team {
     public Team setTeamColor( TeamColor color ) {
         this.properties.set( TeamProperty.COLOR, color );
         return this;
+    }
+
+    public Set<GameListener> getListeners() {
+        return listeners;
+    }
+
+    public void addListener( GameListener listener ) {
+        if ( listener != null ) {
+            this.listeners.add( listener );
+        }
     }
 
 }

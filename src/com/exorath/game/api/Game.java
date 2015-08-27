@@ -9,8 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
-
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.action.Actions;
 import com.exorath.game.api.events.GameStateChangedEvent;
@@ -41,7 +39,7 @@ public abstract class Game {
         TIME_UP;
     }
 
-    private Plugin host;
+    private GamePlugin host;
 
     private final Set<GameListener> listeners = Sets.newHashSet();
     private Lobby lobby = new Lobby();
@@ -56,7 +54,6 @@ public abstract class Game {
     private GameState state;
 
     public Game() {
-        GameAPI.getInstance().setGame(this);
         gameID = UUID.randomUUID();
 
         addManager( new TeamManager( this ) );
@@ -68,7 +65,8 @@ public abstract class Game {
     protected void setHost(GamePlugin host){
         this.host = host;
     }
-    public Plugin getHost() {
+
+    public GamePlugin getHost() {
         return host;
     }
 

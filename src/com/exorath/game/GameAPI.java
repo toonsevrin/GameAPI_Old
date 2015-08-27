@@ -2,20 +2,24 @@ package com.exorath.game;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
-import com.exorath.game.api.database.SQLManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.exorath.game.api.Game;
 import com.exorath.game.api.config.ConfigurationManager;
+import com.exorath.game.api.database.SQLManager;
 import com.exorath.game.api.nms.NMS;
 import com.exorath.game.api.nms.NMSProvider;
 import com.exorath.game.api.player.GamePlayer;
+import com.google.common.collect.Maps;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.yoshigenius.lib.util.GameUtil;
@@ -24,92 +28,106 @@ import com.yoshigenius.lib.util.GameUtil;
  * The main class.
  */
 public class GameAPI extends JavaPlugin {
-    
-    public static final Version CURRENT_VERSION = Version.from( "GameAPI", "0.0.1", 1, 0 );// API Version 0 means in Development. Change for Alpha/Beta.
-    
+
+    public static final Version CURRENT_VERSION = Version.from( "GameAPI", "0.0.1", 1, 0 ); // API Version 0 means in Development. Change for Alpha/Beta.
+
     private static SQLManager sqlManager;
 
-    private static Game game;
-    
+    private static Map<UUID, GamePlayer> players = Maps.newHashMap();
+    private static Map<UUID, Game> games = Maps.newHashMap();
+
+    public static Game getGame( UUID uuid ) {
+        return uuid == null ? null : games.get( uuid );
+    }
+
+    public static GamePlayer getPlayer( UUID uuid ) {
+        return players.computeIfAbsent( uuid, u -> new GamePlayer( u ) );
+    }
+
+    public static GamePlayer getPlayer( Player player ) {
+        return players.computeIfAbsent( player.getUniqueId(), u -> new GamePlayer( u ) );
+    }
+
+    public static Set<GamePlayer> getOnlinePlayers() {
+        players.entrySet().stream().filter( e -> !e.getValue().isOnline() ).forEach( e -> players.remove( e.getKey() ) );
+        return Bukkit.getOnlinePlayers().stream().map( p -> getPlayer( p ) ).filter( gp -> gp != null ).collect( Collectors.toSet() );
+    }
+
     private FileConfiguration versionsConfig;
 
-    /**
-     * This method should register the game plugin in the gameAPI
-     */
-    public void setGame(Game game){
-        this.game = game;
-    }
     @Override
     public void onEnable() {
-        
+
+        getServer().getPluginManager().registerEvents( new GameAPIListener(), this );
+
         File databaseConfigFile = GameAPI.getConfigurationManager().getConfigFile( this, "database" );
-        
+
         GameAPI.getConfigurationManager().saveResource( this, "configs/database", databaseConfigFile, false );
-        
+
         FileConfiguration databaseConfig = GameAPI.getConfigurationManager().getConfig( databaseConfigFile );
-        
+
         GameAPI.sqlManager = new SQLManager( databaseConfig.getString( "host" ), databaseConfig.getInt( "port" ),
                 databaseConfig.getString( "database" ), databaseConfig.getString( "username" ),
                 databaseConfig.getString( "password" ) );
-                
+
         String serverPackage = this.getServer().getClass().getPackage().getName();
         String versionPackage = serverPackage.substring( serverPackage.lastIndexOf( '.' ) );
         try {
-            Class<? extends NMSProvider> c = Class.forName( NMSProvider.class.getPackage() + "." + versionPackage + ".NMSProviderImpl" )
+            Class<? extends NMSProvider> c = Class.forName( NMSProvider.class.getPackage().getName() + "." + versionPackage + ".NMSProviderImpl" )
                     .asSubclass( NMSProvider.class );
             NMSProvider provider = c.newInstance();
             NMS.set( provider );
         } catch ( Exception e ) {
             e.printStackTrace();
         }
-        
+
         this.versionsConfig = YamlConfiguration.loadConfiguration( new File( this.getDataFolder(), "versions.yml" ) );
     }
-    
+
     @Override
     public void onDisable() {
-    
+
     }
-    
+
     @Override
     public File getFile() {
         return super.getFile();
     }
-    
+
     /**
      * Prints an error to the console
-     * 
+     *
      * @param error
      *            message you want to print.
      */
     public static void error( String error ) {
         GameAPI.getInstance().getLogger().severe( error );
     }
-    
+
     public static void printConsole( String message ) {
         GameAPI.getInstance().getLogger().info( message );
     }
-    
+
     public static GameAPI getInstance() {
         return JavaPlugin.getPlugin( GameAPI.class );
     }
-    
+
     public static SQLManager getSQLManager() {
         return GameAPI.sqlManager;
     }
-    
+
     public static ConfigurationManager getConfigurationManager() {
         return ConfigurationManager.INSTANCE;
     }
-    
+
     public FileConfiguration getVersionsConfig() {
         return this.versionsConfig;
     }
-    
+
     public void saveVersionsConfig() {
-    
+
     }
-    
+
     public static void sendPlayerToServer( Player player, String server ) {
         if ( player != null && server != null ) {
             ByteArrayDataOutput out = ByteStreams.newDataOutput();
@@ -145,20 +163,12 @@ public class GameAPI extends JavaPlugin {
         }
         for ( GamePlayer player : players ) {
             if(player.isOnline())
-            player.getBukkitPlayer().sendPluginMessage( GameAPI.getInstance(), "BungeeCord", bytes );
+                player.getBukkitPlayer().sendPluginMessage( GameAPI.getInstance(), "BungeeCord", bytes );
         }
     }
-    
+
     public File getDataFolder( Game game ) {
         return new File( this.getDataFolder(), game.getName().toLowerCase().replaceAll( " ", "_" ) );
     }
-    public Game getGame(){
-        return game;
-    }
-    public static Plugin getHost(){
-        if(game == null)
-            throw new NullPointerException("Host plugin not loaded, every API needs a host!");
-        return game.getHost();
-    }
-    
+
 }

@@ -1,6 +1,7 @@
 package com.exorath.game.api.team;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.bukkit.entity.Player;
@@ -65,6 +66,11 @@ public class TeamManager implements Manager {
      */
     public Team getTeam() {
         return this.teams.size() == 1 ? this.teams.toArray(new Team[1])[0] : null;
+    }
+
+    public Team getTeam( GamePlayer gp ) {
+        Optional<Team>team = getTeams().stream().filter( t -> t.getPlayers().contains( gp.getUUID() ) ).findAny();
+        return team.isPresent() ? team.get() : null;
     }
 
     /**

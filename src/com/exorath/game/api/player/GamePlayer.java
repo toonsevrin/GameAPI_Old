@@ -1,5 +1,7 @@
 package com.exorath.game.api.player;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -9,6 +11,7 @@ import org.bukkit.inventory.Inventory;
 
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.Game;
+import com.exorath.game.api.GameListener;
 import com.exorath.game.api.Properties;
 import com.exorath.game.api.database.SQLData;
 import com.exorath.game.api.menu.Menu;
@@ -24,11 +27,14 @@ public final class GamePlayer {
 
     private SQLData sqlData;
     private SQLData gSqlData;
+    private UUID gameUID;
+
+    private Set<GameListener> listeners = new HashSet<>();
 
     public GamePlayer(UUID id) {
         this.uuid = id;
-        sqlData = new SQLData(GameAPI.getHost(), "players", id, false);
-        gSqlData = new SQLData(GameAPI.getInstance(), "players", id, false);
+        //sqlData = new SQLData( GameAPI.getInstance(), "players", id, false );
+        gSqlData = new SQLData( GameAPI.getInstance(), "players", id, false );
     }
 
     public GamePlayer(Player player) {
@@ -70,13 +76,13 @@ public final class GamePlayer {
 
     //** Rank Methods *//
     public Rank getRank() {
-        if (getSqlData().contains("rank"))
-            return Rank.valueOf(getSqlData().getString("rank"));
+        if ( getApiSqlData().contains( "rank" ) )
+            return Rank.valueOf( getApiSqlData().getString( "rank" ) );
         return Rank.NONE;
     }
 
     public void setRank(Rank rank) {
-        getSqlData().setString("rank", rank.toString());
+        getApiSqlData().setString( "rank", rank.toString() );
     }
 
     //** Currency Methods **//
@@ -176,6 +182,20 @@ public final class GamePlayer {
 
     public SQLData getApiSqlData() {
         return gSqlData;
+    }
+
+    public Game getGame() {
+        return GameAPI.getGame( gameUID );
+    }
+
+    public Set<GameListener> getListeners() {
+        return listeners;
+    }
+
+    public void addListener( GameListener listener ) {
+        if ( listener != null ) {
+            this.listeners.add( listener );
+        }
     }
 
 }

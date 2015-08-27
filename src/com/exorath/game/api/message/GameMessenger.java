@@ -3,9 +3,9 @@ package com.exorath.game.api.message;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import com.exorath.game.GameAPI;
 import com.exorath.game.api.Game;
 import com.exorath.game.api.player.GamePlayer;
-import com.exorath.game.api.server.GameServer;
 
 /**
  * @author Nick Robson
@@ -22,7 +22,7 @@ public class GameMessenger {
      *            The format string path in the game's config.
      */
     public static void sendStructured( Game game, String path, Object... params ) {
-        for ( GamePlayer player : GameServer.get().getOnlinePlayers() ) {
+        for ( GamePlayer player : GameAPI.getOnlinePlayers() ) {
             GameMessenger.sendStructured( game, player, path, params );
         }
     }
@@ -50,7 +50,7 @@ public class GameMessenger {
     }
 
     public static void sendInfo( Game game, String message ) {
-        for ( GamePlayer player : GameServer.get().getOnlinePlayers() ) {
+        for ( GamePlayer player : GameAPI.getOnlinePlayers() ) {
             GameMessenger.sendInfo( game, player, message );
         }
     }
