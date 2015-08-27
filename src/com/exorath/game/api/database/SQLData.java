@@ -345,7 +345,7 @@ public class SQLData {
             //Get the table
             SQLTable table = GameAPI.getSQLManager().getTable( tableName );
             //Check if uuid exists
-            if ( !table.rowExists( uuid.toString() ) ) {
+            if ( table == null || !table.rowExists( uuid.toString() ) ) {
                 return;
             }
             //Load all cells

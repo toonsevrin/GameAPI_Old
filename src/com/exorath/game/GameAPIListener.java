@@ -62,6 +62,8 @@ public class GameAPIListener implements Listener {
 
     @EventHandler
     public void onJoin( PlayerJoinEvent event ) {
+        GameAPI.refreshOnlinePlayers();
+
         GamePlayer gp = GameAPI.getPlayer( event.getPlayer() );
         Game game = gp.getGame();
 
@@ -77,6 +79,8 @@ public class GameAPIListener implements Listener {
 
     @EventHandler
     public void onQuit( PlayerQuitEvent event ) {
+        GameAPI.refreshOnlinePlayers();
+
         GamePlayer gp = GameAPI.getPlayer( event.getPlayer() );
         Game game = gp.getGame();
 

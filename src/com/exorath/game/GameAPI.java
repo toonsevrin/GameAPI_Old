@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,6 +19,7 @@ import com.exorath.game.api.nms.NMS;
 import com.exorath.game.api.nms.NMSProvider;
 import com.exorath.game.api.player.GamePlayer;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.yoshigenius.lib.util.GameUtil;
@@ -48,9 +48,14 @@ public class GameAPI extends JavaPlugin {
         return players.computeIfAbsent( player.getUniqueId(), u -> new GamePlayer( u ) );
     }
 
-    public static Set<GamePlayer> getOnlinePlayers() {
+    protected static void refreshOnlinePlayers() {
         players.entrySet().stream().filter( e -> !e.getValue().isOnline() ).forEach( e -> players.remove( e.getKey() ) );
-        return Bukkit.getOnlinePlayers().stream().map( p -> getPlayer( p ) ).filter( gp -> gp != null ).collect( Collectors.toSet() );
+        Bukkit.getOnlinePlayers().stream().forEach( p -> getPlayer( p ) );
+    }
+
+    public static Set<GamePlayer> getOnlinePlayers() {
+        refreshOnlinePlayers();
+        return Sets.newHashSet( players.values() );
     }
 
     private FileConfiguration versionsConfig;
@@ -73,7 +78,7 @@ public class GameAPI extends JavaPlugin {
         String serverPackage = this.getServer().getClass().getPackage().getName();
         String versionPackage = serverPackage.substring( serverPackage.lastIndexOf( '.' ) );
         try {
-            Class<? extends NMSProvider> c = Class.forName( NMSProvider.class.getPackage().getName() + "." + versionPackage + ".NMSProviderImpl" )
+            Class<? extends NMSProvider> c = Class.forName( NMSProvider.class.getPackage().getName() + versionPackage + ".NMSProviderImpl" )
                     .asSubclass( NMSProvider.class );
             NMSProvider provider = c.newInstance();
             NMS.set( provider );
@@ -82,6 +87,9 @@ public class GameAPI extends JavaPlugin {
         }
 
         this.versionsConfig = YamlConfiguration.loadConfiguration( new File( this.getDataFolder(), "versions.yml" ) );
+
+        refreshOnlinePlayers();
+
     }
 
     @Override
@@ -136,12 +144,14 @@ public class GameAPI extends JavaPlugin {
             GameUtil.sendPluginMessage( player, "BungeeCord", out.toByteArray() );
         }
     }
+
     public static void sendPlayerToServer( GamePlayer player, String server ) {
         if ( player != null && player.isOnline() ) {
             GameAPI.sendPlayerToServer( player.getBukkitPlayer(), server );
         }
     }
-    public static void sendPlayersToServer(String server, Collection<? extends Player> players){
+
+    public static void sendPlayersToServer( String server, Collection<? extends Player> players ) {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF( "Connect" );
         out.writeUTF( server );
@@ -153,7 +163,8 @@ public class GameAPI extends JavaPlugin {
             player.sendPluginMessage( GameAPI.getInstance(), "BungeeCord", bytes );
         }
     }
-    public static void sendGamePlayersToServer(String server, Collection<? extends GamePlayer> players){
+
+    public static void sendGamePlayersToServer( String server, Collection<? extends GamePlayer> players ) {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF( "Connect" );
         out.writeUTF( server );
@@ -162,7 +173,7 @@ public class GameAPI extends JavaPlugin {
             Bukkit.getMessenger().registerOutgoingPluginChannel( GameAPI.getInstance(), "BungeeCord" );
         }
         for ( GamePlayer player : players ) {
-            if(player.isOnline())
+            if ( player.isOnline() )
                 player.getBukkitPlayer().sendPluginMessage( GameAPI.getInstance(), "BungeeCord", bytes );
         }
     }
