@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
@@ -39,12 +38,15 @@ public class ConfigurationManager {
         if ( in == null && !resource.endsWith( ".yml" ) ) {
             in = plugin.getResource( resource + ".yml" );
         }
-        if ( in == null ) {
+        if ( in == null || file == null ) {
             return;
         }
+        if ( file.exists() && !overwrite ) {
+            return;
+        }
+        file.getParentFile().mkdir();
         try {
-            CopyOption[] options = overwrite ? new CopyOption[] { StandardCopyOption.REPLACE_EXISTING } : new CopyOption[] {};
-            Files.copy(in, file.toPath(), options);
+            Files.copy( in, file.toPath(), StandardCopyOption.REPLACE_EXISTING );
         } catch ( IOException e ) {
             e.printStackTrace();
         }
