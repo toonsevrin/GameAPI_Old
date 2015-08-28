@@ -4,22 +4,17 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-<<<<<<< HEAD
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.database.SQLData;
 import com.exorath.game.api.hud.HUD;
-=======
->>>>>>> 51d54de87afdf0d0e1f68efc8e48194630c22d39
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
-import com.exorath.game.GameAPI;
 import com.exorath.game.api.Game;
 import com.exorath.game.api.GameListener;
 import com.exorath.game.api.Properties;
-import com.exorath.game.api.database.SQLData;
 import com.exorath.game.api.menu.Menu;
 import com.exorath.game.lib.Rank;
 
@@ -42,16 +37,8 @@ public final class GamePlayer {
 
     public GamePlayer(UUID id) {
         this.uuid = id;
-<<<<<<< HEAD
-
-        sqlData = new SQLData(GameAPI.getHost(), "players", id, false);
-        gSqlData = new SQLData(GameAPI.getInstance(), "players", id, false);
-
-        hud = new HUD(this);
-=======
         //sqlData = new SQLData( GameAPI.getInstance(), "players", id, false );
         gSqlData = new SQLData( GameAPI.getInstance(), "players", id, false );
->>>>>>> 51d54de87afdf0d0e1f68efc8e48194630c22d39
     }
 
     public GamePlayer(Player player) {

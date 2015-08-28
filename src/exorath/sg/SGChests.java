@@ -7,13 +7,15 @@ import java.util.Random;
 import java.util.Set;
 
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+
+import com.exorath.game.api.maps.GameMap;
+import com.exorath.game.api.maps.MapManager;
 
 /**
  * Created by too on 6/06/2015.
@@ -24,15 +26,15 @@ public class SGChests {
     private Set<SGChest> chests = new HashSet<SGChest>(); //A list with all loaded chests
 
     public SGChests( SurvivalGames game ) {
-        World world = game.getGameWorld(); //Get the default/main Game World
+        GameMap map = game.getManager( MapManager.class ).getCurrent(); //Get the default/main Game World
 
         FileConfiguration chestConfig = game.getConfig( "chests" ); //Get the config file "chests.yml"
-        if ( !chestConfig.contains( world.getName() ) )
+        if ( !chestConfig.contains( map.getName() ) )
         {
             return; //If there isn't a root with the worlds name, return.
         }
 
-        ConfigurationSection section = chestConfig.getConfigurationSection( world.getName() ); //Returns the section under the worlds name
+        ConfigurationSection section = chestConfig.getConfigurationSection( map.getName() ); //Returns the section under the worlds name
         for ( String key : section.getKeys( false ) ) {
             this.chests.add( new SGChest( section.getConfigurationSection( key ) ) );
         }
@@ -42,12 +44,12 @@ public class SGChests {
             {
                 continue; //If the chest wasn't loaded right, continue.
             }
-            Block block = world.getBlockAt( (int) chest.getCoordinates().getX(), (int) chest.getCoordinates().getY(), (int) chest.getCoordinates()
+            Block block = map.getWorld().getBlockAt( (int) chest.getCoordinates().getX(), (int) chest.getCoordinates().getY(), (int) chest.getCoordinates()
                     .getZ() );
             block.setType( Material.CHEST );
             Chest chestBlock = (Chest) block.getState();
             if ( chest.isDoubleChest() ) {
-                world.getBlockAt( (int) chest.getSecondCoordinates().getX(), (int) chest.getSecondCoordinates().getY(),
+                map.getWorld().getBlockAt( (int) chest.getSecondCoordinates().getX(), (int) chest.getSecondCoordinates().getY(),
                         (int) chest.getSecondCoordinates().getZ() ).setType( Material.CHEST );
             }
 

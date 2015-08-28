@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -28,7 +29,7 @@ public class GameMap {
 
     // BASIC
 
-    private static final java.util.Map<String, GameMap> worlds = new HashMap<>();
+    static final java.util.Map<String, GameMap> worlds = new HashMap<>();
 
     public static GameMap get( String map ) {
         for ( GameMap m : GameMap.worlds.values() ) {
@@ -71,7 +72,7 @@ public class GameMap {
         }
         FileConfiguration cfg = YamlConfiguration.loadConfiguration( gamedata );
 
-        GameMap map = new GameMap( cfg.getString( "name" ), world );
+        GameMap map = new GameMap( cfg.getString( "game" ), cfg.getString( "name" ), world );
 
         map.spectatorSpawns = cfg.getStringList( "spectators" ).stream().map( Serializer::deserialize ).filter( s -> s instanceof GameSpawn ).map( s -> (GameSpawn) s ).collect( Collectors.toList() );
 
@@ -104,17 +105,25 @@ public class GameMap {
         }
     }
 
-    private String name;
+    private String name, gameName;
     private File folder;
     private FileConfiguration config;
 
-    public GameMap( String name, World world ) {
-        this( name, world.getWorldFolder() );
+    public GameMap( String gameName, String name, World world ) {
+        this( gameName, name, world == null ? null : world.getWorldFolder() );
     }
 
-    public GameMap( String name, File folder ) {
+    public GameMap( String gameName, String name, File folder ) {
+        Validate.notNull( gameName, "Game name cannot be null" );
+        Validate.notNull( name, "Map name cannot be null" );
+        Validate.notNull( folder, "Folder cannot be null" );
+        this.gameName = gameName;
         this.name = name;
         this.folder = folder;
+    }
+
+    public String getGameName() {
+        return gameName;
     }
 
     public String getName() {
@@ -127,6 +136,7 @@ public class GameMap {
 
     public void save() {
         FileConfiguration cfg = this.getConfig();
+        cfg.set( "game", this.getGameName() );
         cfg.set( "name", this.getName() );
         cfg.set( "spectators", this.spectatorSpawns.stream().map( Serializer::serialize ).collect( Collectors.toList() ) );
         cfg.set( "spawns.global", this.global.stream().map( Serializer::serialize ).collect( Collectors.toList() ) );

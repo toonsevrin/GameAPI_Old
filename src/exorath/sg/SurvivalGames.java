@@ -1,14 +1,11 @@
 package exorath.sg;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.GameProperty;
+import com.exorath.game.api.StopCause;
 import com.exorath.game.api.action.DieAction;
 import com.exorath.game.api.action.GameEndAction;
 import com.exorath.game.api.action.HungerAction;
@@ -24,8 +21,6 @@ import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.team.FreeForAllTeam;
 import com.exorath.game.api.team.Team;
 import com.exorath.game.api.team.TeamManager;
-import com.exorath.game.api.team.TeamProperty;
-import com.yoshigenius.lib.util.GameUtil;
 
 /**
  * Created by too on 27/05/2015.
@@ -33,12 +28,9 @@ import com.yoshigenius.lib.util.GameUtil;
  */
 public class SurvivalGames extends RepeatingMinigame {
 
-    private List<Location> spawns = new ArrayList<>();
-
     public SurvivalGames() {
         this.setupGameProperties();
         this.setupLobby();
-        this.setupSpawns();
         this.setupTeams();
         this.addListener( new SGListener() ); //Adds a custom event listener (See SGListener class).
     }
@@ -77,26 +69,10 @@ public class SurvivalGames extends RepeatingMinigame {
     }
 
     /**
-     * Setup the player spawn points inGame
-     */
-    private void setupSpawns() {
-        int[][] locs = new int[][] { //TODO: Use the config for this.
-            { -1, 60, -2 }, { -1, 60, -1 }, { -1, 60, 0 }, { -1, 60, 1 },
-            { 0, 60, -2 }, { 0, 60, -1 }, { 0, 60, 0 }, { 0, 60, 1 },
-            { 1, 60, -2 }, { 1, 60, -1 }, { 1, 60, 0 }, { 1, 60, 1 },
-            { 2, 60, -2 }, { 2, 60, -1 }, { 2, 60, 0 }, { 2, 60, 1 },
-        };
-        for ( int[] coords : locs ) {
-            this.spawns.add( new Location( this.getGameWorld(), coords[ 0 ], coords[ 1 ], coords[ 2 ] ) );
-        }
-    }
-
-    /**
      * Sets the teams in this game up
      */
     private void setupTeams() {
         FreeForAllTeam team = new FreeForAllTeam(); //The base team where all players will be put into
-        team.getProperties().set( TeamProperty.SPAWNS, this.spawns ); //Set the spawn points of the players. setupSpawns() generates these spawns.
         team.setMinTeamSize( 8 ); //Set the minimum team size before countdown.
         team.setMaxTeamSize( 16 ); //Set the maximum team size.
         team.setFriendlyFire( true ); // Turn friendly fire on, since tributes should be able to kill eachother!
@@ -184,10 +160,9 @@ public class SurvivalGames extends RepeatingMinigame {
 
         Bukkit.getScheduler().runTaskLater( GameAPI.getInstance(), () -> {
             GameMessenger.sendInfo( SurvivalGames.this, "Standoff started! Players are teleported to the center." );
-            int cycle = 0;
+            int spawn = 0;
             for ( GamePlayer player : SurvivalGames.this.getManager( TeamManager.class ).getTeam().getPlayers() ) { //Teleport all active players back to a spawn location.
-                player.getBukkitPlayer().teleport( SurvivalGames.this.getManager( TeamManager.class ).getTeam().getSpawns( getManager( MapManager.class ).getCurrent() ).get( cycle ) );
-                cycle = GameUtil.cycle( cycle, SurvivalGames.this.getManager( TeamManager.class ).getTeam().getSpawns( getManager( MapManager.class ).getCurrent() ).size() - 1 );
+                player.getBukkitPlayer().teleport( SurvivalGames.this.getManager( TeamManager.class ).getTeam().getSpawns( getManager( MapManager.class ).getCurrent() )[ spawn++ ].getBukkitLocation() );
             }
         }, 20 * 60 * 10 );
     }

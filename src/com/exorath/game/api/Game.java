@@ -5,14 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-<<<<<<< HEAD
-import com.exorath.game.api.gamestates.GameState;
-import com.exorath.game.api.gamestates.StateManager;
-import com.exorath.game.api.hud.HUDManager;
-=======
->>>>>>> 51d54de87afdf0d0e1f68efc8e48194630c22d39
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -20,6 +12,7 @@ import com.exorath.game.GameAPI;
 import com.exorath.game.api.action.Actions;
 import com.exorath.game.api.events.GameStateChangedEvent;
 import com.exorath.game.api.gametype.minigame.kit.KitManager;
+import com.exorath.game.api.hud.HUDManager;
 import com.exorath.game.api.lobby.Lobby;
 import com.exorath.game.api.maps.MapManager;
 import com.exorath.game.api.player.Players;
@@ -40,12 +33,6 @@ public abstract class Game {
     public static final String DEFAULT_GAME_NAME = "Game";
     public static final String DEFAULT_GAME_DESCRIPTION = "Default game description";
 
-    public static enum StopCause {
-        VICTORY,
-        DRAW,
-        TIME_UP;
-    }
-
     private GameProvider host;
 
     private final UUID gameID;
@@ -56,28 +43,20 @@ public abstract class Game {
     private Properties properties = new Properties();
     private Players players = new Players(this);
     private Actions actions = new Actions();
-    private String world = null;
     private GameState state;
 
     public Game() {
         this.gameID = UUID.randomUUID();
-
-<<<<<<< HEAD
-        addManager(new TeamManager(this));
-        addManager(new SpectateManager(this));
-        addManager(new StateManager(this));
-        addManager(new HUDManager());
-=======
         addManager( new TeamManager( this ) );
         addManager( new SpectateManager( this ) );
         addManager( new KitManager( this ) );
-        addManager( new MapManager() );
+        addManager( new MapManager( this ) );
+        addManager( new HUDManager() );
     }
 
     /* Game ID */
     public final UUID getGameID() {
         return gameID;
->>>>>>> 51d54de87afdf0d0e1f68efc8e48194630c22d39
     }
 
     /* Plugin Host */
@@ -94,26 +73,24 @@ public abstract class Game {
     }
 
     public void setState( GameState state ) {
-        GameState old = this.state;
-        this.state = state;
-        GameStateChangedEvent event = new GameStateChangedEvent( this, old, state );
-        for ( GameListener listener : getListeners() )
-            listener.onGameStateChange( event );
+        setState( state, true );
     }
 
-    /* Game Map */
-    //TODO: Step away from the bukkit World
-    public World getGameWorld() {
-        return Bukkit.getWorld(this.world);
-    }
-    public void setGameWorld(World world) {
-        this.world = world.getName();
+    public void setState( GameState state, boolean callEvent ) {
+        GameState old = this.state;
+        this.state = state;
+        if ( callEvent ) {
+            GameStateChangedEvent event = new GameStateChangedEvent( this, old, state );
+            for ( GameListener listener : getListeners() )
+                listener.onGameStateChange( event );
+        }
     }
 
     /* Lobby */
     public Lobby getLobby() {
         return this.lobby;
     }
+
     protected void setLobby(Lobby lobby) {
         this.lobby = lobby;
     }
@@ -127,6 +104,13 @@ public abstract class Game {
         managers.add(manager);
     }
 
+    /**
+     * Gets the acting manager instance of the provided class.
+     *
+     * @param clazz
+     *            The class of which the manager is intended to extend.
+     * @return The manager is there is one of this type, or null if no manager of this type is set.
+     */
     @SuppressWarnings( "unchecked" )
     public <T extends Manager> T getManager( Class<T> clazz ) {
         for ( Manager manager : managers ) {
@@ -141,18 +125,23 @@ public abstract class Game {
     public Properties getProperties() {
         return this.properties;
     }
+
     protected void setProperties(Properties properties) {
         this.properties = properties;
     }
+
     public String getName() {
         return this.properties.as(GameProperty.NAME, String.class);
     }
+
     public void setName(String name) {
         this.properties.set(GameProperty.NAME, name);
     }
+
     public String getDescription() {
         return this.properties.as(GameProperty.DESCRIPTION, String.class);
     }
+
     public void setDescription(String description) {
         this.properties.set(GameProperty.DESCRIPTION, description);
     }
@@ -166,6 +155,7 @@ public abstract class Game {
     public Players getPlayers() {
         return this.players;
     }
+
     public int getPlayerCount() {
         return this.players.getPlayingAmount();
     }
@@ -176,6 +166,7 @@ public abstract class Game {
             this.listeners.add(listener);
         }
     }
+
     public Set<GameListener> getListeners() {
         return listeners;
     }

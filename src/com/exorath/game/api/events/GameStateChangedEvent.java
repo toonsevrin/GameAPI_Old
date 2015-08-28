@@ -2,7 +2,7 @@ package com.exorath.game.api.events;
 
 import com.exorath.game.api.Game;
 import com.exorath.game.api.GameState;
-import com.exorath.game.api.Game.StopCause;
+import com.exorath.game.api.StopCause;
 
 /**
  * @author Nick Robson

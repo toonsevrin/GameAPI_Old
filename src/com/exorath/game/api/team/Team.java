@@ -1,22 +1,19 @@
 package com.exorath.game.api.team;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.BasePlayerProperty;
 import com.exorath.game.api.GameListener;
 import com.exorath.game.api.Properties;
 import com.exorath.game.api.maps.GameMap;
+import com.exorath.game.api.maps.GameSpawn;
 import com.exorath.game.api.player.GamePlayer;
 import com.google.common.collect.Maps;
 
@@ -46,8 +43,7 @@ public class Team {
     private final Set<GameListener> listeners = new HashSet<>();
 
     public Team() {
-        //TODO: This should be set with the map system
-        this.properties.set(TeamProperty.SPAWNS, new ArrayList<Location>());
+
     }
 
     /**
@@ -160,22 +156,8 @@ public class Team {
         return this;
     }
 
-    public Team addSpawnPoint( GameMap map, Location spawn ) {
-        this.getSpawns( map ).add( spawn );
-        return this;
-    }
-
-    public Team removeSpawnPoint( GameMap map, Location spawn ) {
-        if ( !this.getSpawns( map ).contains( spawn ) ) {
-            return this;
-        }
-        this.getSpawns( map ).remove( spawn );
-        return this;
-    }
-
-    @SuppressWarnings( "unchecked" )
-    public List<Location> getSpawns( GameMap map ) {
-        return this.properties.as(TeamProperty.SPAWNS, List.class);
+    public GameSpawn[] getSpawns( GameMap map ) {
+        return map.getSpawns( this );
     }
 
     public TeamColor getTeamColor() {
