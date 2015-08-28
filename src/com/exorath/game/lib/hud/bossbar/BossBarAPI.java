@@ -1,7 +1,8 @@
-package com.exorath.game.lib.hud.bossBar;
+package com.exorath.game.lib.hud.bossbar;
 
 import com.exorath.game.GameAPI;
-import com.exorath.game.lib.hud.bossBar.nms.FakeDragon;
+import com.exorath.game.lib.hud.bossbar.nms.FakeDragon;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;

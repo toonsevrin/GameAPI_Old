@@ -1,12 +1,12 @@
-package com.exorath.game.lib.hud.bossBar.nms;
+package com.exorath.game.lib.hud.bossbar.nms;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import com.exorath.game.lib.hud.bossBar.Util;
-
 import org.bukkit.Location;
+
+import com.exorath.game.lib.hud.bossbar.Util;
 
 public class v1_8 extends FakeDragon {
     private Object dragon;

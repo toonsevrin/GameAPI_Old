@@ -2,7 +2,8 @@ package com.exorath.game.api.hud;
 
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.Manager;
-import com.exorath.game.lib.hud.bossBar.BossBarAPI;
+import com.exorath.game.lib.hud.bossbar.BossBarAPI;
+
 import org.bukkit.Bukkit;
 
 /**

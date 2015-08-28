@@ -1,4 +1,4 @@
-package com.exorath.game.lib.hud.bossBar;
+package com.exorath.game.lib.hud.bossbar;
 
 /**
  * Created by TOON on 8/11/2015.
@@ -13,8 +13,8 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import com.exorath.game.lib.hud.bossBar.nms.FakeDragon;
-import com.exorath.game.lib.hud.bossBar.nms.v1_8;
+import com.exorath.game.lib.hud.bossbar.nms.FakeDragon;
+import com.exorath.game.lib.hud.bossbar.nms.v1_8;
 
 /**
  * This is a utility class for BarAPI. It is based on the code by SoThatsIt.

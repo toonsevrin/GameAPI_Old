@@ -1,4 +1,4 @@
-package com.exorath.game.lib.hud.ActionBar;
+package com.exorath.game.lib.hud.actionbar;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

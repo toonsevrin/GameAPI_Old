@@ -1,7 +1,8 @@
-package com.exorath.game.lib.hud.bossBar.nms;
+package com.exorath.game.lib.hud.bossbar.nms;
 
-import com.exorath.game.lib.hud.bossBar.Util;
 import org.bukkit.Location;
+
+import com.exorath.game.lib.hud.bossbar.Util;
 
 public abstract class FakeDragon {
     private float maxHealth = 200;

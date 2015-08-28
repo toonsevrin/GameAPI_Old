@@ -3,8 +3,8 @@ package com.exorath.game.api.hud.locations;
 import com.exorath.game.api.hud.HUDDisplay;
 import com.exorath.game.api.hud.HUDText;
 import com.exorath.game.api.player.GamePlayer;
-import com.exorath.game.lib.hud.ActionBar.ActionBarBase;
-import com.exorath.game.lib.hud.bossBar.BossBarAPI;
+import com.exorath.game.lib.hud.actionbar.ActionBarBase;
+import com.exorath.game.lib.hud.bossbar.BossBarAPI;
 
 /**
  * Created by TOON on 8/11/2015.
