@@ -18,7 +18,7 @@ import org.bukkit.util.Vector;
 import com.exorath.game.lib.util.ReflectionUtils;
 
 /**
- * <b>ParticleEffect Library</b>
+ * <b>ParticleEffectType Library</b>
  * <p>
  * This library was created by @DarkBlade12 and allows you to display all Minecraft particle effects
  * on a Bukkit server
@@ -42,7 +42,7 @@ import com.exorath.game.lib.util.ReflectionUtils;
  * @author DarkBlade12
  * @version 1.7
  */
-public enum ParticleEffect {
+public enum ParticleEffectType {
     /**
      * A particle effect which is displayed by exploding tnt and creepers:
      * <ul>
@@ -395,8 +395,8 @@ public enum ParticleEffect {
      */
     MOB_APPEARANCE( "mobappearance", 41, 8 );
     
-    private static final Map<String, ParticleEffect> NAME_MAP = new HashMap<String, ParticleEffect>();
-    private static final Map<Integer, ParticleEffect> ID_MAP = new HashMap<Integer, ParticleEffect>();
+    private static final Map<String, ParticleEffectType> NAME_MAP = new HashMap<String, ParticleEffectType>();
+    private static final Map<Integer, ParticleEffectType> ID_MAP = new HashMap<Integer, ParticleEffectType>();
     private final String name;
     private final int id;
     private final int requiredVersion;
@@ -404,9 +404,9 @@ public enum ParticleEffect {
     
     // Initialize map for quick name and id lookup
     static {
-        for ( ParticleEffect effect : ParticleEffect.values() ) {
-            ParticleEffect.NAME_MAP.put( effect.name, effect );
-            ParticleEffect.ID_MAP.put( effect.id, effect );
+        for ( ParticleEffectType effect : ParticleEffectType.values() ) {
+            ParticleEffectType.NAME_MAP.put( effect.name, effect );
+            ParticleEffectType.ID_MAP.put( effect.id, effect );
         }
     }
     
@@ -422,7 +422,7 @@ public enum ParticleEffect {
      * @param properties
      *            Properties of this particle effect
      */
-    private ParticleEffect( String name, int id, int requiredVersion, ParticleProperty... properties ) {
+    private ParticleEffectType(String name, int id, int requiredVersion, ParticleProperty... properties) {
         this.name = name;
         this.id = id;
         this.requiredVersion = requiredVersion;
@@ -484,8 +484,8 @@ public enum ParticleEffect {
      *            Name of the particle effect
      * @return The particle effect
      */
-    public static ParticleEffect fromName( String name ) {
-        for ( Entry<String, ParticleEffect> entry : ParticleEffect.NAME_MAP.entrySet() ) {
+    public static ParticleEffectType fromName( String name ) {
+        for ( Entry<String, ParticleEffectType> entry : ParticleEffectType.NAME_MAP.entrySet() ) {
             if ( !entry.getKey().equalsIgnoreCase( name ) ) {
                 continue;
             }
@@ -501,8 +501,8 @@ public enum ParticleEffect {
      *            Id of the particle effect
      * @return The particle effect
      */
-    public static ParticleEffect fromId( int id ) {
-        for ( Entry<Integer, ParticleEffect> entry : ParticleEffect.ID_MAP.entrySet() ) {
+    public static ParticleEffectType fromId( int id ) {
+        for ( Entry<Integer, ParticleEffectType> entry : ParticleEffectType.ID_MAP.entrySet() ) {
             if ( entry.getKey() != id ) {
                 continue;
             }
@@ -544,12 +544,12 @@ public enum ParticleEffect {
      * Determine if the data type for a particle effect is correct
      * 
      * @param effect
-     *            Particle effect
+     *            ParticleType effect
      * @param data
-     *            Particle data
+     *            ParticleType data
      * @return Whether the data type is correct or not
      */
-    private static boolean isDataCorrect( ParticleEffect effect, ParticleData data ) {
+    private static boolean isDataCorrect( ParticleEffectType effect, ParticleData data ) {
         return ( effect == BLOCK_CRACK || effect == BLOCK_DUST ) && data instanceof BlockData || effect == ITEM_CRACK && data instanceof ItemData;
     }
     
@@ -557,12 +557,12 @@ public enum ParticleEffect {
      * Determine if the color type for a particle effect is correct
      * 
      * @param effect
-     *            Particle effect
+     *            ParticleType effect
      * @param color
-     *            Particle color
+     *            ParticleType color
      * @return Whether the color type is correct or not
      */
-    private static boolean isColorCorrect( ParticleEffect effect, ParticleColor color ) {
+    private static boolean isColorCorrect( ParticleEffectType effect, ParticleColor color ) {
         return ( effect == SPELL_MOB || effect == SPELL_MOB_AMBIENT || effect == REDSTONE ) && color instanceof OrdinaryColor || effect == NOTE
                 && color instanceof NoteColor;
     }
@@ -602,7 +602,7 @@ public enum ParticleEffect {
         if ( this.hasProperty( ParticleProperty.REQUIRES_DATA ) ) {
             throw new ParticleDataException( "This particle effect requires additional data" );
         }
-        if ( this.hasProperty( ParticleProperty.REQUIRES_WATER ) && !ParticleEffect.isWater( center ) ) {
+        if ( this.hasProperty( ParticleProperty.REQUIRES_WATER ) && !ParticleEffectType.isWater(center) ) {
             throw new IllegalArgumentException( "There is no water at the center location" );
         }
         new ParticlePacket( this, offsetX, offsetY, offsetZ, speed, amount, range > 256, null ).sendTo( center, range );
@@ -642,10 +642,10 @@ public enum ParticleEffect {
         if ( this.hasProperty( ParticleProperty.REQUIRES_DATA ) ) {
             throw new ParticleDataException( "This particle effect requires additional data" );
         }
-        if ( this.hasProperty( ParticleProperty.REQUIRES_WATER ) && !ParticleEffect.isWater( center ) ) {
+        if ( this.hasProperty( ParticleProperty.REQUIRES_WATER ) && !ParticleEffectType.isWater(center) ) {
             throw new IllegalArgumentException( "There is no water at the center location" );
         }
-        new ParticlePacket( this, offsetX, offsetY, offsetZ, speed, amount, ParticleEffect.isLongDistance( center, players ), null ).sendTo( center,
+        new ParticlePacket( this, offsetX, offsetY, offsetZ, speed, amount, ParticleEffectType.isLongDistance(center, players), null ).sendTo( center,
                 players );
     }
     
@@ -698,7 +698,7 @@ public enum ParticleEffect {
      * @throws IllegalArgumentException
      *             If the particle effect is not directional or if it requires water and none is at
      *             the center location
-     * @see ParticlePacket#ParticlePacket(ParticleEffect, Vector, float, boolean, ParticleData)
+     * @see ParticlePacket#ParticlePacket(ParticleEffectType, Vector, float, boolean, ParticleData)
      * @see ParticlePacket#sendTo(Location, double)
      */
     public void display( Vector direction, float speed, Location center, double range ) throws ParticleVersionException, ParticleDataException,
@@ -709,7 +709,7 @@ public enum ParticleEffect {
         if ( this.hasProperty( ParticleProperty.REQUIRES_DATA ) ) {
             throw new ParticleDataException( "This particle effect requires additional data" );
         }
-        if ( this.hasProperty( ParticleProperty.REQUIRES_WATER ) && !ParticleEffect.isWater( center ) ) {
+        if ( this.hasProperty( ParticleProperty.REQUIRES_WATER ) && !ParticleEffectType.isWater(center) ) {
             throw new IllegalArgumentException( "There is no water at the center location" );
         }
         new ParticlePacket( this, direction, speed, range > 256, null ).sendTo( center, range );
@@ -734,7 +734,7 @@ public enum ParticleEffect {
      * @throws IllegalArgumentException
      *             If the particle effect is not directional or if it requires water and none is at
      *             the center location
-     * @see ParticlePacket#ParticlePacket(ParticleEffect, Vector, float, boolean, ParticleData)
+     * @see ParticlePacket#ParticlePacket(ParticleEffectType, Vector, float, boolean, ParticleData)
      * @see ParticlePacket#sendTo(Location, List)
      */
     public void display( Vector direction, float speed, Location center, List<Player> players ) throws ParticleVersionException,
@@ -748,10 +748,10 @@ public enum ParticleEffect {
         if ( !this.hasProperty( ParticleProperty.DIRECTIONAL ) ) {
             throw new IllegalArgumentException( "This particle effect is not directional" );
         }
-        if ( this.hasProperty( ParticleProperty.REQUIRES_WATER ) && !ParticleEffect.isWater( center ) ) {
+        if ( this.hasProperty( ParticleProperty.REQUIRES_WATER ) && !ParticleEffectType.isWater(center) ) {
             throw new IllegalArgumentException( "There is no water at the center location" );
         }
-        new ParticlePacket( this, direction, speed, ParticleEffect.isLongDistance( center, players ), null ).sendTo( center, players );
+        new ParticlePacket( this, direction, speed, ParticleEffectType.isLongDistance(center, players), null ).sendTo( center, players );
     }
     
     /**
@@ -794,7 +794,7 @@ public enum ParticleEffect {
      *             If the particle effect is not supported by the server version
      * @throws ParticleColorException
      *             If the particle effect is not colorable or the color type is incorrect
-     * @see ParticlePacket#ParticlePacket(ParticleEffect, ParticleColor, boolean)
+     * @see ParticlePacket#ParticlePacket(ParticleEffectType, ParticleColor, boolean)
      * @see ParticlePacket#sendTo(Location, double)
      */
     public void display( ParticleColor color, Location center, double range ) throws ParticleVersionException, ParticleColorException {
@@ -804,7 +804,7 @@ public enum ParticleEffect {
         if ( !this.hasProperty( ParticleProperty.COLORABLE ) ) {
             throw new ParticleColorException( "This particle effect is not colorable" );
         }
-        if ( !ParticleEffect.isColorCorrect( this, color ) ) {
+        if ( !ParticleEffectType.isColorCorrect(this, color) ) {
             throw new ParticleColorException( "The particle color type is incorrect" );
         }
         new ParticlePacket( this, color, range > 256 ).sendTo( center, range );
@@ -823,7 +823,7 @@ public enum ParticleEffect {
      *             If the particle effect is not supported by the server version
      * @throws ParticleColorException
      *             If the particle effect is not colorable or the color type is incorrect
-     * @see ParticlePacket#ParticlePacket(ParticleEffect, ParticleColor, boolean)
+     * @see ParticlePacket#ParticlePacket(ParticleEffectType, ParticleColor, boolean)
      * @see ParticlePacket#sendTo(Location, List)
      */
     public void display( ParticleColor color, Location center, List<Player> players ) throws ParticleVersionException, ParticleColorException {
@@ -833,10 +833,10 @@ public enum ParticleEffect {
         if ( !this.hasProperty( ParticleProperty.COLORABLE ) ) {
             throw new ParticleColorException( "This particle effect is not colorable" );
         }
-        if ( !ParticleEffect.isColorCorrect( this, color ) ) {
+        if ( !ParticleEffectType.isColorCorrect(this, color) ) {
             throw new ParticleColorException( "The particle color type is incorrect" );
         }
-        new ParticlePacket( this, color, ParticleEffect.isLongDistance( center, players ) ).sendTo( center, players );
+        new ParticlePacket( this, color, ParticleEffectType.isLongDistance(center, players) ).sendTo( center, players );
     }
     
     /**
@@ -894,7 +894,7 @@ public enum ParticleEffect {
         if ( !this.hasProperty( ParticleProperty.REQUIRES_DATA ) ) {
             throw new ParticleDataException( "This particle effect does not require additional data" );
         }
-        if ( !ParticleEffect.isDataCorrect( this, data ) ) {
+        if ( !ParticleEffectType.isDataCorrect(this, data) ) {
             throw new ParticleDataException( "The particle data type is incorrect" );
         }
         new ParticlePacket( this, offsetX, offsetY, offsetZ, speed, amount, range > 256, data ).sendTo( center, range );
@@ -936,10 +936,10 @@ public enum ParticleEffect {
         if ( !this.hasProperty( ParticleProperty.REQUIRES_DATA ) ) {
             throw new ParticleDataException( "This particle effect does not require additional data" );
         }
-        if ( !ParticleEffect.isDataCorrect( this, data ) ) {
+        if ( !ParticleEffectType.isDataCorrect(this, data) ) {
             throw new ParticleDataException( "The particle data type is incorrect" );
         }
-        new ParticlePacket( this, offsetX, offsetY, offsetZ, speed, amount, ParticleEffect.isLongDistance( center, players ), data ).sendTo( center,
+        new ParticlePacket( this, offsetX, offsetY, offsetZ, speed, amount, ParticleEffectType.isLongDistance(center, players), data ).sendTo( center,
                 players );
     }
     
@@ -1006,7 +1006,7 @@ public enum ParticleEffect {
         if ( !this.hasProperty( ParticleProperty.REQUIRES_DATA ) ) {
             throw new ParticleDataException( "This particle effect does not require additional data" );
         }
-        if ( !ParticleEffect.isDataCorrect( this, data ) ) {
+        if ( !ParticleEffectType.isDataCorrect(this, data) ) {
             throw new ParticleDataException( "The particle data type is incorrect" );
         }
         new ParticlePacket( this, direction, speed, range > 256, data ).sendTo( center, range );
@@ -1042,10 +1042,10 @@ public enum ParticleEffect {
         if ( !this.hasProperty( ParticleProperty.REQUIRES_DATA ) ) {
             throw new ParticleDataException( "This particle effect does not require additional data" );
         }
-        if ( !ParticleEffect.isDataCorrect( this, data ) ) {
+        if ( !ParticleEffectType.isDataCorrect(this, data) ) {
             throw new ParticleDataException( "The particle data type is incorrect" );
         }
-        new ParticlePacket( this, direction, speed, ParticleEffect.isLongDistance( center, players ), data ).sendTo( center, players );
+        new ParticlePacket( this, direction, speed, ParticleEffectType.isLongDistance(center, players), data ).sendTo( center, players );
     }
     
     /**
@@ -1077,7 +1077,7 @@ public enum ParticleEffect {
     /**
      * Represents the property of a particle effect
      * <p>
-     * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
+     * This class is part of the <b>ParticleEffectType Library</b> and follows the same usage conditions
      * 
      * @author DarkBlade12
      * @since 1.7
@@ -1102,10 +1102,10 @@ public enum ParticleEffect {
     }
     
     /**
-     * Represents the particle data for effects like {@link ParticleEffect#ITEM_CRACK},
-     * {@link ParticleEffect#BLOCK_CRACK} and {@link ParticleEffect#BLOCK_DUST}
+     * Represents the particle data for effects like {@link ParticleEffectType#ITEM_CRACK},
+     * {@link ParticleEffectType#BLOCK_CRACK} and {@link ParticleEffectType#BLOCK_DUST}
      * <p>
-     * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
+     * This class is part of the <b>ParticleEffectType Library</b> and follows the same usage conditions
      * 
      * @author DarkBlade12
      * @since 1.6
@@ -1168,9 +1168,9 @@ public enum ParticleEffect {
     }
     
     /**
-     * Represents the item data for the {@link ParticleEffect#ITEM_CRACK} effect
+     * Represents the item data for the {@link ParticleEffectType#ITEM_CRACK} effect
      * <p>
-     * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
+     * This class is part of the <b>ParticleEffectType Library</b> and follows the same usage conditions
      * 
      * @author DarkBlade12
      * @since 1.6
@@ -1191,10 +1191,10 @@ public enum ParticleEffect {
     }
     
     /**
-     * Represents the block data for the {@link ParticleEffect#BLOCK_CRACK} and
-     * {@link ParticleEffect#BLOCK_DUST} effects
+     * Represents the block data for the {@link ParticleEffectType#BLOCK_CRACK} and
+     * {@link ParticleEffectType#BLOCK_DUST} effects
      * <p>
-     * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
+     * This class is part of the <b>ParticleEffectType Library</b> and follows the same usage conditions
      * 
      * @author DarkBlade12
      * @since 1.6
@@ -1220,11 +1220,11 @@ public enum ParticleEffect {
     }
     
     /**
-     * Represents the color for effects like {@link ParticleEffect#SPELL_MOB},
-     * {@link ParticleEffect#SPELL_MOB_AMBIENT}, {@link ParticleEffect#REDSTONE} and
-     * {@link ParticleEffect#NOTE}
+     * Represents the color for effects like {@link ParticleEffectType#SPELL_MOB},
+     * {@link ParticleEffectType#SPELL_MOB_AMBIENT}, {@link ParticleEffectType#REDSTONE} and
+     * {@link ParticleEffectType#NOTE}
      * <p>
-     * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
+     * This class is part of the <b>ParticleEffectType Library</b> and follows the same usage conditions
      * 
      * @author DarkBlade12
      * @since 1.7
@@ -1253,10 +1253,10 @@ public enum ParticleEffect {
     }
     
     /**
-     * Represents the color for effects like {@link ParticleEffect#SPELL_MOB},
-     * {@link ParticleEffect#SPELL_MOB_AMBIENT} and {@link ParticleEffect#NOTE}
+     * Represents the color for effects like {@link ParticleEffectType#SPELL_MOB},
+     * {@link ParticleEffectType#SPELL_MOB_AMBIENT} and {@link ParticleEffectType#NOTE}
      * <p>
-     * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
+     * This class is part of the <b>ParticleEffectType Library</b> and follows the same usage conditions
      * 
      * @author DarkBlade12
      * @since 1.7
@@ -1361,9 +1361,9 @@ public enum ParticleEffect {
     }
     
     /**
-     * Represents the color for the {@link ParticleEffect#NOTE} effect
+     * Represents the color for the {@link ParticleEffectType#NOTE} effect
      * <p>
-     * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
+     * This class is part of the <b>ParticleEffectType Library</b> and follows the same usage conditions
      * 
      * @author DarkBlade12
      * @since 1.7
@@ -1425,7 +1425,7 @@ public enum ParticleEffect {
      * Represents a runtime exception that is thrown either if the displayed particle effect
      * requires data and has none or vice-versa or if the data type is incorrect
      * <p>
-     * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
+     * This class is part of the <b>ParticleEffectType Library</b> and follows the same usage conditions
      * 
      * @author DarkBlade12
      * @since 1.6
@@ -1448,7 +1448,7 @@ public enum ParticleEffect {
      * Represents a runtime exception that is thrown either if the displayed particle effect is not
      * colorable or if the particle color type is incorrect
      * <p>
-     * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
+     * This class is part of the <b>ParticleEffectType Library</b> and follows the same usage conditions
      * 
      * @author DarkBlade12
      * @since 1.7
@@ -1471,7 +1471,7 @@ public enum ParticleEffect {
      * Represents a runtime exception that is thrown if the displayed particle effect requires a
      * newer version
      * <p>
-     * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
+     * This class is part of the <b>ParticleEffectType Library</b> and follows the same usage conditions
      * 
      * @author DarkBlade12
      * @since 1.6
@@ -1494,7 +1494,7 @@ public enum ParticleEffect {
      * Represents a particle effect packet with all attributes which is used for sending packets to
      * the players
      * <p>
-     * This class is part of the <b>ParticleEffect Library</b> and follows the same usage conditions
+     * This class is part of the <b>ParticleEffectType Library</b> and follows the same usage conditions
      * 
      * @author DarkBlade12
      * @since 1.5
@@ -1507,7 +1507,7 @@ public enum ParticleEffect {
         private static Field playerConnection;
         private static Method sendPacket;
         private static boolean initialized;
-        private final ParticleEffect effect;
+        private final ParticleEffectType effect;
         private final float offsetX;
         private final float offsetY;
         private final float offsetZ;
@@ -1521,7 +1521,7 @@ public enum ParticleEffect {
          * Construct a new particle packet
          * 
          * @param effect
-         *            Particle effect
+         *            ParticleType effect
          * @param offsetX
          *            Maximum distance particles can fly away from the center on the x-axis
          * @param offsetY
@@ -1540,7 +1540,7 @@ public enum ParticleEffect {
          *             If the speed or amount is lower than 0
          * @see #initialize()
          */
-        public ParticlePacket( ParticleEffect effect, float offsetX, float offsetY, float offsetZ, float speed, int amount, boolean longDistance,
+        public ParticlePacket( ParticleEffectType effect, float offsetX, float offsetY, float offsetZ, float speed, int amount, boolean longDistance,
                 ParticleData data ) throws IllegalArgumentException {
             ParticlePacket.initialize();
             if ( speed < 0 ) {
@@ -1563,7 +1563,7 @@ public enum ParticleEffect {
          * Construct a new particle packet of a single particle flying into a determined direction
          * 
          * @param effect
-         *            Particle effect
+         *            ParticleType effect
          * @param direction
          *            Direction of the particle
          * @param speed
@@ -1575,7 +1575,7 @@ public enum ParticleEffect {
          * @throws IllegalArgumentException
          *             If the speed is lower than 0
          */
-        public ParticlePacket( ParticleEffect effect, Vector direction, float speed, boolean longDistance, ParticleData data )
+        public ParticlePacket( ParticleEffectType effect, Vector direction, float speed, boolean longDistance, ParticleData data )
                 throws IllegalArgumentException {
             this( effect, (float) direction.getX(), (float) direction.getY(), (float) direction.getZ(), speed, 0, longDistance, data );
         }
@@ -1584,13 +1584,13 @@ public enum ParticleEffect {
          * Construct a new particle packet of a single colored particle
          * 
          * @param effect
-         *            Particle effect
+         *            ParticleType effect
          * @param color
          *            Color of the particle
          * @param longDistance
          *            Indicates whether the maximum distance is increased from 256 to 65536
          */
-        public ParticlePacket( ParticleEffect effect, ParticleColor color, boolean longDistance ) {
+        public ParticlePacket( ParticleEffectType effect, ParticleColor color, boolean longDistance ) {
             this( effect, color.getValueX(), color.getValueY(), color.getValueZ(), 1, 0, longDistance, null );
         }
         
@@ -1759,7 +1759,7 @@ public enum ParticleEffect {
          * Represents a runtime exception that is thrown if a bukkit version is not compatible with
          * this library
          * <p>
-         * This class is part of the <b>ParticleEffect Library</b> and follows the same usage
+         * This class is part of the <b>ParticleEffectType Library</b> and follows the same usage
          * conditions
          * 
          * @author DarkBlade12
@@ -1784,7 +1784,7 @@ public enum ParticleEffect {
         /**
          * Represents a runtime exception that is thrown if packet instantiation fails
          * <p>
-         * This class is part of the <b>ParticleEffect Library</b> and follows the same usage
+         * This class is part of the <b>ParticleEffectType Library</b> and follows the same usage
          * conditions
          * 
          * @author DarkBlade12
@@ -1809,7 +1809,7 @@ public enum ParticleEffect {
         /**
          * Represents a runtime exception that is thrown if packet sending fails
          * <p>
-         * This class is part of the <b>ParticleEffect Library</b> and follows the same usage
+         * This class is part of the <b>ParticleEffectType Library</b> and follows the same usage
          * conditions
          * 
          * @author DarkBlade12
