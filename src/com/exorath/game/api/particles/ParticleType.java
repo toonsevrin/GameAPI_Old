@@ -6,8 +6,14 @@ import org.bukkit.entity.Player;
 /**
  * Created by TOON on 8/28/2015.
  */
-public interface ParticleType {
-
-    void display(Location loc, Player p);
+public abstract class ParticleType {
+    private ParticleEffect effect;
+    protected void setEffect(ParticleEffect effect){
+        this.effect = effect;
+    }
+    public ParticleEffect getEffect(){
+        return effect;
+    }
+    protected abstract void display(Location loc);
 }
 

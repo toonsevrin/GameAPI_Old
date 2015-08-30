@@ -1,71 +1,141 @@
 package com.exorath.game.api.particles;
 
 import com.exorath.game.GameAPI;
-import com.exorath.game.api.particles.particleLocs.ParticleLocation;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 
 /**
  * Created by Toon Sevrin on 8/28/2015.
  */
-public abstract class ParticleEffect implements Runnable{
+public abstract class ParticleEffect implements Runnable {
     private ParticleLocation baseLocation;
+    private boolean enabled;
+
+    private Repeater repeater;
+    private ParticleType type;
 
     private int frames;
-    private int calls;
     private int interval;
 
 
     private int tick = 0;
     private int frame = 0;
 
-    public ParticleEffect(ParticleLocation baseLocation, int frames, int calls, int interval){
+    //** Constructors **//
+    public ParticleEffect(ParticleLocation baseLocation, ParticleType type, int frames, int interval, boolean repeating) {
+        if(repeating)
+            setup(baseLocation, type, frames, interval, new UnlimitedRepeater());
+        else
+            setup(baseLocation, type, frames, interval, new Repeater());
+    }
+    public ParticleEffect(ParticleLocation baseLocation, ParticleType type, int frames, int interval, int repeats) {
+        setup(baseLocation, type, frames, interval, new LimitedRepeater(repeats));
+    }
+    private void setup(ParticleLocation baseLocation, ParticleType type, int frames, int interval, Repeater repeater){
         this.baseLocation = baseLocation;
-
         this.frames = frames;
-        this.calls = calls;
         this.interval = interval;
+
+        this.repeater = repeater;
+        this.type = type;
     }
 
-    public abstract Location getLocation(Location base, float frame, float call);
+    //** Abstract methods **//
+    public abstract void sendParticles(float frame);
 
-    // This is ran tickly
+    //** Ran by childs **//
+    public void sendParticle(float x, float y, float z){
+        type.display(baseLocation.getBaseLocation().clone().add(x,y,z));
+    }
+
+    //** Ran by manager **//
+    public void tick(){
+        if (!isReady())
+            return;
+        run();
+    }
     @Override
-    public void run(){
-        if(!isReady())
+    public void run() {
+        if(!isBaseLocValid())
             return;
         frame++;
 
-        Location baseLoc = baseLocation.getBaseLocation();
-        if(baseLoc == null)
-            return;
-        for(int call = 0; call < calls; call++)
-            getLocation(baseLoc,frame, call);
+        sendParticles(((float) frame) / frames);
 
-        if(frame >= frames)
+        if (!hasFramesRemaining())
             return;
         Bukkit.getScheduler().runTaskLater(GameAPI.getInstance(), this, interval);
     }
-    public boolean isReady(){
+
+    //** Getters & Setters **//
+    private boolean isReady() {
         tick++;
-        if(tick == interval) {
+        if (tick == interval) {
             tick = 0;
             return true;
         }
         return false;
     }
-    public int getInterval(){
+    private boolean isBaseLocValid(){
+        if (baseLocation.getBaseLocation() == null) {
+            enabled = false;
+            return false;
+        }
+        return true;
+    }
+    private boolean hasFramesRemaining(){
+        if (frame >= frames) {
+            if(!repeater.repeat()){
+                enabled = false;
+            }
+            return false;
+        }
+        return true;
+    }
+    public int getInterval() {
         return interval;
     }
-
-    public int getCalls() {
-        return calls;
-    }
-
     public int getFrames() {
         return frames;
     }
-    public int getTotalTicks(){
+    public int getTotalTicks() {
         return interval * frames;
+    }
+    public int getFrame() {
+        return frame;
+    }
+    public Repeater getRepeater() {
+        return repeater;
+    }
+    public ParticleLocation getBaseLocation() {
+        return baseLocation;
+    }
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    //** Repeating types **/
+    public class Repeater {
+        public boolean repeat(){
+            return false;
+        }
+    }
+    private class LimitedRepeater extends Repeater{
+        private int amount;
+        public LimitedRepeater(int amount){
+            this.amount = amount;
+        }
+        @Override
+        public boolean repeat(){
+            if(amount == 0)
+                return false;
+            amount--;
+            return true;
+        }
+    }
+    private class UnlimitedRepeater extends Repeater{
+        @Override
+        public boolean repeat(){
+            return true;
+        }
     }
 }
