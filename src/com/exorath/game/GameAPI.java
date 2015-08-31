@@ -42,7 +42,6 @@ public class GameAPI extends JavaPlugin {
 
     public static void registerGameProvider( GameProvider plugin ) {
         gameProviders.add( plugin.getName() );
-        plugin.start();
     }
 
     public static Game getGame() {
