@@ -3,10 +3,10 @@ package com.exorath.game.api.npc.player;
 import java.net.Socket;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import net.minecraft.server.v1_8_R2.EnumProtocol;
-import net.minecraft.server.v1_8_R2.EnumProtocolDirection;
-import net.minecraft.server.v1_8_R2.NetworkManager;
-import net.minecraft.server.v1_8_R2.PacketListener;
+import net.minecraft.server.v1_8_R3.EnumProtocol;
+import net.minecraft.server.v1_8_R3.EnumProtocolDirection;
+import net.minecraft.server.v1_8_R3.NetworkManager;
+import net.minecraft.server.v1_8_R3.PacketListener;
 
 public class FakePlayerNetworkManager extends NetworkManager {
     
