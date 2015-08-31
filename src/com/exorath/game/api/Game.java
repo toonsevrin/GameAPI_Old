@@ -47,11 +47,12 @@ public abstract class Game {
 
     public Game() {
         this.gameID = UUID.randomUUID();
-        addManager( new TeamManager( this ) );
-        addManager( new SpectateManager( this ) );
-        addManager( new KitManager( this ) );
-        addManager( new MapManager( this ) );
-        addManager( new HUDManager() );
+
+        addManager(new TeamManager(this));
+        addManager(new SpectateManager(this));
+        addManager(new KitManager(this));
+        addManager(new MapManager(this));
+        addManager(new HUDManager());
     }
 
     /* Game ID */
@@ -64,7 +65,7 @@ public abstract class Game {
         return host;
     }
 
-    protected void setHost( GameProvider host ) {
+    protected void setHost(GameProvider host) {
         this.host = host;
     }
 
@@ -72,17 +73,17 @@ public abstract class Game {
         return this.state;
     }
 
-    public void setState( GameState state ) {
-        setState( state, true );
+    public void setState(GameState state) {
+        setState(state, true);
     }
 
-    public void setState( GameState state, boolean callEvent ) {
+    public void setState(GameState state, boolean callEvent) {
         GameState old = this.state;
         this.state = state;
-        if ( callEvent ) {
-            GameStateChangedEvent event = new GameStateChangedEvent( this, old, state );
-            for ( GameListener listener : getListeners() )
-                listener.onGameStateChange( event );
+        if (callEvent) {
+            GameStateChangedEvent event = new GameStateChangedEvent(this, old, state);
+            for (GameListener listener : getListeners())
+                listener.onGameStateChange(event);
         }
     }
 
@@ -107,14 +108,13 @@ public abstract class Game {
     /**
      * Gets the acting manager instance of the provided class.
      *
-     * @param clazz
-     *            The class of which the manager is intended to extend.
+     * @param clazz The class of which the manager is intended to extend.
      * @return The manager is there is one of this type, or null if no manager of this type is set.
      */
-    @SuppressWarnings( "unchecked" )
-    public <T extends Manager> T getManager( Class<T> clazz ) {
-        for ( Manager manager : managers ) {
-            if ( clazz.isAssignableFrom( manager.getClass() ) ) {
+    @SuppressWarnings("unchecked")
+    public <T extends Manager> T getManager(Class<T> clazz) {
+        for (Manager manager : managers) {
+            if (clazz.isAssignableFrom(manager.getClass())) {
                 return (T) manager;
             }
         }

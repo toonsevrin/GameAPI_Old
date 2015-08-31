@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 /**
- * This class is part of the ParticleEffect library and follows the same usage conditions
+ * This class is part of the ParticleEffectType library and follows the same usage conditions
  * 
  * @author DarkBlade12
  */
