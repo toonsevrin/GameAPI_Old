@@ -2,6 +2,7 @@ package com.exorath.game.api.particles.particleEffects;
 
 import com.exorath.game.api.particles.ParticleEffect;
 import com.exorath.game.api.particles.ParticleLocation;
+import com.exorath.game.api.particles.ParticleType;
 
 /**
  * Created by TOON on 8/30/2015.
@@ -10,12 +11,12 @@ public class CubeEffect extends ParticleEffect {
     private float size;
     private int particles;
 
-    public CubeEffect(ParticleLocation baseLocation, float size, int particles){
-        super(baseLocation, 1,0);
+    public CubeEffect(ParticleLocation baseLocation, ParticleType type, float size, int particles,boolean repeating){
+        super(baseLocation, type, 1,0, repeating);
         setup(size, particles);
     }
-    public CubeEffect(ParticleLocation baseLocation, int delay, float size, int particles){
-        super(baseLocation, 1,delay);
+    public CubeEffect(ParticleLocation baseLocation, ParticleType type, int delay, float size, int particles, boolean repeating){
+        super(baseLocation,type, 1,delay, repeating);
         setup(size, particles);
     }
     private void setup(float size, int particles){
