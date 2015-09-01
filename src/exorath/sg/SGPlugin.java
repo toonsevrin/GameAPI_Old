@@ -8,7 +8,7 @@ import com.exorath.game.api.GameProvider;
 /**
  * @author Nick Robson
  */
-public class SGPlugin extends GameProvider {
+public class SGPlugin extends JavaPlugin implements GameProvider {
     @Override
     public Game create() {
         return new SurvivalGames();
