@@ -14,12 +14,8 @@ public class GameMessenger {
 
     /**
      * Sends a formatted message to all online players.
-     *
-<<<<<<< HEAD
-     * @param game
-     *            The game sending the message.
-     * @param path
-     *            The format string path in the game's config.
+     * @param game The game sending the message.
+     * @param path The format string path in the game's config.
      */
     public static void sendStructured( Game game, String path, Object... params ) {
         for ( GamePlayer player : GameAPI.getOnlinePlayers() ) {
@@ -29,19 +25,9 @@ public class GameMessenger {
 
     /**
      * Sends a formatted message to a player.
-     *
-<<<<<<< HEAD
-     * @param game
-     *            The game sending the message.
-     * @param player
-     *            The player to send the message to.
-     * @param path
-     *            The format string path in the game's config.
-=======
-     * @param game   The game sending the message.
-     * @param player The player to send the message to.
-     * @param path   The format string path in the game's config.
->>>>>>> master
+     * @param game The game sending the message.
+     * @param player  The player to send the message to.
+     * @param path The format string path in the game's config.
      */
     public static void sendStructured(Game game, GamePlayer player, String path, Object... params) {
         FileConfiguration config = game.getConfig("messages");
@@ -54,7 +40,9 @@ public class GameMessenger {
             GameMessenger.sendInfo( game, player, message );
         }
     }
+    public static void sendCountdownMessage(GamePlayer player, String message){
 
+    }
     public static void sendInfo( Game game, GamePlayer player, String message ) {
         player.sendMessage( message );
     }

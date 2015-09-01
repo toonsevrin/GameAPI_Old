@@ -11,30 +11,11 @@ import com.exorath.game.api.Property;
 
 /**
  * Created by Toon Sevrin on 27/05/2015.
- * Minigames are Games that are short and automatically repeat. Onstop they will wait a while in a
- * lobby (if there's one). If the time is over and there are enough players, start again.
- * Stages:
- * 1. PREGAME (All players can vote for the next map if there is more then one map)
- * a. Wait for enough players
- * b. Wait another x seconds (If there are not enough players anymore during this time -> a.)
- * 2. RESETTING (Must be enabled by developer): This makes sure the map is the same as the original
- * 3. PLAYING
- * a. Game ends if:
- * * Maximum game time runs out (Can be disabled, this is to disable game lockers though)
- * * Ended by developer
- * * Lower then minimum player limit
- * 4. FINISHING
- * a. Send an ending message to the players (Structure allways the same)
- * b. Give players a victory/loss/tied reward
- * c. Wait about 10 seconds
- * d. Teleport everyone to the lobby
- * e. Repeat cycle from 1. PREGAME
  * TODO: Requires more foundation before it can be continued
  */
 public abstract class RepeatingMinigame extends Minigame {
-
-    public static final Property REPEAT_DELAY = Property.get( "repeatingdelay", "Waiting time after there are enough players before game starts", 60 );
-    public static final Property FINISHING_TIME = Property.get( "finishingtime", "Time before going from stage 4. FINISHING to stage 1. PREGAME", 7 );
+    public static final Property REPEAT_DELAY = Property.get( "repeatdelay", "Waiting time after there are enough players before game starts", 60 );
+    public static final Property FINISHING_TIME = Property.get( "finishtime", "Time before going from stage 4. FINISHING to stage 1. PREGAME", 7 );
 
     public RepeatingMinigame() {
 
@@ -42,7 +23,7 @@ public abstract class RepeatingMinigame extends Minigame {
 
     @EventHandler
     public void onPlayerJoin( PlayerJoinEvent event ) {
-        if ( this.getState() == GameState.WAITING && this.getPlayerCount() >= this.getProperties().as( Minigame.MIN_PLAYERS, Integer.class ) ) { //Enough players to start + waiting to start
+        if ( this.getState() == GameState.WAITING && this.getPlayerCount() >= this.getProperties().as(Minigame.MIN_PLAYERS, Integer.class ) ) { //Enough players to start + waiting to start
             this.startCountdown();
         }
     }
@@ -108,7 +89,7 @@ public abstract class RepeatingMinigame extends Minigame {
         private int countdownSeconds;
 
         public CountdownTask() {
-            this.countdownSeconds = RepeatingMinigame.this.getProperties().as( Minigame.MIN_PLAYERS, Integer.class );
+            this.countdownSeconds = RepeatingMinigame.this.getProperties().as(Minigame.MIN_PLAYERS, Integer.class );
         }
 
         @Override

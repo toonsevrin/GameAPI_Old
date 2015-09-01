@@ -41,7 +41,7 @@ public class GameAPI extends JavaPlugin {
     private static Set<String> gameProviders = Sets.newHashSet();
 
     public static void registerGameProvider( GameProvider plugin ) {
-        gameProviders.add( plugin.getName() );
+        gameProviders.add(plugin.getName());
     }
 
     public static Game getGame() {

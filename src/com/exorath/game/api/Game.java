@@ -23,7 +23,7 @@ import com.google.common.collect.Sets;
 
 /**
  * The class representing a single Game instance.
- * Gamemode, RepeatingMinigame and Minigame extend this.
+ * Gamemode and RepeatingMinigame extend this.
  *
  * @author Toon Sevrin
  * @author Nick Robson
