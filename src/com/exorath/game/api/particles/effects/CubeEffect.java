@@ -1,4 +1,4 @@
-package com.exorath.game.api.particles.particleEffects;
+package com.exorath.game.api.particles.effects;
 
 import com.exorath.game.api.particles.ParticleEffect;
 import com.exorath.game.api.particles.ParticleLocation;

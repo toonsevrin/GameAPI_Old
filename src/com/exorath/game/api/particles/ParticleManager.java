@@ -1,8 +1,6 @@
 package com.exorath.game.api.particles;
 
 import com.exorath.game.GameAPI;
-import com.exorath.game.api.particles.particleEffects.CubeEffect;
-import com.exorath.game.api.particles.particleLocs.PlayerLocation;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Set;

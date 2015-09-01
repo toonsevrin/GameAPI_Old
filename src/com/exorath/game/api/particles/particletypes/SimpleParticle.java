@@ -1,4 +1,4 @@
-package com.exorath.game.api.particles.particleTypes;
+package com.exorath.game.api.particles.particletypes;
 
 import com.exorath.game.api.particles.ParticleType;
 import com.exorath.game.lib.particles.ParticleEffectType;

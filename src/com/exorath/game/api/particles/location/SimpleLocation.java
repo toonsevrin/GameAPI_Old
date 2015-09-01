@@ -1,4 +1,4 @@
-package com.exorath.game.api.particles.particleLocs;
+package com.exorath.game.api.particles.location;
 
 import com.exorath.game.api.particles.ParticleLocation;
 import org.bukkit.Location;
