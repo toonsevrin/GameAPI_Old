@@ -14,7 +14,6 @@ import com.exorath.game.api.Property;
  * TODO: Requires more foundation before it can be continued
  */
 public abstract class RepeatingMinigame extends Minigame {
-    public static final Property REPEAT_DELAY = Property.get( "repeatdelay", "Waiting time after there are enough players before game starts", 60 );
     public static final Property FINISHING_TIME = Property.get( "finishtime", "Time before going from stage 4. FINISHING to stage 1. PREGAME", 7 );
 
     public RepeatingMinigame() {
