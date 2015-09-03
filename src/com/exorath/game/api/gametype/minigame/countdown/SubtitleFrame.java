@@ -3,9 +3,6 @@ package com.exorath.game.api.gametype.minigame.countdown;
 import com.exorath.game.api.hud.HUDPriority;
 import com.exorath.game.api.hud.HUDText;
 import com.exorath.game.api.player.GamePlayer;
-import com.exorath.game.lib.util.Countdown;
-
-import java.util.HashMap;
 
 /**
  * Created by TOON on 9/2/2015.

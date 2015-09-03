@@ -1,15 +1,16 @@
 package com.exorath.game.api.gametype.minigame.countdown;
 
-import com.exorath.game.api.gametype.minigame.Minigame;
-import com.exorath.game.api.hud.HUDText;
-import com.exorath.game.api.player.GamePlayer;
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Sound;
-
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import org.bukkit.Sound;
+
+import com.exorath.game.api.gametype.minigame.Minigame;
+import com.exorath.game.api.hud.HUDText;
+import com.exorath.game.api.player.GamePlayer;
+
+import net.md_5.bungee.api.ChatColor;
 
 /**
  * Created by TOON on 9/2/2015.

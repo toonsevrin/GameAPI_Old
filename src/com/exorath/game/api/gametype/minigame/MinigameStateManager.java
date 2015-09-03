@@ -2,8 +2,6 @@ package com.exorath.game.api.gametype.minigame;
 
 import com.exorath.game.api.GameState;
 
-import java.security.InvalidParameterException;
-
 /**
  * Created by Toon on 9/1/2015.
  * Not functional yet

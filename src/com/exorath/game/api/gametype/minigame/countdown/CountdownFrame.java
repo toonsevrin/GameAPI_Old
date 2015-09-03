@@ -1,7 +1,5 @@
 package com.exorath.game.api.gametype.minigame.countdown;
 
-import com.exorath.game.api.Game;
-import com.exorath.game.api.gametype.minigame.Minigame;
 import com.exorath.game.api.player.GamePlayer;
 
 /**
