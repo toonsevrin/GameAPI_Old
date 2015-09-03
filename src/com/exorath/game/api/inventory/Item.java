@@ -1,11 +1,20 @@
 package com.exorath.game.api.inventory;
 
-import com.exorath.game.lib.json.JSONArray;
-import com.exorath.game.lib.json.JSONObject;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 
-import java.util.*;
+import com.exorath.game.GameAPI;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 /**
  * Created by TOON on 8/25/2015.
@@ -67,55 +76,56 @@ public class Item {
         this.durability = durability;
     }
 
-    public JSONObject getJSON() {
+    public JsonObject getJSON() {
         if(amount == 0)
             return null;
 
-        JSONObject obj = new JSONObject();
+        JsonObject obj = new JsonObject();
 
         Map<String, Integer> enchs = new HashMap<>();
         for(GEnchantment enchantment : enchantments)
             enchs.put("ENCHANTMENT", enchantment.getLevel());
 
         if(name != null)
-            obj.put("n", name);
+            obj.addProperty( "n", name );
         if(material != null)
-            obj.put("m", material.toString());
-        obj.put("a", amount);
+            obj.addProperty( "m", material.toString() );
+        obj.addProperty( "a", amount );
         if(durability != 0)
-            obj.put("d", durability);
+            obj.addProperty( "d", durability );
         if(enchs.size() != 0)
-            obj.put("e",enchs);
+            obj.add( "e", GameAPI.GSON.toJsonTree( enchs ) );
         if(lore.size() != 0)
-            obj.put("l", lore);
+            obj.add( "l", GameAPI.GSON.toJsonTree( enchs ) );
 
         return obj;
     }
+
     public static Item fromJSON(String json){
         Item item = new Item();
-        JSONObject obj = new JSONObject(json);
+        JsonObject obj = GameAPI.GSON.fromJson( json, JsonObject.class );
         if(obj.has("n"))
-            item.setName(obj.getString("n"));
+            item.setName( obj.get( "n" ).getAsString() );
         if(obj.has("m"))
-            item.setMaterial(Material.valueOf(obj.getString("m")));
+            item.setMaterial( Material.valueOf( obj.get( "m" ).getAsString() ) );
         if(obj.has("d"))
-            item.setDurability(obj.getInt("d"));
+            item.setDurability( obj.get( "d" ).getAsInt() );
         if(obj.has("a"))
-            item.setAmount(obj.getInt("a"));
+            item.setAmount( obj.get( "a" ).getAsInt() );
         if(obj.has("l")) {
-            JSONArray arr = obj.getJSONArray("l");
+            JsonArray arr = obj.getAsJsonArray( "l" );
             List<String> lore = new ArrayList<String>();
-            for(int i = 0; i < arr.length(); i++){
-                lore.add(arr.getString(i));
+            for ( int i = 0; i < arr.size(); i++ ) {
+                lore.add( arr.get( i ).getAsString() );
             }
             item.setLore(lore);
         }
         if(obj.has("e")) {
-            JSONObject enchJSON = obj.getJSONObject("e");
-            Iterator<String> keys = enchJSON.keys();
+            JsonObject enchJSON = obj.getAsJsonObject( "e" );
+            Iterator<String> keys = enchJSON.entrySet().stream().map( e -> e.getKey() ).collect( Collectors.toSet() ).iterator();
             while(keys.hasNext()){
                 String key = keys.next();
-                item.addEnchantment(new GEnchantment(Enchantment.getByName(key), enchJSON.getInt(key)));
+                item.addEnchantment( new GEnchantment( Enchantment.getByName( key ), enchJSON.get( key ).getAsInt() ) );
             }
         }
         return item;

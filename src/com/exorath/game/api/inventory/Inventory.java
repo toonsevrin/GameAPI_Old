@@ -2,8 +2,10 @@ package com.exorath.game.api.inventory;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
-import com.exorath.game.lib.json.JSONObject;
+import com.exorath.game.GameAPI;
+import com.google.gson.JsonObject;
 
 /**
  * Created by TOON on 8/25/2015.
@@ -16,23 +18,24 @@ public class Inventory {
     public HashMap<Integer, Item> getItems(){
         return items;
     }
-    public JSONObject getJSON(){
-        JSONObject obj = new JSONObject();
-        HashMap<Integer, JSONObject> itemsJSON = new HashMap<>();
+
+    public JsonObject getJSON() {
+        JsonObject obj = new JsonObject();
+        HashMap<Integer, JsonObject> itemsJSON = new HashMap<>();
         for(Integer slot : items.keySet())
             itemsJSON.put(slot, items.get(slot).getJSON());
-        obj.put("i", itemsJSON);
+        obj.add( "i", GameAPI.GSON.toJsonTree( itemsJSON ) );
         return obj;
     }
     public static Inventory fromJSON(String json){
         Inventory i = new Inventory();
-        JSONObject obj = new JSONObject(json);
+        JsonObject obj = GameAPI.GSON.fromJson( json, JsonObject.class );
         if(obj.has("i")){
-            JSONObject itemsJSON = obj.getJSONObject("i");
-            Iterator<String> keys = itemsJSON.keys();
+            JsonObject itemsJSON = obj.getAsJsonObject( "i" );
+            Iterator<String> keys = itemsJSON.entrySet().stream().map( e -> e.getKey() ).collect( Collectors.toSet() ).iterator();
             while(keys.hasNext()){
                 String key = keys.next();
-                i.getItems().put(Integer.valueOf(key), Item.fromJSON(itemsJSON.getJSONObject(key).toString()));
+                i.getItems().put( Integer.valueOf( key ), Item.fromJSON( itemsJSON.getAsJsonObject( key ).toString() ) );
             }
         }
 

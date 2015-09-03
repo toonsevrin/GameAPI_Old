@@ -25,6 +25,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.yoshigenius.lib.util.GameUtil;
 
 /**
@@ -39,6 +41,13 @@ public class GameAPI extends JavaPlugin {
     private static Map<UUID, GamePlayer> players = Maps.newHashMap();
     private static Map<UUID, Game> games = Maps.newHashMap();
     private static Set<String> gameProviders = Sets.newHashSet();
+    public static final GsonBuilder GSON_BUILDER;
+    public static final Gson GSON;
+
+    static {
+        GSON_BUILDER = new GsonBuilder();
+        GSON = GSON_BUILDER.setPrettyPrinting().create();
+    }
 
     public static void registerGameProvider( GameProvider plugin ) {
         gameProviders.add(plugin.getName());
