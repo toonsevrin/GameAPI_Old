@@ -32,11 +32,13 @@ public class MinigameCountdown {
         for(int i = 0; i <= LENGTH; i++){
             frames.add(getArrows(i));
         }
-        frames.add(new SoundCountdownFrame(this,getArrow(ChatColor.RED, LENGTH, CHAR), 20, Sound.NOTE_PLING, 1,10));
-        frames.add(new SoundCountdownFrame(this,getArrow(ChatColor.GOLD, LENGTH, CHAR), 20, Sound.NOTE_PLING, 1,10));
-        frames.add(new SoundCountdownFrame(this,getArrow(ChatColor.GREEN, LENGTH, CHAR), 20, Sound.NOTE_PLING, 2,10));
+        frames.add(new SoundCountdownFrame(this, getArrow(ChatColor.RED, LENGTH/2 - 2, CHAR) + " 3 " + getArrow(ChatColor.RED, LENGTH / 2 - 1, CHAR), 20, Sound.NOTE_PLING, 1, 10));
+        frames.add(new SoundCountdownFrame(this, getArrow(ChatColor.GOLD, LENGTH/2 - 2, CHAR) + " 2 " + getArrow(ChatColor.RED, LENGTH/2 - 1, CHAR), 20, Sound.NOTE_PLING, 1, 10));
+        frames.add(new SoundCountdownFrame(this, getArrow(ChatColor.GREEN, LENGTH/2 - 2, CHAR) + " 1 " + getArrow(ChatColor.RED, LENGTH/2 - 1, CHAR), 20, Sound.NOTE_PLING, 2, 10));
+        frames.add(new SoundCountdownFrame(this, getArrow(ChatColor.GREEN, LENGTH/2 - 4, CHAR) + " BEGIN " + getArrow(ChatColor.RED, LENGTH/2 - 3, CHAR), 20, Sound.NOTE_PLING, 2, 10));
+        frames.add(new FinishFrame(this));
     }
-    private void finish(){
+    protected void finish(){
         frames.forEach(f -> f.finish());
         frames.clear();
     }
