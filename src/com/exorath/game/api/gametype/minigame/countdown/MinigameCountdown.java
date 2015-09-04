@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.exorath.game.GameAPI;
 import org.bukkit.Sound;
 
 import com.exorath.game.api.gametype.minigame.Minigame;
@@ -11,6 +12,7 @@ import com.exorath.game.api.hud.HUDText;
 import com.exorath.game.api.player.GamePlayer;
 
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Created by TOON on 9/2/2015.
@@ -24,26 +26,27 @@ public class MinigameCountdown {
     private static final int LENGTH = BLACK_CHARS + GREEN_CHARS;
     private static final char CHAR = '➤';
 
+    private int currentFrame = 0;
     private List<CountdownFrame> frames = new ArrayList<>();
 
-    private HashMap<GamePlayer, HUDText> subTitles = new HashMap<>();
     public MinigameCountdown(Minigame game){
         this.game = game;
-        for(int i = 0; i <= LENGTH; i++){
+        setupFrames();
+        display();
+    }
+    private void setupFrames(){
+        for(int i = 0; i <= LENGTH; i++)
             frames.add(getArrows(i));
-        }
-        frames.add(new SoundCountdownFrame(this, getArrow(ChatColor.RED, LENGTH/2 - 2, CHAR) + " 3 " + getArrow(ChatColor.RED, LENGTH / 2 - 1, CHAR), 20, Sound.NOTE_PLING, 1, 10));
-        frames.add(new SoundCountdownFrame(this, getArrow(ChatColor.GOLD, LENGTH/2 - 2, CHAR) + " 2 " + getArrow(ChatColor.RED, LENGTH/2 - 1, CHAR), 20, Sound.NOTE_PLING, 1, 10));
-        frames.add(new SoundCountdownFrame(this, getArrow(ChatColor.GREEN, LENGTH/2 - 2, CHAR) + " 1 " + getArrow(ChatColor.RED, LENGTH/2 - 1, CHAR), 20, Sound.NOTE_PLING, 2, 10));
+        frames.add(getFinalCountdown(ChatColor.RED, 3));
+        frames.add(getFinalCountdown(ChatColor.GOLD, 2));
+        frames.add(getFinalCountdown(ChatColor.GREEN, 1));
         frames.add(new SoundCountdownFrame(this, getArrow(ChatColor.GREEN, LENGTH/2 - 4, CHAR) + " BEGIN " + getArrow(ChatColor.RED, LENGTH/2 - 3, CHAR), 20, Sound.NOTE_PLING, 2, 10));
         frames.add(new FinishFrame(this));
     }
-    protected void finish(){
-        frames.forEach(f -> f.finish());
-        frames.clear();
-    }
+    private void display(){
 
-    private CountdownFrame getArrows(int frame){
+    }
+    private CountdownFrame getArrows(int frame){//TODO: Add percentage and precedingarrows calculation
         StringBuilder sb = new StringBuilder();
         float percentage = 0;
         int precedingArrows = 0;
@@ -57,22 +60,37 @@ public class MinigameCountdown {
         if(amount == 0)
             return;
         sb.append(color);
-        for(int i = 0; i < amount;i++){
+        for(int i = 0; i < amount;i++)
             sb.append(c);
-        }
     }
     private String getArrow(ChatColor color, int amount, char c){
         if(amount == 0)
             return "";
         StringBuilder sb = new StringBuilder();
         sb.append(color);
-        for(int i = 0; i < amount;i++){
+        for(int i = 0; i < amount;i++)
             sb.append(c);
-        }
         return sb.toString();
     }
-
-    public HashMap<GamePlayer, HUDText> getSubTitles() {
-        return subTitles;
+    private CountdownFrame getFinalCountdown(ChatColor color, int number){
+        String arrows = getArrow(color, LENGTH/2 - 2, CHAR);
+        return new SoundCountdownFrame(this, arrows + " " + number + " " + arrows, 20, Sound.NOTE_PLING, 1, 10);
+    }
+    protected void finish(){
+        frames.forEach(f -> f.finish());
+        frames.clear();
+    }
+    //TODO: cancel if countdowns stopped
+    private class CountdownTask extends BukkitRunnable{
+        @Override
+        public void run() {
+            if(currentFrame == frames.size()){
+                cancel();
+                finish();
+                return;
+            }
+            GameAPI.getOnlinePlayers().forEach(p -> frames.get(currentFrame).display(p));
+            currentFrame++;
+        }
     }
 }
