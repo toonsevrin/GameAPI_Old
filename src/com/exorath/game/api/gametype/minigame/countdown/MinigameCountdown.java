@@ -26,14 +26,36 @@ public class MinigameCountdown {
     private static final int LENGTH = BLACK_CHARS + GREEN_CHARS;
     private static final char CHAR = '➤';
 
+    private boolean countingDown = false;
+
     private int currentFrame = 0;
     private List<CountdownFrame> frames = new ArrayList<>();
 
     public MinigameCountdown(Minigame game){
         this.game = game;
         setupFrames();
-        display();
     }
+    //** MinigameStateManager functions **//
+    public void start(){
+        if(countingDown)
+            return;
+        countingDown = true;
+        new CountdownTask().runTaskTimer(GameAPI.getInstance(), 0, game.getProperties().as(Minigame.START_DELAY, Integer.class)/LENGTH);
+    }
+    public void stop(){
+        if(!countingDown)
+            return;
+        countingDown = false;
+        finish();
+    }
+    //** Frame functions **//
+    protected void finish(){
+        frames.forEach(f -> f.finish());
+    }
+    protected void startGame(){
+        game.getStateManager().start();
+    }
+    //** Setup **//
     private void setupFrames(){
         for(int i = 0; i <= LENGTH; i++)
             frames.add(getArrows(i));
@@ -43,13 +65,10 @@ public class MinigameCountdown {
         frames.add(new SoundCountdownFrame(this, getArrow(ChatColor.GREEN, LENGTH/2 - 4, CHAR) + " BEGIN " + getArrow(ChatColor.RED, LENGTH/2 - 3, CHAR), 20, Sound.NOTE_PLING, 2, 10));
         frames.add(new FinishFrame(this));
     }
-    private void display(){
-
-    }
     private CountdownFrame getArrows(int frame){//TODO: Add percentage and precedingarrows calculation
         StringBuilder sb = new StringBuilder();
-        float percentage = 0;
-        int precedingArrows = 0;
+        float percentage = frame == 0? 0 : 1f/(LENGTH) * frame;
+        int precedingArrows = (int) (percentage * BLACK_CHARS);
 
         getArrow(sb, ChatColor.BLACK, precedingArrows, CHAR);
         getArrow(sb, ChatColor.GREEN, GREEN_CHARS, CHAR);
@@ -66,8 +85,7 @@ public class MinigameCountdown {
     private String getArrow(ChatColor color, int amount, char c){
         if(amount == 0)
             return "";
-        StringBuilder sb = new StringBuilder();
-        sb.append(color);
+        StringBuilder sb = new StringBuilder().append(color);
         for(int i = 0; i < amount;i++)
             sb.append(c);
         return sb.toString();
@@ -76,15 +94,11 @@ public class MinigameCountdown {
         String arrows = getArrow(color, LENGTH/2 - 2, CHAR);
         return new SoundCountdownFrame(this, arrows + " " + number + " " + arrows, 20, Sound.NOTE_PLING, 1, 10);
     }
-    protected void finish(){
-        frames.forEach(f -> f.finish());
-        frames.clear();
-    }
-    //TODO: cancel if countdowns stopped
+    //** Countdown task **//
     private class CountdownTask extends BukkitRunnable{
         @Override
         public void run() {
-            if(currentFrame == frames.size()){
+            if(currentFrame == frames.size() || !countingDown){
                 cancel();
                 finish();
                 return;

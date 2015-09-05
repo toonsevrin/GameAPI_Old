@@ -19,4 +19,7 @@ public class Minigame extends Game {
     public boolean hasMinPlayers(){
         return getPlayerCount() >= getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
     }
+    public MinigameStateManager getStateManager() {
+        return stateManager;
+    }
 }

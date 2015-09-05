@@ -11,7 +11,7 @@ public class FinishFrame extends CountdownFrame{
     }
     @Override
     public void display(GamePlayer player) {
-        getMinigameCountdown().finish();
+        getMinigameCountdown().startGame();
     }
 
     @Override

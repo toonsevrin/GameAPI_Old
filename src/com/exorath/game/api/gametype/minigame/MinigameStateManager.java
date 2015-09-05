@@ -1,6 +1,7 @@
 package com.exorath.game.api.gametype.minigame;
 
 import com.exorath.game.api.GameState;
+import com.exorath.game.api.gametype.minigame.countdown.MinigameCountdown;
 
 /**
  * Created by Toon on 9/1/2015.
@@ -8,57 +9,58 @@ import com.exorath.game.api.GameState;
  */
 public class MinigameStateManager {
     private Minigame minigame;
-    private GameState state = GameState.WAITING;
+    private MinigameCountdown countdown = new MinigameCountdown(minigame);
+
     public MinigameStateManager(Minigame minigame){
         this.minigame = minigame;
     }
     public void checkStart(){
-        if(state != GameState.WAITING)
+        if(minigame.getState() != GameState.WAITING)
             return;
         if(minigame.getPlayerCount() >= minigame.getProperties().as(Minigame.MIN_PLAYERS, Integer.class)){
-            //Start countdown
+            countdown.start();
         }
     }
     public void checkStop(){
-        if(state != GameState.WAITING)
+        if(minigame.getState() != GameState.WAITING)
             return;
-        if(minigame.getPlayerCount() >= minigame.getProperties().as(Minigame.MIN_PLAYERS, Integer.class)){
-            //Stop countdown
+        if(minigame.getPlayerCount() <= minigame.getProperties().as(Minigame.MIN_PLAYERS, Integer.class)){
+            countdown.stop();
         }
     }
 
     //** State Loop [WAITING -> STARTING -> INGAME -> FINISHING -> RESETTING] **//
-    protected void start(){
-        if(state != GameState.WAITING)
-            throw new IllegalStateException("Tried to change state from " + state + " to " + GameState.STARTING);
-        state = GameState.STARTING;
+    public void start(){
+        if(minigame.getState() != GameState.WAITING)
+            throw new IllegalStateException("Tried to change state from " + minigame.getState() + " to " + GameState.STARTING);
+        minigame.setState(GameState.STARTING);
         //run onStart
         setIngame();
     }
     protected void setIngame(){
-        if(state != GameState.STARTING)
-            throw new IllegalStateException("Tried to change state from " + state + " to " + GameState.INGAME);
-        state = GameState.INGAME;
+        if(minigame.getState() != GameState.STARTING)
+            throw new IllegalStateException("Tried to change state from " + minigame.getState() + " to " + GameState.INGAME);
+        minigame.setState(GameState.INGAME);
         //run onIngame
     }
     public void stop(){
-        if(state != GameState.INGAME)
-            throw new IllegalStateException("Tried to change state from " + state + " to " + GameState.FINISHING);
-        state = GameState.FINISHING;
+        if(minigame.getState() != GameState.INGAME)
+            throw new IllegalStateException("Tried to change state from " + minigame.getState() + " to " + GameState.FINISHING);
+        minigame.setState(GameState.FINISHING);
         //run onFinishing
         setResetting();
 
     }
     public void setResetting(){
-        if(state != GameState.FINISHING)
-            throw new IllegalStateException("Tried to change state from " + state + " to " + GameState.RESETTING);
-        state = GameState.RESETTING;
+        if(minigame.getState() != GameState.FINISHING)
+            throw new IllegalStateException("Tried to change state from " + minigame.getState() + " to " + GameState.RESETTING);
+            minigame.setState(GameState.RESETTING);
         //run onResetting
         setWaiting();
     }
     public void setWaiting(){
-        if(state != GameState.RESETTING)
-            throw new IllegalStateException("Tried to change state from " + state + " to " + GameState.WAITING);
-        state = GameState.WAITING;
+        if(minigame.getState() != GameState.RESETTING)
+            throw new IllegalStateException("Tried to change state from " + minigame.getState() + " to " + GameState.WAITING);
+        minigame.setState(GameState.WAITING);
     }
 }
