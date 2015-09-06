@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.exorath.game.GameAPI;
+import com.exorath.game.api.Game;
 import org.bukkit.Sound;
 
 import com.exorath.game.api.gametype.minigame.Minigame;

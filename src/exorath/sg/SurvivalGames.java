@@ -1,5 +1,6 @@
 package exorath.sg;
 
+import com.exorath.game.api.gametype.minigame.Minigame;
 import org.bukkit.Bukkit;
 import org.bukkit.util.Vector;
 
@@ -43,8 +44,8 @@ public class SurvivalGames extends RepeatingMinigame {
         /*Game properties*/
         this.setName( "Survival Games" ); //Name of the gamemode
         this.setDescription( "Tributes fight to the death in the arena." ); //Description of the gamemode
-        this.getProperties().set( RepeatingMinigame.REPEAT_DELAY, 60 ); //Minimum amount of seconds between two games
-        this.getProperties().set( GameProperty.MAX_DURATION, 900 ); //Set the max game duration to 15 minutes, after this time game will be terminated.
+        this.getProperties().set(Minigame.START_DELAY, 60 ); //Minimum amount of seconds between two games
+        this.getProperties().set( Minigame.MAX_DURATION, 900 ); //Set the max game duration to 15 minutes, after this time game will be terminated.
         this.getProperties().set( GameProperty.ALLOW_SPECTATING, true ); //Set the max game duration to 15 minutes, after this time game will be terminated.
 
         /*Actions*/

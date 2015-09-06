@@ -28,11 +28,11 @@ public abstract class RepeatingMinigame extends Minigame {
     }
 
     public int getDelay() {
-        return this.getProperties().as( RepeatingMinigame.REPEAT_DELAY, int.class );
+        return this.getProperties().as( Minigame.START_DELAY, int.class );
     }
 
     public void setDelay( int delay ) {
-        this.getProperties().set( RepeatingMinigame.REPEAT_DELAY, delay );
+        this.getProperties().set(Minigame.START_DELAY, delay );
     }
 
     /*============- STAGES -============*/

@@ -75,6 +75,7 @@ public abstract class Game {
 
     public void setState(GameState state) {
         setState(state, true);
+        GameAPI.printConsole("Game state set to " + state.toString());
     }
 
     public void setState(GameState state, boolean callEvent) {

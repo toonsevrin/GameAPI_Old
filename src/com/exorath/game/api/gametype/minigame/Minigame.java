@@ -6,11 +6,11 @@ import com.exorath.game.api.Property;
 /**
  * @author Nick Robson
  */
-public class Minigame extends Game {
+public abstract class Minigame extends Game {
 
     public static final Property MIN_PLAYERS = Property.get( "minplayers", "Minimal amount of players in team", 2 );
+    public static final Property MAX_DURATION = Property.get( "maxduration", "The maximum duration of the game in ticks. 0 disables.", 0 );
     public static final Property START_DELAY = Property.get( "startdelay", "Waiting time after there are enough players before game starts", 200);
-
     private MinigameStateManager stateManager = new MinigameStateManager(this);
 
     public Minigame(){
@@ -21,5 +21,25 @@ public class Minigame extends Game {
     }
     public MinigameStateManager getStateManager() {
         return stateManager;
+    }
+    
+    protected void spawnPlayers(){
+        //TODO: Develop method
+    }
+    protected void reward(){
+        //TODO: Develop method
+        //This will call an abstract method that gets a reward package for each player.
+    }
+    protected void reset(){
+        //TODO: Develop method
+        //Reset map if enabled
+
+        //Reset player inventories
+
+        //Reset players health & hunger
+
+        //Reset players potion effects
+
+        //Teleport players to hub
     }
 }

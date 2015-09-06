@@ -1,5 +1,7 @@
 package com.exorath.game.api.gametype.minigame;
 
+import com.exorath.game.GameAPI;
+import com.exorath.game.api.GameRunnable;
 import com.exorath.game.api.GameState;
 import com.exorath.game.api.gametype.minigame.countdown.MinigameCountdown;
 
@@ -30,37 +32,50 @@ public class MinigameStateManager {
     }
 
     //** State Loop [WAITING -> STARTING -> INGAME -> FINISHING -> RESETTING] **//
+    //* Start: *//
     public void start(){
         if(minigame.getState() != GameState.WAITING)
             throw new IllegalStateException("Tried to change state from " + minigame.getState() + " to " + GameState.STARTING);
         minigame.setState(GameState.STARTING);
-        //run onStart
+        minigame.spawnPlayers();
         setIngame();
     }
     protected void setIngame(){
         if(minigame.getState() != GameState.STARTING)
             throw new IllegalStateException("Tried to change state from " + minigame.getState() + " to " + GameState.INGAME);
         minigame.setState(GameState.INGAME);
-        //run onIngame
+        //Force end game if max duration is reached
+        int delay = minigame.getProperties().as(Minigame.MAX_DURATION, Integer.class);
+        if(delay != 0)
+            new EndTask().runTaskLater(GameAPI.getInstance(), delay);
+
     }
-    public void stop(){
+    public void stop(StopReason reason){
         if(minigame.getState() != GameState.INGAME)
             throw new IllegalStateException("Tried to change state from " + minigame.getState() + " to " + GameState.FINISHING);
         minigame.setState(GameState.FINISHING);
-        //run onFinishing
+        minigame.reward();
         setResetting();
 
     }
     public void setResetting(){
         if(minigame.getState() != GameState.FINISHING)
             throw new IllegalStateException("Tried to change state from " + minigame.getState() + " to " + GameState.RESETTING);
-            minigame.setState(GameState.RESETTING);
-        //run onResetting
+        minigame.setState(GameState.RESETTING);
+        minigame.reset();
         setWaiting();
     }
     public void setWaiting(){
         if(minigame.getState() != GameState.RESETTING)
             throw new IllegalStateException("Tried to change state from " + minigame.getState() + " to " + GameState.WAITING);
         minigame.setState(GameState.WAITING);
+    }
+    private class EndTask extends GameRunnable{
+        public EndTask(){super(minigame);}
+        @Override
+        public void _run() {
+            if(minigame.getState() == GameState.INGAME)
+                minigame.getStateManager().stop(StopReason.TIME_LIMIT_REACHED);
+        }
     }
 }
