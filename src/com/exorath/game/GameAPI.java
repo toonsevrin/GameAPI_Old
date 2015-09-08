@@ -61,9 +61,8 @@ public class GameAPI extends JavaPlugin {
             Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin(gameProvider);
             if (plugin instanceof GameProvider) {
                 Game g = ((GameProvider) plugin).create();
-                if (g != null) {
+                if (g != null)
                     games.put(g.getGameID(), g);
-                }
             }
         }
         GameAPI.printConsole("Games: " + games.size());
@@ -109,7 +108,7 @@ public class GameAPI extends JavaPlugin {
                 databaseConfig.getString("database"), databaseConfig.getString("username"),
                 databaseConfig.getString("password"));
 
-        String serverPackage = this.getServer().getClass().getPackage().getName();
+        String serverPackage = getServer().getClass().getPackage().getName();
         String versionPackage = serverPackage.substring(serverPackage.lastIndexOf('.'));
         try {
             Class<? extends NMSProvider> c = Class
@@ -121,7 +120,7 @@ public class GameAPI extends JavaPlugin {
             e.printStackTrace();
         }
 
-        this.versionsConfig = YamlConfiguration.loadConfiguration(new File(this.getDataFolder(), "versions.yml"));
+        versionsConfig = YamlConfiguration.loadConfiguration(new File(this.getDataFolder(), "versions.yml"));
 
         refreshOnlinePlayers();
         GameMap.loadWorlds();
@@ -145,11 +144,11 @@ public class GameAPI extends JavaPlugin {
      *            message you want to print.
      */
     public static void error(String error) {
-        GameAPI.getInstance().getLogger().severe(error);
+        System.err.println("[GameAPI] [ERROR] " + error);
     }
 
     public static void printConsole(String message) {
-        GameAPI.getInstance().getLogger().info(message);
+        System.out.println("[GameAPI] [INFO] " + message);
     }
 
     public static GameAPI getInstance() {
@@ -165,7 +164,7 @@ public class GameAPI extends JavaPlugin {
     }
 
     public FileConfiguration getVersionsConfig() {
-        return this.versionsConfig;
+        return versionsConfig;
     }
 
     public void saveVersionsConfig() {
@@ -182,9 +181,8 @@ public class GameAPI extends JavaPlugin {
     }
 
     public static void sendPlayerToServer(GamePlayer player, String server) {
-        if (player != null && player.isOnline()) {
+        if (player != null && player.isOnline())
             GameAPI.sendPlayerToServer(player.getBukkitPlayer(), server);
-        }
     }
 
     public static void sendPlayersToServer(String server, Collection<? extends Player> players) {
@@ -192,12 +190,10 @@ public class GameAPI extends JavaPlugin {
         out.writeUTF("Connect");
         out.writeUTF(server);
         byte[] bytes = out.toByteArray();
-        if (!Bukkit.getMessenger().isOutgoingChannelRegistered(GameAPI.getInstance(), "BungeeCord")) {
+        if (!Bukkit.getMessenger().isOutgoingChannelRegistered(GameAPI.getInstance(), "BungeeCord"))
             Bukkit.getMessenger().registerOutgoingPluginChannel(GameAPI.getInstance(), "BungeeCord");
-        }
-        for (Player player : players) {
+        for (Player player : players)
             player.sendPluginMessage(GameAPI.getInstance(), "BungeeCord", bytes);
-        }
     }
 
     public static void sendGamePlayersToServer(String server, Collection<? extends GamePlayer> players) {
@@ -205,13 +201,11 @@ public class GameAPI extends JavaPlugin {
         out.writeUTF("Connect");
         out.writeUTF(server);
         byte[] bytes = out.toByteArray();
-        if (!Bukkit.getMessenger().isOutgoingChannelRegistered(GameAPI.getInstance(), "BungeeCord")) {
+        if (!Bukkit.getMessenger().isOutgoingChannelRegistered(GameAPI.getInstance(), "BungeeCord"))
             Bukkit.getMessenger().registerOutgoingPluginChannel(GameAPI.getInstance(), "BungeeCord");
-        }
-        for (GamePlayer player : players) {
+        for (GamePlayer player : players)
             if (player.isOnline())
                 player.getBukkitPlayer().sendPluginMessage(GameAPI.getInstance(), "BungeeCord", bytes);
-        }
     }
 
     public File getDataFolder(Game game) {
