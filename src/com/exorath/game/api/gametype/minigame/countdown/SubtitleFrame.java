@@ -10,6 +10,7 @@ import com.exorath.game.api.player.GamePlayer;
  * Created by TOON on 9/2/2015.
  */
 public class SubtitleFrame extends CountdownFrame {
+
     private String text;
 
     public SubtitleFrame(MinigameCountdown minigameCountdown, String text, int delay) {

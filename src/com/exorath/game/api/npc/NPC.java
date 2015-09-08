@@ -11,62 +11,63 @@ import com.exorath.game.api.player.GamePlayer;
  * @author Nick Robson
  */
 public interface NPC {
-    
+
     /**
      * Get the NPCs display name.
      * 
      * @return The NPCs display name.
      */
     public String getName();
-    
+
     /**
      * Get NPCs skin name if a Player NPC, otherwise null.
      * 
      * @return NPCs skin name.
      */
     public String getSkin();
-    
+
     /**
      * Get NPCs entity type
      * 
      * @return NPCs entity type, null if not set
      */
     public Class<? extends LivingEntity> getEntityClass();
-    
+
     /**
      * Get NPCs properties
      * 
      * @return NPCs properties
      */
     public Properties getProperties();
-    
+
     /**
      * Checks if NPC is invulnerable.
      * 
      * @return Whether or not NPC is invulnerable.
      */
     default public boolean isProtected() {
-        return this.getProperties().as( NPCProperty.PROTECTED, boolean.class );
+        return this.getProperties().as(NPCProperty.PROTECTED, boolean.class);
     }
-    
+
     /**
      * Enable or disable protection.
      * 
      * @param protect
      *            Whether protection should be enabled or disabled.
      */
-    default public void setProtected( boolean enabled ) {
-        this.getProperties().set( NPCProperty.PROTECTED, enabled );
+    default public void setProtected(boolean enabled) {
+        this.getProperties().set(NPCProperty.PROTECTED, enabled);
     }
-    
+
     /**
      * Gets the NPC's NPCEquipment object.
      * 
-     * @return If the NPC can have equipment, then it will return the NPC's equipment, otherwise
+     * @return If the NPC can have equipment, then it will return the NPC's
+     *         equipment, otherwise
      *         null.
      */
     public NPCEquipment getEquipment();
-    
+
     /**
      * Called when a player clicks the NPC.
      * 
@@ -77,6 +78,6 @@ public interface NPC {
      * @param npc
      *            The NPC.
      */
-    public void onClicked( Game game, GamePlayer player, SpawnedNPC npc );
-    
+    public void onClicked(Game game, GamePlayer player, SpawnedNPC npc);
+
 }

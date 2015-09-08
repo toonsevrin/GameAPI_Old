@@ -9,10 +9,12 @@ import com.exorath.game.lib.hud.bossbar.BossBarAPI;
 /**
  * Created by TOON on 8/11/2015.
  */
-public class ActionBar extends HUDDisplay{
-    public ActionBar(GamePlayer player){
+public class ActionBar extends HUDDisplay {
+
+    public ActionBar(GamePlayer player) {
         super(player, 64);
     }
+
     @Override
     public void displayText(HUDText text) {
         ActionBarBase.send(player.getBukkitPlayer(), text.getDisplayText());
@@ -20,10 +22,11 @@ public class ActionBar extends HUDDisplay{
 
     @Override
     public void removeCurrent() {
-        if(BossBarAPI.hasBar(player.getBukkitPlayer()))
+        if (BossBarAPI.hasBar(player.getBukkitPlayer()))
             BossBarAPI.removeBar(player.getBukkitPlayer());
     }
-    public void setHealth(float health){
+
+    public void setHealth(float health) {
         BossBarAPI.setHealth(player.getBukkitPlayer(), health);
     }
 }

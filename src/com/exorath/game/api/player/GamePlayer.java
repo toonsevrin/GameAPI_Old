@@ -156,7 +156,7 @@ public final class GamePlayer {
     public boolean openMenu(Menu menu) {
         this.menu = menu;
         Player p = this.getBukkitPlayer();
-        if (p != null && p.getOpenInventory() == null) { //  we don't want to aggressively open a menu if they shouldn't be opening...
+        if (p != null && p.getOpenInventory() == null) {//  we don't want to aggressively open a menu if they shouldn't be opening...
             Inventory inv = Bukkit.createInventory(null, menu.getSize());
             menu.dump(inv);
             p.openInventory(inv);
@@ -193,6 +193,7 @@ public final class GamePlayer {
     public SQLData getApiSqlData() {
         return gSqlData;
     }
+
     //TODO: THIS STUFF IS BUGGED
     public Game getGame() {
         return GameAPI.getGame(gameUID);

@@ -28,175 +28,177 @@ import net.minecraft.server.v1_8_R2.WorldServer;
  * @author Nick Robson
  */
 public class NMSProviderImpl implements NMSProvider {
-    
+
     @Override
     public Class<?> getMinecraftServerClass() {
         return MinecraftServer.class;
     }
-    
+
     @Override
     public Class<?> getBukkitServerClass() {
         return CraftServer.class;
     }
-    
+
     @Override
     public Class<?> getBukkitPlayerClass() {
         return CraftPlayer.class;
     }
-    
+
     @Override
     public Class<?> getBlockClass() {
         return Block.class;
     }
-    
+
     @Override
     public Class<?> getWorldClass() {
         return World.class;
     }
-    
+
     @Override
     public Class<?> getWorldServerClass() {
         return WorldServer.class;
     }
-    
+
     @Override
     public Class<?> getEntityClass() {
         return Entity.class;
     }
-    
+
     @Override
     public Class<?> getPlayerClass() {
         return EntityPlayer.class;
     }
-    
+
     @Override
     public Class<?> getGameProfileClass() {
         return GameProfile.class;
     }
-    
+
     @Override
     public Class<?> getPlayerInteractManagerClass() {
         return PlayerInteractManager.class;
     }
-    
+
     @Override
     public Object getMinecraftServer() {
         return MinecraftServer.getServer();
     }
-    
+
     @Override
     public Object getBukkitServer() {
         return Bukkit.getServer();
     }
-    
+
     @Override
-    public Object createPlayerInteractManager( org.bukkit.World world ) {
-        return new PlayerInteractManager( ( (CraftWorld) world ).getHandle() );
+    public Object createPlayerInteractManager(org.bukkit.World world) {
+        return new PlayerInteractManager(((CraftWorld) world).getHandle());
     }
-    
+
     @Override
-    public Object getBlock( org.bukkit.block.Block block ) {
-        return ( (CraftWorld) block.getWorld() ).getHandle().c( new BlockPosition( block.getX(), block.getY(), block.getZ() ) );
+    public Object getBlock(org.bukkit.block.Block block) {
+        return ((CraftWorld) block.getWorld()).getHandle()
+                .c(new BlockPosition(block.getX(), block.getY(), block.getZ()));
     }
-    
+
     @Override
-    public Object getWorld( org.bukkit.World world ) {
-        return ( (CraftWorld) world ).getHandle();
+    public Object getWorld(org.bukkit.World world) {
+        return ((CraftWorld) world).getHandle();
     }
-    
+
     @Override
-    public Object getEntity( org.bukkit.entity.Entity entity ) {
-        return ( (CraftEntity) entity ).getHandle();
+    public Object getEntity(org.bukkit.entity.Entity entity) {
+        return ((CraftEntity) entity).getHandle();
     }
-    
+
     @Override
-    public Object getPlayer( Player player ) {
-        return ( (CraftPlayer) player ).getHandle();
+    public Object getPlayer(Player player) {
+        return ((CraftPlayer) player).getHandle();
     }
-    
+
     @Override
-    public Object getPacketTunnel( Player player ) {
-        return ( (CraftPlayer) player ).getHandle().playerConnection;
+    public Object getPacketTunnel(Player player) {
+        return ((CraftPlayer) player).getHandle().playerConnection;
     }
-    
+
     @Override
-    public Object getPlayerInteractManager( Player player ) {
-        return ( (CraftPlayer) player ).getHandle().playerInteractManager;
+    public Object getPlayerInteractManager(Player player) {
+        return ((CraftPlayer) player).getHandle().playerInteractManager;
     }
-    
+
     @Override
-    public Object getPlayerAbilities( Player player ) {
-        return ( (CraftPlayer) player ).getHandle().abilities;
+    public Object getPlayerAbilities(Player player) {
+        return ((CraftPlayer) player).getHandle().abilities;
     }
-    
+
     @Override
-    public void setCanInstantBuild( Player player, boolean enabled ) {
-        ( (CraftPlayer) player ).getHandle().abilities.canInstantlyBuild = enabled;
+    public void setCanInstantBuild(Player player, boolean enabled) {
+        ((CraftPlayer) player).getHandle().abilities.canInstantlyBuild = enabled;
     }
-    
+
     @Override
-    public void setInvulnerable( Player player, boolean enabled ) {
-        ( (CraftPlayer) player ).getHandle().abilities.isInvulnerable = enabled;
+    public void setInvulnerable(Player player, boolean enabled) {
+        ((CraftPlayer) player).getHandle().abilities.isInvulnerable = enabled;
     }
-    
+
     @Override
-    public void setWalkSpeed( Player player, float f ) {
-        ( (CraftPlayer) player ).getHandle().abilities.walkSpeed = f;
+    public void setWalkSpeed(Player player, float f) {
+        ((CraftPlayer) player).getHandle().abilities.walkSpeed = f;
     }
-    
+
     @Override
-    public void setFlySpeed( Player player, float f ) {
-        ( (CraftPlayer) player ).getHandle().abilities.flySpeed = f;
+    public void setFlySpeed(Player player, float f) {
+        ((CraftPlayer) player).getHandle().abilities.flySpeed = f;
     }
-    
+
     @Override
-    public void setPortalCooldown( Player player, int cooldown ) {
-        ( (CraftPlayer) player ).getHandle().portalCooldown = cooldown;
+    public void setPortalCooldown(Player player, int cooldown) {
+        ((CraftPlayer) player).getHandle().portalCooldown = cooldown;
     }
-    
+
     @Override
-    public void setSleeping( Player player, boolean sleeping ) {
-        ( (CraftPlayer) player ).getHandle().sleeping = sleeping;
+    public void setSleeping(Player player, boolean sleeping) {
+        ((CraftPlayer) player).getHandle().sleeping = sleeping;
     }
-    
+
     @Override
-    public void setTimeOffset( Player player, long timeOffset ) {
-        ( (CraftPlayer) player ).getHandle().timeOffset = timeOffset;
+    public void setTimeOffset(Player player, long timeOffset) {
+        ((CraftPlayer) player).getHandle().timeOffset = timeOffset;
     }
-    
+
     @Override
-    public void setWeather( Player player, WeatherType weather ) {
-        ( (CraftPlayer) player ).getHandle().weather = weather;
+    public void setWeather(Player player, WeatherType weather) {
+        ((CraftPlayer) player).getHandle().weather = weather;
     }
-    
+
     @Override
-    public void setInvisible( org.bukkit.entity.Entity entity, boolean invisible ) {
-        ( (CraftEntity) entity ).getHandle().setInvisible( invisible );
+    public void setInvisible(org.bukkit.entity.Entity entity, boolean invisible) {
+        ((CraftEntity) entity).getHandle().setInvisible(invisible);
     }
-    
+
     @Override
-    public void navigate( LivingEntity entity, Location location, double speed ) {
-        Object handle = this.getEntity( entity );
-        if ( handle instanceof EntityInsentient ) {
+    public void navigate(LivingEntity entity, Location location, double speed) {
+        Object handle = this.getEntity(entity);
+        if (handle instanceof EntityInsentient) {
             EntityInsentient ent = (EntityInsentient) handle;
-            ent.getNavigation().a( location.getX(), location.getY(), location.getZ(), speed );
+            ent.getNavigation().a(location.getX(), location.getY(), location.getZ(), speed);
         }
     }
-    
+
     @Override
-    public void revive( Player p ) {
-    
+    public void revive(Player p) {
+
     }
-    
+
     @Override
     public Object createNetworkManager() {
         return new FakePlayerNetworkManager();
     }
-    
+
     @Override
-    public Object createNetServerHandler( Object nms_DedicatedServer, Object nms_NetworkManager, Object nms_Player ) {
-        return new FakePlayerNetServerHandler( (MinecraftServer) nms_DedicatedServer, (NetworkManager) nms_NetworkManager,
-                (EntityPlayer) nms_Player );
+    public Object createNetServerHandler(Object nms_DedicatedServer, Object nms_NetworkManager, Object nms_Player) {
+        return new FakePlayerNetServerHandler((MinecraftServer) nms_DedicatedServer,
+                (NetworkManager) nms_NetworkManager,
+                (EntityPlayer) nms_Player);
     }
-    
+
 }

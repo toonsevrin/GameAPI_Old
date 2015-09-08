@@ -11,6 +11,7 @@ import com.exorath.game.api.player.GamePlayer;
  * Created by TOON on 8/27/2015.
  */
 public class HUD {
+
     private GamePlayer player;
 
     private ActionBar actionBar;
@@ -19,7 +20,7 @@ public class HUD {
     private Title title;
     private Scoreboard scoreboard;
 
-    public HUD(GamePlayer player){
+    public HUD(GamePlayer player) {
         this.player = player;
         this.actionBar = new ActionBar(player);
         this.bossBar = new BossBar(player);
@@ -31,9 +32,11 @@ public class HUD {
     public ActionBar getActionBar() {
         return actionBar;
     }
+
     public Title getTitle() {
         return title;
     }
+
     public Subtitle getSubtitle() {
         return subtitle;
     }
@@ -41,9 +44,11 @@ public class HUD {
     public BossBar getBossBar() {
         return bossBar;
     }
+
     public Scoreboard getScoreboard() {
         return scoreboard;
     }
+
     public GamePlayer getPlayer() {
         return player;
     }

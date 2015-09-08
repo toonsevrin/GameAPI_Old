@@ -9,25 +9,28 @@ import net.minecraft.server.v1_8_R3.NetworkManager;
 import net.minecraft.server.v1_8_R3.PacketListener;
 
 public class FakePlayerNetworkManager extends NetworkManager {
-    
+
     public FakePlayerNetworkManager() {
-        super( EnumProtocolDirection.CLIENTBOUND );
+        super(EnumProtocolDirection.CLIENTBOUND);
     }
-    
+
     public static AtomicInteger a = new AtomicInteger();
     public static AtomicInteger b = new AtomicInteger();
     public Socket socket;
     public static int[] c = new int[256];
     public static int[] d = new int[256];
     public int e = 0;
-    
+
     @Override
-    public void a( EnumProtocol protocol ) {}
-    
+    public void a(EnumProtocol protocol) {
+    }
+
     @Override
-    public void a( PacketListener listener ) {}
-    
+    public void a(PacketListener listener) {
+    }
+
     @Override
-    public void a() {}
-    
+    public void a() {
+    }
+
 }

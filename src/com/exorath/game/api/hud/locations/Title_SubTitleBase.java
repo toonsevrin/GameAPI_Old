@@ -12,9 +12,11 @@ import java.util.regex.Pattern;
 
 /**
  * Created by TOON on 8/11/2015.
- * SYSTEM FLAW: Can't fade away Title and Subtitle together: One will be removed, other will fade
+ * SYSTEM FLAW: Can't fade away Title and Subtitle together: One will be
+ * removed, other will fade
  */
 public abstract class Title_SubTitleBase extends HUDDisplay {
+
     Title_SubTitleBase otherLocation;
 
     public Title_SubTitleBase(GamePlayer player, int maxChars) {

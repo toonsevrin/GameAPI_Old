@@ -23,56 +23,58 @@ public class ActionBarBase {
 
     static {
         try {
-            version = Bukkit.getServer().getClass().getPackage().getName().split( "\\." )[ 3 ];
+            version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 
-            Class<?> packetType = Class.forName( getPacketPlayOutChat() );
+            Class<?> packetType = Class.forName(getPacketPlayOutChat());
 
-            Class<?> typeCraftPlayer = Class.forName( getCraftPlayerClasspath() );
+            Class<?> typeCraftPlayer = Class.forName(getCraftPlayerClasspath());
 
-            Class<?> typeNMSPlayer = Class.forName( getNMSPlayerClasspath() );
+            Class<?> typeNMSPlayer = Class.forName(getNMSPlayerClasspath());
 
-            Class<?> typePlayerConnection = Class.forName( getPlayerConnectionClasspath() );
+            Class<?> typePlayerConnection = Class.forName(getPlayerConnectionClasspath());
 
-            nmsChatSerializer = Class.forName( getChatSerializerClasspath() );
+            nmsChatSerializer = Class.forName(getChatSerializerClasspath());
 
-            Class<?> nmsIChatBaseComponent = Class.forName( getIChatBaseComponentClasspath() );
+            Class<?> nmsIChatBaseComponent = Class.forName(getIChatBaseComponentClasspath());
 
-            getHandle = typeCraftPlayer.getMethod( "getHandle" );
+            getHandle = typeCraftPlayer.getMethod("getHandle");
 
-            playerConnection = typeNMSPlayer.getField( "playerConnection" );
+            playerConnection = typeNMSPlayer.getField("playerConnection");
 
-            sendPacket = typePlayerConnection.getMethod( "sendPacket", Class.forName( getPacketClasspath() ) );
+            sendPacket = typePlayerConnection.getMethod("sendPacket", Class.forName(getPacketClasspath()));
 
-            if ( version.startsWith( "v1_8" ) ) {
-                chatConstructor = packetType.getConstructor( nmsIChatBaseComponent, byte.class );
+            if (version.startsWith("v1_8")) {
+                chatConstructor = packetType.getConstructor(nmsIChatBaseComponent, byte.class);
             } else {
-                chatConstructor = packetType.getConstructor( nmsIChatBaseComponent, int.class );
+                chatConstructor = packetType.getConstructor(nmsIChatBaseComponent, int.class);
             }
 
-        } catch ( ClassNotFoundException | NoSuchMethodException | SecurityException | NoSuchFieldException ex ) {
-            Bukkit.getLogger().severe( ex.getMessage() );
+        } catch (ClassNotFoundException | NoSuchMethodException | SecurityException | NoSuchFieldException ex) {
+            Bukkit.getLogger().severe(ex.getMessage());
         }
     }
 
-    public static void send( Player receivingPacket, String msg ) {
+    public static void send(Player receivingPacket, String msg) {
         try {
 
-            Object serialized = nmsChatSerializer.getMethod( "a", String.class ).invoke( null, "{\"text\": \"" + msg + "\"}" );
+            Object serialized = nmsChatSerializer.getMethod("a", String.class).invoke(null,
+                    "{\"text\": \"" + msg + "\"}");
 
             Object packet;
-            if ( version.startsWith( "v1_8" ) ) {
-                packet = chatConstructor.newInstance( serialized, (byte) 2 );
+            if (version.startsWith("v1_8")) {
+                packet = chatConstructor.newInstance(serialized, (byte) 2);
             } else {
-                packet = chatConstructor.newInstance( serialized, 2 );
+                packet = chatConstructor.newInstance(serialized, 2);
             }
 
-            Object player = getHandle.invoke( receivingPacket );
+            Object player = getHandle.invoke(receivingPacket);
 
-            Object connection = playerConnection.get( player );
+            Object connection = playerConnection.get(player);
 
-            sendPacket.invoke( connection, packet );
-        } catch ( NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException ex ) {
-            Bukkit.getLogger().severe( ex.getMessage() );
+            sendPacket.invoke(connection, packet);
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException | InstantiationException ex) {
+            Bukkit.getLogger().severe(ex.getMessage());
         }
     }
 
@@ -97,7 +99,7 @@ public class ActionBarBase {
     }
 
     private static String getChatSerializerClasspath() {
-        if ( version.equals( "v1_8_R3" ) || version.equals( "v1_8_R2" ) ) {
+        if (version.equals("v1_8_R3") || version.equals("v1_8_R2")) {
             return "net.minecraft.server." + version + ".IChatBaseComponent$ChatSerializer";
         }
         return "net.minecraft.server." + version + ".ChatSerializer";

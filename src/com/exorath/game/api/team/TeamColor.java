@@ -8,18 +8,18 @@ import org.bukkit.Color;
  */
 public enum TeamColor {
 
-    PURPLE( Color.PURPLE, ChatColor.DARK_PURPLE ),
-    CYAN( Color.TEAL, ChatColor.AQUA ),
-    ORANGE( Color.ORANGE, ChatColor.GOLD ),
-    LIME( Color.LIME, ChatColor.GREEN ),
-    RED( Color.RED, ChatColor.RED ),
-    BLUE( Color.BLUE, ChatColor.BLUE ),
-    GREY( Color.GRAY, ChatColor.GRAY );
+    PURPLE(Color.PURPLE, ChatColor.DARK_PURPLE),
+    CYAN(Color.TEAL, ChatColor.AQUA),
+    ORANGE(Color.ORANGE, ChatColor.GOLD),
+    LIME(Color.LIME, ChatColor.GREEN),
+    RED(Color.RED, ChatColor.RED),
+    BLUE(Color.BLUE, ChatColor.BLUE),
+    GREY(Color.GRAY, ChatColor.GRAY);
 
     private final Color color;
     private final ChatColor chat;
 
-    private TeamColor( Color color, ChatColor chat ) {
+    private TeamColor(Color color, ChatColor chat) {
         this.color = color;
         this.chat = chat;
     }

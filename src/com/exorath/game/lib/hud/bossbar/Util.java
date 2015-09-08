@@ -24,27 +24,29 @@ import com.exorath.game.lib.hud.bossbar.nms.v1_8;
  * @author James Mortemore
  */
 public class Util {
+
     public static boolean newProtocol = false;
     public static String version;
     public static Class<?> fakeDragonClass = v1_8.class;
     public static boolean isBelowGround = true;
 
-    public static FakeDragon newDragon( String message, Location loc ) {
+    public static FakeDragon newDragon(String message, Location loc) {
         FakeDragon fakeDragon = null;
 
         try {
-            fakeDragon = (FakeDragon) fakeDragonClass.getConstructor( String.class, Location.class ).newInstance( message, loc );
-        } catch ( IllegalArgumentException e ) {
+            fakeDragon = (FakeDragon) fakeDragonClass.getConstructor(String.class, Location.class).newInstance(message,
+                    loc);
+        } catch (IllegalArgumentException e) {
             e.printStackTrace();
-        } catch ( SecurityException e ) {
+        } catch (SecurityException e) {
             e.printStackTrace();
-        } catch ( InstantiationException e ) {
+        } catch (InstantiationException e) {
             e.printStackTrace();
-        } catch ( IllegalAccessException e ) {
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
-        } catch ( InvocationTargetException e ) {
+        } catch (InvocationTargetException e) {
             e.printStackTrace();
-        } catch ( NoSuchMethodException e ) {
+        } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
 
@@ -52,114 +54,114 @@ public class Util {
     }
 
     // Reflection Util
-    public static void sendPacket( Player p, Object packet ) {
+    public static void sendPacket(Player p, Object packet) {
         try {
-            Object nmsPlayer = getHandle( p );
-            Field con_field = nmsPlayer.getClass().getField( "playerConnection" );
-            Object con = con_field.get( nmsPlayer );
-            Method packet_method = getMethod( con.getClass(), "sendPacket" );
-            packet_method.invoke( con, packet );
-        } catch ( SecurityException e ) {
+            Object nmsPlayer = getHandle(p);
+            Field con_field = nmsPlayer.getClass().getField("playerConnection");
+            Object con = con_field.get(nmsPlayer);
+            Method packet_method = getMethod(con.getClass(), "sendPacket");
+            packet_method.invoke(con, packet);
+        } catch (SecurityException e) {
             e.printStackTrace();
-        } catch ( IllegalArgumentException e ) {
+        } catch (IllegalArgumentException e) {
             e.printStackTrace();
-        } catch ( IllegalAccessException e ) {
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
-        } catch ( InvocationTargetException e ) {
+        } catch (InvocationTargetException e) {
             e.printStackTrace();
-        } catch ( NoSuchFieldException e ) {
+        } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
     }
 
-    public static Class<?> getCraftClass( String ClassName ) {
+    public static Class<?> getCraftClass(String ClassName) {
         String className = "net.minecraft.server." + version + ClassName;
         Class<?> c = null;
         try {
-            c = Class.forName( className );
-        } catch ( ClassNotFoundException e ) {
+            c = Class.forName(className);
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
         return c;
     }
 
-    public static Object getHandle( World world ) {
+    public static Object getHandle(World world) {
         Object nms_entity = null;
-        Method entity_getHandle = getMethod( world.getClass(), "getHandle" );
+        Method entity_getHandle = getMethod(world.getClass(), "getHandle");
         try {
-            nms_entity = entity_getHandle.invoke( world );
-        } catch ( IllegalArgumentException e ) {
+            nms_entity = entity_getHandle.invoke(world);
+        } catch (IllegalArgumentException e) {
             e.printStackTrace();
-        } catch ( IllegalAccessException e ) {
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
-        } catch ( InvocationTargetException e ) {
+        } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
         return nms_entity;
     }
 
-    public static Object getHandle( Entity entity ) {
+    public static Object getHandle(Entity entity) {
         Object nms_entity = null;
-        Method entity_getHandle = getMethod( entity.getClass(), "getHandle" );
+        Method entity_getHandle = getMethod(entity.getClass(), "getHandle");
         try {
-            nms_entity = entity_getHandle.invoke( entity );
-        } catch ( IllegalArgumentException e ) {
+            nms_entity = entity_getHandle.invoke(entity);
+        } catch (IllegalArgumentException e) {
             e.printStackTrace();
-        } catch ( IllegalAccessException e ) {
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
-        } catch ( InvocationTargetException e ) {
+        } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
         return nms_entity;
     }
 
-    public static Field getField( Class<?> cl, String field_name ) {
+    public static Field getField(Class<?> cl, String field_name) {
         try {
-            Field field = cl.getDeclaredField( field_name );
+            Field field = cl.getDeclaredField(field_name);
             return field;
-        } catch ( SecurityException e ) {
+        } catch (SecurityException e) {
             e.printStackTrace();
-        } catch ( NoSuchFieldException e ) {
+        } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public static Method getMethod( Class<?> cl, String method, Class<?>[] args ) {
-        for ( Method m : cl.getMethods() ) {
-            if ( m.getName().equals( method ) && ClassListEqual( args, m.getParameterTypes() ) ) {
+    public static Method getMethod(Class<?> cl, String method, Class<?>[] args) {
+        for (Method m : cl.getMethods()) {
+            if (m.getName().equals(method) && ClassListEqual(args, m.getParameterTypes())) {
                 return m;
             }
         }
         return null;
     }
 
-    public static Method getMethod( Class<?> cl, String method, Integer args ) {
-        for ( Method m : cl.getMethods() ) {
-            if ( m.getName().equals( method ) && args.equals( new Integer( m.getParameterTypes().length ) ) ) {
+    public static Method getMethod(Class<?> cl, String method, Integer args) {
+        for (Method m : cl.getMethods()) {
+            if (m.getName().equals(method) && args.equals(new Integer(m.getParameterTypes().length))) {
                 return m;
             }
         }
         return null;
     }
 
-    public static Method getMethod( Class<?> cl, String method ) {
-        for ( Method m : cl.getMethods() ) {
-            if ( m.getName().equals( method ) ) {
+    public static Method getMethod(Class<?> cl, String method) {
+        for (Method m : cl.getMethods()) {
+            if (m.getName().equals(method)) {
                 return m;
             }
         }
         return null;
     }
 
-    public static boolean ClassListEqual( Class<?>[] l1, Class<?>[] l2 ) {
+    public static boolean ClassListEqual(Class<?>[] l1, Class<?>[] l2) {
         boolean equal = true;
 
-        if ( l1.length != l2.length ) {
+        if (l1.length != l2.length) {
             return false;
         }
-        for ( int i = 0; i < l1.length; i++ ) {
-            if ( l1[ i ] != l2[ i ] ) {
+        for (int i = 0; i < l1.length; i++) {
+            if (l1[i] != l2[i]) {
                 equal = false;
                 break;
             }

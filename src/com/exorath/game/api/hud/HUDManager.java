@@ -10,10 +10,11 @@ import org.bukkit.Bukkit;
  * Created by Toon Sevrin on 8/11/2015.
  */
 public class HUDManager implements Manager {
+
     public static HUDManager instance;
     private BossBarAPI bossBarAPI;
 
-    public HUDManager(){
+    public HUDManager() {
         instance = this;
 
         bossBarAPI = new BossBarAPI();

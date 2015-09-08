@@ -37,9 +37,12 @@ public abstract class HUDDisplay extends HUDLocation {
     }
 
     /**
-     * Adds the text to the current queue if there is any, displays it if it has the highest
+     * Adds the text to the current queue if there is any, displays it if it has
+     * the highest
      * priority
-     * @param text HUDText to display/add to queue
+     * 
+     * @param text
+     *            HUDText to display/add to queue
      */
     public void addText(String key, HUDText text) {
         if (!active)
@@ -58,7 +61,8 @@ public abstract class HUDDisplay extends HUDLocation {
     }
 
     /**
-     * @param text HUDText to remove from queue (and from displaying)
+     * @param text
+     *            HUDText to remove from queue (and from displaying)
      */
     public void removeText(HUDText text) {
         if (!active)
@@ -71,10 +75,11 @@ public abstract class HUDDisplay extends HUDLocation {
         }
         texts.remove(text);
     }
+
     public void removeText(String key) {
         if (!active)
             return;
-        if(!textsKeys.containsKey(key))
+        if (!textsKeys.containsKey(key))
             return;
         HUDText text = textsKeys.get(key);
         if (!texts.contains(text))
@@ -85,12 +90,15 @@ public abstract class HUDDisplay extends HUDLocation {
         }
         texts.remove(text);
     }
-    public boolean containsText(String key){
+
+    public boolean containsText(String key) {
         return getTextsKeys().containsKey(key);
     }
-    public HUDText getText(String key){
+
+    public HUDText getText(String key) {
         return getTextsKeys().getOrDefault(key, null);
     }
+
     /**
      * This will be ran every tick
      */
@@ -105,7 +113,9 @@ public abstract class HUDDisplay extends HUDLocation {
 
     /**
      * Sets whether or not the display is active
-     * @param active whether or not the display is active
+     * 
+     * @param active
+     *            whether or not the display is active
      */
     @Override
     public void setActive(boolean active) {

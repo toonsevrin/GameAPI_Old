@@ -3,14 +3,15 @@ package com.yoshigenius.lib.storage;
 import com.yoshigenius.lib.util.GameUtil;
 
 /**
- * A utility class providing easy saving and loading of objects to and from memory.
+ * A utility class providing easy saving and loading of objects to and from
+ * memory.
  *
  * @author Nick Robson
  */
 public class DataStorage {
-    
+
     private final SimpleMap<String, Object> settings = new SimpleMap<>();
-    
+
     /**
      * Gets the value of the input setting.
      *
@@ -22,10 +23,10 @@ public class DataStorage {
      *            The type expected of the setting.
      * @return The value.
      */
-    public <T> T get( String key, Class<T> clazz ) {
-        return GameUtil.cast( this.settings.get( key ), clazz );
+    public <T> T get(String key, Class<T> clazz) {
+        return GameUtil.cast(this.settings.get(key), clazz);
     }
-    
+
     /**
      * Gets a {@link SimpleMap} of the settings.
      *
@@ -34,7 +35,7 @@ public class DataStorage {
     public SimpleMap<String, Object> getSettings() {
         return this.settings;
     }
-    
+
     /**
      * Sets the value of the input setting.
      *
@@ -43,8 +44,8 @@ public class DataStorage {
      * @param value
      *            The value to set it to.
      */
-    public void set( String key, Object value ) {
-        this.settings.put( key, value );
+    public void set(String key, Object value) {
+        this.settings.put(key, value);
     }
-    
+
 }

@@ -13,7 +13,8 @@ import com.exorath.game.api.player.GamePlayer;
 
 /**
  * Created by too on 23/05/2015.
- * This is the main Lobby class, it handles most of the lobby stuff (Area where players get tp'ed to
+ * This is the main Lobby class, it handles most of the lobby stuff (Area where
+ * players get tp'ed to
  * between games).
  */
 public class Lobby {

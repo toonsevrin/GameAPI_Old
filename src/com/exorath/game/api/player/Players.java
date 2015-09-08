@@ -82,7 +82,7 @@ public class Players {
         MapManager maps = getGame().getManager(MapManager.class);
         if (maps != null) {
             GameMap map = maps.getCurrent();
-            if(map == null)
+            if (map == null)
                 return;
             GameSpawn spawn = map.findSpawn(p);
             if (p.isOnline() && spawn != null)

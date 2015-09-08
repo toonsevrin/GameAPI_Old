@@ -11,6 +11,7 @@ import java.util.Map;
  * Modified by toon on 31/05/2015. Created by Nick
  */
 public class SQLManager {
+
     private String host;
     private int port;
     private String database;
@@ -22,7 +23,7 @@ public class SQLManager {
 
     public SQLManager(String host, int port, String database, String user, String password) {
         try {
-            Class.forName( "com.mysql.jdbc.Driver" );
+            Class.forName("com.mysql.jdbc.Driver");
             this.host = host;
             this.port = port;
             this.database = database;
@@ -32,7 +33,7 @@ public class SQLManager {
             this.connection = this.open();
 
             this.loadTables();
-        } catch ( ClassNotFoundException exception ) {
+        } catch (ClassNotFoundException exception) {
             exception.printStackTrace();
         }
     }
@@ -46,16 +47,17 @@ public class SQLManager {
      *            name of table.
      * @return Existing or new SQLTable with the formatted name.
      */
-    public SQLTable getTable( Plugin plugin, String tableName ) {
-        return this.getTable( plugin.getName(), tableName );
+    public SQLTable getTable(Plugin plugin, String tableName) {
+        return this.getTable(plugin.getName(), tableName);
     }
 
-    public SQLTable getTable( String pluginName, String tableName ) {
+    public SQLTable getTable(String pluginName, String tableName) {
         return getTable(pluginName + "_" + tableName);
 
     }
-    public SQLTable getTable(String name){
-        if ( this.tables.containsKey(name)) {
+
+    public SQLTable getTable(String name) {
+        if (this.tables.containsKey(name)) {
             return this.tables.get(name);
         }
         return this.addTable(name);
@@ -68,10 +70,10 @@ public class SQLManager {
      */
     protected Connection open() {
         try {
-            this.connection = DriverManager.getConnection( "jdbc:mysql://" + this.host + "/" + this.database + "?user="
-                    + this.user + "&password=" + this.password );
-        } catch ( SQLException ex ) {
-            throw new IllegalArgumentException( "Invalid SQL server/database information", ex );
+            this.connection = DriverManager.getConnection("jdbc:mysql://" + this.host + "/" + this.database + "?user="
+                    + this.user + "&password=" + this.password);
+        } catch (SQLException ex) {
+            throw new IllegalArgumentException("Invalid SQL server/database information", ex);
         }
         return this.connection;
     }
@@ -80,7 +82,7 @@ public class SQLManager {
      * Open the connection again if closed
      */
     public void refresh() {
-        if ( !this.checkConnection() ) {
+        if (!this.checkConnection()) {
             this.connection = this.open();
         }
     }
@@ -92,20 +94,23 @@ public class SQLManager {
      */
     public boolean checkConnection() {
         try {
-            if ( this.connection != null && !this.connection.isClosed() ) {
+            if (this.connection != null && !this.connection.isClosed()) {
                 return true;
             }
-        } catch ( SQLException e ) {}
+        } catch (SQLException e) {
+        }
         return false;
     }
 
     /**
-     * Get an array of the credentials [HOST, PORT, DATABASE, USERNAME, PASSWORD]
+     * Get an array of the credentials [HOST, PORT, DATABASE, USERNAME,
+     * PASSWORD]
      *
-     * @return An array of the credentials [HOST, PORT, DATABASE, USERNAME, PASSWORD]
+     * @return An array of the credentials [HOST, PORT, DATABASE, USERNAME,
+     *         PASSWORD]
      */
     protected String[] getCredentials() {
-        return new String[] { this.host, String.valueOf( this.port ), this.database, this.user, this.password };
+        return new String[] { this.host, String.valueOf(this.port), this.database, this.user, this.password };
     }
 
     /**
@@ -123,32 +128,33 @@ public class SQLManager {
     private void loadTables() {
         try {
             this.tables.clear();
-            ResultSet res = this.executeQuery( "SHOW TABLES FROM " + this.database );
+            ResultSet res = this.executeQuery("SHOW TABLES FROM " + this.database);
 
-            while ( res.next() ) {
-                String tableName = res.getString( "Tables_in_" + this.database );
-                SQLTable table = new SQLTable( tableName );
+            while (res.next()) {
+                String tableName = res.getString("Tables_in_" + this.database);
+                SQLTable table = new SQLTable(tableName);
 
-                ResultSet columnsRes = this.executeQuery( "select * from information_schema.columns where table_schema = '" + this.database
-                        + "' and table_name = '" + tableName + "'" );
-                while ( columnsRes.next() ) {
-                    String columnName = columnsRes.getString( "COLUMN_NAME" ); //get data type out of column result set
-                    String columnDataType = columnsRes.getString( "DATA_TYPE" ); //get data type out of column result set
-                    ColumnType columnType = ColumnType.getColumnType( columnDataType ); //Column type found by data type
-                    if ( columnType == null ) {
+                ResultSet columnsRes = this
+                        .executeQuery("select * from information_schema.columns where table_schema = '" + this.database
+                                + "' and table_name = '" + tableName + "'");
+                while (columnsRes.next()) {
+                    String columnName = columnsRes.getString("COLUMN_NAME");//get data type out of column result set
+                    String columnDataType = columnsRes.getString("DATA_TYPE");//get data type out of column result set
+                    ColumnType columnType = ColumnType.getColumnType(columnDataType);//Column type found by data type
+                    if (columnType == null) {
                         continue;
                     }
-                    if ( columnType.isVarChar() ) {
-                        int maxCharLength = columnsRes.getInt( "CHARACTER_MAXIMUM_LENGTH" ); // get max char length from varchar column
-                        if ( maxCharLength != 0 ) {
-                            columnType = ColumnType.getColumnType( columnDataType, maxCharLength ); // adjust columnType
+                    if (columnType.isVarChar()) {
+                        int maxCharLength = columnsRes.getInt("CHARACTER_MAXIMUM_LENGTH");// get max char length from varchar column
+                        if (maxCharLength != 0) {
+                            columnType = ColumnType.getColumnType(columnDataType, maxCharLength);// adjust columnType
                         }
                     }
-                    table.loadColumn( new SQLColumn( columnName, columnType ) );
+                    table.loadColumn(new SQLColumn(columnName, columnType));
                 }
-                this.tables.put( tableName, table );
+                this.tables.put(tableName, table);
             }
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -160,16 +166,16 @@ public class SQLManager {
      *            Name of the newly created table
      * @return The newly created table, null if there was an error
      */
-    private SQLTable addTable( String name ) {
-        if ( name == null )
+    private SQLTable addTable(String name) {
+        if (name == null)
             return null;
-        this.executeUpdate( "CREATE TABLE " + name + " (varchar(64))" );
+        this.executeUpdate("CREATE TABLE " + name + " (varchar(64))");
         this.loadTables();
-        if ( this.tables.containsKey( name ) ) {
-            GameAPI.printConsole( "Table " + name + " has been created in the mysql database." );
-            return this.tables.get( name );
+        if (this.tables.containsKey(name)) {
+            GameAPI.printConsole("Table " + name + " has been created in the mysql database.");
+            return this.tables.get(name);
         }
-        GameAPI.error( "Table " + name + " failed to create for some reason." );
+        GameAPI.error("Table " + name + " failed to create for some reason.");
         return null;
     }
 
@@ -180,12 +186,12 @@ public class SQLManager {
      *            The query which has to be executed
      * @return ResultSet returned by this query, null if there was an issue.
      */
-    public ResultSet executeQuery( String query ) {
+    public ResultSet executeQuery(String query) {
         try {
             this.refresh();
-            PreparedStatement statement = this.connection.prepareStatement( query );
+            PreparedStatement statement = this.connection.prepareStatement(query);
             return statement.executeQuery();
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
@@ -198,12 +204,12 @@ public class SQLManager {
      *            The update to be run
      * @return Number of rows changed, or -1 if unsuccessful.
      */
-    public int executeUpdate( String update ) {
+    public int executeUpdate(String update) {
         try {
             this.refresh();
-            PreparedStatement statement = this.connection.prepareStatement( update );
+            PreparedStatement statement = this.connection.prepareStatement(update);
             return statement.executeUpdate();
-        } catch ( SQLException e ) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return -1;

@@ -77,7 +77,8 @@ public enum ColumnType {
     /**
      * Get the columntype with solely a dataType
      *
-     * @param dataType dataType to look up
+     * @param dataType
+     *            dataType to look up
      * @return ColumnType that has the given dataType as dataType
      */
     public static ColumnType getColumnType(String dataType) {

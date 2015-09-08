@@ -10,11 +10,14 @@ public enum HUDPriority {
     GAME_API(2),
     LOW(1),
     LOWEST(0);
+
     private int priority;
-    HUDPriority(int priority){
+
+    HUDPriority(int priority) {
         this.priority = priority;
     }
-    public int getPriority(){
+
+    public int getPriority() {
         return priority;
     }
 

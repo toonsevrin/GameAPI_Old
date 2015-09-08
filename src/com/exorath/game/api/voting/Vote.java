@@ -9,7 +9,7 @@ public class Vote {
     int option;
     int weight;
 
-    public Vote( VoteSession session, int option, int weight ) {
+    public Vote(VoteSession session, int option, int weight) {
         this.session = session;
         this.option = option;
     }

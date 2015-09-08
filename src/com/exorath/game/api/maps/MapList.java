@@ -20,28 +20,28 @@ public class MapList {
         return this.maps;
     }
 
-    public MapList addMap( GameMap map ) {
-        this.maps.add( map );
+    public MapList addMap(GameMap map) {
+        this.maps.add(map);
         return this;
     }
 
-    public MapList addMap( int index, GameMap map ) {
-        this.maps.add( index, map );
+    public MapList addMap(int index, GameMap map) {
+        this.maps.add(index, map);
         return this;
     }
 
     public GameMap getCurrent() {
-        return current == null ? nextMap( MapSelection.RANDOM ) : current;
+        return current == null ? nextMap(MapSelection.RANDOM) : current;
     }
 
-    public GameMap nextMap( MapSelection selection ) {
-        if(maps.size() == 0){
+    public GameMap nextMap(MapSelection selection) {
+        if (maps.size() == 0) {
             GameAPI.error("Map size == 0: Please add a map!");
             return null;
         }
-        switch ( selection ) {
+        switch (selection) {
             case CYCLE:
-                current = maps.get( ++index );
+                current = maps.get(++index);
             case RANDOM:
                 current = maps.get(new Random().nextInt(maps.size()));
             case SAME:

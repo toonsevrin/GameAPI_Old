@@ -34,7 +34,7 @@ import com.yoshigenius.lib.util.GameUtil;
  */
 public class GameAPI extends JavaPlugin {
 
-    public static final Version CURRENT_VERSION = Version.from("GameAPI", "0.0.1", 1, 0); // API Version 0 means in Development. Change for Alpha/Beta.
+    public static final Version CURRENT_VERSION = Version.from("GameAPI", "0.0.1", 1, 0);// API Version 0 means in Development. Change for Alpha/Beta.
 
     private static SQLManager sqlManager;
 
@@ -50,7 +50,7 @@ public class GameAPI extends JavaPlugin {
     }
 
     public static void registerGameProvider(GameProvider plugin) {
-        if(gameProvider != null)
+        if (gameProvider != null)
             throw new IllegalStateException("A GameProvider was already registered.");
         gameProvider = plugin.getName();
         getGame();
@@ -112,7 +112,8 @@ public class GameAPI extends JavaPlugin {
         String serverPackage = this.getServer().getClass().getPackage().getName();
         String versionPackage = serverPackage.substring(serverPackage.lastIndexOf('.'));
         try {
-            Class<? extends NMSProvider> c = Class.forName(NMSProvider.class.getPackage().getName() + versionPackage + ".NMSProviderImpl")
+            Class<? extends NMSProvider> c = Class
+                    .forName(NMSProvider.class.getPackage().getName() + versionPackage + ".NMSProviderImpl")
                     .asSubclass(NMSProvider.class);
             NMSProvider provider = c.newInstance();
             NMS.set(provider);
@@ -140,7 +141,8 @@ public class GameAPI extends JavaPlugin {
     /**
      * Prints an error to the console
      *
-     * @param error message you want to print.
+     * @param error
+     *            message you want to print.
      */
     public static void error(String error) {
         GameAPI.getInstance().getLogger().severe(error);

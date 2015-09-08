@@ -4,10 +4,11 @@ package com.exorath.game.api.database;
  * Created by too on 1/06/2015.
  */
 public class SQLColumn {
+
     private String key;
     private com.exorath.game.api.database.ColumnType type;
 
-    public SQLColumn( String key, com.exorath.game.api.database.ColumnType type ) {
+    public SQLColumn(String key, com.exorath.game.api.database.ColumnType type) {
         this.key = key;
         this.type = type;
     }

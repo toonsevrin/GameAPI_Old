@@ -7,7 +7,7 @@ public class VoteOption {
 
     String option;
 
-    public VoteOption( String option ) {
+    public VoteOption(String option) {
         this.option = option;
     }
 

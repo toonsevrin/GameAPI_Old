@@ -28,11 +28,11 @@ public class Team {
 
     public static Map<TeamColor, Team> teams = Maps.newHashMap();
 
-    public static Team getTeam( TeamColor color, boolean create ) {
-        if ( create && !Team.teams.containsKey( color ) ) {
-            Team.teams.put( color, new Team().setTeamColor( color ) );
+    public static Team getTeam(TeamColor color, boolean create) {
+        if (create && !Team.teams.containsKey(color)) {
+            Team.teams.put(color, new Team().setTeamColor(color));
         }
-        return Team.teams.get( color );
+        return Team.teams.get(color);
     }
 
     private Properties properties = new Properties();
@@ -50,11 +50,12 @@ public class Team {
      * @return A collection of all online players in this team
      */
     public Set<GamePlayer> getPlayers() {
-        return this.players.stream().map( u -> GameAPI.getPlayer( u ) ).collect( Collectors.toSet() );
+        return this.players.stream().map(u -> GameAPI.getPlayer(u)).collect(Collectors.toSet());
     }
 
     /**
-     * @return a collection of all online players in this team which haven't been set inactive
+     * @return a collection of all online players in this team which haven't
+     *         been set inactive
      */
     public Set<UUID> getActivePlayers() {
         return activePlayers;
@@ -64,8 +65,8 @@ public class Team {
      * Adds a player to the team
      */
     public void addPlayer(GamePlayer player) {
-        players.add( player.getUUID() );
-        activePlayers.add( player.getUUID() );
+        players.add(player.getUUID());
+        activePlayers.add(player.getUUID());
     }
 
     /**
@@ -99,10 +100,10 @@ public class Team {
         Iterator<UUID> it = this.players.iterator();
         while (it.hasNext()) {
             UUID uuid = it.next();
-            if ( Bukkit.getPlayer( uuid ) == null ) {
+            if (Bukkit.getPlayer(uuid) == null) {
                 it.remove();
-                if ( activePlayers.contains( uuid ) )
-                    activePlayers.remove( uuid );
+                if (activePlayers.contains(uuid))
+                    activePlayers.remove(uuid);
             }
         }
     }
@@ -111,8 +112,8 @@ public class Team {
         return this.properties;
     }
 
-    public Team setName( String name ) {
-        this.properties.set( TeamProperty.NAME, name );
+    public Team setName(String name) {
+        this.properties.set(TeamProperty.NAME, name);
         return this;
     }
 
@@ -120,8 +121,8 @@ public class Team {
         return this.properties.as(TeamProperty.NAME, String.class);
     }
 
-    public Team setPvpEnabled( boolean enabled ) {
-        this.properties.set( BasePlayerProperty.PVP, enabled );
+    public Team setPvpEnabled(boolean enabled) {
+        this.properties.set(BasePlayerProperty.PVP, enabled);
         return this;
     }
 
@@ -129,8 +130,8 @@ public class Team {
         return this.properties.as(BasePlayerProperty.PVP, boolean.class);
     }
 
-    public Team setMaxTeamSize( int amount ) {
-        this.properties.set( TeamProperty.MAX_SIZE, amount );
+    public Team setMaxTeamSize(int amount) {
+        this.properties.set(TeamProperty.MAX_SIZE, amount);
         return this;
     }
 
@@ -138,8 +139,8 @@ public class Team {
         return this.properties.as(TeamProperty.MAX_SIZE, int.class);
     }
 
-    public Team setMinTeamSize( int amount ) {
-        this.properties.set( TeamProperty.MIN_SIZE, amount );
+    public Team setMinTeamSize(int amount) {
+        this.properties.set(TeamProperty.MIN_SIZE, amount);
         return this;
     }
 
@@ -151,21 +152,21 @@ public class Team {
         return this.properties.as(TeamProperty.FRIENDLY_FIRE, boolean.class);
     }
 
-    public Team setFriendlyFire( boolean ff ) {
-        this.properties.set( TeamProperty.FRIENDLY_FIRE, ff );
+    public Team setFriendlyFire(boolean ff) {
+        this.properties.set(TeamProperty.FRIENDLY_FIRE, ff);
         return this;
     }
 
-    public GameSpawn[] getSpawns( GameMap map ) {
-        return map.getSpawns( this );
+    public GameSpawn[] getSpawns(GameMap map) {
+        return map.getSpawns(this);
     }
 
     public TeamColor getTeamColor() {
-        return this.properties.as( TeamProperty.COLOR, TeamColor.class );
+        return this.properties.as(TeamProperty.COLOR, TeamColor.class);
     }
 
-    public Team setTeamColor( TeamColor color ) {
-        this.properties.set( TeamProperty.COLOR, color );
+    public Team setTeamColor(TeamColor color) {
+        this.properties.set(TeamProperty.COLOR, color);
         return this;
     }
 
@@ -173,9 +174,9 @@ public class Team {
         return listeners;
     }
 
-    public void addListener( GameListener listener ) {
-        if ( listener != null ) {
-            this.listeners.add( listener );
+    public void addListener(GameListener listener) {
+        if (listener != null) {
+            this.listeners.add(listener);
         }
     }
 

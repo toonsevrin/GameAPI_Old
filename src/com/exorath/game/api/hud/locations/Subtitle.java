@@ -8,7 +8,8 @@ import com.exorath.game.lib.hud.title.TitleBase;
  * Created by TOON on 8/11/2015.
  */
 public class Subtitle extends Title_SubTitleBase {
-    public Subtitle(GamePlayer player){
+
+    public Subtitle(GamePlayer player) {
         super(player, 48);
         otherLocation = null;//TODO: Set this
     }
@@ -17,12 +18,14 @@ public class Subtitle extends Title_SubTitleBase {
     public void removeSelf() {
         TitleBase.sendSubTitle(player.getBukkitPlayer(), getJSON(""));
     }
+
     @Override
-    public void sendWithFadeIn(HUDText text){
-        TitleBase.sendSubTitle(player.getBukkitPlayer(), 20, Integer.MAX_VALUE/10, 0, getJSON(text.getDisplayText()));
+    public void sendWithFadeIn(HUDText text) {
+        TitleBase.sendSubTitle(player.getBukkitPlayer(), 20, Integer.MAX_VALUE / 10, 0, getJSON(text.getDisplayText()));
     }
+
     @Override
-    public void send(HUDText text){
+    public void send(HUDText text) {
         TitleBase.sendSubTitle(player.getBukkitPlayer(), getJSON(text.getDisplayText()));
     }
 

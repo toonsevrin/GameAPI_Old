@@ -12,21 +12,21 @@ public class UnlockRequirements {
     private int credits = 0;
     private Rank minRank;
 
-    public boolean canUnlock( GamePlayer player ) {
+    public boolean canUnlock(GamePlayer player) {
         // TODO: Check values
         return true;
     }
 
-    public void unlock( GamePlayer player ) {
+    public void unlock(GamePlayer player) {
         // TODO: Add content
     }
 
-    public boolean isUnlocked( GamePlayer player ) {
+    public boolean isUnlocked(GamePlayer player) {
         // TODO
         return false;
     }
 
-    public void setCoins( int coins ) {
+    public void setCoins(int coins) {
         this.coins = coins;
     }
 
@@ -34,7 +34,7 @@ public class UnlockRequirements {
         return this.coins;
     }
 
-    public void setCredits( int credits ) {
+    public void setCredits(int credits) {
         this.credits = credits;
     }
 
@@ -42,7 +42,7 @@ public class UnlockRequirements {
         return this.credits;
     }
 
-    public void setMinRank( Rank minRank ) {
+    public void setMinRank(Rank minRank) {
         this.minRank = minRank;
     }
 

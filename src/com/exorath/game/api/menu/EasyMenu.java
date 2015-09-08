@@ -19,36 +19,38 @@ public abstract class EasyMenu extends Menu {
     @FunctionalInterface
     public static interface EasyMenuItem {
 
-        void onClick( InventoryClickEvent event, Game game, GamePlayer player );
+        void onClick(InventoryClickEvent event, Game game, GamePlayer player);
 
     }
 
     private final Map<Integer, EasyMenuItem> metas = Maps.newHashMap();
 
-    public EasyMenu( int size ) {
-        super( size );
+    public EasyMenu(int size) {
+        super(size);
     }
 
-    public EasyMenu setItem( int index, ItemStack item, EasyMenuItem meta ) {
-        super.setItem( index, item );
-        this.metas.put( index, meta );
+    public EasyMenu setItem(int index, ItemStack item, EasyMenuItem meta) {
+        super.setItem(index, item);
+        this.metas.put(index, meta);
         return this;
     }
 
     @Override
-    public void onClick( InventoryClickEvent event, Game game, GamePlayer player ) {
-        for ( int i = 0; i < event.getInventory().getSize(); i++ ) {
-            if ( event.getCurrentItem().equals( this.getItem( i ) ) && this.metas.containsKey( i ) ) {
-                event.setCancelled( true );
-                this.metas.get( i ).onClick( event, game, player );
+    public void onClick(InventoryClickEvent event, Game game, GamePlayer player) {
+        for (int i = 0; i < event.getInventory().getSize(); i++) {
+            if (event.getCurrentItem().equals(this.getItem(i)) && this.metas.containsKey(i)) {
+                event.setCancelled(true);
+                this.metas.get(i).onClick(event, game, player);
             }
         }
     }
 
     @Override
-    public void onOpen( InventoryOpenEvent event, Game game, GamePlayer player ) {}
+    public void onOpen(InventoryOpenEvent event, Game game, GamePlayer player) {
+    }
 
     @Override
-    public void onClose( InventoryCloseEvent event, Game game, GamePlayer player ) {}
+    public void onClose(InventoryCloseEvent event, Game game, GamePlayer player) {
+    }
 
 }

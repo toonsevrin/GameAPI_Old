@@ -19,12 +19,12 @@ public class KitSelector extends AbstractNPC {
     private final Kit kit;
 
     public KitSelector() {
-        super( ChatColor.GREEN + "Kit Selector", new NPCEquipment() );
+        super(ChatColor.GREEN + "Kit Selector", new NPCEquipment());
         this.kit = null;
     }
 
-    public KitSelector( Kit kit ) {
-        super( ChatColor.GREEN + "Select: " + ChatColor.AQUA + kit.getName(), kit.toNPCEquipment() );
+    public KitSelector(Kit kit) {
+        super(ChatColor.GREEN + "Select: " + ChatColor.AQUA + kit.getName(), kit.toNPCEquipment());
         this.kit = kit;
     }
 
@@ -34,23 +34,23 @@ public class KitSelector extends AbstractNPC {
     }
 
     @Override
-    public void onClicked( Game game, GamePlayer player, SpawnedNPC npc ) {
-        if ( this.kit != null ) {
-            this.kit.give( player, game );
-            player.sendMessage( ChatColor.GREEN + "Now using kit: " + this.kit.getName() );
+    public void onClicked(Game game, GamePlayer player, SpawnedNPC npc) {
+        if (this.kit != null) {
+            this.kit.give(player, game);
+            player.sendMessage(ChatColor.GREEN + "Now using kit: " + this.kit.getName());
         } else {
-            player.openMenu( new KitSelectorMenu( game ) );
+            player.openMenu(new KitSelectorMenu(game));
         }
     }
 
     public static class KitSelectorMenu extends EasyMenu {
 
-        public KitSelectorMenu( Game game ) {
-            super( 36 );
+        public KitSelectorMenu(Game game) {
+            super(36);
             int slot = 0;
-            for ( Kit kit : game.getManager( KitManager.class ).getKits() ) {
-                if ( slot < 36 ) {// TODO: Pages
-                    this.setItem( slot++, kit.getIcon(), ( e, g, p ) -> kit.give( p, g ) );
+            for (Kit kit : game.getManager(KitManager.class).getKits()) {
+                if (slot < 36) {// TODO: Pages
+                    this.setItem(slot++, kit.getIcon(), (e, g, p) -> kit.give(p, g));
                 }
             }
         }

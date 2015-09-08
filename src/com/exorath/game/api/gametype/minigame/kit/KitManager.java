@@ -15,7 +15,7 @@ public class KitManager implements Manager {
     private Game game;
     private Set<Kit> kits = Sets.newHashSet();
 
-    public KitManager( Game game ) {
+    public KitManager(Game game) {
         this.game = game;
     }
 
@@ -23,14 +23,14 @@ public class KitManager implements Manager {
         return this.game;
     }
 
-    public void add( Kit kit ) {
-        if ( kit != null ) {
-            this.kits.add( kit );
+    public void add(Kit kit) {
+        if (kit != null) {
+            this.kits.add(kit);
         }
     }
 
     public Set<Kit> getKits() {
-        return ImmutableSet.<Kit> copyOf( this.kits );
+        return ImmutableSet.<Kit> copyOf(this.kits);
     }
 
 }

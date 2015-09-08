@@ -11,24 +11,24 @@ public class Version {
 
     private static final Map<String, Version> versions = Maps.newHashMap();
 
-    public static Version from( String name, String version, int versionNumber, int apiVersion ) {
-        if ( version != null && Version.versions.containsKey( version ) ) {
-            return Version.versions.get( version );
+    public static Version from(String name, String version, int versionNumber, int apiVersion) {
+        if (version != null && Version.versions.containsKey(version)) {
+            return Version.versions.get(version);
         }
-        return new Version( name, version, versionNumber, apiVersion );
+        return new Version(name, version, versionNumber, apiVersion);
     }
 
     private final String name, version;
     private final int versionNumber, apiVersion;
 
-    private Version( String name, String version, int versionNumber, int apiVersion ) {
+    private Version(String name, String version, int versionNumber, int apiVersion) {
         this.name = name;
         this.version = version;
         this.versionNumber = versionNumber;
         this.apiVersion = apiVersion;
 
-        if ( version != null ) {
-            Version.versions.put( version, this );
+        if (version != null) {
+            Version.versions.put(version, this);
         }
     }
 
@@ -48,15 +48,15 @@ public class Version {
         return this.apiVersion;
     }
 
-    public boolean isCompatible( Version version ) {
+    public boolean isCompatible(Version version) {
         return version.getAPIVersion() == this.getAPIVersion();
     }
 
     @Override
-    public boolean equals( Object o ) {
-        if ( o instanceof Version ) {
+    public boolean equals(Object o) {
+        if (o instanceof Version) {
             Version v = (Version) o;
-            if ( v.getName().equals( this.getName() ) && v.getVersionNumber() == this.getVersionNumber() ) {
+            if (v.getName().equals(this.getName()) && v.getVersionNumber() == this.getVersionNumber()) {
                 return true;
             }
         }

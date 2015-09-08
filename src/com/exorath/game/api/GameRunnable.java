@@ -14,14 +14,14 @@ public abstract class GameRunnable extends BukkitRunnable {
 
     private UUID gameUID;
 
-    public GameRunnable( Game game ) {
+    public GameRunnable(Game game) {
         this.gameUID = game.getGameID();
     }
 
     @Override
     public void run() {
-        Game g = GameAPI.getGame( gameUID );
-        if ( g != null && g.getState().is( GameState.WAITING, GameState.STARTING, GameState.INGAME, GameState.FINISHING ) )
+        Game g = GameAPI.getGame(gameUID);
+        if (g != null && g.getState().is(GameState.WAITING, GameState.STARTING, GameState.INGAME, GameState.FINISHING))
             _run();
     }
 

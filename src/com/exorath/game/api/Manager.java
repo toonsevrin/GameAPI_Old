@@ -5,6 +5,9 @@ package com.exorath.game.api;
  */
 public interface Manager {
 
-    public default void onCreate(){}
-    public default void onDestroy(){}
+    public default void onCreate() {
+    }
+
+    public default void onDestroy() {
+    }
 }

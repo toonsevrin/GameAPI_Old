@@ -30,6 +30,7 @@ import com.google.common.collect.Sets;
  */
 
 public abstract class Game {
+
     public static final String DEFAULT_GAME_NAME = "Game";
     public static final String DEFAULT_GAME_DESCRIPTION = "Default game description";
 
@@ -110,8 +111,10 @@ public abstract class Game {
     /**
      * Gets the acting manager instance of the provided class.
      *
-     * @param clazz The class of which the manager is intended to extend.
-     * @return The manager is there is one of this type, or null if no manager of this type is set.
+     * @param clazz
+     *            The class of which the manager is intended to extend.
+     * @return The manager is there is one of this type, or null if no manager
+     *         of this type is set.
      */
     @SuppressWarnings("unchecked")
     public <T extends Manager> T getManager(Class<T> clazz) {
@@ -174,7 +177,8 @@ public abstract class Game {
     /* Configs */
     //** TODO: Take a look at the configuration manager (Is this required?) **//
     public FileConfiguration getConfig(String filename) {
-        File file = new File(GameAPI.getInstance().getDataFolder(this), filename + (filename.endsWith(".yml") ? "" : ".yml"));
+        File file = new File(GameAPI.getInstance().getDataFolder(this),
+                filename + (filename.endsWith(".yml") ? "" : ".yml"));
         FileUtils.createIfMissing(file, FileUtils.FileType.FILE);
         return YamlConfiguration.loadConfiguration(file);
     }

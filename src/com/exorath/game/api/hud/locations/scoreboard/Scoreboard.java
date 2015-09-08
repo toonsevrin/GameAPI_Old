@@ -16,6 +16,7 @@ import com.exorath.game.lib.hud.scoreboard.ScoreboardBase;
  * TODO: CREATE THIS CLASS
  */
 public class Scoreboard extends HUDLocation {
+
     private HUDText title = new HUDText(ChatColor.BOLD + "Title", HUDPriority.GAME_API);
     private ScoreboardBase scoreboard;
 
@@ -88,9 +89,9 @@ public class Scoreboard extends HUDLocation {
         }
         if (!getTexts().contains(text))
             return;
-        if (text.isTextUpdated())//Text updated
+        if (text.isTextUpdated()) //Text updated
             text.getEntry().update(text.getDisplayText());
-        else if (text.isPriorityUpdated())//Priority updated
+        else if (text.isPriorityUpdated()) //Priority updated
             priorityUpdated();
     }
 
@@ -106,7 +107,7 @@ public class Scoreboard extends HUDLocation {
     @Override
     public void setActive(boolean active) {
         this.active = active;
-        if (active)//If turned on, display the currentText
+        if (active) //If turned on, display the currentText
             scoreboard.add(player.getBukkitPlayer());
         else//If turned off, hide all texts
             scoreboard.remove(player.getBukkitPlayer());

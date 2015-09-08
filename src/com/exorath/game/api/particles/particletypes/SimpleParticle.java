@@ -8,6 +8,7 @@ import org.bukkit.Location;
  * Created by TOON on 8/30/2015.
  */
 public class SimpleParticle extends ParticleType {
+
     public static final SimpleParticle EXPLOSION_NORMAL = new SimpleParticle(ParticleEffectType.EXPLOSION_NORMAL);
     public static final SimpleParticle EXPLOSION_LARGE = new SimpleParticle(ParticleEffectType.EXPLOSION_LARGE);
     public static final SimpleParticle EXPLOSION_HUGE = new SimpleParticle(ParticleEffectType.EXPLOSION_HUGE);
@@ -60,10 +61,13 @@ public class SimpleParticle extends ParticleType {
     private float speed = 1;
     private int amount = 1;
     private double range = 64;
-    public SimpleParticle(ParticleEffectType effectType){
+
+    public SimpleParticle(ParticleEffectType effectType) {
         this.effectType = effectType;
     }
-    public SimpleParticle(ParticleEffectType effectType, float offsetX, float offsetY, float offsetZ, float speed, int amount){
+
+    public SimpleParticle(ParticleEffectType effectType, float offsetX, float offsetY, float offsetZ, float speed,
+            int amount) {
         this.effectType = effectType;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
@@ -71,7 +75,9 @@ public class SimpleParticle extends ParticleType {
         this.speed = speed;
         this.amount = amount;
     }
-    public SimpleParticle(ParticleEffectType effectType, float offsetX, float offsetY, float offsetZ, float speed, int amount, double range){
+
+    public SimpleParticle(ParticleEffectType effectType, float offsetX, float offsetY, float offsetZ, float speed,
+            int amount, double range) {
         this.effectType = effectType;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
@@ -80,8 +86,9 @@ public class SimpleParticle extends ParticleType {
         this.amount = amount;
         this.range = range;
     }
+
     @Override
     public void display(Location loc) {
-        effectType.display(offsetX, offsetY,offsetZ, speed, amount, loc, range);
+        effectType.display(offsetX, offsetY, offsetZ, speed, amount, loc, range);
     }
 }

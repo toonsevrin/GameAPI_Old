@@ -32,7 +32,7 @@ public class ItemStackBuilder {
         private final ItemStackBuilder builder;
         private final ItemMeta meta;
 
-        protected ItemStackBuilderMeta( ItemStackBuilder builder, ItemMeta meta ) {
+        protected ItemStackBuilderMeta(ItemStackBuilder builder, ItemMeta meta) {
             this.builder = builder;
             this.meta = meta;
         }
@@ -44,13 +44,13 @@ public class ItemStackBuilder {
          *            The lore.
          * @return This object.
          */
-        public ItemStackBuilderMeta addLore( String lore ) {
+        public ItemStackBuilderMeta addLore(String lore) {
             List<String> lores = this.meta.getLore();
-            if ( lores == null ) {
+            if (lores == null) {
                 lores = new ArrayList<String>();
             }
-            lores.add( lore );
-            return this.setLore( lores );
+            lores.add(lore);
+            return this.setLore(lores);
         }
 
         /**
@@ -60,10 +60,10 @@ public class ItemStackBuilder {
          *            The lore.
          * @return This object.
          */
-        public ItemStackBuilderMeta addPage( String[] lines ) {
-            if ( this.meta instanceof BookMeta ) {
+        public ItemStackBuilderMeta addPage(String[] lines) {
+            if (this.meta instanceof BookMeta) {
                 BookMeta bookmeta = (BookMeta) this.meta;
-                bookmeta.addPage( lines );
+                bookmeta.addPage(lines);
             }
             return this;
         }
@@ -79,10 +79,10 @@ public class ItemStackBuilder {
          *            Whether or not to show it.
          * @return This object.
          */
-        public ItemStackBuilderMeta addStoredEnchantment( Enchantment ench, int level, boolean show ) {
-            if ( this.meta instanceof EnchantmentStorageMeta ) {
+        public ItemStackBuilderMeta addStoredEnchantment(Enchantment ench, int level, boolean show) {
+            if (this.meta instanceof EnchantmentStorageMeta) {
                 EnchantmentStorageMeta enchmeta = (EnchantmentStorageMeta) this.meta;
-                enchmeta.addStoredEnchant( ench, level, show );
+                enchmeta.addStoredEnchant(ench, level, show);
             }
             return this;
         }
@@ -93,7 +93,7 @@ public class ItemStackBuilder {
          * @return This object.
          */
         public ItemStackBuilderMeta clearLore() {
-            return this.setLore( new ArrayList<String>() );
+            return this.setLore(new ArrayList<String>());
         }
 
         /**
@@ -102,7 +102,7 @@ public class ItemStackBuilder {
          * @return The parent builder.
          */
         public ItemStackBuilder getBuilder() {
-            this.builder.get().setItemMeta( this.meta );
+            this.builder.get().setItemMeta(this.meta);
             return this.builder;
         }
 
@@ -112,7 +112,7 @@ public class ItemStackBuilder {
          * @return The stored enchantments.
          */
         public Map<Enchantment, Integer> getStoredEnchantments() {
-            if ( this.meta instanceof EnchantmentStorageMeta ) {
+            if (this.meta instanceof EnchantmentStorageMeta) {
                 EnchantmentStorageMeta enchmeta = (EnchantmentStorageMeta) this.meta;
                 return enchmeta.getStoredEnchants();
             }
@@ -126,10 +126,10 @@ public class ItemStackBuilder {
          *            The new color.
          * @return This object.
          */
-        public ItemStackBuilderMeta setColor( Color color ) {
-            if ( this.meta instanceof LeatherArmorMeta ) {
+        public ItemStackBuilderMeta setColor(Color color) {
+            if (this.meta instanceof LeatherArmorMeta) {
                 LeatherArmorMeta lameta = (LeatherArmorMeta) this.meta;
-                lameta.setColor( color );
+                lameta.setColor(color);
             }
             return this;
         }
@@ -141,8 +141,8 @@ public class ItemStackBuilder {
          *            The new display name.
          * @return This object.
          */
-        public ItemStackBuilderMeta setDisplayName( String display ) {
-            this.meta.setDisplayName( display );
+        public ItemStackBuilderMeta setDisplayName(String display) {
+            this.meta.setDisplayName(display);
             return this;
         }
 
@@ -153,8 +153,8 @@ public class ItemStackBuilder {
          *            The lore.
          * @return This object.
          */
-        public ItemStackBuilderMeta setLore( List<String> lore ) {
-            this.meta.setLore( lore );
+        public ItemStackBuilderMeta setLore(List<String> lore) {
+            this.meta.setLore(lore);
             return this;
         }
 
@@ -165,8 +165,8 @@ public class ItemStackBuilder {
          *            The lore.
          * @return This object.
          */
-        public ItemStackBuilderMeta setLore( String... lore ) {
-            return this.setLore( Arrays.asList( lore ) );
+        public ItemStackBuilderMeta setLore(String... lore) {
+            return this.setLore(Arrays.asList(lore));
         }
 
         /**
@@ -176,19 +176,20 @@ public class ItemStackBuilder {
          *            The owner.
          * @return This object.
          */
-        public ItemStackBuilderMeta setOwner( String owner ) {
-            if ( this.meta instanceof SkullMeta ) {
+        public ItemStackBuilderMeta setOwner(String owner) {
+            if (this.meta instanceof SkullMeta) {
                 SkullMeta skullmeta = (SkullMeta) this.meta;
-                skullmeta.setOwner( owner );
-            } else if ( this.meta instanceof BookMeta ) {
+                skullmeta.setOwner(owner);
+            } else if (this.meta instanceof BookMeta) {
                 BookMeta bookmeta = (BookMeta) this.meta;
-                bookmeta.setAuthor( owner );
+                bookmeta.setAuthor(owner);
             }
             return this;
         }
 
         /**
-         * Sets the page at the specified index to have the specified text if this is a Written
+         * Sets the page at the specified index to have the specified text if
+         * this is a Written
          * Book.
          *
          * @param index
@@ -197,10 +198,10 @@ public class ItemStackBuilder {
          *            The page text.
          * @return This object.
          */
-        public ItemStackBuilderMeta setPage( int index, String page ) {
-            if ( this.meta instanceof BookMeta ) {
+        public ItemStackBuilderMeta setPage(int index, String page) {
+            if (this.meta instanceof BookMeta) {
                 BookMeta bookmeta = (BookMeta) this.meta;
-                bookmeta.setPage( index, page );
+                bookmeta.setPage(index, page);
             }
             return this;
         }
@@ -212,10 +213,10 @@ public class ItemStackBuilder {
          *            The new title.
          * @return This object.
          */
-        public ItemStackBuilderMeta setTitle( String title ) {
-            if ( this.meta instanceof BookMeta ) {
+        public ItemStackBuilderMeta setTitle(String title) {
+            if (this.meta instanceof BookMeta) {
                 BookMeta bookmeta = (BookMeta) this.meta;
-                bookmeta.setTitle( title );
+                bookmeta.setTitle(title);
             }
             return this;
         }
@@ -230,7 +231,7 @@ public class ItemStackBuilder {
      * @param base
      *            The item stack.
      */
-    public ItemStackBuilder( ItemStack base ) {
+    public ItemStackBuilder(ItemStack base) {
         this. itemStack = base;
     }
 
@@ -240,8 +241,8 @@ public class ItemStackBuilder {
      * @param m
      *            The material.
      */
-    public ItemStackBuilder( Material m ) {
-        this( m, 1 );
+    public ItemStackBuilder(Material m) {
+        this(m, 1);
     }
 
     /**
@@ -252,24 +253,26 @@ public class ItemStackBuilder {
      * @param data
      *            The data.
      */
-    public ItemStackBuilder( Material m, byte data ) {
-        this( m, 1, data );
+    public ItemStackBuilder(Material m, byte data) {
+        this(m, 1, data);
     }
 
     /**
-     * Creates a builder wrapping an object with the provided {@link Material} and amount.
+     * Creates a builder wrapping an object with the provided {@link Material}
+     * and amount.
      *
      * @param m
      *            The material.
      * @param num
      *            The amount.
      */
-    public ItemStackBuilder( Material m, int num ) {
-        this( m, num, (byte) 0 );
+    public ItemStackBuilder(Material m, int num) {
+        this(m, num, (byte) 0);
     }
 
     /**
-     * Creates a builder wrapping an object with the provided {@link Material}, amount and data.
+     * Creates a builder wrapping an object with the provided {@link Material},
+     * amount and data.
      *
      * @param m
      *            The material.
@@ -278,12 +281,13 @@ public class ItemStackBuilder {
      * @param data
      *            The data.
      */
-    public ItemStackBuilder( Material m, int num, byte data ) {
-        this( new ItemStack( m, num, data ) );
+    public ItemStackBuilder(Material m, int num, byte data) {
+        this(new ItemStack(m, num, data));
     }
 
     /**
-     * Creates a builder wrapping an object with the provided {@link Material}, amount and data.
+     * Creates a builder wrapping an object with the provided {@link Material},
+     * amount and data.
      *
      * @param m
      *            The material.
@@ -292,8 +296,8 @@ public class ItemStackBuilder {
      * @param damage
      *            The damage value.
      */
-    public ItemStackBuilder( Material m, int num, short damage ) {
-        this( new ItemStack( m, num, damage ) );
+    public ItemStackBuilder(Material m, int num, short damage) {
+        this(new ItemStack(m, num, damage));
     }
 
     /**
@@ -307,13 +311,13 @@ public class ItemStackBuilder {
      *            Whether or not to force the enchantment onto the item.
      * @return This object.
      */
-    public ItemStackBuilder addEnchantment( Enchantment ench, int level, boolean force ) {
+    public ItemStackBuilder addEnchantment(Enchantment ench, int level, boolean force) {
         try {
-            this.itemStack.addEnchantment( ench, level );
+            this.itemStack.addEnchantment(ench, level);
             return this;
-        } catch ( Exception ex ) {
-            if ( force ) {
-                return this.addUnsafeEnchantment( ench, level );
+        } catch (Exception ex) {
+            if (force) {
+                return this.addUnsafeEnchantment(ench, level);
             }
             return this;
         }
@@ -328,10 +332,11 @@ public class ItemStackBuilder {
      *            The level.
      * @return This object.
      */
-    public ItemStackBuilder addUnsafeEnchantment( Enchantment ench, int level ) {
+    public ItemStackBuilder addUnsafeEnchantment(Enchantment ench, int level) {
         try {
-            this.itemStack.addUnsafeEnchantment( ench, level );
-        } catch ( Exception ex ) {}
+            this.itemStack.addUnsafeEnchantment(ench, level);
+        } catch (Exception ex) {
+        }
         return this;
     }
 
@@ -351,7 +356,7 @@ public class ItemStackBuilder {
      * @return The meta.
      */
     public ItemStackBuilderMeta getMeta() {
-        return new ItemStackBuilderMeta( this, this.get().getItemMeta() );
+        return new ItemStackBuilderMeta(this, this.get().getItemMeta());
     }
 
     /**
@@ -361,8 +366,8 @@ public class ItemStackBuilder {
      *            The new amount.
      * @return This object.
      */
-    public ItemStackBuilder setAmount( int num ) {
-        this.itemStack.setAmount( num );
+    public ItemStackBuilder setAmount(int num) {
+        this.itemStack.setAmount(num);
         return this;
     }
 
@@ -373,8 +378,8 @@ public class ItemStackBuilder {
      *            The new material.
      * @return This object.
      */
-    public ItemStackBuilder setMaterial( Material m ) {
-        this.itemStack.setType( m );
+    public ItemStackBuilder setMaterial(Material m) {
+        this.itemStack.setType(m);
         return this;
     }
 

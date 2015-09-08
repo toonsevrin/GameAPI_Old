@@ -8,12 +8,12 @@ public class SphereRegion implements Region {
     private Location centre;
     private double radius, radiusSquared;
 
-    public SphereRegion( Location centre, double radius ) {
-        Validate.isTrue( centre != null && centre.getWorld() != null, "middle must not be null" );
-        Validate.isTrue( radius > 0, "radius must be positive" );
+    public SphereRegion(Location centre, double radius) {
+        Validate.isTrue(centre != null && centre.getWorld() != null, "middle must not be null");
+        Validate.isTrue(radius > 0, "radius must be positive");
         this.centre = centre;
         this.radius = radius;
-        this.radiusSquared = Math.pow( radius, 2 );
+        this.radiusSquared = Math.pow(radius, 2);
     }
 
     public Location getCentre() {
@@ -25,10 +25,10 @@ public class SphereRegion implements Region {
     }
 
     @Override
-    public boolean isInRegion( Location loc ) {
-        if ( loc.getWorld() != this.centre.getWorld() ) {
+    public boolean isInRegion(Location loc) {
+        if (loc.getWorld() != this.centre.getWorld()) {
             return false;
         }
-        return this.centre.distanceSquared( loc ) <= this.radiusSquared;
+        return this.centre.distanceSquared(loc) <= this.radiusSquared;
     }
 }

@@ -10,24 +10,27 @@ import com.yoshigenius.lib.util.ItemStackBuilder;
 
 /**
  * Created by too on 24/05/2015.
- * A simpler way to generate a purchasable item, this always requires complex and ugly methods so
+ * A simpler way to generate a purchasable item, this always requires complex
+ * and ugly methods so
  * it's better to do once.
  */
 public class PurchasableItem extends ItemStack {
+
     private GamePlayer player;
     private String name;
     private ItemStack item;
     private String[] description;
     private UnlockRequirements requirements;
 
-    public PurchasableItem( String name, ItemStack itemStack, String[] description, UnlockRequirements requirements, GamePlayer player,
-            boolean unlocked ) {
+    public PurchasableItem(String name, ItemStack itemStack, String[] description, UnlockRequirements requirements,
+            GamePlayer player,
+            boolean unlocked) {
         this.name = name;
         this.item = itemStack;
         this.description = description;
         this.requirements = requirements;
         this.player = player;
-        this.buildItem( unlocked );
+        this.buildItem(unlocked);
     }
 
     /**
@@ -36,8 +39,8 @@ public class PurchasableItem extends ItemStack {
      * @param unlocked
      *            Whether the item has been unlocked already
      */
-    public void update( boolean unlocked ) {
-        this.buildItem( unlocked );
+    public void update(boolean unlocked) {
+        this.buildItem(unlocked);
     }
 
     public void update() {
@@ -45,7 +48,7 @@ public class PurchasableItem extends ItemStack {
     }
 
     private void buildItem() {
-        this.buildItem( false );
+        this.buildItem(false);
     }
 
     /**
@@ -56,32 +59,34 @@ public class PurchasableItem extends ItemStack {
      * @param unlocked
      *            Whether the item has been unlocked already
      */
-    private void buildItem( boolean unlocked ) {
-        ItemStackBuilder builder = new ItemStackBuilder( this );
+    private void buildItem(boolean unlocked) {
+        ItemStackBuilder builder = new ItemStackBuilder(this);
         ItemStackBuilder.ItemStackBuilderMeta meta = builder.getMeta();
-        meta.setLore( this.description );
-        meta.addLore( "" );
-        if ( unlocked ) {
-            meta.setDisplayName( ChatColor.BOLD.toString() + ChatColor.GREEN + this.name );
+        meta.setLore(this.description);
+        meta.addLore("");
+        if (unlocked) {
+            meta.setDisplayName(ChatColor.BOLD.toString() + ChatColor.GREEN + this.name);
         } else {
-            meta.setDisplayName( PurchasableItem.getRedOrGreen( ChatColor.BOLD + this.name, this.requirements.canUnlock( this.player ) ) );
-            if ( this.requirements.getCoins() > 0 ) {
-                meta.addLore( PurchasableItem.getRedOrGreen( "Cost: " + this.requirements.getCoins() + " honor points",
-                        this.player.hasCoins( this.requirements.getCoins() ) ) );
+            meta.setDisplayName(PurchasableItem.getRedOrGreen(ChatColor.BOLD + this.name,
+                    this.requirements.canUnlock(this.player)));
+            if (this.requirements.getCoins() > 0) {
+                meta.addLore(PurchasableItem.getRedOrGreen("Cost: " + this.requirements.getCoins() + " honor points",
+                        this.player.hasCoins(this.requirements.getCoins())));
             }
-            if ( this.requirements.getCredits() > 0 ) {
-                meta.addLore( PurchasableItem.getRedOrGreen( "Cost: " + this.requirements.getCredits() + " credits",
-                        this.player.hasCredits( this.requirements.getCredits() ) ) );
+            if (this.requirements.getCredits() > 0) {
+                meta.addLore(PurchasableItem.getRedOrGreen("Cost: " + this.requirements.getCredits() + " credits",
+                        this.player.hasCredits(this.requirements.getCredits())));
             }
-            if ( this.requirements.getMinRank() != Rank.NONE ) {
-                meta.addLore( PurchasableItem.getRedOrGreen( ChatColor.BOLD + this.requirements.getMinRank().getName() + " required", this.player
-                        .getRank().inheritsFrom( this.requirements.getMinRank() ) ) );
+            if (this.requirements.getMinRank() != Rank.NONE) {
+                meta.addLore(PurchasableItem.getRedOrGreen(
+                        ChatColor.BOLD + this.requirements.getMinRank().getName() + " required", this.player
+                                .getRank().inheritsFrom(this.requirements.getMinRank())));
             }
         }
     }
 
-    private static String getRedOrGreen( String line, boolean green ) {
-        if ( green ) {
+    private static String getRedOrGreen(String line, boolean green) {
+        if (green) {
             return ChatColor.GREEN + line;
         }
         return ChatColor.RED + line;
@@ -91,7 +96,7 @@ public class PurchasableItem extends ItemStack {
         return this.requirements;
     }
 
-    public void setRequirements( UnlockRequirements requirements ) {
+    public void setRequirements(UnlockRequirements requirements) {
         this.requirements = requirements;
     }
 
@@ -99,7 +104,7 @@ public class PurchasableItem extends ItemStack {
         return this.item;
     }
 
-    public void setItemStack( ItemStack item ) {
+    public void setItemStack(ItemStack item) {
         this.item = item;
     }
 
@@ -107,7 +112,7 @@ public class PurchasableItem extends ItemStack {
         return this.description;
     }
 
-    public void setDescription( String[] description ) {
+    public void setDescription(String[] description) {
         this.description = description;
     }
 
@@ -115,7 +120,7 @@ public class PurchasableItem extends ItemStack {
         return this.name;
     }
 
-    public void setName( String name ) {
+    public void setName(String name) {
         this.name = name;
     }
 }

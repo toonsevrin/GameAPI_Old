@@ -15,7 +15,7 @@ import com.exorath.game.api.spectate.SpectateManager;
 public class SpectatorNPC extends AbstractNPC {
 
     public SpectatorNPC() {
-        super( ChatColor.DARK_AQUA + "Spectate" );
+        super(ChatColor.DARK_AQUA + "Spectate");
     }
 
     @Override
@@ -24,8 +24,8 @@ public class SpectatorNPC extends AbstractNPC {
     }
 
     @Override
-    public void onClicked( Game game, GamePlayer player, SpawnedNPC npc ) {
-        game.getManager( SpectateManager.class ).setSpectating( player, true );
+    public void onClicked(Game game, GamePlayer player, SpawnedNPC npc) {
+        game.getManager(SpectateManager.class).setSpectating(player, true);
     }
 
 }

@@ -14,9 +14,11 @@ import com.exorath.game.api.player.GamePlayer;
 
 /**
  * Created by too on 23/05/2015.
- * Manager instantiated in Game class. Manages the creation and implementation of teams.
+ * Manager instantiated in Game class. Manages the creation and implementation
+ * of teams.
  */
 public class TeamManager implements Manager {
+
     private static TeamManager instance;
     private Game game;
 
@@ -42,7 +44,7 @@ public class TeamManager implements Manager {
      * Add team to player teams.
      */
     public void addTeam(Team team) {
-        this.deleteDefaultTeam();
+        this. deleteDefaultTeam();
         this.teams.add(team);
     }
 
@@ -50,7 +52,7 @@ public class TeamManager implements Manager {
      * Remove team from player teams.
      */
     public void removeTeam(Team team) {
-        if (this.teams.contains(team))
+        if (this. teams.contains(team))
             this.teams.remove(team);
     }
 
@@ -68,13 +70,14 @@ public class TeamManager implements Manager {
         return this.teams.size() == 1 ? this.teams.toArray(new Team[1])[0] : null;
     }
 
-    public Team getTeam( GamePlayer gp ) {
-        Optional<Team>team = getTeams().stream().filter( t -> t.getPlayers().contains( gp.getUUID() ) ).findAny();
+    public Team getTeam(GamePlayer gp) {
+        Optional<Team>team = getTeams().stream().filter(t -> t.getPlayers().contains(gp.getUUID())).findAny();
         return team.isPresent() ? team.get() : null;
     }
 
     /**
-     * if there is one team and its a DefaultTeam remove it. DefaultTeam only exists while no other
+     * if there is one team and its a DefaultTeam remove it. DefaultTeam only
+     * exists while no other
      * teams are added.
      */
     private void deleteDefaultTeam() {
@@ -85,25 +88,25 @@ public class TeamManager implements Manager {
     }
 
     public void startGame() {
-        GameMap map = this.getGame().getManager( MapManager.class ).getCurrent();
-        for (Team team : this.teams) {
+        GameMap map = this.getGame().getManager(MapManager.class).getCurrent();
+        for (Team team : this. teams) {
             int spawn = 0;
-            for ( GamePlayer player : team.getPlayers() ) {
+            for (GamePlayer player : team.getPlayers()) {
                 Player pl = player.getBukkitPlayer();
                 if (pl != null) {
-                    pl.teleport(map.getSpawn( team, spawn++ ).getBukkitLocation());
+                    pl.teleport(map.getSpawn(team, spawn++).getBukkitLocation());
                 }
             }
         }
     }
 
-    private Integer getWeight( Team t ) {
-        return t.getPlayers().size() * t.getProperties().as( TeamProperty.PLAYER_WEIGHT, int.class );
+    private Integer getWeight(Team t) {
+        return t.getPlayers().size() * t.getProperties().as(TeamProperty.PLAYER_WEIGHT, int.class);
     }
 
-    public Team findTeam( GamePlayer p ) {
-        Optional<Team> opt = getTeams().stream().min( ( t1, t2 ) -> getWeight( t1 ).compareTo( getWeight( t2 ) ) );
-        if ( opt.isPresent() )
+    public Team findTeam(GamePlayer p) {
+        Optional<Team> opt = getTeams().stream().min((t1, t2) -> getWeight(t1).compareTo(getWeight(t2)));
+        if (opt.isPresent())
             return opt.get();
         return null;
     }

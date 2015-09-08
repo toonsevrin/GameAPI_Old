@@ -6,6 +6,7 @@ import com.exorath.game.api.hud.effects.HUDEffect;
  * Created by TOON on 8/9/2015.
  */
 public class HUDText implements Comparable<HUDText> {
+
     private String text;
     private String displayText;
     private HUDPriority priority;
@@ -14,20 +15,20 @@ public class HUDText implements Comparable<HUDText> {
 
     private int sequence = 0;//This is for HUDText's with the same priority (FIFO behaviour)
 
-    public HUDText( String text, HUDPriority priority ) {
+    public HUDText(String text, HUDPriority priority) {
         this.text = text;
         displayText = text;
         this.priority = priority;
     }
 
-    public void setText( String text ) {
+    public void setText(String text) {
         this.text = text;
         displayText = effect == null ? text : effect.getDisplayText();
         updateLocation();
     }
 
-    public void setPriority( HUDPriority priority ) {
-        if ( this.priority == priority ) {
+    public void setPriority(HUDPriority priority) {
+        if (this.priority == priority) {
             return;
         }
         this.priority = priority;
@@ -35,12 +36,12 @@ public class HUDText implements Comparable<HUDText> {
     }
 
     public void updateLocation() {
-        if ( location == null ) {
+        if (location == null) {
             return;
         }
-        if ( location instanceof HUDDisplay ) {
+        if (location instanceof HUDDisplay) {
             HUDDisplay display = (HUDDisplay) location;
-            display.updated( this );
+            display.updated(this);
         }
     }
 
@@ -57,8 +58,8 @@ public class HUDText implements Comparable<HUDText> {
      * Highest priority to lowest
      */
     @Override
-    public int compareTo( HUDText text ) {
-        if ( priority.getPriority() == text.getPriority().getPriority() ) {//If they both have same priority, first in will be set higher
+    public int compareTo(HUDText text) {
+        if (priority.getPriority() == text.getPriority().getPriority()) {//If they both have same priority, first in will be set higher
             return sequence - text.getSequence();
         }
         return priority.getPriority() - text.getPriority().getPriority();
@@ -68,11 +69,11 @@ public class HUDText implements Comparable<HUDText> {
         return displayText;
     }
 
-    public void setDisplayText( String displayText ) {
+    public void setDisplayText(String displayText) {
         this.displayText = displayText;
     }
 
-    public void setLocation( HUDLocation location ) {
+    public void setLocation(HUDLocation location) {
         this.location = location;
         sequence = location.getNewSequence();
     }
@@ -81,7 +82,7 @@ public class HUDText implements Comparable<HUDText> {
         return location;
     }
 
-    public void setEffect( HUDEffect effect ) {
+    public void setEffect(HUDEffect effect) {
         this.effect = effect;
     }
 
@@ -93,7 +94,7 @@ public class HUDText implements Comparable<HUDText> {
      * This occurs every tick while the HUDText is being displayed
      */
     public void tick() {
-        if ( effect == null ) {
+        if (effect == null) {
             return;
         }
         effect.tick();

@@ -10,15 +10,16 @@ import com.exorath.game.lib.hud.scoreboard.SpigboardEntry;
  * Created by TOON on 8/12/2015.
  */
 public class ScoreboardText extends HUDText {
+
     private SpigboardEntry entry;
     private boolean textUpdated = false;
     private boolean priorityUpdated = false;
 
-    public ScoreboardText( String text, HUDPriority priority ) {
-        super( text, priority );
+    public ScoreboardText(String text, HUDPriority priority) {
+        super(text, priority);
     }
 
-    protected void setEntry( SpigboardEntry entry ) {
+    protected void setEntry(SpigboardEntry entry) {
         this.entry = entry;
     }
 
@@ -27,36 +28,36 @@ public class ScoreboardText extends HUDText {
     }
 
     @Override
-    public void setText( String text ) {
+    public void setText(String text) {
         textUpdated = true;
         priorityUpdated = false;
-        super.setText( text );
+        super.setText(text);
     }
 
     @Override
-    public void setPriority( HUDPriority priority ) {
+    public void setPriority(HUDPriority priority) {
         textUpdated = false;
         priorityUpdated = true;
-        super.setPriority( priority );
+        super.setPriority(priority);
     }
 
     @Override
-    public void setLocation( HUDLocation loc ) {
-        if ( !( loc instanceof Scoreboard ) ) {
+    public void setLocation(HUDLocation loc) {
+        if (!(loc instanceof Scoreboard)) {
             return;
         }
         Scoreboard sb = (Scoreboard) loc;
         ScoreboardBase base = sb.getScoreboard();
-        base.getClass(); // TODO
+        base.getClass();// TODO
     }
 
     @Override
     public void updateLocation() {
-        if ( getLocation() == null ) {
+        if (getLocation() == null) {
             return;
         }
         Scoreboard sb = (Scoreboard) getLocation();
-        sb.updated( this );
+        sb.updated(this);
     }
 
     protected boolean isTextUpdated() {

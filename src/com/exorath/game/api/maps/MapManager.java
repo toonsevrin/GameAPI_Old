@@ -15,7 +15,7 @@ public class MapManager implements Manager {
     private MapSelection selection = MapSelection.RANDOM;
     private MapList maps = new MapList();
 
-    public MapManager( Game game ) {
+    public MapManager(Game game) {
         this.game = game;
     }
 
@@ -24,14 +24,15 @@ public class MapManager implements Manager {
     }
 
     public Set<GameMap> getApplicableMaps() {
-        return GameMap.worlds.values().stream().filter( m -> m.getGameName().equals( getGame().getName() ) ).collect( Collectors.toSet() );
+        return GameMap.worlds.values().stream().filter(m -> m.getGameName().equals(getGame().getName()))
+                .collect(Collectors.toSet());
     }
 
     public MapSelection getSelection() {
         return selection;
     }
 
-    public void setSelection( MapSelection selection ) {
+    public void setSelection(MapSelection selection) {
         this.selection = selection;
     }
 
@@ -39,17 +40,17 @@ public class MapManager implements Manager {
         return maps;
     }
 
-    public void addMap( GameMap map ) {
-        maps.addMap( map );
+    public void addMap(GameMap map) {
+        maps.addMap(map);
     }
 
-    public boolean addMap( String map ) {
-        GameMap gm = GameMap.get( map );
+    public boolean addMap(String map) {
+        GameMap gm = GameMap.get(map);
 
-        if ( gm == null ) {
+        if (gm == null) {
             return false;
         }
-        maps.addMap( gm );
+        maps.addMap(gm);
         return true;
     }
 
@@ -58,7 +59,7 @@ public class MapManager implements Manager {
     }
 
     public void nextMap() {
-        getMapList().nextMap( this.selection );
+        getMapList().nextMap(this.selection);
     }
 
 }

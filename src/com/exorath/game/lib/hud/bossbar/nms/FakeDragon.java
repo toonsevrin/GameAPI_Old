@@ -5,6 +5,7 @@ import org.bukkit.Location;
 import com.exorath.game.lib.hud.bossbar.Util;
 
 public abstract class FakeDragon {
+
     private float maxHealth = 200;
     private int x;
     private int y;
