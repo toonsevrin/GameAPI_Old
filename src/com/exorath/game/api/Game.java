@@ -75,6 +75,7 @@ public abstract class Game {
 
     public void setState(GameState state) {
         setState(state, true);
+
         GameAPI.printConsole("Game state set to " + state.toString());
     }
 
@@ -115,9 +116,8 @@ public abstract class Game {
     @SuppressWarnings("unchecked")
     public <T extends Manager> T getManager(Class<T> clazz) {
         for (Manager manager : managers) {
-            if (clazz.isAssignableFrom(manager.getClass())) {
+            if (clazz.isAssignableFrom(manager.getClass()))
                 return (T) manager;
-            }
         }
         return null;
     }
@@ -163,9 +163,8 @@ public abstract class Game {
 
     /* Listeners */
     protected void addListener(GameListener listener) {
-        if (listener != null) {
-            this.listeners.add(listener);
-        }
+        if (listener != null)
+            listeners.add(listener);
     }
 
     public Set<GameListener> getListeners() {

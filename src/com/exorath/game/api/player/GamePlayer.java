@@ -18,7 +18,7 @@ import com.exorath.game.api.Properties;
 import com.exorath.game.api.menu.Menu;
 import com.exorath.game.lib.Rank;
 
-@SuppressWarnings( "unused" )
+@SuppressWarnings("unused")
 public final class GamePlayer {
 
     private UUID uuid;
@@ -38,7 +38,7 @@ public final class GamePlayer {
     public GamePlayer(UUID id) {
         this.uuid = id;
         //sqlData = new SQLData( GameAPI.getInstance(), "players", id, false );
-        gSqlData = new SQLData( GameAPI.getInstance(), "players", id, false );
+        gSqlData = new SQLData(GameAPI.getInstance(), "players", id, false);
     }
 
     public GamePlayer(Player player) {
@@ -80,13 +80,13 @@ public final class GamePlayer {
 
     //** Rank Methods *//
     public Rank getRank() {
-        if ( getApiSqlData().contains( "rank" ) )
-            return Rank.valueOf( getApiSqlData().getString( "rank" ) );
+        if (getApiSqlData().contains("rank"))
+            return Rank.valueOf(getApiSqlData().getString("rank"));
         return Rank.NONE;
     }
 
     public void setRank(Rank rank) {
-        getApiSqlData().setString( "rank", rank.toString() );
+        getApiSqlData().setString("rank", rank.toString());
     }
 
     //** Currency Methods **//
@@ -106,13 +106,14 @@ public final class GamePlayer {
         return gSqlData.getInt("credits", 0) >= credits;
     }
 
-    public void addCoins( int coins ) {
+    public void addCoins(int coins) {
         wonCoins += coins;
         gSqlData.setInt("coins", gSqlData.getInt("coins", 0) + coins);
     }
-    public void removeCoins( int coins ) {
-        wonCoins -= Math.min( coins, this.coins );
-        gSqlData.setInt( "coins", gSqlData.getInt( "coins", 0 ) - coins );
+
+    public void removeCoins(int coins) {
+        wonCoins -= Math.min(coins, this.coins);
+        gSqlData.setInt("coins", gSqlData.getInt("coins", 0) - coins);
         this.coins -= coins;
     }
 
@@ -124,9 +125,10 @@ public final class GamePlayer {
         return wonCoins - getCoins();
     }
 
-    public boolean hasCoins( int coins ) {
+    public boolean hasCoins(int coins) {
         return gSqlData.getInt("coins", 0) >= coins;
     }
+
     //** HUD **//
     public HUD getHud() {
         return hud;
@@ -147,7 +149,7 @@ public final class GamePlayer {
 
     //** Player State Methods *//
     public PlayerState getState(Game game) {
-        return game == null ? PlayerState.UNKNOWN : game.getPlayers().getPlayerState( this );
+        return game == null ? PlayerState.UNKNOWN : game.getPlayers().getPlayerState(this);
     }
 
     //** Menu Methods *//
@@ -191,15 +193,16 @@ public final class GamePlayer {
     public SQLData getApiSqlData() {
         return gSqlData;
     }
-
+    //TODO: THIS STUFF IS BUGGED
     public Game getGame() {
-        return GameAPI.getGame( gameUID );
+        return GameAPI.getGame(gameUID);
     }
 
-    public void join( Game game ) {
-        if ( getGame() != null ) {
-            getGame().getPlayers().join( this );
-        }
+    public void join(Game game) {
+        if (game != null) {
+            game.getPlayers().join(this);
+        } else
+            GameAPI.error("Game == null: GamePlayer join");
         this.gameUID = game.getGameID();
     }
 
@@ -207,9 +210,9 @@ public final class GamePlayer {
         return listeners;
     }
 
-    public void addListener( GameListener listener ) {
-        if ( listener != null ) {
-            this.listeners.add( listener );
+    public void addListener(GameListener listener) {
+        if (listener != null) {
+            this.listeners.add(listener);
         }
     }
 

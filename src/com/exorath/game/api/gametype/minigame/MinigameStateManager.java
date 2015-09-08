@@ -4,6 +4,8 @@ import com.exorath.game.GameAPI;
 import com.exorath.game.api.GameRunnable;
 import com.exorath.game.api.GameState;
 import com.exorath.game.api.gametype.minigame.countdown.MinigameCountdown;
+import com.exorath.game.api.message.GameMessenger;
+import org.bukkit.plugin.messaging.Messenger;
 
 /**
  * Created by Toon on 9/1/2015.
@@ -11,23 +13,35 @@ import com.exorath.game.api.gametype.minigame.countdown.MinigameCountdown;
  */
 public class MinigameStateManager {
     private Minigame minigame;
-    private MinigameCountdown countdown = new MinigameCountdown(minigame);
+    private MinigameCountdown countdown;
 
     public MinigameStateManager(Minigame minigame){
         this.minigame = minigame;
+        minigame.setState(GameState.WAITING);
+        countdown = new MinigameCountdown(minigame);
     }
+    //Run this when a player joins
     public void checkStart(){
         if(minigame.getState() != GameState.WAITING)
             return;
-        if(minigame.getPlayerCount() >= minigame.getProperties().as(Minigame.MIN_PLAYERS, Integer.class)){
+        int min = minigame.getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
+        int players = minigame.getPlayerCount();
+        if(players >= min){
             countdown.start();
+            GameMessenger.sendInfo(minigame, "Game is starting in " + minigame.getProperties().as(Minigame.START_DELAY, Integer.class));
+        }else{
+            GameMessenger.sendInfo(minigame, "Waiting for " + (min - players) + " players.");
         }
     }
+    //Run this when a player leaves
     public void checkStop(){
         if(minigame.getState() != GameState.WAITING)
             return;
-        if(minigame.getPlayerCount() <= minigame.getProperties().as(Minigame.MIN_PLAYERS, Integer.class)){
+        int min = minigame.getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
+        int players = minigame.getPlayerCount();
+        if(players <= min){
             countdown.stop();
+            GameMessenger.sendInfo(minigame, "Countdown stopped. Waiting for " + (min - players) + " players.");
         }
     }
 

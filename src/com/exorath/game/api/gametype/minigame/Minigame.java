@@ -1,7 +1,12 @@
 package com.exorath.game.api.gametype.minigame;
 
+import com.exorath.game.GameAPI;
 import com.exorath.game.api.Game;
+import com.exorath.game.api.GameListener;
 import com.exorath.game.api.Property;
+import com.exorath.game.api.player.GamePlayer;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
  * @author Nick Robson
@@ -11,10 +16,11 @@ public abstract class Minigame extends Game {
     public static final Property MIN_PLAYERS = Property.get( "minplayers", "Minimal amount of players in team", 2 );
     public static final Property MAX_DURATION = Property.get( "maxduration", "The maximum duration of the game in ticks. 0 disables.", 0 );
     public static final Property START_DELAY = Property.get( "startdelay", "Waiting time after there are enough players before game starts", 200);
-    private MinigameStateManager stateManager = new MinigameStateManager(this);
+    private MinigameStateManager stateManager;
 
     public Minigame(){
-
+        stateManager = new MinigameStateManager(this);
+        addListener(new MinigameListener());
     }
     public boolean hasMinPlayers(){
         return getPlayerCount() >= getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
@@ -41,5 +47,18 @@ public abstract class Minigame extends Game {
         //Reset players potion effects
 
         //Teleport players to hub
+    }
+    private class MinigameListener implements GameListener{
+        @Override
+        public void onJoin(PlayerJoinEvent event, Game game, GamePlayer player) {
+            GameAPI.printConsole("Player joined!");
+            stateManager.checkStart();
+        }
+
+        @Override
+        public void onQuit(PlayerQuitEvent event, Game game, GamePlayer player) {
+            GameAPI.printConsole("Player left!");
+            stateManager.checkStop();
+        }
     }
 }

@@ -41,7 +41,7 @@ public class MinigameCountdown {
         if(countingDown)
             return;
         countingDown = true;
-        new CountdownTask().runTaskTimer(GameAPI.getInstance(), 0, game.getProperties().as(Minigame.START_DELAY, Integer.class)/LENGTH);
+        new CountdownTask().runTaskTimer(GameAPI.getInstance(), 0, game.getProperties().as(Minigame.START_DELAY, Integer.class) / LENGTH);
     }
     public void stop(){
         if(!countingDown)
@@ -63,7 +63,7 @@ public class MinigameCountdown {
         frames.add(getFinalCountdown(ChatColor.RED, 3));
         frames.add(getFinalCountdown(ChatColor.GOLD, 2));
         frames.add(getFinalCountdown(ChatColor.GREEN, 1));
-        frames.add(new SoundCountdownFrame(this, getArrow(ChatColor.GREEN, LENGTH/2 - 4, CHAR) + " BEGIN " + getArrow(ChatColor.RED, LENGTH/2 - 3, CHAR), 20, Sound.NOTE_PLING, 2, 10));
+        frames.add(new SoundCountdownFrame(this, getArrow(ChatColor.GREEN, LENGTH / 2 - 4, CHAR) + " BEGIN " + getArrow(ChatColor.RED, LENGTH / 2 - 3, CHAR), 20, Sound.NOTE_PLING, 2, 10));
         frames.add(new FinishFrame(this));
     }
     private CountdownFrame getArrows(int frame){//TODO: Add percentage and precedingarrows calculation

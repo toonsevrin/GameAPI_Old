@@ -1,5 +1,7 @@
 package com.exorath.game.api.maps;
 
+import com.exorath.game.GameAPI;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -33,11 +35,15 @@ public class MapList {
     }
 
     public GameMap nextMap( MapSelection selection ) {
+        if(maps.size() == 0){
+            GameAPI.error("Map size == 0: Please add a map!");
+            return null;
+        }
         switch ( selection ) {
             case CYCLE:
                 current = maps.get( ++index );
             case RANDOM:
-                current = maps.get( new Random().nextInt( maps.size() ) );
+                current = maps.get(new Random().nextInt(maps.size()));
             case SAME:
                 current.reset();
             case VOTE:

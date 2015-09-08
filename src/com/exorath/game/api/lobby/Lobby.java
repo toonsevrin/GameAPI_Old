@@ -3,6 +3,7 @@ package com.exorath.game.api.lobby;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.util.Vector;
 
 import com.exorath.game.api.Properties;
@@ -16,7 +17,6 @@ import com.exorath.game.api.player.GamePlayer;
  * between games).
  */
 public class Lobby {
-    public static final String DEFAULT_WORLD_NAME = "Lobby";
 
     private Properties properties = new Properties();
 
@@ -25,7 +25,7 @@ public class Lobby {
     }
 
     private void setupWorld() {
-        this.setWorld(Bukkit.getWorld(Lobby.DEFAULT_WORLD_NAME));
+        this.setWorld(Bukkit.createWorld(WorldCreator.name(properties.as(LobbyProperty.WORLD, String.class))));
         this.setSpawnLocation(0, 0, 0);
     }
 

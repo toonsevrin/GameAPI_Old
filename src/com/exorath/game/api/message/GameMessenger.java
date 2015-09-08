@@ -37,11 +37,9 @@ public class GameMessenger {
 
     public static void sendInfo( Game game, String message ) {
         for ( GamePlayer player : GameAPI.getOnlinePlayers() ) {
-            GameMessenger.sendInfo( game, player, message );
+            GameMessenger.sendInfo(game, player, message);
         }
-    }
-    public static void sendCountdownMessage(GamePlayer player, String message){
-
+        GameAPI.printConsole("[Player Info] " + message);
     }
     public static void sendInfo( Game game, GamePlayer player, String message ) {
         player.sendMessage( message );
