@@ -3,9 +3,9 @@ package com.exorath.game.api.gametype.minigame;
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.GameRunnable;
 import com.exorath.game.api.GameState;
+import com.exorath.game.api.StopCause;
 import com.exorath.game.api.gametype.minigame.countdown.MinigameCountdown;
 import com.exorath.game.api.message.GameMessenger;
-import org.bukkit.plugin.messaging.Messenger;
 
 /**
  * Created by Toon on 9/1/2015.
@@ -29,9 +29,8 @@ public class MinigameStateManager {
         if(players >= min){
             countdown.start();
             GameMessenger.sendInfo(minigame, "Game is starting in " + minigame.getProperties().as(Minigame.START_DELAY, Integer.class));
-        }else{
+        } else
             GameMessenger.sendInfo(minigame, "Waiting for " + (min - players) + " players.");
-        }
     }
     //Run this when a player leaves
     public void checkStop(){
@@ -64,7 +63,7 @@ public class MinigameStateManager {
             new EndTask().runTaskLater(GameAPI.getInstance(), delay);
 
     }
-    public void stop(StopReason reason){
+    public void stop(StopCause cause){
         if(minigame.getState() != GameState.INGAME)
             throw new IllegalStateException("Tried to change state from " + minigame.getState() + " to " + GameState.FINISHING);
         minigame.setState(GameState.FINISHING);
@@ -84,12 +83,15 @@ public class MinigameStateManager {
             throw new IllegalStateException("Tried to change state from " + minigame.getState() + " to " + GameState.WAITING);
         minigame.setState(GameState.WAITING);
     }
-    private class EndTask extends GameRunnable{
-        public EndTask(){super(minigame);}
+
+    private class EndTask extends GameRunnable {
+        public EndTask() {
+            super(minigame);
+        }
         @Override
         public void _run() {
             if(minigame.getState() == GameState.INGAME)
-                minigame.getStateManager().stop(StopReason.TIME_LIMIT_REACHED);
+                minigame.getStateManager().stop(StopCause.TIME_UP);
         }
     }
 }

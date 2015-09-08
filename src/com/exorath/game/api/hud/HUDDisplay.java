@@ -3,7 +3,6 @@ package com.exorath.game.api.hud;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
-import com.exorath.game.api.hud.locations.scoreboard.ScoreboardText;
 import com.exorath.game.api.player.GamePlayer;
 
 /**
@@ -114,10 +113,8 @@ public abstract class HUDDisplay extends HUDLocation {
         if (active) {//If turned on, display the currentText
             if (currentText != null)
                 displayText(currentText);
-        } else {//If turned off, remove the current text and clear all texts
-            if (currentText != null)
-                removeCurrent();
-        }
+        } else if (currentText != null)
+            removeCurrent();
     }
 
     public void updated(HUDText text) {

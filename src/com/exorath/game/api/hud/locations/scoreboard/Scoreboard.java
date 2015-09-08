@@ -1,15 +1,15 @@
 package com.exorath.game.api.hud.locations.scoreboard;
 
+import java.util.HashMap;
+import java.util.PriorityQueue;
+
+import org.bukkit.ChatColor;
+
 import com.exorath.game.api.hud.HUDLocation;
 import com.exorath.game.api.hud.HUDPriority;
 import com.exorath.game.api.hud.HUDText;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.lib.hud.scoreboard.ScoreboardBase;
-import org.apache.commons.lang.ArrayUtils;
-import org.bukkit.ChatColor;
-
-import java.util.HashMap;
-import java.util.PriorityQueue;
 
 /**
  * Created by TOON on 8/11/2015.
