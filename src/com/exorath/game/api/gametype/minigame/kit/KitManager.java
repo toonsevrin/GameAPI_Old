@@ -12,7 +12,7 @@ import com.google.common.collect.Sets;
  */
 public class KitManager implements Manager {
 
-    private Game game;
+    private final Game game;
     private Set<Kit> kits = Sets.newHashSet();
 
     public KitManager(Game game) {

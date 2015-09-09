@@ -5,6 +5,8 @@ import com.exorath.game.api.Game;
 import com.exorath.game.api.GameListener;
 import com.exorath.game.api.Property;
 import com.exorath.game.api.player.GamePlayer;
+import com.exorath.game.api.team.Team;
+import com.exorath.game.api.team.TeamManager;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -26,9 +28,9 @@ public abstract class Minigame extends Game {
     }
 
     public boolean hasMinPlayers() {
+
         return getPlayerCount() >= getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
     }
-
     public MinigameStateManager getStateManager() {
         return stateManager;
     }

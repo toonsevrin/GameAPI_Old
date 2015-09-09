@@ -1,5 +1,6 @@
 package com.exorath.game.api.hud.locations;
 
+import com.exorath.game.GameAPI;
 import com.exorath.game.api.hud.HUDDisplay;
 import com.exorath.game.api.hud.HUDText;
 import com.exorath.game.api.player.GamePlayer;
@@ -17,13 +18,13 @@ public class ActionBar extends HUDDisplay {
 
     @Override
     public void displayText(HUDText text) {
+        GameAPI.printConsole("Displaying text: " + text);
         ActionBarBase.send(player.getBukkitPlayer(), text.getDisplayText());
     }
 
     @Override
     public void removeCurrent() {
-        if (BossBarAPI.hasBar(player.getBukkitPlayer()))
-            BossBarAPI.removeBar(player.getBukkitPlayer());
+
     }
 
     public void setHealth(float health) {

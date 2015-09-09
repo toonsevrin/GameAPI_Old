@@ -37,8 +37,12 @@ public final class GamePlayer {
 
     public GamePlayer(UUID id) {
         this.uuid = id;
-        //sqlData = new SQLData( GameAPI.getInstance(), "players", id, false );
+        GameAPI.printConsole("HUD Created: " + hud);
         gSqlData = new SQLData(GameAPI.getInstance(), "players", id, false);
+
+        hud = new HUD(this);
+        hud.getTitle().setOtherLocation(hud.getSubtitle());
+        hud.getSubtitle().setOtherLocation(hud.getTitle());
     }
 
     public GamePlayer(Player player) {

@@ -64,19 +64,17 @@ public class Players {
 
     public void join(GamePlayer p) {
         PlayerState state;
-        if (getGame().getState().is(GameState.WAITING, GameState.STARTING)) {
+        if (getGame().getState().is(GameState.WAITING, GameState.STARTING))
             state = PlayerState.PLAYING;
-        } else {
+            else
             state = PlayerState.SPECTATING;
-        }
         add(p, state);
 
         TeamManager teams = getGame().getManager(TeamManager.class);
         if (teams != null) {
-            Team team = teams.findTeam(p);
-            if (team != null) {
+            Team team = teams.getTeam(p);
+            if (team != null)
                 team.addPlayer(p);
-            }
         }
 
         MapManager maps = getGame().getManager(MapManager.class);

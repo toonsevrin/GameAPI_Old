@@ -10,7 +10,6 @@ import com.exorath.game.api.Manager;
  * @author Nick Robson
  */
 public class MapManager implements Manager {
-
     private final Game game;
     private MapSelection selection = MapSelection.RANDOM;
     private MapList maps = new MapList();

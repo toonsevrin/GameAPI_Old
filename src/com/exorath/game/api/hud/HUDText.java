@@ -17,7 +17,7 @@ public class HUDText implements Comparable<HUDText> {
 
     public HUDText(String text, HUDPriority priority) {
         this.text = text;
-        displayText = text;
+        this.displayText = text;
         this.priority = priority;
     }
 
@@ -28,17 +28,15 @@ public class HUDText implements Comparable<HUDText> {
     }
 
     public void setPriority(HUDPriority priority) {
-        if (this.priority == priority) {
+        if (this.priority == priority)
             return;
-        }
         this.priority = priority;
         updateLocation();
     }
 
     public void updateLocation() {
-        if (location == null) {
+        if (location == null)
             return;
-        }
         if (location instanceof HUDDisplay) {
             HUDDisplay display = (HUDDisplay) location;
             display.updated(this);
@@ -59,9 +57,8 @@ public class HUDText implements Comparable<HUDText> {
      */
     @Override
     public int compareTo(HUDText text) {
-        if (priority.getPriority() == text.getPriority().getPriority()) {//If they both have same priority, first in will be set higher
+        if (priority.getPriority() == text.getPriority().getPriority())//If they both have same priority, first in will be set higher
             return sequence - text.getSequence();
-        }
         return priority.getPriority() - text.getPriority().getPriority();
     }
 
@@ -94,9 +91,8 @@ public class HUDText implements Comparable<HUDText> {
      * This occurs every tick while the HUDText is being displayed
      */
     public void tick() {
-        if (effect == null) {
+        if (effect == null)
             return;
-        }
         effect.tick();
     }
 

@@ -87,7 +87,7 @@ public class GameMap {
                     map.global = list;
                 } else {
                     try {
-                        Team team = Team.getTeam(TeamColor.valueOf(key.toUpperCase()), false);
+                        Team team = TeamManager.getTeam(TeamColor.valueOf(key.toUpperCase()), false);
                         if (team != null) {
                             map.spawns.put(team, list);
                         }

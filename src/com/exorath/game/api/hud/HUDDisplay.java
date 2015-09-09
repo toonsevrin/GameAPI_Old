@@ -47,6 +47,7 @@ public abstract class HUDDisplay extends HUDLocation {
     public void addText(String key, HUDText text) {
         if (!active)
             return;
+        text.setLocation(this);
         if (getTexts().isEmpty()) {//No text displaying atm
             displayText(text);
             currentText = text;
@@ -57,12 +58,10 @@ public abstract class HUDDisplay extends HUDLocation {
         }
         texts.add(text);
         textsKeys.put(key, text);
-        text.setLocation(this);
     }
 
     /**
-     * @param text
-     *            HUDText to remove from queue (and from displaying)
+     * @param text HUDText to remove from queue (and from displaying)
      */
     public void removeText(HUDText text) {
         if (!active)

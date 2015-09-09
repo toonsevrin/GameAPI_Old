@@ -11,7 +11,6 @@ public class Title extends Title_SubTitleBase {
 
     public Title(GamePlayer player) {
         super(player, 32);
-        otherLocation = null;//TODO: Set this
     }
 
     @Override
@@ -26,7 +25,7 @@ public class Title extends Title_SubTitleBase {
 
     @Override
     public void send(HUDText text) {
-        TitleBase.sendSubTitle(player.getBukkitPlayer(), getJSON(text.getDisplayText()));
+        TitleBase.sendSubTitle(player.getBukkitPlayer(), 0, LONG_STAY_TIME, 0, getJSON(text.getDisplayText()));
     }
 
 }

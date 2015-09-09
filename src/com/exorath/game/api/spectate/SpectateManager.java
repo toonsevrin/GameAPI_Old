@@ -13,8 +13,7 @@ import com.exorath.game.api.player.PlayerState;
  * @author Nick Robson
  */
 public class SpectateManager implements Manager {
-
-    private Game game;
+    private final Game game;
 
     public SpectateManager(Game game) {
         this.game = game;

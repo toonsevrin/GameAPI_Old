@@ -1,5 +1,6 @@
 package com.exorath.game.api.maps;
 
+import com.exorath.game.api.team.TeamManager;
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -42,7 +43,7 @@ public class GameSpawn extends SerializableLocation {
     public void deserialize(String s) {
         super.deserialize(s);
         String[] data = s.split(Serializer.SEPARATOR_INFO);
-        this.team = data.length > 5 ? Team.getTeam(TeamColor.valueOf(data[6].toUpperCase()), true) : null;
+        this.team = data.length > 5 ? TeamManager.getTeam(TeamColor.valueOf(data[6].toUpperCase()), true) : null;
     }
 
 }

@@ -10,7 +10,7 @@ import com.exorath.game.api.player.GamePlayer;
  */
 public abstract class HUDLocation implements Runnable {
 
-    protected boolean active;
+    protected boolean active = true;
     protected GamePlayer player;
     private int currentSequence = Integer.MIN_VALUE;//This is for HUDText's with the same priority (FIFO behaviour!)
 
