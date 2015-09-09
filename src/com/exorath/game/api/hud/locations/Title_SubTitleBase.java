@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  * removed, other will fade
  */
 public abstract class Title_SubTitleBase extends HUDDisplay {
-    protected static final int LONG_STAY_TIME = Integer.MAX_VALUE / 10;
+    protected static final int LONG_STAY_TIME = Integer.MAX_VALUE /10;
     Title_SubTitleBase otherLocation;
 
     public Title_SubTitleBase(GamePlayer player, int maxChars) {
@@ -40,7 +40,7 @@ public abstract class Title_SubTitleBase extends HUDDisplay {
         if (otherLocation.getCurrentText() != null) {//There is text on the other location
             removeSelf();
         } else {//Other location empty
-            TitleBase.sendTimings(player.getBukkitPlayer(), 0, 0, 40);
+            TitleBase.sendTimings(player.getBukkitPlayer(), 0, 0, 56);
         }
     }
 

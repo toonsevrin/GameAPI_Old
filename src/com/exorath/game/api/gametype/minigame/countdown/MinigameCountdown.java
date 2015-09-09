@@ -112,7 +112,7 @@ public class MinigameCountdown {
 
     private CountdownFrame getFinalCountdown(ChatColor color, int number) {
         String arrows = getArrow(color, MinigameCountdown.LENGTH / 2 - 1, MinigameCountdown.CHAR);
-        return new SoundCountdownFrame(this, arrows + "  " + ChatColor.BOLD + number + "  " + arrows + " ", 20, Sound.NOTE_PLING, 1, 10);
+        return new SoundCountdownFrame(this,arrows + "  " + ChatColor.BOLD + number + "  " + arrows + " ", 20, Sound.NOTE_PLING, 1, 10);
     }
 
     //** Countdown task **//
@@ -127,7 +127,7 @@ public class MinigameCountdown {
             }
             float remaining = getInterval() * (LENGTH - currentFrame) / 20 + getInterval()/20 *4;
 
-            String cdText = remaining <= 0 ? ChatColor.GREEN + "Game starting...": "Starting in... " + new DecimalFormat("#.0").format(remaining);
+            String cdText = remaining <= 0 ? ChatColor.GREEN + "Game starting...           ": "Starting in... " + new DecimalFormat("#.0").format(remaining) + "       ";
             for (GamePlayer gp : GameAPI.getOnlinePlayers()) {
                 frames.get(currentFrame).display(gp);
                 ActionBar display = gp.getHud().getActionBar();
