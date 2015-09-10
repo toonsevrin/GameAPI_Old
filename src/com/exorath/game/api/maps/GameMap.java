@@ -20,7 +20,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.exorath.game.api.Game;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.player.PlayerState;
-import com.exorath.game.api.team.Team;
 import com.exorath.game.api.team.TeamColor;
 import com.exorath.game.api.team.TeamManager;
 import com.yoshigenius.lib.serializable.Serializer;
@@ -32,11 +31,9 @@ public class GameMap {
     static final java.util.Map<String, GameMap> worlds = new HashMap<>();
 
     public static GameMap get(String map) {
-        for (GameMap m : GameMap.worlds.values()) {
-            if (m.getName().equals(map)) {
+        for (GameMap m : GameMap.worlds.values())
+            if (m.getName().equals(map))
                 return m;
-            }
-        }
         return null;
     }
 
@@ -45,16 +42,13 @@ public class GameMap {
     }
 
     public static GameMap get(World world, boolean load) {
-        for (GameMap map : GameMap.worlds.values()) {
-            if (map.getFolder().equals(world.getWorldFolder())) {
+        for (GameMap map : GameMap.worlds.values())
+            if (map.getFolder().equals(world.getWorldFolder()))
                 return map;
-            }
-        }
         if (load) {
             GameMap loaded = GameMap.loadFrom(world);
-            if (loaded != null) {
+            if (loaded != null)
                 return loaded;
-            }
         }
         return null;
     }
@@ -62,14 +56,12 @@ public class GameMap {
     public static GameMap loadFrom(World world) {
 
         GameMap seed;
-        if ((seed = GameMap.get(world, false)) != null) {
+        if ((seed = GameMap.get(world, false)) != null)
             return seed;
-        }
 
         File gamedata = new File(world.getWorldFolder(), "gamedata.yml");
-        if (!gamedata.exists()) {
+        if (!gamedata.exists())
             return null;
-        }
         FileConfiguration cfg = YamlConfiguration.loadConfiguration(gamedata);
 
         GameMap map = new GameMap(cfg.getString("game"), cfg.getString("name"), world);
@@ -79,23 +71,20 @@ public class GameMap {
 
         ConfigurationSection ss = cfg.getConfigurationSection("spawns");
 
-        for (String key : ss.getKeys(false)) {
+        for (String key : ss.getKeys(false))
             if (ss.isList(key)) {
                 List<GameSpawn> list = ss.getStringList("global").stream().map(Serializer::deserialize)
                         .filter(s -> s instanceof GameSpawn).map(s -> (GameSpawn) s).collect(Collectors.toList());
-                if (key.equals("global")) {
+                if (key.equals("global"))
                     map.global = list;
-                } else {
+                else
                     try {
-                        Team team = TeamManager.getTeam(TeamColor.valueOf(key.toUpperCase()), false);
-                        if (team != null) {
+                        TeamColor team = TeamColor.valueOf(key.toUpperCase());
+                        if (team != null)
                             map.spawns.put(team, list);
-                        }
                     } catch (Exception ex) {
                     }
-                }
             }
-        }
 
         GameMap.worlds.put(world.getName(), map);
 
@@ -103,9 +92,8 @@ public class GameMap {
     }
 
     public static void loadWorlds() {
-        for (World world : Bukkit.getWorlds()) {
+        for (World world : Bukkit.getWorlds())
             loadFrom(world);
-        }
     }
 
     private String name, gameName;
@@ -130,26 +118,24 @@ public class GameMap {
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public File getFolder() {
-        return this.folder;
+        return folder;
     }
 
     public void save() {
-        FileConfiguration cfg = this.getConfig();
-        cfg.set("game", this.getGameName());
-        cfg.set("name", this.getName());
-        cfg.set("spectators", this.spectatorSpawns.stream().map(Serializer::serialize).collect(Collectors.toList()));
-        cfg.set("spawns.global", this.global.stream().map(Serializer::serialize).collect(Collectors.toList()));
-        for (Entry<Team, List<GameSpawn>> entry : spawns.entrySet()) {
-            if (entry.getKey() != null && entry.getValue() != null && !entry.getValue().isEmpty()) {
-                cfg.set("spawns." + entry.getKey().getTeamColor().name().toLowerCase(),
+        FileConfiguration cfg = getConfig();
+        cfg.set("game", getGameName());
+        cfg.set("name", getName());
+        cfg.set("spectators", spectatorSpawns.stream().map(Serializer::serialize).collect(Collectors.toList()));
+        cfg.set("spawns.global", global.stream().map(Serializer::serialize).collect(Collectors.toList()));
+        for (Entry<TeamColor, List<GameSpawn>> entry : spawns.entrySet())
+            if (entry.getKey() != null && entry.getValue() != null && !entry.getValue().isEmpty())
+                cfg.set("spawns." + entry.getKey().name().toLowerCase(),
                         entry.getValue().stream().map(Serializer::serialize).collect(Collectors.toList()));
-            }
-        }
-        this.saveConfig();
+        saveConfig();
     }
 
     // ADVANCED
@@ -157,21 +143,19 @@ public class GameMap {
     private List<GameSpawn> spectatorSpawns = new LinkedList<>();
 
     private List<GameSpawn> global = new LinkedList<>();
-    private final Map<Team, List<GameSpawn>> spawns = new HashMap<>();
+    private final Map<TeamColor, List<GameSpawn>> spawns = new HashMap<>();
 
     // spawns
 
-    private List<GameSpawn> getSpawnsList(Team team) {
-        if (team == null) {
+    private List<GameSpawn> getSpawnsList(TeamColor team) {
+        if (team == null)
             return global;
-        }
-        if (!spawns.containsKey(team)) {
+        if (!spawns.containsKey(team))
             spawns.put(team, new LinkedList<>());
-        }
         return spawns.get(team);
     }
 
-    public GameSpawn[] getSpawns(Team team) {
+    public GameSpawn[] getSpawns(TeamColor team) {
         List<GameSpawn> spawns = getSpawnsList(team);
         return spawns == null ? new GameSpawn[0] : spawns.toArray(new GameSpawn[spawns.size()]);
     }
@@ -180,56 +164,49 @@ public class GameMap {
         return this.getSpawn(null, x);
     }
 
-    public GameSpawn getSpawn(Team team, int x) {
-        if (x < 0) {
+    public GameSpawn getSpawn(TeamColor team, int x) {
+        if (x < 0)
             return null;
-        }
         List<GameSpawn> spawns = getSpawnsList(team);
-        while (x >= spawns.size()) {// e.g. if x = 10, spawns = 4, it will say to use 6, which
+        while (x >= spawns.size())
             // will then say to use 2, which is valid.
             x -= spawns.size();// e.g. if x = 4, spawns = 4, it will say to use 0, which is valid.
-        }
-        return this.getSpawns(team)[x];
+        return getSpawns(team)[x];
     }
 
-    public void setSpawn(Team team, int spawn, Location loc) {
-        if (spawn < 0) {
+    public void setSpawn(TeamColor team, int spawn, Location loc) {
+        if (spawn < 0)
             return;
-        }
         GameSpawn location = new GameSpawn(loc);
         List<GameSpawn> spawns = getSpawnsList(team);
-        if (spawn > spawns.size()) {
+        if (spawn > spawns.size())
             spawn = spawns.size();
-        }
         if (spawns.size() > spawn) {
             spawns.remove(spawn);
             spawns.add(spawn, location);
-        } else {
+        } else
             spawns.add(location);
-        }
     }
 
-    public void addSpawn(Team team, GameSpawn spawn) {
+    public void addSpawn(TeamColor team, GameSpawn spawn) {
         getSpawnsList(team).add(spawn);
     }
 
     // spectator spawns
 
     public GameSpawn[] getSpectatorSpawns() {
-        return this.spectatorSpawns.toArray(new GameSpawn[this.spectatorSpawns.size()]);
+        return spectatorSpawns.toArray(new GameSpawn[spectatorSpawns.size()]);
     }
 
     public void setSpectatorSpawn(int spawn, Location loc) {
-        if (spawn < 0) {
+        if (spawn < 0)
             return;
-        }
         GameSpawn location = new GameSpawn(loc);
-        if (this.spectatorSpawns.size() > spawn) {
-            this.spectatorSpawns.remove(spawn);
-            this.spectatorSpawns.add(spawn, location);
-        } else {
-            this.spectatorSpawns.add(location);
-        }
+        if (spectatorSpawns.size() > spawn) {
+            spectatorSpawns.remove(spawn);
+            spectatorSpawns.add(spawn, location);
+        } else
+            spectatorSpawns.add(location);
     }
 
     public GameSpawn findSpawn(GamePlayer player) {
@@ -238,11 +215,10 @@ public class GameMap {
             PlayerState state = player.getState(game);
             if (state == PlayerState.PLAYING) {
                 TeamManager teams = game.getManager(TeamManager.class);
-                Team team = teams == null ? null : teams.getTeam(player);
+                TeamColor team = teams == null ? null : teams.getTeam(player).getTeamColor();
                 List<GameSpawn> spawns = getSpawnsList(team);
-                if (spawns != null) {
+                if (spawns != null)
                     return spawns.get(new Random().nextInt(spawns.size()));
-                }
             }
         }
         return null;
@@ -251,30 +227,26 @@ public class GameMap {
     // World
 
     public World getWorld() {
-        for (String worldName : GameMap.worlds.keySet()) {
-            if (GameMap.worlds.get(worldName) == this) {
+        for (String worldName : GameMap.worlds.keySet())
+            if (GameMap.worlds.get(worldName) == this)
                 return Bukkit.getWorld(worldName);
-            }
-        }
         return null;
     }
 
     // Configuration
 
     public FileConfiguration getConfig() {
-        if (this.config != null) {
-            return this.config;
-        }
-        File gamedata = new File(this.folder, "gamedata.yml");
-        if (!gamedata.exists()) {
+        if (config != null)
+            return config;
+        File gamedata = new File(folder, "gamedata.yml");
+        if (!gamedata.exists())
             return null;
-        }
-        return this.config = YamlConfiguration.loadConfiguration(gamedata);
+        return config = YamlConfiguration.loadConfiguration(gamedata);
     }
 
     public void saveConfig() {
         try {
-            this.getConfig().save(new File(this.folder, "gamedata.yml"));
+            getConfig().save(new File(folder, "gamedata.yml"));
         } catch (Exception ignored) {
         }
     }

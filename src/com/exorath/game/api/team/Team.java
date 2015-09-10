@@ -2,12 +2,12 @@ package com.exorath.game.api.team;
 
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
+
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.BasePlayerProperty;
 import com.exorath.game.api.GameListener;
@@ -15,7 +15,6 @@ import com.exorath.game.api.Properties;
 import com.exorath.game.api.maps.GameMap;
 import com.exorath.game.api.maps.GameSpawn;
 import com.exorath.game.api.player.GamePlayer;
-import com.google.common.collect.Maps;
 
 /**
  * Created by Toon Sevrin on 23/05/2015.
@@ -52,7 +51,7 @@ public class Team {
             activePlayers.remove(player);
     }
     public void removeOfflinePlayers() {
-        Iterator<UUID> it = this.players.iterator();
+        Iterator<UUID> it = players.iterator();
         while (it.hasNext()) {
             UUID uuid = it.next();
             if (Bukkit.getPlayer(uuid) == null) {
@@ -75,53 +74,53 @@ public class Team {
 
     //** Properties **//
     public Properties getProperties() {
-        return this.properties;
+        return properties;
     }
     public Team setName(String name) {
-        this.properties.set(TeamProperty.NAME, name);
+        properties.set(TeamProperty.NAME, name);
         return this;
     }
     public String getName() {
-        return this.properties.as(TeamProperty.NAME, String.class);
+        return properties.as(TeamProperty.NAME, String.class);
     }
     public Team setPvpEnabled(boolean enabled) {
-        this.properties.set(BasePlayerProperty.PVP, enabled);
+        properties.set(BasePlayerProperty.PVP, enabled);
         return this;
     }
     public boolean isPvpEnabled() {
-        return this.properties.as(BasePlayerProperty.PVP, boolean.class);
+        return properties.as(BasePlayerProperty.PVP, boolean.class);
     }
     public Team setMaxTeamSize(int amount) {
-        this.properties.set(TeamProperty.MAX_SIZE, amount);
+        properties.set(TeamProperty.MAX_SIZE, amount);
         return this;
     }
     public int getMaxTeamSize() {
-        return this.properties.as(TeamProperty.MAX_SIZE, int.class);
+        return properties.as(TeamProperty.MAX_SIZE, int.class);
     }
     public Team setMinTeamSize(int amount) {
-        this.properties.set(TeamProperty.MIN_SIZE, amount);
+        properties.set(TeamProperty.MIN_SIZE, amount);
         return this;
     }
     public int getMinTeamSize() {
-        return this.properties.as(TeamProperty.MIN_SIZE, int.class);
+        return properties.as(TeamProperty.MIN_SIZE, int.class);
     }
     public boolean isFriendlyFire() {
-        return this.properties.as(TeamProperty.FRIENDLY_FIRE, boolean.class);
+        return properties.as(TeamProperty.FRIENDLY_FIRE, boolean.class);
     }
     public Team setFriendlyFire(boolean ff) {
-        this.properties.set(TeamProperty.FRIENDLY_FIRE, ff);
+        properties.set(TeamProperty.FRIENDLY_FIRE, ff);
         return this;
     }
     public TeamColor getTeamColor() {
-        return this.properties.as(TeamProperty.COLOR, TeamColor.class);
+        return properties.as(TeamProperty.COLOR, TeamColor.class);
     }
     public Team setTeamColor(TeamColor color) {
-        this.properties.set(TeamProperty.COLOR, color);
+        properties.set(TeamProperty.COLOR, color);
         return this;
     }
-        //** Spawns **//
+    //** Spawns **//
     public GameSpawn[] getSpawns(GameMap map) {
-        return map.getSpawns(this);
+        return map.getSpawns(getTeamColor());
     }
     //** Listeners **//
     public Set<GameListener> getListeners() {
@@ -129,7 +128,7 @@ public class Team {
     }
     public void addListener(GameListener listener) {
         if (listener != null)
-            this.listeners.add(listener);
+            listeners.add(listener);
     }
 
 }

@@ -24,18 +24,17 @@ public abstract class RepeatingMinigame extends Minigame {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        if (this.getState() == GameState.WAITING
-                && this.getPlayerCount() >= this.getProperties().as(Minigame.MIN_PLAYERS, Integer.class)) {//Enough players to start + waiting to start
-            this.startCountdown();
-        }
+        if (getState() == GameState.WAITING
+                && getPlayers().getPlayerCount() >= getProperties().as(Minigame.MIN_PLAYERS, Integer.class))
+            startCountdown();
     }
 
     public int getDelay() {
-        return this.getProperties().as(Minigame.START_DELAY, int.class);
+        return getProperties().as(Minigame.START_DELAY, int.class);
     }
 
     public void setDelay(int delay) {
-        this.getProperties().set(Minigame.START_DELAY, delay);
+        getProperties().set(Minigame.START_DELAY, delay);
     }
 
     /* ============- STAGES -============ */
@@ -52,10 +51,9 @@ public abstract class RepeatingMinigame extends Minigame {
      * Starts counting down to start of game
      */
     private void startCountdown() {
-        if (this.countingDown) {
+        if (countingDown)
             return;
-        }
-        this.countingDown = true;
+        countingDown = true;
         new CountdownTask().runTaskTimer(GameAPI.getInstance(), 0, 20);//Counts down every second
     }
 
@@ -63,11 +61,10 @@ public abstract class RepeatingMinigame extends Minigame {
      * Cancels the counting down to start
      */
     private void cancelCountdown() {
-        if (!this.countingDown) {
+        if (!countingDown)
             return;
-        }
 
-        this.countingDown = false;
+        countingDown = false;
     }
 
     /**
@@ -79,8 +76,8 @@ public abstract class RepeatingMinigame extends Minigame {
     private void countDown(int remainingSeconds) {
         GameAPI.printConsole("Game starting in: " + remainingSeconds);//Must be replaced with some visuals
         if (remainingSeconds == 0) {
-            this.startFinishing();
-            this.startResetting();//Go to stage 2 or immediately to stage 3 :)
+            startFinishing();
+            startResetting();//Go to stage 2 or immediately to stage 3 :)
         }
     }
 
@@ -93,25 +90,24 @@ public abstract class RepeatingMinigame extends Minigame {
         private int countdownSeconds;
 
         public CountdownTask() {
-            this.countdownSeconds = RepeatingMinigame.this.getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
+            countdownSeconds = getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
         }
 
         @Override
         public void run() {//This method is ran every tick
-            if (!RepeatingMinigame.this.countingDown) {
-                this.cancel();
+            if (!countingDown) {
+                cancel();
                 return;
             }
-            if (!RepeatingMinigame.this.hasMinPlayers()) {
-                RepeatingMinigame.this.cancelCountdown();
-                this.cancel();
+            if (!hasMinPlayers()) {
+                cancelCountdown();
+                cancel();
                 return;
             }
-            this.countdownSeconds--;
-            RepeatingMinigame.this.countDown(this.countdownSeconds);
-            if (this.countdownSeconds == 0) {
-                this.cancel();
-            }
+            countdownSeconds--;
+            countDown(countdownSeconds);
+            if (countdownSeconds == 0)
+                cancel();
         }
     }
 
@@ -124,7 +120,7 @@ public abstract class RepeatingMinigame extends Minigame {
         GameAPI.printConsole("Resetting repeating minigame.");
         //Reset stuff
         //}
-        this.startPlaying();
+        startPlaying();
     }
 
     /* === END RESETTING === */
@@ -141,11 +137,11 @@ public abstract class RepeatingMinigame extends Minigame {
     private void startFinishing() {
         GameAPI.printConsole("Finishing repeating minigame (Handing out rewards...).");
         this.setState(GameState.FINISHING);
-        this.finish();
+        finish();
         Bukkit.getScheduler().scheduleSyncDelayedTask(GameAPI.getInstance(),
                 () -> RepeatingMinigame.this.startPregame(),
-                this.getProperties().as(RepeatingMinigame.FINISHING_TIME, Integer.class) * 20);
-        this.startPregame();//Go back to stage 1. PREGAME
+                getProperties().as(RepeatingMinigame.FINISHING_TIME, Integer.class) * 20);
+        startPregame();//Go back to stage 1. PREGAME
     }
 
     /**

@@ -32,7 +32,7 @@ public class MinigameStateManager {
             //TODO: Check if min amount of players are in this team
         }
         int min = minigame.getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
-        int players = minigame.getPlayerCount();
+        int players = minigame.getPlayers().getPlayerCount();
         if (minigame.hasMinPlayers()) {
             countdown.start();
             GameMessenger.sendInfo(minigame,
@@ -46,7 +46,7 @@ public class MinigameStateManager {
         if (minigame.getState() != GameState.WAITING)
             return;
         int min = minigame.getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
-        int players = minigame.getPlayerCount();
+        int players = minigame.getPlayers().getPlayerCount();
         if (players <= min) {
             countdown.stop();
             GameMessenger.sendInfo(minigame, "Countdown stopped. Waiting for " + (min - players) + " players.");

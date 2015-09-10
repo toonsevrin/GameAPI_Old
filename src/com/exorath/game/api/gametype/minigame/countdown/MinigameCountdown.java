@@ -4,18 +4,17 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.exorath.game.api.hud.HUDPriority;
-import com.exorath.game.api.hud.HUDText;
-import com.exorath.game.api.hud.locations.ActionBar;
-import com.exorath.game.api.player.GamePlayer;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.gametype.minigame.Minigame;
+import com.exorath.game.api.hud.HUDPriority;
+import com.exorath.game.api.hud.HUDText;
+import com.exorath.game.api.hud.locations.ActionBar;
+import com.exorath.game.api.player.GamePlayer;
 
 import net.md_5.bungee.api.ChatColor;
-import sun.java2d.pipe.LCDTextRenderer;
 
 /**
  * Created by TOON on 9/2/2015.
@@ -78,7 +77,7 @@ public class MinigameCountdown {
         frames.add(new SoundCountdownFrame(this,
                 getArrow(ChatColor.GREEN, MinigameCountdown.LENGTH / 2 - 2, MinigameCountdown.CHAR) + ChatColor.WHITE + " BEGIN! "
                         + getArrow(ChatColor.GREEN, MinigameCountdown.LENGTH / 2 - 2, MinigameCountdown.CHAR) + " ",
-                20, Sound.NOTE_PLING, 2, 10));
+                        20, Sound.NOTE_PLING, 2, 10));
         frames.add(new FinishFrame(this));
     }
 

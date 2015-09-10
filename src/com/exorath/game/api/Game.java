@@ -11,13 +11,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.action.Actions;
 import com.exorath.game.api.events.GameStateChangedEvent;
-import com.exorath.game.api.gametype.minigame.kit.KitManager;
-import com.exorath.game.api.hud.HUDManager;
 import com.exorath.game.api.lobby.Lobby;
-import com.exorath.game.api.maps.MapManager;
 import com.exorath.game.api.player.Players;
-import com.exorath.game.api.spectate.SpectateManager;
-import com.exorath.game.api.team.TeamManager;
 import com.exorath.game.lib.util.FileUtils;
 import com.google.common.collect.Sets;
 
@@ -47,13 +42,7 @@ public abstract class Game {
     private GameState state;
 
     public Game() {
-        this.gameID = UUID.randomUUID();
-
-        addManager(new TeamManager(this));
-        addManager(new SpectateManager(this));
-        addManager(new KitManager(this));
-        addManager(new MapManager(this));
-        addManager(new HUDManager());
+        gameID = UUID.randomUUID();
     }
 
     /* Game ID */
@@ -71,7 +60,7 @@ public abstract class Game {
     }
 
     public GameState getState() {
-        return this.state;
+        return state;
     }
 
     public void setState(GameState state) {
@@ -92,7 +81,7 @@ public abstract class Game {
 
     /* Lobby */
     public Lobby getLobby() {
-        return this.lobby;
+        return lobby;
     }
 
     protected void setLobby(Lobby lobby) {
@@ -105,6 +94,12 @@ public abstract class Game {
     }
 
     public void addManager(Manager manager) {
+        Class<?> lowestNonManagerClass = manager.getClass();
+        while (lowestNonManagerClass.getSuperclass() != Manager.class)
+            lowestNonManagerClass = lowestNonManagerClass.getSuperclass();
+        for (Manager m : managers)// check if there's a manager of that type already!
+            if (lowestNonManagerClass.isAssignableFrom(m.getClass()))
+                return;
         managers.add(manager);
     }
 
@@ -114,20 +109,21 @@ public abstract class Game {
      * @param clazz
      *            The class of which the manager is intended to extend.
      * @return The manager is there is one of this type, or null if no manager
-     *         of this type is set.
+     *         of this type is set. Null if
      */
     @SuppressWarnings("unchecked")
     public <T extends Manager> T getManager(Class<T> clazz) {
-        for (Manager manager : managers) {
+        if (clazz == Manager.class)
+            return null;
+        for (Manager manager : managers)
             if (clazz.isAssignableFrom(manager.getClass()))
                 return (T) manager;
-        }
         return null;
     }
 
     /* Properties */
     public Properties getProperties() {
-        return this.properties;
+        return properties;
     }
 
     protected void setProperties(Properties properties) {
@@ -135,33 +131,29 @@ public abstract class Game {
     }
 
     public String getName() {
-        return this.properties.as(GameProperty.NAME, String.class);
+        return properties.as(GameProperty.NAME, String.class);
     }
 
     public void setName(String name) {
-        this.properties.set(GameProperty.NAME, name);
+        properties.set(GameProperty.NAME, name);
     }
 
     public String getDescription() {
-        return this.properties.as(GameProperty.DESCRIPTION, String.class);
+        return properties.as(GameProperty.DESCRIPTION, String.class);
     }
 
     public void setDescription(String description) {
-        this.properties.set(GameProperty.DESCRIPTION, description);
+        properties.set(GameProperty.DESCRIPTION, description);
     }
 
     /* Actions */
     public Actions getActions() {
-        return this.actions;
+        return actions;
     }
 
     /* Players */
     public Players getPlayers() {
-        return this.players;
-    }
-
-    public int getPlayerCount() {
-        return this.players.getPlayingAmount();
+        return players;
     }
 
     /* Listeners */
