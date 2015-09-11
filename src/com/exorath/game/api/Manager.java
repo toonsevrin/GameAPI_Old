@@ -9,5 +9,6 @@ public interface Manager {
     }
 
     public default void onDestroy() {
+
     }
 }

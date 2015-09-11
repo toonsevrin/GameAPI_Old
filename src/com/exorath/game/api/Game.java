@@ -49,7 +49,7 @@ public abstract class Game {
 
      public Game() {
         gameID = UUID.randomUUID();
-         Manager[] baseManagers = new Manager[]{new HUDManager(), new KitManager(this), new MapManager(this), new SpectateManager(this), new TeamManager(this)};//Not sure if you want to do this another way, just reimplemented it for testing
+         Manager[] baseManagers = new Manager[]{new HUDManager(this), new KitManager(this), new MapManager(this), new SpectateManager(this), new TeamManager(this)};//Not sure if you want to do this another way, just reimplemented it for testing
          Arrays.asList(baseManagers).forEach( manager -> managers.add(manager));
     }
 
