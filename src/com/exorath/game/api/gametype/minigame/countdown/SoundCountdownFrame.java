@@ -1,5 +1,6 @@
 package com.exorath.game.api.gametype.minigame.countdown;
 
+import com.exorath.game.api.Game;
 import com.exorath.game.api.player.GamePlayer;
 import org.bukkit.Sound;
 
@@ -19,8 +20,8 @@ public class SoundCountdownFrame extends SubtitleFrame {
     }
 
     @Override
-    public void display(GamePlayer player) {
-        super.display(player);
-        player.getBukkitPlayer().playSound(player.getBukkitPlayer().getLocation(), sound, pitch, vol);
+    public void display(Game game) {
+        super.display(game);
+        game.getPlayers().getPlayers().forEach(gp -> gp.getBukkitPlayer().playSound(gp.getBukkitPlayer().getLocation(), sound, pitch, vol));
     }
 }

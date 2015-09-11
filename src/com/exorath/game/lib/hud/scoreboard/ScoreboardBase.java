@@ -1,5 +1,6 @@
 package com.exorath.game.lib.hud.scoreboard;
 
+import com.exorath.game.api.player.GamePlayer;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.bukkit.Bukkit;
@@ -41,6 +42,7 @@ public class ScoreboardBase {
     }
 
     public void setTitle(String title) {
+        add();
         objective.setDisplayName(title);
     }
 
@@ -69,6 +71,7 @@ public class ScoreboardBase {
     }
 
     public SpigboardEntry add(String key, String name, int value, boolean overwrite) {
+        add();
         if (key == null && !contains(name)) {
             throw new IllegalArgumentException(
                     "Entry could not be found with the supplied name and no key was supplied");
@@ -110,6 +113,7 @@ public class ScoreboardBase {
     }
 
     public void remove(SpigboardEntry entry) {
+        add();
         if (entry.getSpigboard() != this) {
             throw new IllegalArgumentException("Supplied entry does not belong to this Spigboard");
         }
@@ -168,12 +172,27 @@ public class ScoreboardBase {
 
         return false;
     }
+    private GamePlayer gp;
+    private Player player;
+    public void add(GamePlayer gp) {
+        this.gp = gp;
+        add();
 
-    public void add(Player player) {
-        player.setScoreboard(scoreboard);
     }
+
 
     public void remove(Player player) {
         player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
+    }
+    public void add(){
+        if(this.player != null)
+            return;
+        if(gp == null)
+            return;
+        if(gp.getBukkitPlayer() == null)
+            return;
+        this.player = gp.getBukkitPlayer();
+        player.setScoreboard(scoreboard);
+
     }
 }

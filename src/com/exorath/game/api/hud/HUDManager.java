@@ -15,6 +15,7 @@ import com.exorath.game.GameAPI;
 import com.exorath.game.api.Manager;
 import com.exorath.game.lib.hud.bossbar.BossBarAPI;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -27,34 +28,39 @@ import java.util.Set;
 public class HUDManager implements Manager {
     private Game game;
     private BossBarAPI bossBarAPI = new BossBarAPI();
-    private PublicHUD publicHUD = new PublicHUD();
+    private PublicHUD publicHUD;
 
     public HUDManager(Game game) {
         this.game = game;
         Bukkit.getServer().getPluginManager().registerEvents(bossBarAPI, GameAPI.getInstance());
         publicHUD = new PublicHUD();
     }
+    public PublicHUD getPublicHUD(){
+        return publicHUD;
+    }
 
-    private class PublicHUD implements GameListener {
+    public class PublicHUD implements GameListener {
         private HashMap<Class<HUDLocation>, HashMap<String, HUDText>> keys = new HashMap<>();
 
         public PublicHUD(){
             for(Class<HUDLocation> loc : HUDLocation.LOCATIONS)
                 keys.put(loc, new HashMap<>());
+            game.addListener(this);
         }
+
         @Override
         public void onJoin(PlayerJoinEvent event, Game game, GamePlayer player) {
-            if(!HUDManager.this.game.equals(game))
+            if(HUDManager.this.game != game)
                 return;
-            keys.get(ActionBar.class).keySet().forEach(key -> player.getHud().getActionBar().addText(key, keys.get(ActionBar.class).get(key)));
-            keys.get(Title.class).keySet().forEach(key -> player.getHud().getActionBar().addText(key, keys.get(Title.class).get(key)));
-            keys.get(Subtitle.class).keySet().forEach(key -> player.getHud().getActionBar().addText(key, keys.get(Subtitle.class).get(key)));
-            keys.get(BossBar.class).keySet().forEach(key -> player.getHud().getActionBar().addText(key, keys.get(BossBar.class).get(key)));
-            keys.get(Scoreboard.class).keySet().forEach(key -> player.getHud().getActionBar().addText(key, keys.get(Scoreboard.class).get(key)));
+            keys.get(ActionBar.class).entrySet().forEach(e -> player.getHud().getActionBar().addText(e.getKey(), e.getValue().clone()));
+            keys.get(Title.class).entrySet().forEach(e -> player.getHud().getTitle().addText(e.getKey(), e.getValue().clone()));
+            keys.get(Subtitle.class).entrySet().forEach(e -> player.getHud().getSubtitle().addText(e.getKey(), e.getValue().clone()));
+            keys.get(BossBar.class).entrySet().forEach(e -> player.getHud().getBossBar().addText(e.getKey(), e.getValue().clone()));
+            keys.get(Scoreboard.class).entrySet().forEach(e -> player.getHud().getScoreboard().addText(e.getKey(), (ScoreboardText) e.getValue().clone()));
         }
 
         /* Add texts */
-        public void addActionBarText(String key, HUDText text){
+        public void addActionBar(String key, HUDText text){
             if(keys.get(ActionBar.class).containsKey(key)) return;
             keys.get(ActionBar.class).put(key, text);
             game.getPlayers().getPlayers().forEach(gp -> gp.getHud().getActionBar().addText(key, text.clone()));
@@ -106,46 +112,36 @@ public class HUDManager implements Manager {
             game.getPlayers().getPlayers().forEach(gp -> gp.getHud().getScoreboard().removeText(key));
         }
         /* Get texts */
-        public Collection<HUDText> getActionbarTexts(String key){
-            HashSet<HUDText> texts = new HashSet<>();
-            game.getPlayers().getPlayers().forEach(gp -> texts.add(gp.getHud().getActionBar().getText(key)));
-            return texts;
+        public boolean containsActionBar(String key){
+           return keys.get(ActionBar.class).containsKey(key);
         }
-        public Collection<HUDText> getTitle(String key){
-            HashSet<HUDText> texts = new HashSet<>();
-            game.getPlayers().getPlayers().forEach(gp -> texts.add(gp.getHud().getTitle().getText(key)));
-            return texts;
+        public boolean containsTitle(String key){
+            return keys.get(Title.class).containsKey(key);
         }
-        public Collection<HUDText> getSubtitle(String key){
-            HashSet<HUDText> texts = new HashSet<>();
-            game.getPlayers().getPlayers().forEach(gp -> texts.add(gp.getHud().getSubtitle().getText(key)));
-            return texts;
+        public boolean containsSubtitle(String key){
+            return keys.get(Subtitle.class).containsKey(key);
         }
-        public Collection<HUDText> getBossBar(String key){
-            HashSet<HUDText> texts = new HashSet<>();
-            game.getPlayers().getPlayers().forEach(gp -> texts.add(gp.getHud().getBossBar().getText(key)));
-            return texts;
+        public boolean containsBossBar(String key){
+            return keys.get(BossBar.class).containsKey(key);
         }
-        public Collection<HUDText> getScoreboard(String key){
-            HashSet<HUDText> texts = new HashSet<>();
-            game.getPlayers().getPlayers().forEach(gp -> texts.add(gp.getHud().getScoreboard().getText(key)));
-            return texts;
+        public boolean containsScoreboard(String key){
+            return keys.get(Scoreboard.class).containsKey(key);
         }
         /* Update text */
         public void updateActionBar(String key, String text){
-            game.getPlayers().getPlayers().forEach(gp -> gp.getHud().getActionBar().getText(key).setText(text));
+            game.getPlayers().getPlayers().stream().filter(gp -> gp.getBukkitPlayer() != null).forEach(gp -> gp.getHud().getActionBar().getText(key).setText(text));
         }
         public void updateTitle(String key, String text){
-            game.getPlayers().getPlayers().forEach(gp -> gp.getHud().getTitle().getText(key).setText(text));
+            game.getPlayers().getPlayers().stream().filter(gp -> gp.getBukkitPlayer() != null).forEach(gp -> gp.getHud().getTitle().getText(key).setText(text));
         }
-        public void updateSubtitle(String key, String text){
-            game.getPlayers().getPlayers().forEach(gp -> gp.getHud().getSubtitle().getText(key).setText(text));
+        public void updateSubtitle(String key, String text) {
+            game.getPlayers().getPlayers().stream().filter(gp -> gp.getBukkitPlayer() != null).forEach(gp -> gp.getHud().getSubtitle().getText(key).setText(text));
         }
         public void updateBossBar(String key, String text){
-            game.getPlayers().getPlayers().forEach(gp -> gp.getHud().getBossBar().getText(key).setText(text));
+            game.getPlayers().getPlayers().stream().filter(gp -> gp.getBukkitPlayer() != null).forEach(gp -> gp.getHud().getBossBar().getText(key).setText(text));
         }
         public void updateScoreboard(String key, String text){
-            game.getPlayers().getPlayers().forEach(gp -> gp.getHud().getScoreboard().getText(key).setText(text));
+            game.getPlayers().getPlayers().stream().filter(gp -> gp.getBukkitPlayer() != null).forEach(gp -> gp.getHud().getScoreboard().getText(key).setText(text));
         }
 
     }

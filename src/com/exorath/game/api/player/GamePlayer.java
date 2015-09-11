@@ -10,6 +10,7 @@ import com.exorath.game.api.hud.HUD;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 
 import com.exorath.game.api.Game;
@@ -37,7 +38,6 @@ public final class GamePlayer {
 
     public GamePlayer(UUID id) {
         this.uuid = id;
-        GameAPI.printConsole("HUD Created: " + hud);
         gSqlData = new SQLData(GameAPI.getInstance(), "players", id, false);
 
         hud = new HUD(this);

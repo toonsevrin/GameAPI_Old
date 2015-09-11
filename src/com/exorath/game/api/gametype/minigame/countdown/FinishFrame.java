@@ -1,5 +1,6 @@
 package com.exorath.game.api.gametype.minigame.countdown;
 
+import com.exorath.game.api.Game;
 import com.exorath.game.api.player.GamePlayer;
 
 /**
@@ -12,7 +13,7 @@ public class FinishFrame extends CountdownFrame {
     }
 
     @Override
-    public void display(GamePlayer player) {
+    public void display(Game game) {
         getMinigameCountdown().startGame();
     }
 

@@ -1,5 +1,6 @@
 package com.exorath.game.api.gametype.minigame.countdown;
 
+import com.exorath.game.api.Game;
 import com.exorath.game.api.player.GamePlayer;
 
 /**
@@ -15,7 +16,7 @@ public abstract class CountdownFrame {
         this.delay = delay;
     }
 
-    public abstract void display(GamePlayer player);
+    public abstract void display(Game game);
 
     public abstract void finish();
 

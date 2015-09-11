@@ -1,10 +1,7 @@
 package com.exorath.game;
 
 import java.io.File;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -82,7 +79,9 @@ public class GameAPI extends JavaPlugin {
     }
 
     protected static void refreshOnlinePlayers() {
-        players.entrySet().stream().filter(e -> !e.getValue().isOnline()).forEach(e -> players.remove(e.getKey()));
+        Set<UUID> toRemove = new HashSet<>();
+        players.entrySet().stream().filter(e -> !e.getValue().isOnline()).forEach(e -> toRemove.add(e.getKey()));//Got a concurrency error here so updated this, thought lambdas fixed concurrency? :(
+        players.entrySet().removeIf(e -> toRemove.contains(e.getKey()));
         Bukkit.getOnlinePlayers().stream().forEach(p -> getPlayer(p));
     }
 

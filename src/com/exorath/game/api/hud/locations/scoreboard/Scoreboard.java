@@ -26,7 +26,7 @@ public class Scoreboard extends HUDLocation {
     public Scoreboard(GamePlayer player) {
         super(player);
         scoreboard = new ScoreboardBase(title.getDisplayText());
-        scoreboard.add(player.getBukkitPlayer());
+        scoreboard.add(player);
     }
 
     protected PriorityQueue<ScoreboardText> getTexts() {
@@ -108,7 +108,7 @@ public class Scoreboard extends HUDLocation {
     public void setActive(boolean active) {
         this.active = active;
         if (active) //If turned on, display the currentText
-            scoreboard.add(player.getBukkitPlayer());
+            scoreboard.add(player);
         else//If turned off, hide all texts
             scoreboard.remove(player.getBukkitPlayer());
     }

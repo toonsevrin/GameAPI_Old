@@ -1,6 +1,8 @@
 package com.exorath.game.api.gametype.minigame.countdown;
 
 import com.exorath.game.GameAPI;
+import com.exorath.game.api.Game;
+import com.exorath.game.api.hud.HUDManager;
 import com.exorath.game.api.hud.HUDPriority;
 import com.exorath.game.api.hud.HUDText;
 import com.exorath.game.api.hud.locations.ActionBar;
@@ -20,12 +22,12 @@ public class SubtitleFrame extends CountdownFrame {
     }
 
     @Override
-    public void display(GamePlayer player) {
-        Subtitle subtitle = player.getHud().getSubtitle();
-        if (subtitle.containsText("gapi_countdown"))
-            subtitle.getText("gapi_countdown").setText(text);
+    public void display(Game game) {
+        HUDManager.PublicHUD publicHUD = game.getManager(HUDManager.class).getPublicHUD();
+        if (publicHUD.containsSubtitle("gapi_countdown"))
+            publicHUD.updateSubtitle("gapi_countdown",text);
         else
-            subtitle.addText("gapi_countdown", new HUDText(text, HUDPriority.HIGH));
+            publicHUD.addSubtitle("gapi_countdown", new HUDText(text, HUDPriority.HIGH));
     }
 
     @Override

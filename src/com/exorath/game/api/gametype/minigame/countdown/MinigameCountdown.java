@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.exorath.game.api.hud.HUDManager;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -59,7 +60,7 @@ public class MinigameCountdown {
     //** Frame functions **//
     protected void finish() {
         frames.forEach(f -> f.finish());
-        for(GamePlayer gp : GameAPI.getOnlinePlayers())
+        for (GamePlayer gp : GameAPI.getOnlinePlayers())
             gp.getHud().getActionBar().removeText("gapi_cdbar");
     }
 
@@ -77,7 +78,7 @@ public class MinigameCountdown {
         frames.add(new SoundCountdownFrame(this,
                 getArrow(ChatColor.GREEN, MinigameCountdown.LENGTH / 2 - 2, MinigameCountdown.CHAR) + ChatColor.WHITE + " BEGIN! "
                         + getArrow(ChatColor.GREEN, MinigameCountdown.LENGTH / 2 - 2, MinigameCountdown.CHAR) + " ",
-                        20, Sound.NOTE_PLING, 2, 10));
+                20, Sound.NOTE_PLING, 2, 10));
         frames.add(new FinishFrame(this));
     }
 
@@ -111,7 +112,7 @@ public class MinigameCountdown {
 
     private CountdownFrame getFinalCountdown(ChatColor color, int number) {
         String arrows = getArrow(color, MinigameCountdown.LENGTH / 2 - 1, MinigameCountdown.CHAR);
-        return new SoundCountdownFrame(this,arrows + "  " + ChatColor.BOLD + number + "  " + arrows + " ", 20, Sound.NOTE_PLING, 1, 10);
+        return new SoundCountdownFrame(this, arrows + "  " + ChatColor.BOLD + number + "  " + arrows + " ", 20, Sound.NOTE_PLING, 1, 10);
     }
 
     //** Countdown task **//
@@ -124,21 +125,21 @@ public class MinigameCountdown {
                 finish();
                 return;
             }
-            float remaining = getInterval() * (LENGTH - currentFrame) / 20 + getInterval()/20 *4;
+            float remaining = getInterval() * (LENGTH - currentFrame) / 20 + getInterval() / 20 * 4;
 
-            String cdText = remaining <= 0 ? ChatColor.GREEN + "Game starting...           ": "Starting in... " + new DecimalFormat("#.0").format(remaining) + "       ";
-            for (GamePlayer gp : GameAPI.getOnlinePlayers()) {
-                frames.get(currentFrame).display(gp);
-                ActionBar display = gp.getHud().getActionBar();
-                if (display.containsText("gapi_cdbar"))
-                    gp.getHud().getActionBar().getText("gapi_cdbar").setText(cdText);
-                else
-                    gp.getHud().getActionBar().addText("gapi_cdbar", new HUDText(cdText, HUDPriority.HIGH));
-            }
+            String cdText = remaining <= 2 ? ChatColor.GREEN + "Game starting...           " : "Starting in... " + new DecimalFormat("#.0").format(remaining) + "       ";
+
+            HUDManager.PublicHUD publicHUD = game.getManager(HUDManager.class).getPublicHUD();
+            if (publicHUD.containsActionBar("gapi_cdbar"))
+                publicHUD.updateActionBar("gapi_cdbar", cdText);
+            else
+                publicHUD.addActionBar("gapi_cdbar", new HUDText(cdText, HUDPriority.HIGH));
+            frames.get(currentFrame).display(game);
             currentFrame++;
         }
     }
-    private float getInterval(){
-        return (float)game.getProperties().as(Minigame.START_DELAY, Integer.class) / MinigameCountdown.LENGTH;
+
+    private float getInterval() {
+        return (float) game.getProperties().as(Minigame.START_DELAY, Integer.class) / MinigameCountdown.LENGTH;
     }
 }

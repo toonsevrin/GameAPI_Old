@@ -165,7 +165,7 @@ public abstract class Game {
     }
 
     /* Listeners */
-    protected void addListener(GameListener listener) {
+    public void addListener(GameListener listener) {
         if (listener != null)
             listeners.add(listener);
     }
