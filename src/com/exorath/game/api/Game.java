@@ -1,10 +1,16 @@
 package com.exorath.game.api;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import com.exorath.game.api.gametype.minigame.kit.KitManager;
+import com.exorath.game.api.hud.HUDManager;
+import com.exorath.game.api.maps.MapManager;
+import com.exorath.game.api.spectate.SpectateManager;
+import com.exorath.game.api.team.TeamManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -41,8 +47,10 @@ public abstract class Game {
     private Actions actions = new Actions();
     private GameState state;
 
-    public Game() {
+     public Game() {
         gameID = UUID.randomUUID();
+         Manager[] baseManagers = new Manager[]{new HUDManager(), new KitManager(this), new MapManager(this), new SpectateManager(this), new TeamManager(this)};//Not sure if you want to do this another way, just reimplemented it for testing
+         Arrays.asList(baseManagers).forEach( manager -> managers.add(manager));
     }
 
     /* Game ID */
@@ -165,7 +173,6 @@ public abstract class Game {
     public Set<GameListener> getListeners() {
         return listeners;
     }
-
     /* Configs */
     //** TODO: Take a look at the configuration manager (Is this required?) **//
     public FileConfiguration getConfig(String filename) {

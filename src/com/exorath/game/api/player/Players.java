@@ -1,8 +1,11 @@
 package com.exorath.game.api.player;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
+import com.exorath.game.GameAPI;
 import com.exorath.game.api.Game;
 import com.exorath.game.api.GameState;
 import com.exorath.game.api.maps.GameMap;
@@ -43,6 +46,13 @@ public class Players {
             if (playerStates.get(id) == PlayerState.PLAYING)
                 amount++;
         return amount;
+    }
+    //TODO: LOL Rewrite this method for me, Im not sure how you want this class to work though. Maybe make it store actual GamePlayers? :o
+    public Collection<GamePlayer> getPlayers(){
+        HashSet<GamePlayer> gps = new HashSet<>();
+        GameAPI.getOnlinePlayers().stream().filter(gp -> playerStates.containsKey(gp.getUUID().toString())).forEach(gp -> gps.add(gp));
+
+        return gps;
     }
 
     public boolean isPlaying(GamePlayer player) {

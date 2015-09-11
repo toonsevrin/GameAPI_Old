@@ -20,6 +20,14 @@ public class HUDText implements Comparable<HUDText> {
         this.displayText = text;
         this.priority = priority;
     }
+    @Override
+    public HUDText clone(){
+        HUDText hudText = new HUDText(text, priority);
+        hudText.setDisplayText(displayText);
+        if(effect != null)
+            hudText.setEffect(effect);
+        return hudText;
+    }
 
     public void setText(String text) {
         this.text = text;
