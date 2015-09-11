@@ -18,7 +18,7 @@ public class FinishFrame extends CountdownFrame {
     }
 
     @Override
-    public void finish() {
+    public void finish(Game game) {
 
     }
 }

@@ -18,7 +18,7 @@ public abstract class CountdownFrame {
 
     public abstract void display(Game game);
 
-    public abstract void finish();
+    public abstract void finish(Game game);
 
     public int getDelay() {
         return delay;

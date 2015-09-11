@@ -18,7 +18,6 @@ public class ActionBar extends HUDDisplay {
 
     @Override
     public void displayText(HUDText text) {
-        GameAPI.printConsole("Displaying text: " + text);
         ActionBarBase.send(player.getBukkitPlayer(), text.getDisplayText());
     }
 

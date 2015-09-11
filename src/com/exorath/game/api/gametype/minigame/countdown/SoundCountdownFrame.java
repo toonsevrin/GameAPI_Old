@@ -17,6 +17,8 @@ public class SoundCountdownFrame extends SubtitleFrame {
             float vol) {
         super(minigameCountdown, text, delay);
         this.sound = sound;
+        this.pitch = pitch;
+        this.vol = vol;
     }
 
     @Override

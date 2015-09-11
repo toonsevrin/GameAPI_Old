@@ -25,7 +25,7 @@ public class Title extends Title_SubTitleBase {
 
     @Override
     public void send(HUDText text) {
-        TitleBase.sendSubTitle(player.getBukkitPlayer(), 0, LONG_STAY_TIME, 0, getJSON(text.getDisplayText()));
+        TitleBase.sendTitle(player.getBukkitPlayer(), 0, LONG_STAY_TIME, 0, getJSON(text.getDisplayText()));
     }
 
 }

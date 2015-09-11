@@ -100,6 +100,7 @@ public class MinigameStateManager {
             throw new IllegalStateException(
                     "Tried to change state from " + minigame.getState() + " to " + GameState.WAITING);
         minigame.setState(GameState.WAITING);
+        checkStart();
     }
 
     private class EndTask extends GameRunnable {
