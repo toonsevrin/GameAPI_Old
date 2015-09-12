@@ -60,6 +60,7 @@ public class MinigameStateManager implements Manager{
         if (minigame.getState() != GameState.WAITING)
             throw new IllegalStateException(
                     "Tried to change state from " + minigame.getState() + " to " + GameState.STARTING);
+        countdown.stop();
         minigame.setState(GameState.STARTING);
         minigame.spawnPlayers();
         setIngame();

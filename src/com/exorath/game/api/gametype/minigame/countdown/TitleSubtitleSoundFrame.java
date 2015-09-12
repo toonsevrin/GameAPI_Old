@@ -29,8 +29,8 @@ public class TitleSubtitleSoundFrame extends SoundCountdownFrame{
 
     @Override
     public void finish(Game game) {
-        super.finish(game);
         HUDManager.PublicHUD publicHUD = game.getManager(HUDManager.class).getPublicHUD();
         publicHUD.removeTitle("gapi_countdowntitle");
+        super.finish(game);
     }
 }

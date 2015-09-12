@@ -6,27 +6,42 @@ import com.exorath.game.api.hud.HUDText;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.lib.hud.actionbar.ActionBarBase;
 import com.exorath.game.lib.hud.bossbar.BossBarAPI;
+import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Created by TOON on 8/11/2015.
+ * REPEATER CLASS KEEPS RUNNING DURING CACHING -_- REMOVE CACHING PLEZ, PLEZ, PLEZ
  */
 public class ActionBar extends HUDDisplay {
 
     public ActionBar(GamePlayer player) {
         super(player, 64);
+        new Repeater().runTaskTimer(GameAPI.getInstance(),40,40);
     }
 
     @Override
     public void displayText(HUDText text) {
-        ActionBarBase.send(player.getBukkitPlayer(), text.getDisplayText());
+        display(text.getDisplayText());
     }
 
     @Override
     public void removeCurrent() {
 
     }
-
-    public void setHealth(float health) {
-        BossBarAPI.setHealth(player.getBukkitPlayer(), health);
+    private void display(String text){
+        ActionBarBase.send(player.getBukkitPlayer(), text);
+    }
+    private class Repeater extends BukkitRunnable{
+        @Override
+        public void run(){
+            if(player == null){
+                this.cancel();
+            }
+            if(!player.isOnline())
+                return;
+            if(getCurrentText() != null)
+                display(getCurrentText().getDisplayText());
+        }
     }
 }

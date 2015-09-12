@@ -33,6 +33,6 @@ public class SubtitleFrame extends CountdownFrame {
     @Override
     public void finish(Game game) {
         HUDManager.PublicHUD publicHUD = game.getManager(HUDManager.class).getPublicHUD();
-        publicHUD.removeSubtitle("gapi_countdown");
+        publicHUD.removeSubtitle("gapi_countdownsub");
     }
 }

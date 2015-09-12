@@ -50,7 +50,7 @@ public abstract class Game {
      public Game() {
         gameID = UUID.randomUUID();
          Manager[] baseManagers = new Manager[]{new HUDManager(this), new MapManager(this)};//Not sure if you want to do this another way, just reimplemented it for testing
-         Arrays.asList(baseManagers).forEach( manager -> managers.add(manager));
+         Arrays.asList(baseManagers).forEach( manager -> addManager(manager));
     }
 
     /* Game ID */
@@ -102,11 +102,11 @@ public abstract class Game {
     }
 
     public void addManager(Manager manager) {
-        Class<?> lowestNonManagerClass = manager.getClass();
-        while (lowestNonManagerClass.getSuperclass() != Manager.class)
-            lowestNonManagerClass = lowestNonManagerClass.getSuperclass();
+        Class managerClass = manager.getClass();
+        if(!Arrays.asList(managerClass.getInterfaces()).contains(Manager.class))
+            return;
         for (Manager m : managers)// check if there's a manager of that type already!
-            if (lowestNonManagerClass.isAssignableFrom(m.getClass()))
+            if (managerClass.isAssignableFrom(m.getClass()))
                 return;
         managers.add(manager);
     }

@@ -58,7 +58,8 @@ public class MinigameCountdown {
 
     //** Frame functions **//
     protected void finish() {
-        frames.forEach(f -> f.finish(game));
+        for(int i = frames.size() - 1; i >= 0; i--)
+            frames.get(i).finish(game);
         HUDManager.PublicHUD publicHUD = game.getManager(HUDManager.class).getPublicHUD();
         publicHUD.removeActionBar("gapi_cdbar");
     }
@@ -77,7 +78,7 @@ public class MinigameCountdown {
         StringBuilder startBuilder = new StringBuilder();
         startBuilder.append(getArrow(ChatColor.GREEN, MinigameCountdown.LENGTH / 2 - 2, MinigameCountdown.CHAR)).append(ChatColor.BOLD).append(" START ").append(getArrow(ChatColor.GREEN, MinigameCountdown.LENGTH / 2 - 2, MinigameCountdown.CHAR));
         startBuilder.insert(0, getWhiteSpaces(startBuilder.toString()));
-        frames.add(new SoundCountdownFrame(this,startBuilder.toString(), 20, Sound.NOTE_PLING, 3, 10));
+        frames.add(new TitleSubtitleSoundFrame(this,startBuilder.toString(), "", 20, Sound.NOTE_PLING, 3, 10));
         frames.add(new FinishFrame(this));
     }
 
