@@ -3,6 +3,7 @@ package com.exorath.game.api.gametype.minigame;
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.GameRunnable;
 import com.exorath.game.api.GameState;
+import com.exorath.game.api.Manager;
 import com.exorath.game.api.StopCause;
 import com.exorath.game.api.gametype.minigame.countdown.MinigameCountdown;
 import com.exorath.game.api.message.GameMessenger;
@@ -13,7 +14,7 @@ import com.exorath.game.api.team.TeamManager;
  * Created by Toon on 9/1/2015.
  * Not functional yet
  */
-public class MinigameStateManager {
+public class MinigameStateManager implements Manager{
 
     private Minigame minigame;
     private MinigameCountdown countdown;
