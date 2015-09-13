@@ -12,6 +12,10 @@ import com.exorath.game.api.voting.VoteSession;
  */
 public class MapVoteSession extends VoteSession {
 
+    public MapVoteSession(String title) {
+        this(title, GameMap.getFoundMaps());
+    }
+
     public MapVoteSession(String title, List<GameMap> options) {
         super(title, options.stream().map(m -> new MapVoteOption(m)).collect(Collectors.toList()));
     }

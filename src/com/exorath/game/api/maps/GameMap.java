@@ -22,9 +22,14 @@ import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.player.PlayerState;
 import com.exorath.game.api.team.TeamColor;
 import com.exorath.game.api.team.TeamManager;
+import com.google.common.collect.Lists;
 import com.yoshigenius.lib.serializable.Serializer;
 
 public class GameMap {
+
+    public static List<GameMap> getFoundMaps() {
+        return Lists.newArrayList(worlds.values());
+    }
 
     // BASIC
 
@@ -140,9 +145,8 @@ public class GameMap {
 
     // ADVANCED
 
-    private List<GameSpawn> spectatorSpawns = new LinkedList<>();
-
     private List<GameSpawn> global = new LinkedList<>();
+    private List<GameSpawn> spectatorSpawns = new LinkedList<>();
     private final Map<TeamColor, List<GameSpawn>> spawns = new HashMap<>();
 
     // spawns
