@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import org.bukkit.ChatColor;
 
 import com.exorath.game.api.player.GamePlayer;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 /**
@@ -53,7 +54,7 @@ public class VoteSession {
             return VoteResult.FAILURE;
         else if (vote.option <= 0 || vote.option > options.size())
             return VoteResult.INVALID_OPTION;
-        else if (!revoteAllowed && votes.containsKey(player.getUUID().toString().intern()))
+        else if (votes.containsKey(player.getUUID().toString().intern()) && !revoteAllowed)
             return VoteResult.ALREADY_VOTED;
         else {
             votes.put(player.getUUID().toString().intern(), vote);
@@ -64,9 +65,25 @@ public class VoteSession {
     public void display(GamePlayer player) {
         if (options == null || options.isEmpty())
             return;
-        player.sendMessage(ChatColor.GREEN + "===[ " + title + " ]===");
-        for (int i = 0; i < options.size(); i++)
-            player.sendMessage(ChatColor.YELLOW + "" + (i + 1) + ". " + options.get(i));
+        int maxLength = 0;
+        List<String> msgs = Lists.newArrayList();
+        for (int i = 0; i < options.size(); i++) {
+            String str = ChatColor.YELLOW + "  " + (i + 1) + ". " + options.get(i);
+            msgs.add(str);
+            if (str.length() > maxLength)
+                maxLength = str.length();
+        }
+        int titleLength = ("[ " + title + " ]").length();
+        if (maxLength > titleLength) {
+            maxLength -= titleLength;
+            maxLength /= 2;
+        } else
+            maxLength = 3;
+        String s = "";
+        for (int i = 0; i < maxLength; i++)
+            s += "=";
+        player.sendMessage(ChatColor.GREEN + s + "[ " + title + " ]" + s);
+        msgs.stream().forEachOrdered(str -> player.sendMessage(str));
     }
 
     public void open() {
@@ -86,8 +103,10 @@ public class VoteSession {
         if (open)
             return null;
         Map<Integer, Integer> numVotes = Maps.newHashMap();
-        votes.entrySet().forEach(e -> numVotes.put(e.getValue().option,
-                numVotes.getOrDefault(e.getValue().option, 0) + e.getValue().weight));
+        votes.entrySet().forEach(e -> {
+            int opt = e.getValue().option;
+            numVotes.put(opt, numVotes.getOrDefault(opt, 0) + e.getValue().weight);
+        });
 
         int winner = -1;
         for (Entry<Integer, Integer> entry : numVotes.entrySet())
