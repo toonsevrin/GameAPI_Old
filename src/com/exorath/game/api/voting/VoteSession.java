@@ -14,9 +14,9 @@ import com.google.common.collect.Maps;
  */
 public class VoteSession {
 
-    String title;
-    List<VoteOption> options;
-    Map<String, Vote> votes = Maps.newHashMap();// values are indices in options list.
+    final String title;
+    final List<VoteOption> options;
+    final Map<String, Vote> votes = Maps.newHashMap();// values are indices in options list.
     boolean revoteAllowed = false, open = false;
 
     public VoteSession(String title, List<VoteOption> options) {
@@ -33,11 +33,11 @@ public class VoteSession {
     }
 
     public boolean isRevoteAllowed() {
-        return this.revoteAllowed;
+        return revoteAllowed;
     }
 
     public void setRevoteAllowed(boolean allowed) {
-        this.revoteAllowed = allowed;
+        revoteAllowed = allowed;
     }
 
     public Vote getVote(GamePlayer player) {
@@ -45,17 +45,17 @@ public class VoteSession {
     }
 
     public VoteResult vote(GamePlayer player, Vote vote) {
-        if (!open) {
+        if (!open)
             return VoteResult.VOTING_CLOSED;
-        } else if (options == null) {
+        else if (options == null)
             return VoteResult.FAILURE;
-        } else if (vote.session != this) {
+        else if (vote.session != this)
             return VoteResult.FAILURE;
-        } else if (vote.option <= 0 || vote.option > options.size()) {
+        else if (vote.option <= 0 || vote.option > options.size())
             return VoteResult.INVALID_OPTION;
-        } else if (!revoteAllowed && votes.containsKey(player.getUUID().toString().intern())) {
+        else if (!revoteAllowed && votes.containsKey(player.getUUID().toString().intern()))
             return VoteResult.ALREADY_VOTED;
-        } else {
+        else {
             votes.put(player.getUUID().toString().intern(), vote);
             return VoteResult.SUCCESS;
         }
@@ -65,34 +65,34 @@ public class VoteSession {
         if (options == null || options.isEmpty())
             return;
         player.sendMessage(ChatColor.GREEN + "===[ " + title + " ]===");
-        for (int i = 0; i < options.size(); i++) {
+        for (int i = 0; i < options.size(); i++)
             player.sendMessage(ChatColor.YELLOW + "" + (i + 1) + ". " + options.get(i));
-        }
     }
 
     public void open() {
-        this.open = true;
+        if (open)
+            return;
+        open = true;
         votes.clear();
     }
 
     public void close() {
-        this.open = false;
+        if (!open)
+            return;
+        open = false;
     }
 
     public VoteOption getWinner() {
-        if (open) {
+        if (open)
             return null;
-        }
         Map<Integer, Integer> numVotes = Maps.newHashMap();
         votes.entrySet().forEach(e -> numVotes.put(e.getValue().option,
                 numVotes.getOrDefault(e.getValue().option, 0) + e.getValue().weight));
 
         int winner = -1;
-        for (Entry<Integer, Integer> entry : numVotes.entrySet()) {
-            if (winner == -1 || entry.getValue() > numVotes.get(winner)) {
+        for (Entry<Integer, Integer> entry : numVotes.entrySet())
+            if (winner == -1 || entry.getValue() > numVotes.get(winner))
                 winner = entry.getKey();
-            }
-        }
         return options.get(winner);
     }
 
