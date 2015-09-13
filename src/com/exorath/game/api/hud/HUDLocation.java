@@ -1,20 +1,23 @@
 package com.exorath.game.api.hud;
 
+import org.bukkit.Bukkit;
+
+import com.exorath.game.GameAPI;
 import com.exorath.game.api.hud.locations.ActionBar;
 import com.exorath.game.api.hud.locations.BossBar;
 import com.exorath.game.api.hud.locations.Subtitle;
 import com.exorath.game.api.hud.locations.Title;
 import com.exorath.game.api.hud.locations.scoreboard.Scoreboard;
-import org.bukkit.Bukkit;
-
-import com.exorath.game.GameAPI;
 import com.exorath.game.api.player.GamePlayer;
 
 /**
  * Created by TOON on 8/9/2015.
  */
 public abstract class HUDLocation implements Runnable {
-    public static Class<HUDLocation> LOCATIONS[] = new Class[]{ActionBar.class, BossBar.class, Subtitle.class, Title.class, Scoreboard.class};
+
+    @SuppressWarnings("unchecked")
+    public static Class<? extends HUDLocation> LOCATIONS[] = new Class[] { ActionBar.class, BossBar.class,
+            Subtitle.class, Title.class, Scoreboard.class };
     protected boolean active = true;
     protected GamePlayer player;
     private int currentSequence = Integer.MIN_VALUE;//This is for HUDText's with the same priority (FIFO behaviour!)

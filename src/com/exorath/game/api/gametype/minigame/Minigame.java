@@ -1,21 +1,19 @@
 package com.exorath.game.api.gametype.minigame;
 
-import com.exorath.game.api.Manager;
-import com.exorath.game.api.gametype.minigame.kit.KitManager;
-import com.exorath.game.api.hud.HUDManager;
-import com.exorath.game.api.maps.MapManager;
-import com.exorath.game.api.spectate.SpectateManager;
-import com.exorath.game.api.team.TeamManager;
+import java.util.Arrays;
+
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.Game;
 import com.exorath.game.api.GameListener;
+import com.exorath.game.api.Manager;
 import com.exorath.game.api.Property;
+import com.exorath.game.api.gametype.minigame.kit.KitManager;
 import com.exorath.game.api.player.GamePlayer;
-
-import java.util.Arrays;
+import com.exorath.game.api.spectate.SpectateManager;
+import com.exorath.game.api.team.TeamManager;
 
 /**
  * @author Nick Robson

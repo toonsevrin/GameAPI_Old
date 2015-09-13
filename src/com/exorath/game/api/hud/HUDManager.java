@@ -1,7 +1,14 @@
 package com.exorath.game.api.hud;
 
+import java.util.HashMap;
+
+import org.bukkit.Bukkit;
+import org.bukkit.event.player.PlayerJoinEvent;
+
+import com.exorath.game.GameAPI;
 import com.exorath.game.api.Game;
 import com.exorath.game.api.GameListener;
+import com.exorath.game.api.Manager;
 import com.exorath.game.api.hud.locations.ActionBar;
 import com.exorath.game.api.hud.locations.BossBar;
 import com.exorath.game.api.hud.locations.Subtitle;
@@ -9,18 +16,7 @@ import com.exorath.game.api.hud.locations.Title;
 import com.exorath.game.api.hud.locations.scoreboard.Scoreboard;
 import com.exorath.game.api.hud.locations.scoreboard.ScoreboardText;
 import com.exorath.game.api.player.GamePlayer;
-import org.bukkit.Bukkit;
-
-import com.exorath.game.GameAPI;
-import com.exorath.game.api.Manager;
 import com.exorath.game.lib.hud.bossbar.BossBarAPI;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by Toon Sevrin on 8/11/2015.
@@ -40,10 +36,11 @@ public class HUDManager implements Manager {
     }
 
     public class PublicHUD implements GameListener {
-        private HashMap<Class<HUDLocation>, HashMap<String, HUDText>> keys = new HashMap<>();
+
+        private HashMap<Class<? extends HUDLocation>, HashMap<String, HUDText>> keys = new HashMap<>();
 
         public PublicHUD(){
-            for(Class<HUDLocation> loc : HUDLocation.LOCATIONS)
+            for (Class<? extends HUDLocation> loc : HUDLocation.LOCATIONS)
                 keys.put(loc, new HashMap<>());
             game.addListener(this);
         }
@@ -113,7 +110,7 @@ public class HUDManager implements Manager {
         }
         /* Get texts */
         public boolean containsActionBar(String key){
-           return keys.get(ActionBar.class).containsKey(key);
+            return keys.get(ActionBar.class).containsKey(key);
         }
         public boolean containsTitle(String key){
             return keys.get(Title.class).containsKey(key);

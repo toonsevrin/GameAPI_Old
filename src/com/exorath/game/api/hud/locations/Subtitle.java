@@ -1,6 +1,5 @@
 package com.exorath.game.api.hud.locations;
 
-import com.exorath.game.GameAPI;
 import com.exorath.game.api.hud.HUDText;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.lib.hud.title.TitleBase;

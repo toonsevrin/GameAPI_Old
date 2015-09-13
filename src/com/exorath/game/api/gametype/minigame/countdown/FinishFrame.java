@@ -1,7 +1,6 @@
 package com.exorath.game.api.gametype.minigame.countdown;
 
 import com.exorath.game.api.Game;
-import com.exorath.game.api.player.GamePlayer;
 
 /**
  * Created by TOON on 9/3/2015.

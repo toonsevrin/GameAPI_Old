@@ -4,17 +4,16 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.exorath.game.api.hud.HUDManager;
-import com.exorath.game.api.message.GameMessenger;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Sound;
-import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.gametype.minigame.Minigame;
+import com.exorath.game.api.hud.HUDManager;
 import com.exorath.game.api.hud.HUDPriority;
 import com.exorath.game.api.hud.HUDText;
+
 import net.md_5.bungee.api.ChatColor;
 
 /**
@@ -152,7 +151,7 @@ public class MinigameCountdown {
         }
     }
     private float getInterval() {
-        return ((float) game.getProperties().as(Minigame.START_DELAY, Integer.class)) / MinigameCountdown.LENGTH;
+        return (float) game.getProperties().as(Minigame.START_DELAY, Integer.class) / MinigameCountdown.LENGTH;
     }
     private String getWhiteSpaces(String str){
         return getWhiteSpaces(str, 0);
@@ -160,11 +159,10 @@ public class MinigameCountdown {
     private String getWhiteSpaces(String str, int extra){
         StringBuilder sb = new StringBuilder();
         sb.append(ChatColor.RESET);
-        for(int i = 0; i < StringUtils.countMatches(str, String.valueOf(ChatColor.COLOR_CHAR)) + extra; i++){
+        for(int i = 0; i < StringUtils.countMatches(str, String.valueOf(ChatColor.COLOR_CHAR)) + extra; i++)
             sb.append("  ");
-        }
         sb.deleteCharAt(sb.length() - 1);
         sb.deleteCharAt(sb.length() - 1);
-       return sb.toString();
+        return sb.toString();
     }
 }

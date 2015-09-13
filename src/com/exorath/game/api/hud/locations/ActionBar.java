@@ -1,13 +1,12 @@
 package com.exorath.game.api.hud.locations;
 
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.hud.HUDDisplay;
 import com.exorath.game.api.hud.HUDText;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.lib.hud.actionbar.ActionBarBase;
-import com.exorath.game.lib.hud.bossbar.BossBarAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Created by TOON on 8/11/2015.
@@ -35,9 +34,8 @@ public class ActionBar extends HUDDisplay {
     private class Repeater extends BukkitRunnable{
         @Override
         public void run(){
-            if(player == null){
-                this.cancel();
-            }
+            if(player == null)
+                cancel();
             if(!player.isOnline())
                 return;
             if(getCurrentText() != null)

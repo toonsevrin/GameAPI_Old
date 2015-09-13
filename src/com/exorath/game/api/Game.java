@@ -6,18 +6,15 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import com.exorath.game.api.gametype.minigame.kit.KitManager;
-import com.exorath.game.api.hud.HUDManager;
-import com.exorath.game.api.maps.MapManager;
-import com.exorath.game.api.spectate.SpectateManager;
-import com.exorath.game.api.team.TeamManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.action.Actions;
 import com.exorath.game.api.events.GameStateChangedEvent;
+import com.exorath.game.api.hud.HUDManager;
 import com.exorath.game.api.lobby.Lobby;
+import com.exorath.game.api.maps.MapManager;
 import com.exorath.game.api.player.Players;
 import com.exorath.game.lib.util.FileUtils;
 import com.google.common.collect.Sets;
@@ -47,10 +44,10 @@ public abstract class Game {
     private Actions actions = new Actions();
     private GameState state;
 
-     public Game() {
+    public Game() {
         gameID = UUID.randomUUID();
-         Manager[] baseManagers = new Manager[]{new HUDManager(this), new MapManager(this)};//Not sure if you want to do this another way, just reimplemented it for testing
-         Arrays.asList(baseManagers).forEach( manager -> addManager(manager));
+        Manager[] baseManagers = new Manager[]{new HUDManager(this), new MapManager(this)};//Not sure if you want to do this another way, just reimplemented it for testing
+        Arrays.asList(baseManagers).forEach( manager -> addManager(manager));
     }
 
     /* Game ID */
@@ -102,7 +99,7 @@ public abstract class Game {
     }
 
     public void addManager(Manager manager) {
-        Class managerClass = manager.getClass();
+        Class<?> managerClass = manager.getClass();
         if(!Arrays.asList(managerClass.getInterfaces()).contains(Manager.class))
             return;
         for (Manager m : managers)// check if there's a manager of that type already!

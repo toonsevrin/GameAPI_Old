@@ -1,8 +1,8 @@
 package com.exorath.game.api.gametype.minigame.countdown;
 
-import com.exorath.game.api.Game;
-import com.exorath.game.api.player.GamePlayer;
 import org.bukkit.Sound;
+
+import com.exorath.game.api.Game;
 
 /**
  * Created by TOON on 9/2/2015.
