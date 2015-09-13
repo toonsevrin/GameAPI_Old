@@ -10,6 +10,7 @@ import com.exorath.game.api.Manager;
  * @author Nick Robson
  */
 public class MapManager implements Manager {
+
     private final Game game;
     private MapSelection selection = MapSelection.RANDOM;
     private MapList maps = new MapList();
@@ -45,10 +46,8 @@ public class MapManager implements Manager {
 
     public boolean addMap(String map) {
         GameMap gm = GameMap.get(map);
-
-        if (gm == null) {
+        if (gm == null)
             return false;
-        }
         maps.addMap(gm);
         return true;
     }
@@ -58,7 +57,7 @@ public class MapManager implements Manager {
     }
 
     public void nextMap() {
-        getMapList().nextMap(this.selection);
+        getMapList().nextMap(selection);
     }
 
 }

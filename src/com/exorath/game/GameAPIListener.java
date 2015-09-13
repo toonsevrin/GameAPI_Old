@@ -79,11 +79,10 @@ public class GameAPIListener implements Listener {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
 
         Game g = GameAPI.getGame();
-        if (g != null) {
+        if (g != null)
             gp.join(g);
-        } else {
+        else
             GameAPI.error("game == null? GameAPILisetner onJoin");
-        }
 
         Game game = gp.getGame();
 
@@ -538,8 +537,10 @@ public class GameAPIListener implements Listener {
             damgame.getListeners().forEach(l -> l.onEntityDamageByEntity(event, damgame, dam, ent));
         if (team != null)
             team.getListeners().forEach(l -> l.onEntityDamageByEntity(event, damgame, dam, ent));
-        dam.getListeners().forEach(l -> l.onEntityDamageByEntity(event, damgame, dam, ent));
-        ent.getListeners().forEach(l -> l.onEntityDamageByEntity(event, damgame, dam, ent));
+        if (dam != null)
+            dam.getListeners().forEach(l -> l.onEntityDamageByEntity(event, damgame, dam, ent));
+        if (ent != null)
+            ent.getListeners().forEach(l -> l.onEntityDamageByEntity(event, damgame, dam, ent));
     }
 
 }

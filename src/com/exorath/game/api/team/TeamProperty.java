@@ -19,6 +19,6 @@ public class TeamProperty extends PlayerProperty {
     public static final Property FRIENDLY_FIRE = Property.get("friendlyfire",
             "Whether or not pvp is allowed within the team", false);
     //public static final Property SPAWNS = Property.get( "spawn", "The spawns for this team.", null );
-    public static final Property COLOR = Property.get("team", "The team's color", null);
+    public static final Property COLOR = Property.get("color", "The team's color", null);
 
 }

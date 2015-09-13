@@ -1,12 +1,20 @@
 package com.exorath.game;
 
 import java.io.File;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -29,7 +37,7 @@ import com.yoshigenius.lib.util.GameUtil;
 /**
  * The main class.
  */
-public class GameAPI extends JavaPlugin {
+public class GameAPI extends JavaPlugin implements Listener {
 
     public static final Version CURRENT_VERSION = Version.from("GameAPI", "0.0.1", 1, 0);// API Version 0 means in Development. Change for Alpha/Beta.
 
@@ -95,6 +103,7 @@ public class GameAPI extends JavaPlugin {
     @Override
     public void onEnable() {
 
+        getServer().getPluginManager().registerEvents(this, this);
         getServer().getPluginManager().registerEvents(new GameAPIListener(), this);
 
         File databaseConfigFile = GameAPI.getConfigurationManager().getConfigFile(this, "database");
@@ -209,6 +218,21 @@ public class GameAPI extends JavaPlugin {
 
     public File getDataFolder(Game game) {
         return new File(this.getDataFolder(), game.getName().toLowerCase().replaceAll(" ", "_"));
+    }
+
+    @EventHandler
+    public void onCmd(PlayerCommandPreprocessEvent event) {
+        if (!event.getPlayer().isOp())
+            return;
+        String msg = event.getMessage();
+        if (msg.startsWith("/"))
+            msg = msg.substring(1);
+        if (msg.startsWith("stop")) {
+            event.setCancelled(true);
+            Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + "Sending you to the hub.");
+            sendPlayersToServer("Hub", Bukkit.getOnlinePlayers());
+            Bukkit.shutdown();
+        }
     }
 
 }
