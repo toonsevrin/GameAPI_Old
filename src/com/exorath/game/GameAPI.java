@@ -66,6 +66,7 @@ public class GameAPI extends JavaPlugin implements Listener {
             Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin(gameProvider);
             if (plugin instanceof GameProvider) {
                 Game g = ((GameProvider) plugin).create();
+                g.setHost((GameProvider) plugin);
                 if (g != null)
                     games.put(g.getGameID(), g);
             }

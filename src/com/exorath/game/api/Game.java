@@ -60,8 +60,9 @@ public abstract class Game {
         return host;
     }
 
-    protected void setHost(GameProvider host) {
-        this.host = host;
+    public void setHost(GameProvider host) {
+        if (this.host == null)
+            this.host = host;
     }
 
     public GameState getState() {
