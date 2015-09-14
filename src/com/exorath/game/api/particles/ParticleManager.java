@@ -1,16 +1,18 @@
 package com.exorath.game.api.particles;
 
-import com.exorath.game.GameAPI;
+import java.util.Set;
+
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.Set;
+import com.exorath.game.GameAPI;
+import com.google.common.collect.Sets;
 
 /**
  * Created by TOON on 8/28/2015.
  */
 public class ParticleManager {
 
-    private Set<ParticleEffect> particles;
+    private final Set<ParticleEffect> particles = Sets.newHashSet();
 
     public void sendParticle(ParticleEffect effect) {
         particles.add(effect);
