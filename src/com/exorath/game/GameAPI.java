@@ -71,7 +71,7 @@ public class GameAPI extends JavaPlugin implements Listener {
                     games.put(g.getGameID(), g);
             }
         }
-        GameAPI.printConsole("Games: " + games.size());
+        GameAPI.printConsole("#games: " + games.size());
         return games.size() == 1 ? games.values().stream().findAny().get() : null;//If more then 1 game return null for the moment
     }
 
@@ -153,10 +153,12 @@ public class GameAPI extends JavaPlugin implements Listener {
      *            message you want to print.
      */
     public static void error(String error) {
+        error = error.replace("\n", "\n[GameAPI] [ERROR] ");
         System.err.println("[GameAPI] [ERROR] " + error);
     }
 
     public static void printConsole(String message) {
+        message = message.replace("\n", "\n[GameAPI] [INFO] ");
         System.out.println("[GameAPI] [INFO] " + message);
     }
 
