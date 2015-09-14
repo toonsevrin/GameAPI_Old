@@ -12,6 +12,7 @@ import com.exorath.game.api.Manager;
 import com.exorath.game.api.Property;
 import com.exorath.game.api.gametype.minigame.kit.KitManager;
 import com.exorath.game.api.player.GamePlayer;
+import com.exorath.game.api.player.PlayerManager;
 import com.exorath.game.api.spectate.SpectateManager;
 import com.exorath.game.api.team.TeamManager;
 
@@ -35,7 +36,7 @@ public abstract class Minigame extends Game {
 
     public boolean hasMinPlayers() {
 
-        return getPlayers().getPlayerCount() >= getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
+        return getManager(PlayerManager.class).getPlayerCount() >= getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
     }
     public MinigameStateManager getStateManager() {
         return getManager(MinigameStateManager.class);

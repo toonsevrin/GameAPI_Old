@@ -15,7 +15,7 @@ import com.exorath.game.api.events.GameStateChangedEvent;
 import com.exorath.game.api.hud.HUDManager;
 import com.exorath.game.api.lobby.Lobby;
 import com.exorath.game.api.maps.MapManager;
-import com.exorath.game.api.player.Players;
+import com.exorath.game.api.player.PlayerManager;
 import com.exorath.game.lib.util.FileUtils;
 import com.google.common.collect.Sets;
 
@@ -40,12 +40,12 @@ public abstract class Game {
 
     private Lobby lobby = new Lobby();
     private Properties properties = new Properties();
-    private Players players = new Players(this);
     private Actions actions = new Actions();
     private GameState state;
 
     public Game() {
         gameID = UUID.randomUUID();
+        addManager(new PlayerManager(this));
         Manager[] baseManagers = new Manager[]{new HUDManager(this), new MapManager(this)};//Not sure if you want to do this another way, just reimplemented it for testing
         Arrays.asList(baseManagers).forEach( manager -> addManager(manager));
     }
@@ -155,11 +155,6 @@ public abstract class Game {
     /* Actions */
     public Actions getActions() {
         return actions;
-    }
-
-    /* Players */
-    public Players getPlayers() {
-        return players;
     }
 
     /* Listeners */

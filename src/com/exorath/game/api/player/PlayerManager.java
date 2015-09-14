@@ -8,6 +8,7 @@ import java.util.Map;
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.Game;
 import com.exorath.game.api.GameState;
+import com.exorath.game.api.Manager;
 import com.exorath.game.api.maps.GameMap;
 import com.exorath.game.api.maps.GameSpawn;
 import com.exorath.game.api.maps.MapManager;
@@ -17,13 +18,13 @@ import com.exorath.game.api.team.TeamManager;
 /**
  * @author Nick Robson
  */
-public class Players {
+public class PlayerManager implements Manager {
 
     private final Game game;
 
     private final Map<String, PlayerState> playerStates = new HashMap<>();
 
-    public Players(Game game) {
+    public PlayerManager(Game game) {
         this.game = game;
     }
 

@@ -8,6 +8,7 @@ import com.exorath.game.api.GameProperty;
 import com.exorath.game.api.Manager;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.player.PlayerState;
+import com.exorath.game.api.player.PlayerManager;
 
 /**
  * @author Nick Robson
@@ -20,37 +21,34 @@ public class SpectateManager implements Manager {
     }
 
     public Game getGame() {
-        return this.game;
+        return game;
     }
 
     public boolean isSpectating(GamePlayer player) {
-        return this.game.getPlayers().getPlayerState(player) == PlayerState.SPECTATING;
+        return game.getManager(PlayerManager.class).getPlayerState(player) == PlayerState.SPECTATING;
     }
 
     public void setSpectating(GamePlayer player, boolean spectating) {
-        if (spectating) {
-            this.addSpectator(player);
-        } else {
-            this.removeSpectator(player);
-        }
+        if (spectating)
+            addSpectator(player);
+        else
+            removeSpectator(player);
     }
 
     public void addSpectator(GamePlayer player) {
-        this.game.getPlayers().setState(player, PlayerState.SPECTATING);
+        game.getManager(PlayerManager.class).setState(player, PlayerState.SPECTATING);
 
         Player p = player.getBukkitPlayer();
-        if (p != null) {
+        if (p != null)
             p.setGameMode(GameMode.SPECTATOR);
-        }
     }
 
     public void removeSpectator(GamePlayer player) {
-        this.game.getPlayers().remove(player);
+        game.getManager(PlayerManager.class).remove(player);
 
         Player p = player.getBukkitPlayer();
-        if (p != null) {
+        if (p != null)
             p.setGameMode(game.getProperties().as(GameProperty.DEFAULT_GAMEMODE, GameMode.class));
-        }
     }
 
 }

@@ -5,6 +5,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.exorath.game.api.Game;
 import com.exorath.game.api.player.GamePlayer;
+import com.exorath.game.api.player.PlayerManager;
 
 /**
  * @author Nick Robson
@@ -29,7 +30,7 @@ public abstract class QuitAction {
         }
 
         private void remove(Game game, GamePlayer player) {
-            game.getPlayers().remove(player);
+            game.getManager(PlayerManager.class).remove(player);
         }
 
     }

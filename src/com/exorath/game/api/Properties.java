@@ -17,7 +17,6 @@ import com.yoshigenius.lib.util.GameUtil;
 public class Properties {
 
     private static final Map<Class<?>, Class<?>> PRIMITIVES = new HashMap<Class<?>, Class<?>>() {
-
         {
             put(byte.class, Byte.class);
             put(char.class, Character.class);
@@ -40,10 +39,7 @@ public class Properties {
      * @return Returns the value out of properties or def if value not found.
      */
     public Object get(Property property, Object def) {
-        if (this.properties.containsKey(property)) {
-            return this.properties.get(property);
-        }
-        return def;
+        return properties.getOrDefault(property, def);
     }
 
     /**
@@ -59,7 +55,7 @@ public class Properties {
      */
     @SuppressWarnings("unchecked")
     public <T> T as( Property property, Class<T> clazz) {
-        Object o = this.get(property, null);
+        Object o = get(property, null);
         T t = GameUtil.cast(o, clazz);
         return t == null ? (T) property.getDefault() : primitive(t, clazz);
     }
@@ -68,13 +64,12 @@ public class Properties {
     private <T> T primitive(T t, Class<T> clazz) {
         if (t == null && PRIMITIVES.containsKey(clazz)) {
             Class<?> equiv = PRIMITIVES.get(clazz);
-            if (Number.class.isAssignableFrom(equiv)) {
+            if (Number.class.isAssignableFrom(equiv))
                 return (T) (Number) 0;
-            } else if (equiv == Character.class) {
+            else if (equiv == Character.class)
                 return (T) (Character) '\0';
-            } else if (equiv == Boolean.class) {
+            else if (equiv == Boolean.class)
                 return (T) (Boolean) false;
-            }
         }
         return t;
     }
@@ -88,13 +83,13 @@ public class Properties {
      *            The value you want to store in the key.
      */
     public void set(Property property, Object value) {
-        if (property.isStrict() && !property.getDefault().getClass().isAssignableFrom(value.getClass())) {
+        if (property.isStrict() && !property.getDefault().getClass().isAssignableFrom(value.getClass()))
             throw new IllegalArgumentException(String.format(
                     "Property %s is strict, and provided value of type %s does not match required type of %s.",
                     property.getKey(),
                     value.getClass().getSimpleName(),
                     property.getDefault().getClass().getSimpleName()));
-        }
-        this.properties.put(property, value);
+        properties.put(property, value);
     }
+
 }

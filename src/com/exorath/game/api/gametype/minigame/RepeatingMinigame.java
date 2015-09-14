@@ -8,6 +8,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.GameState;
 import com.exorath.game.api.Property;
+import com.exorath.game.api.player.PlayerManager;
 
 /**
  * Created by Toon Sevrin on 27/05/2015.
@@ -25,7 +26,7 @@ public abstract class RepeatingMinigame extends Minigame {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         if (getState() == GameState.WAITING
-                && getPlayers().getPlayerCount() >= getProperties().as(Minigame.MIN_PLAYERS, Integer.class))
+                && getManager(PlayerManager.class).getPlayerCount() >= getProperties().as(Minigame.MIN_PLAYERS, Integer.class))
             startCountdown();
     }
 

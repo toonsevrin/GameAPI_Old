@@ -7,6 +7,7 @@ import com.exorath.game.api.Manager;
 import com.exorath.game.api.StopCause;
 import com.exorath.game.api.gametype.minigame.countdown.MinigameCountdown;
 import com.exorath.game.api.message.GameMessenger;
+import com.exorath.game.api.player.PlayerManager;
 import com.exorath.game.api.team.Team;
 import com.exorath.game.api.team.TeamManager;
 
@@ -14,7 +15,7 @@ import com.exorath.game.api.team.TeamManager;
  * Created by Toon on 9/1/2015.
  * Not functional yet
  */
-public class MinigameStateManager implements Manager{
+public class MinigameStateManager implements Manager {
 
     private Minigame minigame;
     private MinigameCountdown countdown;
@@ -33,7 +34,7 @@ public class MinigameStateManager implements Manager{
             //TODO: Check if min amount of players are in this team
         }
         int min = minigame.getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
-        int players = minigame.getPlayers().getPlayerCount();
+        int players = minigame.getManager(PlayerManager.class).getPlayerCount();
         if (minigame.hasMinPlayers()) {
             countdown.start();
             GameMessenger.sendInfo(minigame,
@@ -47,7 +48,7 @@ public class MinigameStateManager implements Manager{
         if (minigame.getState() != GameState.WAITING)
             return;
         int min = minigame.getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
-        int players = minigame.getPlayers().getPlayerCount();
+        int players = minigame.getManager(PlayerManager.class).getPlayerCount();
         if (players <= min) {
             countdown.stop();
             GameMessenger.sendInfo(minigame, "Countdown stopped. Waiting for " + (min - players) + " players.");

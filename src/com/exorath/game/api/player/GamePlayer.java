@@ -4,22 +4,27 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import com.exorath.game.GameAPI;
-import com.exorath.game.api.database.SQLData;
-import com.exorath.game.api.hud.HUD;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 
+import com.exorath.game.GameAPI;
 import com.exorath.game.api.Game;
 import com.exorath.game.api.GameListener;
 import com.exorath.game.api.Properties;
+import com.exorath.game.api.database.SQLData;
+import com.exorath.game.api.hud.HUD;
 import com.exorath.game.api.menu.Menu;
 import com.exorath.game.lib.Rank;
 
 @SuppressWarnings("unused")
+/**
+ * GamePlayer class.
+ *
+ * @author Nick Robson
+ * @author Toon Sevrin
+ */
 public final class GamePlayer {
 
     private UUID uuid;
@@ -37,7 +42,7 @@ public final class GamePlayer {
     private HUD hud;
 
     public GamePlayer(UUID id) {
-        this.uuid = id;
+        uuid = id;
         gSqlData = new SQLData(GameAPI.getInstance(), "players", id, false);
 
         hud = new HUD(this);
@@ -50,7 +55,7 @@ public final class GamePlayer {
     }
 
     public Properties getProperties() {
-        return this.properties;
+        return properties;
     }
 
     protected void setProperties(Properties properties) {
@@ -58,28 +63,28 @@ public final class GamePlayer {
     }
 
     public UUID getUUID() {
-        return this.uuid;
+        return uuid;
     }
 
     public OfflinePlayer getOfflinePlayer() {
-        Player p = Bukkit.getPlayer(this.uuid);
-        return p != null ? p : Bukkit.getOfflinePlayer(this.uuid);
+        Player p = Bukkit.getPlayer(uuid);
+        return p != null ? p : Bukkit.getOfflinePlayer(uuid);
     }
 
     public boolean isOnline() {
-        OfflinePlayer offline = this.getOfflinePlayer();
+        OfflinePlayer offline = getOfflinePlayer();
         return offline == null ? false : offline.isOnline();
     }
 
     public Player getBukkitPlayer() {
-        OfflinePlayer player = this.getOfflinePlayer();
+        OfflinePlayer player = getOfflinePlayer();
         if (player != null && player.isOnline())
             return player.getPlayer();
         return null;
     }
 
     public boolean isAlive(Game game) {
-        return game.getPlayers().getPlayerState(this) == PlayerState.PLAYING;
+        return game.getManager(PlayerManager.class).getPlayerState(this) == PlayerState.PLAYING;
     }
 
     //** Rank Methods *//
@@ -140,26 +145,26 @@ public final class GamePlayer {
 
     //** Messaging Methods *//
     public void sendMessage(String message) {
-        Player p = this.getBukkitPlayer();
+        Player p = getBukkitPlayer();
         if (p != null)
             p.sendMessage(message);
     }
 
     public void sendMessage(String format, Object... params) {
-        Player p = this.getBukkitPlayer();
+        Player p = getBukkitPlayer();
         if (p != null)
             p.sendMessage(String.format(format, params));
     }
 
     //** Player State Methods *//
     public PlayerState getState(Game game) {
-        return game == null ? PlayerState.UNKNOWN : game.getPlayers().getPlayerState(this);
+        return game == null ? PlayerState.UNKNOWN : game.getManager(PlayerManager.class).getPlayerState(this);
     }
 
     //** Menu Methods *//
     public boolean openMenu(Menu menu) {
         this.menu = menu;
-        Player p = this.getBukkitPlayer();
+        Player p = getBukkitPlayer();
         if (p != null && p.getOpenInventory() == null) {//  we don't want to aggressively open a menu if they shouldn't be opening...
             Inventory inv = Bukkit.createInventory(null, menu.getSize());
             menu.dump(inv);
@@ -170,23 +175,22 @@ public final class GamePlayer {
     }
 
     public boolean closeMenu() {
-        Player p = this.getBukkitPlayer();
+        Player p = getBukkitPlayer();
         if (p != null) {
-            if (this.menu != null) {
+            if (menu != null) {
                 p.closeInventory();
-                this.menu = null;
-            } else {
+                menu = null;
+            } else
                 return false;
-            }
         } else {
-            this.menu = null;
+            menu = null;
             return false;
         }
         return true;
     }
 
     public Menu getCurrentMenu() {
-        return this.menu;
+        return menu;
     }
 
     //** SQLData Methods**//
@@ -204,11 +208,11 @@ public final class GamePlayer {
     }
 
     public void join(Game game) {
-        if (game != null) {
-            game.getPlayers().join(this);
-        } else
+        if (game != null)
+            game.getManager(PlayerManager.class).join(this);
+        else
             GameAPI.error("Game == null: GamePlayer join");
-        this.gameUID = game.getGameID();
+        gameUID = game.getGameID();
     }
 
     public Set<GameListener> getListeners() {
@@ -216,9 +220,8 @@ public final class GamePlayer {
     }
 
     public void addListener(GameListener listener) {
-        if (listener != null) {
-            this.listeners.add(listener);
-        }
+        if (listener != null)
+            listeners.add(listener);
     }
 
 }

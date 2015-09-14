@@ -3,6 +3,8 @@ package com.exorath.game.api;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.yoshigenius.lib.reflect.Reflection;
+
 public class Property {
 
     private static Map<String, Property> properties = new HashMap<String, Property>();
@@ -19,6 +21,7 @@ public class Property {
     private final String name, desc;
     private final Object def;
     private final boolean strict;
+    private boolean cloned = false;
 
     private Property(String name, String desc, Object def, boolean strict) {
         this.name = name;
@@ -31,19 +34,30 @@ public class Property {
     }
 
     public String getKey() {
-        return this.name;
+        return name;
     }
 
     public String getDescription() {
-        return this.desc;
+        return desc;
     }
 
     public Object getDefault() {
-        return this.def;
+        if (cloned && def instanceof Cloneable)
+            return Reflection.getMethod(def.getClass(), "clone").invoke(def);
+        return def;
     }
 
     public boolean isStrict() {
-        return this.strict;
+        return strict;
+    }
+
+    public boolean isCloned() {
+        return cloned;
+    }
+
+    public Property setCloned() {
+        cloned = true;
+        return this;
     }
 
 }
