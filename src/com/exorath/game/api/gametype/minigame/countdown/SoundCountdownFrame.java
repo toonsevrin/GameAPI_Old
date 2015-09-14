@@ -25,7 +25,7 @@ public class SoundCountdownFrame extends SubtitleFrame {
     @Override
     public void display(Game game) {
         super.display(game);
-        game.getManager(PlayerManager.class).getPlayers()
+        game.getManager(PlayerManager.class).getOnlinePlayers()
                 .forEach(gp -> gp.getBukkitPlayer().playSound(gp.getBukkitPlayer().getLocation(), sound, pitch, vol));
     }
 }

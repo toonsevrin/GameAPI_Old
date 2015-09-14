@@ -84,7 +84,7 @@ public class GameAPI extends JavaPlugin implements Listener {
     }
 
     public static GamePlayer getPlayer(Player player) {
-        return players.computeIfAbsent(player.getUniqueId(), u -> new GamePlayer(u));
+        return getPlayer(player.getUniqueId());
     }
 
     protected static void refreshOnlinePlayers() {

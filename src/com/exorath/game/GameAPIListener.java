@@ -59,6 +59,8 @@ public class GameAPIListener implements Listener {
 
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
+        GameAPI.refreshOnlinePlayers();
+
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
         Game game = gp.getGame();
 
@@ -98,8 +100,6 @@ public class GameAPIListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        GameAPI.refreshOnlinePlayers();
-
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
         Game game = gp.getGame();
 
@@ -111,6 +111,8 @@ public class GameAPIListener implements Listener {
         if (team != null)
             team.getListeners().forEach(l -> l.onQuit(event, game, gp));
         gp.getListeners().forEach(l -> l.onQuit(event, game, gp));
+
+        GameAPI.refreshOnlinePlayers();
     }
 
     @EventHandler

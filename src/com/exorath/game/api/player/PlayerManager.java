@@ -1,9 +1,10 @@
 package com.exorath.game.api.player;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.Game;
@@ -48,12 +49,17 @@ public class PlayerManager implements Manager {
                 amount++;
         return amount;
     }
-    //TODO: LOL Rewrite this method for me, Im not sure how you want this class to work though. Maybe make it store actual GamePlayers? :o
-    public Collection<GamePlayer> getPlayers(){
-        HashSet<GamePlayer> gps = new HashSet<>();
-        GameAPI.getOnlinePlayers().stream().filter(gp -> playerStates.containsKey(gp.getUUID().toString())).forEach(gp -> gps.add(gp));
 
-        return gps;
+    public Set<GamePlayer> getAllPlayers() {
+        return playerStates.keySet().stream().map(s -> GameAPI.getPlayer(UUID.fromString(s))).collect(Collectors.toSet());
+    }
+
+    public Set<GamePlayer> getOnlinePlayers() {
+        return getAllPlayers().stream().filter(p -> p.isOnline()).collect(Collectors.toSet());
+    }
+
+    public Set<GamePlayer> getPlayers(boolean onlineOnly) {
+        return onlineOnly ? getOnlinePlayers() : getAllPlayers();
     }
 
     public boolean isPlaying(GamePlayer player) {

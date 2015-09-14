@@ -15,6 +15,7 @@ import com.exorath.game.api.events.GameStateChangedEvent;
 import com.exorath.game.api.hud.HUDManager;
 import com.exorath.game.api.lobby.Lobby;
 import com.exorath.game.api.maps.MapManager;
+import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.player.PlayerManager;
 import com.exorath.game.lib.util.FileUtils;
 import com.google.common.collect.Sets;
@@ -150,6 +151,10 @@ public abstract class Game {
 
     public void setDescription(String description) {
         properties.set(GameProperty.DESCRIPTION, description);
+    }
+
+    public Set<GamePlayer> getOnlinePlayers() {
+        return getManager(PlayerManager.class).getOnlinePlayers();
     }
 
     /* Actions */
