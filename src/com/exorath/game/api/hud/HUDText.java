@@ -20,11 +20,12 @@ public class HUDText implements Comparable<HUDText> {
         this.displayText = text;
         this.priority = priority;
     }
+
     @Override
-    public HUDText clone(){
+    public HUDText clone() {
         HUDText hudText = new HUDText(text, priority);
         hudText.setDisplayText(displayText);
-        if(effect != null)
+        if (effect != null)
             hudText.setEffect(effect);
         return hudText;
     }
@@ -65,7 +66,7 @@ public class HUDText implements Comparable<HUDText> {
      */
     @Override
     public int compareTo(HUDText text) {
-        if (priority.getPriority() == text.getPriority().getPriority())//If they both have same priority, first in will be set higher
+        if (priority.getPriority() == text.getPriority().getPriority()) //If they both have same priority, first in will be set higher
             return sequence - text.getSequence();
         return priority.getPriority() - text.getPriority().getPriority();
     }

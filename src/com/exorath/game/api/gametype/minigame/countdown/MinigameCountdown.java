@@ -57,7 +57,7 @@ public class MinigameCountdown {
 
     //** Frame functions **//
     protected void finish() {
-        for(int i = frames.size() - 1; i >= 0; i--)
+        for (int i = frames.size() - 1; i >= 0; i--)
             frames.get(i).finish(game);
         HUDManager.PublicHUD publicHUD = game.getManager(HUDManager.class).getPublicHUD();
         publicHUD.removeActionBar("gapi_cdbar");
@@ -75,15 +75,16 @@ public class MinigameCountdown {
         frames.add(getFinalCountdown(ChatColor.GOLD, 2));
         frames.add(getFinalCountdown(ChatColor.GREEN, 1));
         StringBuilder startBuilder = new StringBuilder();
-        startBuilder.append(getArrow(ChatColor.GREEN, MinigameCountdown.LENGTH / 2 - 2, MinigameCountdown.CHAR)).append(ChatColor.BOLD).append(" START ").append(getArrow(ChatColor.GREEN, MinigameCountdown.LENGTH / 2 - 2, MinigameCountdown.CHAR));
+        startBuilder.append(getArrow(ChatColor.GREEN, MinigameCountdown.LENGTH / 2 - 2, MinigameCountdown.CHAR)).append(ChatColor.BOLD)
+                .append(" START ").append(getArrow(ChatColor.GREEN, MinigameCountdown.LENGTH / 2 - 2, MinigameCountdown.CHAR));
         startBuilder.insert(0, getWhiteSpaces(startBuilder.toString()));
-        frames.add(new TitleSubtitleSoundFrame(this,startBuilder.toString(), "", 20, Sound.NOTE_PLING, 3, 10));
+        frames.add(new TitleSubtitleSoundFrame(this, startBuilder.toString(), "", 20, Sound.NOTE_PLING, 3, 10));
         frames.add(new FinishFrame(this));
     }
 
     private CountdownFrame getArrows(int frame) {//TODO: Add percentage and precedingarrows calculation
         StringBuilder sb = new StringBuilder();
-        if(frame == 0)
+        if (frame == 0)
             sb.append(ChatColor.RESET);
 
         float percentage = frame == 0 ? 0 : 1f / MinigameCountdown.LENGTH * frame;
@@ -93,7 +94,7 @@ public class MinigameCountdown {
         getArrow(sb, ChatColor.GREEN, MinigameCountdown.GREEN_CHARS, MinigameCountdown.CHAR);
         getArrow(sb, ChatColor.BLACK, MinigameCountdown.BLACK_CHARS - precedingArrows, MinigameCountdown.CHAR);
         sb.insert(0, getWhiteSpaces(sb.toString()));
-        if(frame == frames.size() - 1)
+        if (frame == frames.size() - 1)
             sb.insert(0, ChatColor.WHITE);
         return new SubtitleFrame(this, sb.toString(), (int) getInterval());
     }
@@ -124,8 +125,10 @@ public class MinigameCountdown {
 
     //** Countdown task **//
     private class CountdownTask extends BukkitRunnable {
+
         private int currentFrame = 0;
         private int tick = 0;
+
         @Override
         public void run() {
             if (currentFrame == frames.size() || !countingDown) {
@@ -134,7 +137,7 @@ public class MinigameCountdown {
                 return;
             }
             /* Action bar */
-            float remaining = getInterval() * (LENGTH - currentFrame) / 20f + getInterval() / 20f * 4 - tick/20f ;
+            float remaining = getInterval() * (LENGTH - currentFrame) / 20f + getInterval() / 20f * 4 - tick / 20f;
             String cdText = remaining <= 2 ? ChatColor.GREEN + "Game starting..." : "Starting in..." + new DecimalFormat("#.0").format(remaining);
             HUDManager.PublicHUD publicHUD = game.getManager(HUDManager.class).getPublicHUD();
             if (publicHUD.containsActionBar("gapi_cdbar"))
@@ -143,23 +146,26 @@ public class MinigameCountdown {
                 publicHUD.addActionBar("gapi_cdbar", new HUDText(cdText, HUDPriority.HIGH));
             /* Frames */
             tick++;
-            if(tick < frames.get(currentFrame).getDelay())
+            if (tick < frames.get(currentFrame).getDelay())
                 return;
             tick = 0;
             frames.get(currentFrame).display(game);
             currentFrame++;
         }
     }
+
     private float getInterval() {
         return (float) game.getProperties().as(Minigame.START_DELAY, Integer.class) / MinigameCountdown.LENGTH;
     }
-    private String getWhiteSpaces(String str){
+
+    private String getWhiteSpaces(String str) {
         return getWhiteSpaces(str, 0);
     }
-    private String getWhiteSpaces(String str, int extra){
+
+    private String getWhiteSpaces(String str, int extra) {
         StringBuilder sb = new StringBuilder();
         sb.append(ChatColor.RESET);
-        for(int i = 0; i < StringUtils.countMatches(str, String.valueOf(ChatColor.COLOR_CHAR)) + extra; i++)
+        for (int i = 0; i < StringUtils.countMatches(str, String.valueOf(ChatColor.COLOR_CHAR)) + extra; i++)
             sb.append("  ");
         sb.deleteCharAt(sb.length() - 1);
         sb.deleteCharAt(sb.length() - 1);

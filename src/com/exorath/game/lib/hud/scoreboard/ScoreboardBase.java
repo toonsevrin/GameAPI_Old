@@ -172,24 +172,26 @@ public class ScoreboardBase {
 
         return false;
     }
+
     private GamePlayer gp;
     private Player player;
+
     public void add(GamePlayer gp) {
         this.gp = gp;
         add();
 
     }
 
-
     public void remove(Player player) {
         player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
     }
-    public void add(){
-        if(this.player != null)
+
+    public void add() {
+        if (this.player != null)
             return;
-        if(gp == null)
+        if (gp == null)
             return;
-        if(gp.getBukkitPlayer() == null)
+        if (gp.getBukkitPlayer() == null)
             return;
         this.player = gp.getBukkitPlayer();
         player.setScoreboard(scoreboard);

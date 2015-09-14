@@ -21,7 +21,7 @@ public class SubtitleFrame extends CountdownFrame {
     public void display(Game game) {
         HUDManager.PublicHUD publicHUD = game.getManager(HUDManager.class).getPublicHUD();
         if (publicHUD.containsSubtitle("gapi_countdownsub"))
-            publicHUD.updateSubtitle("gapi_countdownsub",text);
+            publicHUD.updateSubtitle("gapi_countdownsub", text);
         else
             publicHUD.addSubtitle("gapi_countdownsub", new HUDText(text, HUDPriority.HIGH));
     }

@@ -16,16 +16,18 @@ import java.util.regex.Pattern;
  * removed, other will fade
  */
 public abstract class Title_SubTitleBase extends HUDDisplay {
-    protected static final int LONG_STAY_TIME = Integer.MAX_VALUE /10;
+
+    protected static final int LONG_STAY_TIME = Integer.MAX_VALUE / 10;
     Title_SubTitleBase otherLocation;
 
     public Title_SubTitleBase(GamePlayer player, int maxChars) {
         super(player, maxChars);
     }
 
-    public void setOtherLocation(Title_SubTitleBase otherLocation){
+    public void setOtherLocation(Title_SubTitleBase otherLocation) {
         this.otherLocation = otherLocation;
     }
+
     @Override
     public void displayText(HUDText text) {
         if (otherLocation.getCurrentText() != null || getCurrentText() != null) {//There is text on the other location

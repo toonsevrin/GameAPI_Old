@@ -17,6 +17,7 @@ import com.yoshigenius.lib.util.GameUtil;
 public class Properties {
 
     private static final Map<Class<?>, Class<?>> PRIMITIVES = new HashMap<Class<?>, Class<?>>() {
+
         {
             put(byte.class, Byte.class);
             put(char.class, Character.class);

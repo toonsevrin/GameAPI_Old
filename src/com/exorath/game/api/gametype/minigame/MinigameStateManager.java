@@ -30,7 +30,7 @@ public class MinigameStateManager implements Manager {
     public void checkStart() {
         if (minigame.getState() != GameState.WAITING)
             return;
-        for(Team team : minigame.getManager(TeamManager.class).getTeams()){
+        for (Team team : minigame.getManager(TeamManager.class).getTeams()) {
             //TODO: Check if min amount of players are in this team
         }
         int min = minigame.getProperties().as(Minigame.MIN_PLAYERS, Integer.class);

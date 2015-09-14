@@ -47,8 +47,8 @@ public abstract class Game {
     public Game() {
         gameID = UUID.randomUUID();
         addManager(new PlayerManager(this));
-        Manager[] baseManagers = new Manager[]{new HUDManager(this), new MapManager(this)};//Not sure if you want to do this another way, just reimplemented it for testing
-        Arrays.asList(baseManagers).forEach( manager -> addManager(manager));
+        Manager[] baseManagers = new Manager[] { new HUDManager(this), new MapManager(this) };//Not sure if you want to do this another way, just reimplemented it for testing
+        Arrays.asList(baseManagers).forEach(manager -> addManager(manager));
     }
 
     /* Game ID */
@@ -102,7 +102,7 @@ public abstract class Game {
 
     public void addManager(Manager manager) {
         Class<?> managerClass = manager.getClass();
-        if(!Arrays.asList(managerClass.getInterfaces()).contains(Manager.class))
+        if (!Arrays.asList(managerClass.getInterfaces()).contains(Manager.class))
             return;
         for (Manager m : managers)// check if there's a manager of that type already!
             if (managerClass.isAssignableFrom(m.getClass()))
@@ -171,6 +171,7 @@ public abstract class Game {
     public Set<GameListener> getListeners() {
         return listeners;
     }
+
     /* Configs */
     //** TODO: Take a look at the configuration manager (Is this required?) **//
     public FileConfiguration getConfig(String filename) {

@@ -61,7 +61,8 @@ public abstract class HUDDisplay extends HUDLocation {
     }
 
     /**
-     * @param text HUDText to remove from queue (and from displaying)
+     * @param text
+     *            HUDText to remove from queue (and from displaying)
      */
     public void removeText(HUDText text) {
         if (!active)

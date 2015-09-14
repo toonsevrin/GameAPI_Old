@@ -20,15 +20,15 @@ public class Subtitle extends Title_SubTitleBase {
 
     @Override
     public void sendWithFadeIn(HUDText text) {
-        if(player.getHud().getTitle().getCurrentText() == null)
+        if (player.getHud().getTitle().getCurrentText() == null)
             TitleBase.sendTitle(player.getBukkitPlayer(), "");
         TitleBase.sendSubTitle(player.getBukkitPlayer(), 20, LONG_STAY_TIME, 0, getJSON(text.getDisplayText()));
     }
 
     @Override
     public void send(HUDText text) {
-        if(player.getHud().getTitle().getCurrentText() == null)
+        if (player.getHud().getTitle().getCurrentText() == null)
             TitleBase.sendTitle(player.getBukkitPlayer(), "");
-        TitleBase.sendSubTitle(player.getBukkitPlayer(), 0, LONG_STAY_TIME,0, getJSON(text.getDisplayText()));
+        TitleBase.sendSubTitle(player.getBukkitPlayer(), 0, LONG_STAY_TIME, 0, getJSON(text.getDisplayText()));
     }
 }

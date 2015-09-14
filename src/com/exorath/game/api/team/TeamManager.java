@@ -20,6 +20,7 @@ import com.google.common.collect.Maps;
  * of teams.
  */
 public class TeamManager implements Manager {
+
     private final Game game;
 
     public Map<TeamColor, Team> teams = Maps.newHashMap();
@@ -32,33 +33,39 @@ public class TeamManager implements Manager {
     public Game getGame() {
         return game;
     }
+
     //** Teams **//
     /* Adding & Removing */
     public void addTeam(Team team) {
         deleteDefaultTeam();
         teams.put(team.getTeamColor(), team);
     }
+
     public void removeTeam(Team team) {
         teams.remove(team);
     }
+
     /**
-     * if there is one team and its a DefaultTeam remove it. DefaultTeam only exists while no other teams are added.
+     * if there is one team and its a DefaultTeam remove it. DefaultTeam only
+     * exists while no other teams are added.
      */
     private void deleteDefaultTeam() {
         for (Iterator<Team> it = teams.values().iterator(); it.hasNext();)
             if (it.next() instanceof DefaultTeam)
                 it.remove();
     }
+
     /* Getting */
     public Collection<Team> getTeams() {
         return teams.values();
     }
+
     public Team getTeam() {
         return teams.size() == 1 ? teams.values().toArray(new Team[1])[0] : null;
     }
 
     public Team getTeam(GamePlayer gp) {
-        Optional<Team> team = getTeams().stream().filter(t -> t.getPlayers().contains(gp.getUUID())).findAny();
+        Optional<Team>team = getTeams().stream().filter(t -> t.getPlayers().contains(gp.getUUID())).findAny();
         return team.isPresent() ? team.get() : null;
     }
 
@@ -73,9 +80,9 @@ public class TeamManager implements Manager {
     }
 
     /* Tests */
-    public boolean hasMinPlayers(){
-        for(Team team : getTeams())
-            if(!team.hasEnoughPlayers())
+    public boolean hasMinPlayers() {
+        for (Team team : getTeams())
+            if (!team.hasEnoughPlayers())
                 return false;
         return true;
     }

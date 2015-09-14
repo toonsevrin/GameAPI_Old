@@ -10,13 +10,14 @@ import com.exorath.game.lib.hud.actionbar.ActionBarBase;
 
 /**
  * Created by TOON on 8/11/2015.
- * REPEATER CLASS KEEPS RUNNING DURING CACHING -_- REMOVE CACHING PLEZ, PLEZ, PLEZ
+ * REPEATER CLASS KEEPS RUNNING DURING CACHING -_- REMOVE CACHING PLEZ, PLEZ,
+ * PLEZ
  */
 public class ActionBar extends HUDDisplay {
 
     public ActionBar(GamePlayer player) {
         super(player, 64);
-        new Repeater().runTaskTimer(GameAPI.getInstance(),40,40);
+        new Repeater().runTaskTimer(GameAPI.getInstance(), 40, 40);
     }
 
     @Override
@@ -28,17 +29,20 @@ public class ActionBar extends HUDDisplay {
     public void removeCurrent() {
 
     }
-    private void display(String text){
+
+    private void display(String text) {
         ActionBarBase.send(player.getBukkitPlayer(), text);
     }
-    private class Repeater extends BukkitRunnable{
+
+    private class Repeater extends BukkitRunnable {
+
         @Override
-        public void run(){
-            if(player == null)
+        public void run() {
+            if (player == null)
                 cancel();
-            if(!player.isOnline())
+            if (!player.isOnline())
                 return;
-            if(getCurrentText() != null)
+            if (getCurrentText() != null)
                 display(getCurrentText().getDisplayText());
         }
     }

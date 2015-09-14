@@ -14,6 +14,7 @@ import com.exorath.game.api.player.PlayerManager;
  * @author Nick Robson
  */
 public class SpectateManager implements Manager {
+
     private final Game game;
 
     public SpectateManager(Game game) {
