@@ -42,9 +42,7 @@ public class GameAPI extends JavaPlugin implements Listener {
     public static final Version CURRENT_VERSION = Version.from("GameAPI", "0.0.1", 1, 0);// API Version 0 means in Development. Change for Alpha/Beta.
 
     private static SQLManager sqlManager;
-
-    private static Map<UUID, GamePlayer> players = Maps.newHashMap();
-    private static Map<UUID, Game> games = Maps.newHashMap();
+    private static Set<Game> games = new HashSet<>();
     private static String gameProvider;
     public static final GsonBuilder GSON_BUILDER;
     public static final Gson GSON;
@@ -65,38 +63,31 @@ public class GameAPI extends JavaPlugin implements Listener {
         if (games.isEmpty() && gameProvider != null) {
             Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin(gameProvider);
             if (plugin instanceof GameProvider) {
-                Game g = ((GameProvider) plugin).create();
-                g.setHost((GameProvider) plugin);
-                if (g != null)
-                    games.put(g.getGameID(), g);
+                Game game = ((GameProvider) plugin).create();
+                game.setHost((GameProvider) plugin);
+                if (game != null)
+                    games.add(game);
             }
         }
-        GameAPI.printConsole("#games: " + games.size());
-        return games.size() == 1 ? games.values().stream().findAny().get() : null;//If more then 1 game return null for the moment
+        return games.size() == 1 ? games.stream().findAny().get() : null;//If more then 1 game return null for the moment
     }
 
     public static Game getGame(UUID uuid) {
-        return uuid == null ? null : games.get(uuid);
+        return uuid == null ? null : games.stream().filter(g -> g.getGameID().equals(uuid)).findAny().orElse(null);
     }
 
     public static GamePlayer getPlayer(UUID uuid) {
-        return players.computeIfAbsent(uuid, u -> new GamePlayer(u));
+        //TODO: Create player instance on orElse!
+        return getOnlinePlayers().stream().filter(p -> p.getUUID().equals(uuid)).findAny().orElse(null);
+    }
+    public static Set<GamePlayer> getOnlinePlayers(){
+        Set<GamePlayer> players = new HashSet<>();
+        games.forEach(g -> players.addAll(g.getOnlinePlayers()));
+        return players;
     }
 
     public static GamePlayer getPlayer(Player player) {
         return getPlayer(player.getUniqueId());
-    }
-
-    protected static void refreshOnlinePlayers() {
-        Set<UUID> toRemove = new HashSet<>();
-        players.entrySet().stream().filter(e -> !e.getValue().isOnline()).forEach(e -> toRemove.add(e.getKey()));//Got a concurrency error here so updated this, thought lambdas fixed concurrency? :(
-        players.entrySet().removeIf(e -> toRemove.contains(e.getKey()));
-        Bukkit.getOnlinePlayers().stream().forEach(p -> getPlayer(p));
-    }
-
-    public static Set<GamePlayer> getOnlinePlayers() {
-        refreshOnlinePlayers();
-        return Sets.newHashSet(players.values());
     }
 
     private FileConfiguration versionsConfig;
@@ -131,7 +122,6 @@ public class GameAPI extends JavaPlugin implements Listener {
 
         versionsConfig = YamlConfiguration.loadConfiguration(new File(this.getDataFolder(), "versions.yml"));
 
-        refreshOnlinePlayers();
         GameMap.loadWorlds();
 
     }

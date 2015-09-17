@@ -57,6 +57,8 @@ public abstract class Game implements JoinLeave{
         for(Manager manager : managers)
             if(manager instanceof JoinLeave)
                 ((JoinLeave) manager).join(player);
+        if(lobby != null)
+            lobby.join(player);
     }
 
     @Override
@@ -64,6 +66,8 @@ public abstract class Game implements JoinLeave{
         for(Manager manager : managers)
             if(manager instanceof JoinLeave)
                 ((JoinLeave) manager).leave(player);
+        if(lobby != null)
+            lobby.leave(player);
     }
     /* Game ID */
     public final UUID getGameID() {

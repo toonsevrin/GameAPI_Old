@@ -28,21 +28,16 @@ public class PlayerManager implements Manager, JoinLeave {
     }
     //** Join & Leave **//
     @Override
-    public void join(GamePlayer p) {
-        if (getGame().getState().is(GameState.WAITING, GameState.STARTING)) {
-            //Goto lobby if enabled -> Goto game world and set playing if not
-        }else {
-            //Set spectating if enabled -> tp to lobby if not
-        }
-        add(p);
-
+    public void join(GamePlayer player) {
+        players.add(player);
     }
 
     @Override
     public void leave(GamePlayer player) {
-
+        players.remove(player);
     }
 
+    //** Game **//
     public Game getGame() {
         return game;
     }
@@ -57,15 +52,6 @@ public class PlayerManager implements Manager, JoinLeave {
     //** Tests **//
     public boolean isPlaying(GamePlayer player) {
         return player.getState() == PlayerState.PLAYING;
-    }
-
-    //** Adding/Removing **//
-    public void add(GamePlayer player) {
-        players.add(player);
-    }
-
-    public void remove(GamePlayer player) {
-        players.remove(player);
     }
 
 }

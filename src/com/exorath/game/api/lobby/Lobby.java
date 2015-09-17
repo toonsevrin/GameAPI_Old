@@ -1,5 +1,10 @@
 package com.exorath.game.api.lobby;
 
+import com.exorath.game.api.Game;
+import com.exorath.game.api.GameProperty;
+import com.exorath.game.api.GameState;
+import com.exorath.game.api.spectate.SpectateManager;
+import com.exorath.game.lib.JoinLeave;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -12,17 +17,34 @@ import com.exorath.game.api.npc.SpawnedNPC;
 import com.exorath.game.api.player.GamePlayer;
 
 /**
- * Created by too on 23/05/2015.
+ * Created by Toon Sevrin on 23/05/2015.
  * This is the main Lobby class, it handles most of the lobby stuff (Area where
  * players get tp'ed to
  * between games).
  */
-public class Lobby {
+public class Lobby implements JoinLeave {
 
     private Properties properties = new Properties();
 
     public Lobby() {
         this.setupWorld();
+    }
+
+    //** Join & Leave **//
+    @Override
+    public void join(GamePlayer player) {
+        Game game = player.getGame();
+        if (game.getState() == GameState.WAITING) {
+            teleport(player);
+        }else {
+            if(game.getProperties().as(GameProperty.ALLOW_SPECTATING, Boolean.class))
+               game.getManager(SpectateManager.class).addSpectator(player);
+        }
+    }
+
+    @Override
+    public void leave(GamePlayer player) {
+
     }
 
     private void setupWorld() {
@@ -69,6 +91,7 @@ public class Lobby {
             player.getBukkitPlayer().teleport(this.getSpawnLocation());
     }
 
+    //TODO: If map system works, start testing this stuff
     public void addNPC(NPC npc, Vector vector) {
         World w = this.getWorld();
         if (w != null)

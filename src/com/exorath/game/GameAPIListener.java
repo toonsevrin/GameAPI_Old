@@ -1,6 +1,5 @@
 package com.exorath.game;
 
-import com.exorath.game.api.maps.MapManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -57,19 +56,21 @@ public class GameAPIListener implements Listener {
             GameAPI.getInstance().getLogger().info("Detected GameAPI provider: " + plg.getName());
         }
     }
-
+    private Game getGame(GamePlayer gp){
+        Game game = getGame(gp);
+        if(game == null)
+            throw new NullPointerException("GameAPI needs a plugin provider.");
+        return game;
+    }
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
-        GameAPI.refreshOnlinePlayers();
 
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
-
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        Game game = getGame(gp);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onLogin(event, game, gp));
+    game.getListeners().forEach(l -> l.onLogin(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onLogin(event, game, gp));
         gp.getListeners().forEach(l -> l.onLogin(event, game, gp));
@@ -77,25 +78,14 @@ public class GameAPIListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        GameAPI.refreshOnlinePlayers();
-
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-
-        Game g = GameAPI.getGame();
-        if (g != null)
-            gp.join(g);
-        else
-            GameAPI.error("game == null? GameAPILisetner onJoin");
-
-        Game game = gp.getGame();
-        if(game.getActions().getJoinAction() != null)
-            game.getActions().getJoinAction().onJoin(event, gp, game);
-
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        gp.join();
+        Game game = getGame(gp);
+        game.join(gp);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onJoin(event, game, gp));
+    game.getListeners().forEach(l -> l.onJoin(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onJoin(event, game, gp));
         gp.getListeners().forEach(l -> l.onJoin(event, game, gp));
@@ -104,30 +94,27 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
+        game.leave(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
-
-        if (game != null)
-            game.getListeners().forEach(l -> l.onQuit(event, game, gp));
+        
+    game.getListeners().forEach(l -> l.onQuit(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onQuit(event, game, gp));
         gp.getListeners().forEach(l -> l.onQuit(event, game, gp));
-
-        GameAPI.refreshOnlinePlayers();
     }
 
     @EventHandler
     public void onKick(PlayerKickEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onKick(event, game, gp));
+    game.getListeners().forEach(l -> l.onKick(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onKick(event, game, gp));
         gp.getListeners().forEach(l -> l.onKick(event, game, gp));
@@ -136,13 +123,12 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onChat(event, game, gp));
+    game.getListeners().forEach(l -> l.onChat(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onChat(event, game, gp));
         gp.getListeners().forEach(l -> l.onChat(event, game, gp));
@@ -151,13 +137,12 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getEntity());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onDeath(event, game, gp));
+    game.getListeners().forEach(l -> l.onDeath(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onDeath(event, game, gp));
         gp.getListeners().forEach(l -> l.onDeath(event, game, gp));
@@ -166,7 +151,7 @@ public class GameAPIListener implements Listener {
             GamePlayer killer = GameAPI.getPlayer(event.getEntity().getKiller());
             if (killer != null) {
                 GamePlayerKillPlayerEvent gpke = new GamePlayerKillPlayerEvent(game, gp, killer);
-                game.getListeners().forEach(l -> l.onPlayerKillPlayer(gpke));
+            game.getListeners().forEach(l -> l.onPlayerKillPlayer(gpke));
                 if (team != null)
                     team.getListeners().forEach(l -> l.onPlayerKillPlayer(gpke));
                 gp.getListeners().forEach(l -> l.onPlayerKillPlayer(gpke));
@@ -177,28 +162,27 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onRespawn(event, game, gp));
+        
+    game.getListeners().forEach(l -> l.onRespawn(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onRespawn(event, game, gp));
         gp.getListeners().forEach(l -> l.onRespawn(event, game, gp));
     }
-
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onInteract(event, game, gp));
+        
+    game.getListeners().forEach(l -> l.onInteract(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onInteract(event, game, gp));
         gp.getListeners().forEach(l -> l.onInteract(event, game, gp));
@@ -207,13 +191,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onDropItem(PlayerDropItemEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onDropItem(event, game, gp));
+        
+    game.getListeners().forEach(l -> l.onDropItem(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onDropItem(event, game, gp));
         gp.getListeners().forEach(l -> l.onDropItem(event, game, gp));
@@ -222,13 +206,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onPickupItem(PlayerPickupItemEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onPickupItem(event, game, gp));
+        
+    game.getListeners().forEach(l -> l.onPickupItem(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onPickupItem(event, game, gp));
         gp.getListeners().forEach(l -> l.onPickupItem(event, game, gp));
@@ -237,13 +221,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onFish(PlayerFishEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onFish(event, game, gp));
+        
+    game.getListeners().forEach(l -> l.onFish(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onFish(event, game, gp));
         gp.getListeners().forEach(l -> l.onFish(event, game, gp));
@@ -252,13 +236,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onExpChange(PlayerExpChangeEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onExpChange(event, game, gp));
+        
+    game.getListeners().forEach(l -> l.onExpChange(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onExpChange(event, game, gp));
         gp.getListeners().forEach(l -> l.onExpChange(event, game, gp));
@@ -267,13 +251,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onGamemodeChange(PlayerGameModeChangeEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onGamemodeChange(event, game, gp));
+        
+    game.getListeners().forEach(l -> l.onGamemodeChange(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onGamemodeChange(event, game, gp));
         gp.getListeners().forEach(l -> l.onGamemodeChange(event, game, gp));
@@ -282,13 +266,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onInteractEntity(PlayerInteractEntityEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onInteractEntity(event, game, gp));
+        
+    game.getListeners().forEach(l -> l.onInteractEntity(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onInteractEntity(event, game, gp));
         gp.getListeners().forEach(l -> l.onInteractEntity(event, game, gp));
@@ -297,13 +281,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onInteractAtEntity(PlayerInteractAtEntityEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onInteractAtEntity(event, game, gp));
+        
+    game.getListeners().forEach(l -> l.onInteractAtEntity(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onInteractAtEntity(event, game, gp));
         gp.getListeners().forEach(l -> l.onInteractAtEntity(event, game, gp));
@@ -312,13 +296,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onWorldChange(PlayerChangedWorldEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onWorldChange(event, game, gp));
+        
+    game.getListeners().forEach(l -> l.onWorldChange(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onWorldChange(event, game, gp));
         gp.getListeners().forEach(l -> l.onWorldChange(event, game, gp));
@@ -327,13 +311,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onLevelChange(PlayerLevelChangeEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onLevelChange(event, game, gp));
+        
+    game.getListeners().forEach(l -> l.onLevelChange(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onLevelChange(event, game, gp));
         gp.getListeners().forEach(l -> l.onLevelChange(event, game, gp));
@@ -342,13 +326,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onMove(event, game, gp));
+        
+    game.getListeners().forEach(l -> l.onMove(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onMove(event, game, gp));
         gp.getListeners().forEach(l -> l.onMove(event, game, gp));
@@ -357,13 +341,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onVelocity(PlayerVelocityEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onVelocity(event, game, gp));
+        
+        game.getListeners().forEach(l -> l.onVelocity(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onVelocity(event, game, gp));
         gp.getListeners().forEach(l -> l.onVelocity(event, game, gp));
@@ -372,13 +356,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onPortal(PlayerPortalEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onPortal(event, game, gp));
+        
+        game.getListeners().forEach(l -> l.onPortal(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onPortal(event, game, gp));
         gp.getListeners().forEach(l -> l.onPortal(event, game, gp));
@@ -387,13 +371,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onShear(PlayerShearEntityEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onShear(event, game, gp));
+        
+        game.getListeners().forEach(l -> l.onShear(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onShear(event, game, gp));
         gp.getListeners().forEach(l -> l.onShear(event, game, gp));
@@ -402,13 +386,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onTeleport(event, game, gp));
+        
+        game.getListeners().forEach(l -> l.onTeleport(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onTeleport(event, game, gp));
         gp.getListeners().forEach(l -> l.onTeleport(event, game, gp));
@@ -417,13 +401,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onToggleFlight(PlayerToggleFlightEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onToggleFlight(event, game, gp));
+        
+        game.getListeners().forEach(l -> l.onToggleFlight(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onToggleFlight(event, game, gp));
         gp.getListeners().forEach(l -> l.onToggleFlight(event, game, gp));
@@ -432,13 +416,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onToggleSneak(PlayerToggleSneakEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onToggleSneak(event, game, gp));
+        
+        game.getListeners().forEach(l -> l.onToggleSneak(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onToggleSneak(event, game, gp));
         gp.getListeners().forEach(l -> l.onToggleSneak(event, game, gp));
@@ -447,13 +431,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onToggleSprint(PlayerToggleSprintEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onToggleSprint(event, game, gp));
+        
+        game.getListeners().forEach(l -> l.onToggleSprint(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onToggleSprint(event, game, gp));
         gp.getListeners().forEach(l -> l.onToggleSprint(event, game, gp));
@@ -462,13 +446,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onBlockBreak(event, game, gp));
+        
+        game.getListeners().forEach(l -> l.onBlockBreak(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onBlockBreak(event, game, gp));
         gp.getListeners().forEach(l -> l.onBlockBreak(event, game, gp));
@@ -477,13 +461,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onBlockPlace(event, game, gp));
+        
+        game.getListeners().forEach(l -> l.onBlockPlace(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onBlockPlace(event, game, gp));
         gp.getListeners().forEach(l -> l.onBlockPlace(event, game, gp));
@@ -492,13 +476,13 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onSignChange(event, game, gp));
+        
+        game.getListeners().forEach(l -> l.onSignChange(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onSignChange(event, game, gp));
         gp.getListeners().forEach(l -> l.onSignChange(event, game, gp));
@@ -509,13 +493,13 @@ public class GameAPIListener implements Listener {
         GamePlayer gp = event.getEntity() instanceof Player ? GameAPI.getPlayer((Player) event.getEntity()) : null;
         if (gp == null)
             return;
-        Game game = gp == null ? null : gp.getGame();
+        Game game = getGame(gp);
 
-        TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
+        TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-        if (game != null)
-            game.getListeners().forEach(l -> l.onEntityDamage(event, game, gp));
+        
+        game.getListeners().forEach(l -> l.onEntityDamage(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onEntityDamage(event, game, gp));
         if (gp != null)

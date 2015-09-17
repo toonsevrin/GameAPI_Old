@@ -19,21 +19,5 @@ public abstract class JoinAction {
 
     public abstract void onJoin(PlayerJoinEvent event, GamePlayer player, Game game);
 
-    public static class SpectateIngame extends JoinAction {
-
-        private static final GameState[] SPECTATE_STATES = new GameState[] { GameState.INGAME, GameState.FINISHING,
-                GameState.STARTING, GameState.RESTARTING };
-
-        @Override
-        public void onJoin(PlayerJoinEvent event, GamePlayer player, Game game) {
-            if (ArrayUtils.contains(SPECTATE_STATES, game.getState())){//Ingame
-
-            }else{//In lobby
-                game.getLobby().teleport(player);
-                GameAPI.printConsole("SPAWNED!");
-            }
-            //TODO: Set the GamePlayer in spectator mode
-        }
-    }
 
 }

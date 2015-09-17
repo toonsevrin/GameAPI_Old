@@ -26,8 +26,9 @@ import com.exorath.game.lib.Rank;
  * @author Toon Sevrin
  */
 public final class GamePlayer {
-
     private UUID uuid;
+
+    private Game game;
     private Rank rank = Rank.NONE;
     private int coins = 0, credits = 0, wonCoins = 0;
     private Properties properties = new Properties();
@@ -85,7 +86,7 @@ public final class GamePlayer {
         return null;
     }
 
-    public boolean isAlive(Game game) {
+    public boolean isAlive() {
         return state == PlayerState.PLAYING;
     }
 
@@ -159,10 +160,6 @@ public final class GamePlayer {
     }
 
     //** Player State Methods *//
-    //TODO: BIG TOON FIXUP
-//    public PlayerState getState(Game game) {
-//        return game == null ? PlayerState.UNKNOWN : game.getManager(PlayerManager.class).getPlayerState(this);
-//    }
     public PlayerState getState(){
         if (state == null) {
             state = PlayerState.UNKNOWN;
@@ -214,16 +211,14 @@ public final class GamePlayer {
         return gSqlData;
     }
 
-    //TODO: THIS STUFF IS BUGGED
     public Game getGame() {
-        return GameAPI.getGame(gameUID);
+        return game;
+    }
+    public void setGame(){
+        this.game = game;
     }
 
-    public void join(Game game) {
-        if (game != null)
-            game.getManager(PlayerManager.class).join(this);
-        else
-            GameAPI.error("Game == null: GamePlayer join");
+    public void join() {
         gameUID = game.getGameID();
     }
 
