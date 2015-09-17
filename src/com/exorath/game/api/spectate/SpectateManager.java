@@ -45,8 +45,6 @@ public class SpectateManager implements Manager {
     }
 
     public void removeSpectator(GamePlayer player) {
-        game.getManager(PlayerManager.class).remove(player);
-
         Player p = player.getBukkitPlayer();
         if (p != null)
             p.setGameMode(game.getProperties().as(GameProperty.DEFAULT_GAMEMODE, GameMode.class));

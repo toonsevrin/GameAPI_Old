@@ -19,7 +19,7 @@ public class SGListener implements GameListener {
     //REPLACED WITH AN ACTION
     @Override
     public void onDeath(PlayerDeathEvent event, Game game, GamePlayer player) {
-        if (player.getState(game) == PlayerState.PLAYING) {
+        if (player.getState() == PlayerState.PLAYING) {
             GameMessenger.sendStructured(game, player, "You died, hopefully you win next time!",
                     "This round you earned " + player.getCoinsWon() + " honor points!");
         }

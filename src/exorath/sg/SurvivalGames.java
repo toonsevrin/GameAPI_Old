@@ -10,8 +10,6 @@ import com.exorath.game.api.StopCause;
 import com.exorath.game.api.action.DieAction;
 import com.exorath.game.api.action.GameEndAction;
 import com.exorath.game.api.action.HungerAction;
-import com.exorath.game.api.action.JoinAction;
-import com.exorath.game.api.action.QuitAction;
 import com.exorath.game.api.gametype.minigame.RepeatingMinigame;
 import com.exorath.game.api.gametype.minigame.kit.KitManager;
 import com.exorath.game.api.maps.MapManager;
@@ -50,8 +48,6 @@ public class SurvivalGames extends RepeatingMinigame {
 
         /* Actions */
         this.getActions().setDieAction(new DieAction.Spectate());//This is to avoid having to write basic actions again on each gamemode.
-        this.getActions().setJoinAction(new JoinAction.SpectateIngame());//This is to avoid having to write basic actions again on each gamemode.
-        this.getActions().setQuitAction(new QuitAction.LeaveGame());
         this.getActions().setGameEndAction(new GameEndAction.SendToServer("hub"));//This is to avoid having to write basic actions again on each gamemode.
         this.getActions().setHungerAction(new HungerAction.Default());
 
@@ -116,7 +112,7 @@ public class SurvivalGames extends RepeatingMinigame {
                 continue;
             }
             if (cause == StopCause.TIME_UP) {// If the time is up, it means that the game tied.
-                if (player.isAlive(this)) {// Send the players which are still alive a victory reward and message
+                if (player.isAlive()) {// Send the players which are still alive a victory reward and message
                     GameMessenger.sendStructured(this, player, "player.onTie.alive");
                     player.addCoins(150);
                 } else {// Send the losers a message and a smaller reward
@@ -125,7 +121,7 @@ public class SurvivalGames extends RepeatingMinigame {
                 }
             }
             if (cause == StopCause.VICTORY) {
-                if (player.isAlive(this)) {// Send the victor a big reward and victory message
+                if (player.isAlive()) {// Send the victor a big reward and victory message
                     GameMessenger.sendStructured(this, player, "player.onVictory.alive");
                     player.addCoins(250);
                 } else {// Send the losers a message and a smaller reward
