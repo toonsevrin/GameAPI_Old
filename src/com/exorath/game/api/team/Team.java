@@ -19,6 +19,7 @@ import com.exorath.game.api.player.GamePlayer;
 /**
  * Created by Toon Sevrin on 23/05/2015.
  * Base object for a Team.
+ * TODO: ADD TEAMCOLOR TO CONSTRUCTOR
  */
 public class Team {
 
@@ -27,24 +28,24 @@ public class Team {
 
     private Properties properties = new Properties();
 
-    private Set<UUID> players = new HashSet<>(), activePlayers = new HashSet<>();
+    private Set<GamePlayer> players = new HashSet<>(), activePlayers = new HashSet<>();
 
     private final Set<GameListener> listeners = new HashSet<>();
 
     //** Player Methods **//
     /* Getters */
     public Set<GamePlayer> getPlayers() {
-        return players.stream().map(u -> GameAPI.getPlayer(u)).collect(Collectors.toSet());
+        return players;
     }
 
-    public Set<UUID> getActivePlayers() {
+    public Set<GamePlayer> getActivePlayers() {
         return activePlayers;
     }
 
     /* Add - Remove */
     public void addPlayer(GamePlayer player) {
-        players.add(player.getUUID());
-        activePlayers.add(player.getUUID());
+        players.add(player);
+        activePlayers.add(player);
     }
 
     public void removePlayer(GamePlayer player) {
@@ -55,13 +56,13 @@ public class Team {
     }
 
     public void removeOfflinePlayers() {
-        Iterator<UUID> it = players.iterator();
+        Iterator<GamePlayer> it = players.iterator();
         while (it.hasNext()) {
-            UUID uuid = it.next();
-            if (Bukkit.getPlayer(uuid) == null) {
+            GamePlayer gp = it.next();
+            if (!gp.isOnline()) {
                 it.remove();
-                if (activePlayers.contains(uuid))
-                    activePlayers.remove(uuid);
+                if (activePlayers.contains(gp))
+                    activePlayers.remove(gp);
             }
         }
     }
@@ -137,7 +138,9 @@ public class Team {
         properties.set(TeamProperty.COLOR, color);
         return this;
     }
-
+    public int getTotalWeight(){
+        return players.size() * properties.as(TeamProperty.PLAYER_WEIGHT, int.class);
+    }
     //** Spawns **//
     public GameSpawn[] getSpawns(GameMap map) {
         return map.getSpawns(getTeamColor());

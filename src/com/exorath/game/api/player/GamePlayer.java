@@ -212,9 +212,11 @@ public final class GamePlayer {
     }
 
     public Game getGame() {
+        if(game == null)
+            game = GameAPI.getGame();
         return game;
     }
-    public void setGame(){
+    public void setGame(Game game){
         this.game = game;
     }
 

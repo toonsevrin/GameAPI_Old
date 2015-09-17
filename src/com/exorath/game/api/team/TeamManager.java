@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.exorath.game.lib.JoinLeave;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.exorath.game.api.Game;
@@ -34,12 +35,19 @@ public class TeamManager implements Manager, JoinLeave {
     //** Join & Leave **//
     @Override
     public void join(GamePlayer player) {
-
+        if(addToDefault(player)) {
+            player.sendMessage("You successfully joined " + getTeam(player).getTeamColor().toString());
+        }else{
+            player.sendMessage(ChatColor.RED + "All teams are full :(");
+        }
     }
 
     @Override
     public void leave(GamePlayer player) {
-
+        Team team = getTeam(player);
+        if(team == null)
+            return;
+        team.removePlayer(player);
     }
     //** Teams **//
     /* Adding & Removing */
@@ -73,7 +81,7 @@ public class TeamManager implements Manager, JoinLeave {
         return teams.size() == 1 ? teams.values().toArray(new Team[1])[0] : null;
     }
     public Team getTeam(GamePlayer gp) {
-        Optional<Team>team = getTeams().stream().filter(t -> t.getPlayers().contains(gp.getUUID())).findAny();
+        Optional<Team>team = getTeams().stream().filter(t -> t.getPlayers().contains(gp)).findAny();
         return team.isPresent() ? team.get() : null;
     }
     public Team getTeam(TeamColor color, boolean create) {
@@ -81,10 +89,20 @@ public class TeamManager implements Manager, JoinLeave {
             teams.put(color, new Team().setTeamColor(color));
         return teams.get(color);
     }
-    public int getWeight(Team t) {
-        return t.getPlayers().size() * t.getProperties().as(TeamProperty.PLAYER_WEIGHT, int.class);
-    }
+    public boolean addToDefault(GamePlayer player){
+        Team t = null;
+        for(Team team : teams.values()){
+            if(team.getMaxTeamSize() == team.getPlayers().size())//team is full
+                continue;
+            if(t == null || team.getTotalWeight() < t.getTotalWeight())
+                t = team;
+        }
+        if(t == null)
+            return false;
 
+        t.addPlayer(player);
+        return true;
+    }
     /* Tests */
     public boolean hasMinPlayers() {
         for (Team team : getTeams())

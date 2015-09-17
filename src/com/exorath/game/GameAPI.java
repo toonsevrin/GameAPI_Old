@@ -69,6 +69,7 @@ public class GameAPI extends JavaPlugin implements Listener {
                     games.add(game);
             }
         }
+        System.out.println("Size: " + games.size());
         return games.size() == 1 ? games.stream().findAny().get() : null;//If more then 1 game return null for the moment
     }
 
@@ -77,7 +78,6 @@ public class GameAPI extends JavaPlugin implements Listener {
     }
 
     public static GamePlayer getPlayer(UUID uuid) {
-        //TODO: Create player instance on orElse!
         return getOnlinePlayers().stream().filter(p -> p.getUUID().equals(uuid)).findAny().orElse(null);
     }
     public static Set<GamePlayer> getOnlinePlayers(){

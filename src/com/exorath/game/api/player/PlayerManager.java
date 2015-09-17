@@ -13,11 +13,12 @@ import com.exorath.game.api.maps.MapManager;
 import com.exorath.game.api.team.Team;
 import com.exorath.game.api.team.TeamManager;
 import com.exorath.game.lib.JoinLeave;
+import org.bukkit.entity.Player;
 
 /**
  * @author Nick Robson
  */
-public class PlayerManager implements Manager, JoinLeave {
+public class PlayerManager implements Manager {
 
     private final Game game;
 
@@ -27,12 +28,12 @@ public class PlayerManager implements Manager, JoinLeave {
         this.game = game;
     }
     //** Join & Leave **//
-    @Override
-    public void join(GamePlayer player) {
+
+    public void login(UUID id){
+        GamePlayer player = new GamePlayer(id);
+        player.setGame(game);
         players.add(player);
     }
-
-    @Override
     public void leave(GamePlayer player) {
         players.remove(player);
     }

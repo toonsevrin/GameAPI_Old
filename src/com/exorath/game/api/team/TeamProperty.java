@@ -18,6 +18,6 @@ public class TeamProperty extends PlayerProperty {
             "How much this player weighs, used for balancing.", 1);
     public static final Property FRIENDLY_FIRE = Property.get("friendlyfire",
             "Whether or not pvp is allowed within the team", false);
-    public static final Property COLOR = Property.get("color", "The team's color", null);
+    public static final Property COLOR = Property.get("color", "The team's color", TeamColor.RED);
 
 }
