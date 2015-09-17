@@ -1,5 +1,6 @@
 package com.exorath.game;
 
+import com.exorath.game.api.maps.MapManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -87,6 +88,8 @@ public class GameAPIListener implements Listener {
             GameAPI.error("game == null? GameAPILisetner onJoin");
 
         Game game = gp.getGame();
+        if(game.getActions().getJoinAction() != null)
+            game.getActions().getJoinAction().onJoin(event, gp, game);
 
         TeamManager teams = game == null ? null : game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);

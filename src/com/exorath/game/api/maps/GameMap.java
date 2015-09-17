@@ -216,7 +216,7 @@ public class GameMap {
     public GameSpawn findSpawn(GamePlayer player) {
         Game game = player.getGame();
         if (game != null) {
-            PlayerState state = player.getState(game);
+            PlayerState state = player.getState();
             if (state == PlayerState.PLAYING) {
                 TeamManager teams = game.getManager(TeamManager.class);
                 TeamColor team = teams == null ? null : teams.getTeam(player).getTeamColor();

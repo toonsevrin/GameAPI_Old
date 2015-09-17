@@ -38,20 +38,25 @@ public class MinigameStateManager implements Manager {
         if (minigame.hasMinPlayers()) {
             countdown.start();
             GameMessenger.sendInfo(minigame,
-                    "Game is starting in " + minigame.getProperties().as(Minigame.START_DELAY, Integer.class));
+                    "Game is starting in " + minigame.getProperties().as(Minigame.START_DELAY, Integer.class)/20 + "seconds. Prepare yourself!");
         } else
             GameMessenger.sendInfo(minigame, "Waiting for " + (min - players) + " players.");
     }
 
     //Run this when a player leaves
     public void checkStop() {
-        if (minigame.getState() != GameState.WAITING)
-            return;
-        int min = minigame.getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
-        int players = minigame.getManager(PlayerManager.class).getPlayerCount();
-        if (players <= min) {
-            countdown.stop();
-            GameMessenger.sendInfo(minigame, "Countdown stopped. Waiting for " + (min - players) + " players.");
+        if (minigame.getState() == GameState.WAITING) {
+            int min = minigame.getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
+            int players = minigame.getManager(PlayerManager.class).getPlayerCount();
+            if (players <= min) {
+                countdown.stop();
+                GameMessenger.sendInfo(minigame, "Countdown stopped. Waiting for " + (min - players) + " players.");
+            }
+        }else if(minigame.getState() == GameState.INGAME){
+            if(minigame.getOnlinePlayers().isEmpty())
+                stop(StopCause.NO_PLAYERS);
+            else if(!minigame.getManager(TeamManager.class).hasPlayersPlaying())
+                stop(StopCause.NO_PLAYERS);
         }
     }
 

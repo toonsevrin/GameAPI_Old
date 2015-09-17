@@ -1,9 +1,6 @@
 package com.exorath.game.api.player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.exorath.game.GameAPI;
@@ -15,93 +12,60 @@ import com.exorath.game.api.maps.GameSpawn;
 import com.exorath.game.api.maps.MapManager;
 import com.exorath.game.api.team.Team;
 import com.exorath.game.api.team.TeamManager;
+import com.exorath.game.lib.JoinLeave;
 
 /**
  * @author Nick Robson
  */
-public class PlayerManager implements Manager {
+public class PlayerManager implements Manager, JoinLeave {
 
     private final Game game;
 
-    private final Map<String, PlayerState> playerStates = new HashMap<>();
+    private Set<GamePlayer> players = new HashSet<>();
 
     public PlayerManager(Game game) {
         this.game = game;
+    }
+    //** Join & Leave **//
+    @Override
+    public void join(GamePlayer p) {
+        if (getGame().getState().is(GameState.WAITING, GameState.STARTING)) {
+            //Goto lobby if enabled -> Goto game world and set playing if not
+        }else {
+            //Set spectating if enabled -> tp to lobby if not
+        }
+        add(p);
+
+    }
+
+    @Override
+    public void leave(GamePlayer player) {
+
     }
 
     public Game getGame() {
         return game;
     }
-
-    public PlayerState getPlayerState(GamePlayer player) {
-        PlayerState state = playerStates.get(player.getUUID().toString());
-        if (state == null) {
-            state = PlayerState.UNKNOWN;
-            playerStates.put(player.getUUID().toString(), state);
-        }
-        return state;
-    }
-
+    //** Counting **//
     public int getPlayerCount() {
-        int amount = 0;
-        for (String id : playerStates.keySet())
-            if (playerStates.get(id) == PlayerState.PLAYING)
-                amount++;
-        return amount;
+        return (int) players.stream().filter(p -> p.getState() == PlayerState.PLAYING).count();
     }
-
-    public Set<GamePlayer> getAllPlayers() {
-        return playerStates.keySet().stream().map(s -> GameAPI.getPlayer(UUID.fromString(s))).collect(Collectors.toSet());
+    //** Getting players **//
+    public Set<GamePlayer> getPlayers() {
+        return players;
     }
-
-    public Set<GamePlayer> getOnlinePlayers() {
-        return getAllPlayers().stream().filter(p -> p.isOnline()).collect(Collectors.toSet());
-    }
-
-    public Set<GamePlayer> getPlayers(boolean onlineOnly) {
-        return onlineOnly ? getOnlinePlayers() : getAllPlayers();
-    }
-
+    //** Tests **//
     public boolean isPlaying(GamePlayer player) {
-        return getPlayerState(player) == PlayerState.PLAYING;
+        return player.getState() == PlayerState.PLAYING;
     }
 
-    public void setState(GamePlayer player, PlayerState state) {
-        playerStates.put(player.getUUID().toString(), state);
-    }
-
-    public void add(GamePlayer player, PlayerState state) {
-        setState(player, state);
+    //** Adding/Removing **//
+    public void add(GamePlayer player) {
+        players.add(player);
     }
 
     public void remove(GamePlayer player) {
-        setState(player, PlayerState.REMOVED);
-    }
-
-    public void join(GamePlayer p) {
-        PlayerState state;
-        if (getGame().getState().is(GameState.WAITING, GameState.STARTING))
-            state = PlayerState.PLAYING;
-        else
-            state = PlayerState.SPECTATING;
-        add(p, state);
-
-        TeamManager teams = getGame().getManager(TeamManager.class);
-        if (teams != null) {
-            Team team = teams.getTeam(p);
-            if (team != null)
-                team.addPlayer(p);
-        }
-
-        MapManager maps = getGame().getManager(MapManager.class);
-        if (maps != null) {
-            GameMap map = maps.getCurrent();
-            if (map == null)
-                return;
-            GameSpawn spawn = map.findSpawn(p);
-            if (p.isOnline() && spawn != null)
-                p.getBukkitPlayer().teleport(spawn.getBukkitLocation());
-        }
+        players.remove(player);
     }
 
 }

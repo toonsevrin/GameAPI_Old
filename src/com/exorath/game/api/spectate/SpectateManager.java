@@ -26,7 +26,7 @@ public class SpectateManager implements Manager {
     }
 
     public boolean isSpectating(GamePlayer player) {
-        return game.getManager(PlayerManager.class).getPlayerState(player) == PlayerState.SPECTATING;
+        return player.getState() == PlayerState.SPECTATING;
     }
 
     public void setSpectating(GamePlayer player, boolean spectating) {
@@ -37,7 +37,7 @@ public class SpectateManager implements Manager {
     }
 
     public void addSpectator(GamePlayer player) {
-        game.getManager(PlayerManager.class).setState(player, PlayerState.SPECTATING);
+        player.setState(PlayerState.SPECTATING);
 
         Player p = player.getBukkitPlayer();
         if (p != null)

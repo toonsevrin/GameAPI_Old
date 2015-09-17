@@ -2,6 +2,7 @@ package com.exorath.game.api.gametype.minigame;
 
 import java.util.Arrays;
 
+import com.exorath.game.api.maps.MapManager;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 

@@ -37,6 +37,8 @@ public final class GamePlayer {
     private SQLData gSqlData;
     private UUID gameUID;
 
+    private PlayerState state = PlayerState.UNKNOWN;
+
     private Set<GameListener> listeners = new HashSet<>();
 
     private HUD hud;
@@ -84,7 +86,7 @@ public final class GamePlayer {
     }
 
     public boolean isAlive(Game game) {
-        return game.getManager(PlayerManager.class).getPlayerState(this) == PlayerState.PLAYING;
+        return state == PlayerState.PLAYING;
     }
 
     //** Rank Methods *//
@@ -157,8 +159,18 @@ public final class GamePlayer {
     }
 
     //** Player State Methods *//
-    public PlayerState getState(Game game) {
-        return game == null ? PlayerState.UNKNOWN : game.getManager(PlayerManager.class).getPlayerState(this);
+    //TODO: BIG TOON FIXUP
+//    public PlayerState getState(Game game) {
+//        return game == null ? PlayerState.UNKNOWN : game.getManager(PlayerManager.class).getPlayerState(this);
+//    }
+    public PlayerState getState(){
+        if (state == null) {
+            state = PlayerState.UNKNOWN;
+        }
+        return state;
+    }
+    public void setState(PlayerState state){
+        this.state = state;
     }
 
     //** Menu Methods *//

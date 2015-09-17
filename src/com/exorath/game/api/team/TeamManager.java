@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 
+import com.exorath.game.lib.JoinLeave;
 import org.bukkit.entity.Player;
 
 import com.exorath.game.api.Game;
@@ -19,7 +20,7 @@ import com.google.common.collect.Maps;
  * Manager instantiated in Game class. Manages the creation and implementation
  * of teams.
  */
-public class TeamManager implements Manager {
+public class TeamManager implements Manager, JoinLeave {
 
     private final Game game;
 
@@ -30,10 +31,16 @@ public class TeamManager implements Manager {
         addTeam(new DefaultTeam());
     }
 
-    public Game getGame() {
-        return game;
+    //** Join & Leave **//
+    @Override
+    public void join(GamePlayer player) {
+
     }
 
+    @Override
+    public void leave(GamePlayer player) {
+
+    }
     //** Teams **//
     /* Adding & Removing */
     public void addTeam(Team team) {
@@ -56,25 +63,24 @@ public class TeamManager implements Manager {
     }
 
     /* Getting */
+    public Game getGame() {
+        return game;
+    }
     public Collection<Team> getTeams() {
         return teams.values();
     }
-
     public Team getTeam() {
         return teams.size() == 1 ? teams.values().toArray(new Team[1])[0] : null;
     }
-
     public Team getTeam(GamePlayer gp) {
         Optional<Team>team = getTeams().stream().filter(t -> t.getPlayers().contains(gp.getUUID())).findAny();
         return team.isPresent() ? team.get() : null;
     }
-
     public Team getTeam(TeamColor color, boolean create) {
         if (create && !teams.containsKey(color))
             teams.put(color, new Team().setTeamColor(color));
         return teams.get(color);
     }
-
     public int getWeight(Team t) {
         return t.getPlayers().size() * t.getProperties().as(TeamProperty.PLAYER_WEIGHT, int.class);
     }
@@ -85,6 +91,12 @@ public class TeamManager implements Manager {
             if (!team.hasEnoughPlayers())
                 return false;
         return true;
+    }
+    public boolean hasPlayersPlaying(){
+        for(Team team : getTeams())
+            if(!team.getActivePlayers().isEmpty())
+                return true;
+        return false;
     }
 
     //** Ran onStart **//

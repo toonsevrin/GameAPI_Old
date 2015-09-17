@@ -7,6 +7,7 @@ public enum StopCause {
 
     VICTORY,
     DRAW,
-    TIME_UP;
+    TIME_UP,
+    NO_PLAYERS;
 
 }

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import com.exorath.game.lib.JoinLeave;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -28,7 +29,7 @@ import com.google.common.collect.Sets;
  * @author Nick Robson
  */
 
-public abstract class Game {
+public abstract class Game implements JoinLeave{
 
     public static final String DEFAULT_GAME_NAME = "Game";
     public static final String DEFAULT_GAME_DESCRIPTION = "Default game description";
@@ -47,10 +48,23 @@ public abstract class Game {
     public Game() {
         gameID = UUID.randomUUID();
         addManager(new PlayerManager(this));
-        Manager[] baseManagers = new Manager[] { new HUDManager(this), new MapManager(this) };//Not sure if you want to do this another way, just reimplemented it for testing
+        Manager[] baseManagers = new Manager[] { new HUDManager(this), new MapManager(this) };
         Arrays.asList(baseManagers).forEach(manager -> addManager(manager));
     }
+    //** Join & Leave **//
+    @Override
+    public void join(GamePlayer player) {
+        for(Manager manager : managers)
+            if(manager instanceof JoinLeave)
+                ((JoinLeave) manager).join(player);
+    }
 
+    @Override
+    public void leave(GamePlayer player) {
+        for(Manager manager : managers)
+            if(manager instanceof JoinLeave)
+                ((JoinLeave) manager).leave(player);
+    }
     /* Game ID */
     public final UUID getGameID() {
         return gameID;
@@ -154,7 +168,7 @@ public abstract class Game {
     }
 
     public Set<GamePlayer> getOnlinePlayers() {
-        return getManager(PlayerManager.class).getOnlinePlayers();
+        return getManager(PlayerManager.class).getPlayers();
     }
 
     /* Actions */
@@ -180,5 +194,4 @@ public abstract class Game {
         FileUtils.createIfMissing(file, FileUtils.FileType.FILE);
         return YamlConfiguration.loadConfiguration(file);
     }
-
 }

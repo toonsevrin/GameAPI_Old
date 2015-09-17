@@ -27,7 +27,9 @@ public class Lobby {
 
     private void setupWorld() {
         this.setWorld(Bukkit.createWorld(WorldCreator.name(properties.as(LobbyProperty.WORLD, String.class))));
-        this.setSpawnLocation(0, 0, 0);
+        this.setSpawnLocation(-7.5f, 107, -0.5f);
+        this.getSpawnLocation().setYaw(-90);
+        this.getSpawnLocation().setPitch(-16);
     }
 
     public Properties getProperties() {
@@ -54,7 +56,7 @@ public class Lobby {
         return this.properties.as(LobbyProperty.ENABLED, boolean.class);
     }
 
-    public void setSpawnLocation(int x, int y, int z) {
+    public void setSpawnLocation(float x, float y, float z) {
         this.properties.set(LobbyProperty.SPAWN, new Location(this.getWorld(), x, y, z));
     }
 

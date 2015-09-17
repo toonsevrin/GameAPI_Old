@@ -34,7 +34,7 @@ public class BossBarAPI implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void PlayerLoggout(PlayerQuitEvent event) {
+    public void PlayerLogout(PlayerQuitEvent event) {
         quit(event.getPlayer());
     }
 
