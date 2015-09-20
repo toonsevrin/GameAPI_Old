@@ -2,6 +2,7 @@ package com.exorath.game.api.hud;
 
 import java.util.HashMap;
 
+import com.exorath.game.api.hud.effects.HUDEffect;
 import com.exorath.game.lib.JoinLeave;
 import org.bukkit.Bukkit;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -53,7 +54,8 @@ public class HUDManager implements Manager, JoinLeave {
 
     //** Public HUD **//
     public class PublicHUD implements JoinLeave {
-
+        private String sbTitle = null;
+        private HUDEffect sbEffect = null;
         private HashMap<Class<? extends HUDLocation>, HashMap<String, HUDText>> keys = new HashMap<>();
 
         public PublicHUD() {
@@ -68,7 +70,11 @@ public class HUDManager implements Manager, JoinLeave {
             keys.get(Subtitle.class).entrySet().forEach(e -> player.getHud().getSubtitle().addText(e.getKey(), e.getValue().clone()));
             keys.get(BossBar.class).entrySet().forEach(e -> player.getHud().getBossBar().addText(e.getKey(), e.getValue().clone()));
             keys.get(Scoreboard.class).entrySet()
-                    .forEach(e -> player.getHud().getScoreboard().addText(e.getKey(), (ScoreboardText) e.getValue().clone()));
+                    .forEach(e -> player.getHud().getScoreboard().addText(e.getKey(), ((ScoreboardText) e.getValue()).cloneSB()) );
+            if(sbTitle != null)
+                player.getHud().getScoreboard().getTitle().setText(sbTitle);
+            if(sbEffect != null)
+                player.getHud().getScoreboard().getTitle().setEffect(sbEffect);
         }
 
         @Override
@@ -111,7 +117,14 @@ public class HUDManager implements Manager, JoinLeave {
             keys.get(Scoreboard.class).put(key, text);
             game.getManager(PlayerManager.class).getPlayers().forEach(gp -> gp.getHud().getScoreboard().addText(key, text.cloneSB()));
         }
-
+        public void setScoreboardTitle(String sbTitle){
+            this.sbTitle = sbTitle;
+            game.getManager(PlayerManager.class).getPlayers().forEach(gp -> gp.getHud().getScoreboard().getTitle().setText(sbTitle));
+        }
+        public void setScoreboardEffect(HUDEffect sbEffect){
+            this.sbEffect = sbEffect;
+            game.getManager(PlayerManager.class).getPlayers().forEach(gp -> gp.getHud().getScoreboard().getTitle().setEffect(sbEffect));
+        }
         /* Remove texts */
         public void removeActionBar(String key) {
             if (!keys.get(ActionBar.class).containsKey(key))

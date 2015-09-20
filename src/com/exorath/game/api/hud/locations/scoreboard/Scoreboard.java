@@ -12,11 +12,10 @@ import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.lib.hud.scoreboard.ScoreboardBase;
 
 /**
- * Created by TOON on 8/11/2015.
- * TODO: CREATE THIS CLASS
+ * Created by Toon Sevrin on 8/11/2015.
  */
 public class Scoreboard extends HUDLocation {
-
+    //TODO: Make title work with display system :)
     private HUDText title = new HUDText(ChatColor.BOLD + "Title", HUDPriority.GAME_API);
     private ScoreboardBase scoreboard;
 
@@ -45,7 +44,7 @@ public class Scoreboard extends HUDLocation {
         texts.add(text);
         textsKeys.put(key, text);
 
-        text.setEntry(scoreboard.add(text.getDisplayText(), -1));
+        text.setEntry(scoreboard.add(key ,text.getDisplayText(), -1));
         priorityUpdated();
     }
 

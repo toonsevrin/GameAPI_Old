@@ -171,4 +171,8 @@ public class MinigameCountdown {
         sb.deleteCharAt(sb.length() - 1);
         return sb.toString();
     }
+
+    public boolean isCountingDown() {
+        return countingDown;
+    }
 }

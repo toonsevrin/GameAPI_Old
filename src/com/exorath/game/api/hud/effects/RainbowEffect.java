@@ -35,4 +35,11 @@ public class RainbowEffect extends IntervalEffect {
         }
         return sb.toString();
     }
+
+    @Override
+    public HUDEffect clone() {
+        RainbowEffect effect = new RainbowEffect(getInterval());
+        effect.color = color;
+        return effect;
+    }
 }

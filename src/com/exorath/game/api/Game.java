@@ -48,7 +48,7 @@ public abstract class Game implements JoinLeave{
     public Game() {
         gameID = UUID.randomUUID();
         addManager(new PlayerManager(this));
-        Manager[] baseManagers = new Manager[] { new HUDManager(this), new MapManager(this) };
+        Manager[] baseManagers = new Manager[] { new HUDManager(this), new MapManager(this), new PlayerManager(this)};
         Arrays.asList(baseManagers).forEach(manager -> addManager(manager));
     }
     //** Join & Leave **//

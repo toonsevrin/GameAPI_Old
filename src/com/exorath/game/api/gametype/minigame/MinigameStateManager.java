@@ -6,10 +6,15 @@ import com.exorath.game.api.GameState;
 import com.exorath.game.api.Manager;
 import com.exorath.game.api.StopCause;
 import com.exorath.game.api.gametype.minigame.countdown.MinigameCountdown;
+import com.exorath.game.api.hud.HUDManager;
+import com.exorath.game.api.hud.HUDPriority;
+import com.exorath.game.api.hud.effects.FlickerEffect;
+import com.exorath.game.api.hud.locations.scoreboard.ScoreboardText;
 import com.exorath.game.api.message.GameMessenger;
 import com.exorath.game.api.player.PlayerManager;
 import com.exorath.game.api.team.Team;
 import com.exorath.game.api.team.TeamManager;
+import org.bukkit.ChatColor;
 
 /**
  * Created by Toon on 9/1/2015.
@@ -24,6 +29,13 @@ public class MinigameStateManager implements Manager {
         this.minigame = minigame;
         minigame.setState(GameState.WAITING);
         countdown = new MinigameCountdown(minigame);
+        setupHUD();
+    }
+    private void setupHUD(){
+        minigame.getManager(HUDManager.class).getPublicHUD().setScoreboardTitle("GameAPI v0.1");
+        ScoreboardText txt = new ScoreboardText("Currently under dev", HUDPriority.HIGH);
+        txt.setEffect(new FlickerEffect(5, ChatColor.AQUA));
+        minigame.getManager(HUDManager.class).getPublicHUD().addScoreboard("gapi_advert", txt );
     }
 
     //Run this when a player joins
@@ -35,12 +47,15 @@ public class MinigameStateManager implements Manager {
         }
         int min = minigame.getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
         int players = minigame.getManager(PlayerManager.class).getPlayerCount();
-        if (minigame.hasMinPlayers()) {
-            countdown.start();
-            GameMessenger.sendInfo(minigame,
-                    "Game is starting in " + minigame.getProperties().as(Minigame.START_DELAY, Integer.class)/20 + "seconds. Prepare yourself!");
-        } else
-            GameMessenger.sendInfo(minigame, "Waiting for " + (min - players) + " players.");
+        if (countdown.isCountingDown()) {
+            GameAPI.printConsole("Player joined: " + players + "/" + min);
+        } else {
+            if (minigame.hasMinPlayers()) {
+                countdown.start();
+                GameMessenger.sendInfo(minigame, "Starting in " + minigame.getProperties().as(Minigame.START_DELAY, Integer.class) / 20 + "s. Prepare yourself!");
+            } else
+                GameMessenger.sendInfo(minigame, "More players required: " + players + "/" + min);
+        }
     }
 
     //Run this when a player leaves
@@ -50,12 +65,12 @@ public class MinigameStateManager implements Manager {
             int players = minigame.getManager(PlayerManager.class).getPlayerCount();
             if (players <= min) {
                 countdown.stop();
-                GameMessenger.sendInfo(minigame, "Countdown stopped. Waiting for " + (min - players) + " players.");
+                GameMessenger.sendInfo(minigame, "Countdown stopped. Minimum: " + players + "/" + min);
             }
-        }else if(minigame.getState() == GameState.INGAME){
-            if(minigame.getOnlinePlayers().isEmpty())
+        } else if (minigame.getState() == GameState.INGAME) {
+            if (minigame.getOnlinePlayers().isEmpty())
                 stop(StopCause.NO_PLAYERS);
-            else if(!minigame.getManager(TeamManager.class).hasPlayersPlaying())
+            else if (!minigame.getManager(TeamManager.class).hasPlayersPlaying())
                 stop(StopCause.NO_PLAYERS);
         }
     }

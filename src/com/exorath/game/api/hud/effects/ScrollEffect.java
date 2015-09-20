@@ -29,4 +29,11 @@ public class ScrollEffect extends IntervalEffect {
         }
         return sb.toString();
     }
+
+    @Override
+    public HUDEffect clone() {
+        ScrollEffect effect = new ScrollEffect(getInterval(), length);
+        effect.startIndex = startIndex;
+        return effect;
+    }
 }

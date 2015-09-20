@@ -44,6 +44,9 @@ public class PlayerManager implements Manager {
     }
     //** Counting **//
     public int getPlayerCount() {
+        return (int) players.size();
+    }
+    public int getIngamePlayerCount() {
         return (int) players.stream().filter(p -> p.getState() == PlayerState.PLAYING).count();
     }
     //** Getting players **//

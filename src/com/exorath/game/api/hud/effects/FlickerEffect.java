@@ -1,5 +1,6 @@
 package com.exorath.game.api.hud.effects;
 
+import com.exorath.game.GameAPI;
 import org.bukkit.ChatColor;
 
 /**
@@ -21,15 +22,26 @@ public class FlickerEffect extends IntervalEffect {
 
     @Override
     public void run() {
+        GameAPI.printConsole("Flicker effect ran!");
         visible = !visible;
         setText(getDisplayText());
     }
 
     @Override
     public String getDisplayText() {
+
+        GameAPI.printConsole("Flicker effect display text updated!");
         if (visible) {
             return getText();
         }
-        return replaceColor != null ? replaceColor + ChatColor.stripColor(getText()) : null;
+        return replaceColor != null ? replaceColor + ChatColor.stripColor(getText()) : "";
+    }
+
+    @Override
+    public HUDEffect clone() {
+        FlickerEffect effect = new FlickerEffect(getInterval());
+        effect.replaceColor = replaceColor;
+        effect.visible = visible;
+        return effect;
     }
 }
