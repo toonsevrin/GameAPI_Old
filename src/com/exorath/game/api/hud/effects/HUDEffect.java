@@ -15,7 +15,7 @@ public abstract class HUDEffect {
 
     public void setText(String newText) {
         if(text != null)
-        text.setDisplayText(newText);
+            text.setDisplayText(newText);
     }
     public void setHUDText(HUDText text){
         this.text = text;

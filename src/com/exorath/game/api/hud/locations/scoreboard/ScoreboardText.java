@@ -34,7 +34,12 @@ public class ScoreboardText extends HUDText {
             sbt.setEffect(getEffect().clone());
         return sbt;
     }
-
+    @Override
+    public void setDisplayText(String text){
+        textUpdated = true;
+        priorityUpdated = false;
+        super.setDisplayText(text);
+    }
     @Override
     public void setText(String text) {
         textUpdated = true;
@@ -54,9 +59,7 @@ public class ScoreboardText extends HUDText {
         if (!(loc instanceof Scoreboard)) {
             return;
         }
-        Scoreboard sb = (Scoreboard) loc;
-        ScoreboardBase base = sb.getScoreboard();
-        base.getClass();// TODO
+        super.setLocation(loc);
     }
 
     @Override

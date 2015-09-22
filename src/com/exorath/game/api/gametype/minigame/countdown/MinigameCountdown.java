@@ -44,7 +44,7 @@ public class MinigameCountdown {
         if (countingDown)
             return;
         countingDown = true;
-
+        game.getManager(HUDManager.class).getPublicHUD().updateScoreboard("gapi_advert",ChatColor.GREEN + ChatColor.BOLD.toString() + "Starting soon...");
         new CountdownTask().runTaskTimer(GameAPI.getInstance(), 0, 1);
     }
 
@@ -131,7 +131,13 @@ public class MinigameCountdown {
 
         @Override
         public void run() {
-            if (currentFrame == frames.size() || !countingDown) {
+            if (!countingDown) {
+                stop();
+                cancel();
+                return;
+            }
+            if(currentFrame == frames.size()){
+                game.getManager(HUDManager.class).getPublicHUD().updateScoreboard("gapi_advert", ChatColor.GREEN + ChatColor.BOLD.toString() +"STARTING...");
                 stop();
                 cancel();
                 return;

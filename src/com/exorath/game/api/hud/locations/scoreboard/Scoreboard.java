@@ -3,6 +3,7 @@ package com.exorath.game.api.hud.locations.scoreboard;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 
+import com.exorath.game.GameAPI;
 import org.bukkit.ChatColor;
 
 import com.exorath.game.api.hud.HUDLocation;
@@ -24,6 +25,7 @@ public class Scoreboard extends HUDLocation {
 
     public Scoreboard(GamePlayer player) {
         super(player);
+        title.setLocation(this);
         scoreboard = new ScoreboardBase(title.getDisplayText());
         scoreboard.add(player);
     }
@@ -39,6 +41,7 @@ public class Scoreboard extends HUDLocation {
     public void addText(String key, ScoreboardText text) {
         if (!isActive())
             return;
+        text.setLocation(this);
         if (getTexts().contains(text))
             return;
         texts.add(text);
@@ -82,10 +85,6 @@ public class Scoreboard extends HUDLocation {
     public void updated(ScoreboardText text) {//A text has updated on the scoreboard
         if (!isActive())
             return;
-        if (text.equals(title)) {
-            updateTitle();
-            return;
-        }
         if (!getTexts().contains(text))
             return;
         if (text.isTextUpdated()) //Text updated
@@ -144,7 +143,7 @@ public class Scoreboard extends HUDLocation {
         return title;
     }
 
-    private void updateTitle() {
+    public void updateTitle() {
         if (!isActive())
             return;
         scoreboard.setTitle(title.getDisplayText());
