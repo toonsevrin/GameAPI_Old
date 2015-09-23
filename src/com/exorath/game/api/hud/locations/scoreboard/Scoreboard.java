@@ -115,6 +115,10 @@ public class Scoreboard extends HUDLocation {
     public void run() {
         if (!active)
             return;
+        if(!player.isOnline()){
+            cancel();
+            return;
+        }
         title.tick();
         for (ScoreboardText text : getVisibleTexts())
             text.tick();

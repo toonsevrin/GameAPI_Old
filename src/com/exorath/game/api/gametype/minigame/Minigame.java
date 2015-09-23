@@ -2,6 +2,9 @@ package com.exorath.game.api.gametype.minigame;
 
 import java.util.Arrays;
 
+import com.exorath.game.api.gametype.minigame.maps.MapSelection;
+import com.exorath.game.api.gametype.minigame.maps.MinigameMapManager;
+import com.exorath.game.api.maps.GameMap;
 import com.exorath.game.api.maps.MapManager;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -28,14 +31,17 @@ public abstract class Minigame extends Game {
     public static final Property START_DELAY = Property.get("startdelay",
             "Waiting time after there are enough players before game starts", 200);
 
+    private MapSelection selection = MapSelection.RANDOM;
+    private GameMap current;
+    private int index = 0;
+
     public Minigame() {
-        Manager[] managers = new Manager[] { new TeamManager(this),new MinigameStateManager(this),new KitManager(this), new SpectateManager(this) };
+        Manager[] managers = new Manager[] { new TeamManager(this),new MinigameStateManager(this),new KitManager(this), new SpectateManager(this), new MinigameMapManager(this)};
         Arrays.asList(managers).forEach(m -> addManager(m));
 
         addListener(new MinigameListener());
 
     }
-
     public boolean hasMinPlayers() {
 
         return getManager(PlayerManager.class).getPlayerCount() >= getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
@@ -66,19 +72,21 @@ public abstract class Minigame extends Game {
 
         //Teleport players to hub
     }
+    //Maps
+    public GameMap getCurrent() {
+        return getManager(MinigameMapManager.class).getCurrent();
+    }
 
     private class MinigameListener implements GameListener {
 
         @Override
         public void onJoin(PlayerJoinEvent event, Game game, GamePlayer player) {
-            GameAPI.printConsole("Player joined!");
-            getStateManager().checkStart();
+
         }
 
         @Override
         public void onQuit(PlayerQuitEvent event, Game game, GamePlayer player) {
-            GameAPI.printConsole("Player left!");
-            getStateManager().checkStop();
+
         }
     }
 }

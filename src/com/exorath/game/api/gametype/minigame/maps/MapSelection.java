@@ -1,4 +1,4 @@
-package com.exorath.game.api.maps;
+package com.exorath.game.api.gametype.minigame.maps;
 
 /**
  * Created by TOON on 7/2/2015.

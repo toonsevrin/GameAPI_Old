@@ -1,6 +1,7 @@
 package com.exorath.game.api.maps;
 
 import com.exorath.game.GameAPI;
+import com.exorath.game.api.gametype.minigame.maps.MapSelection;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,8 +10,6 @@ import java.util.Random;
 public class MapList {
 
     private List<GameMap> maps = new LinkedList<>();
-    private int index = 0;
-    private GameMap current;
 
     public MapList() {
 
@@ -29,30 +28,4 @@ public class MapList {
         this.maps.add(index, map);
         return this;
     }
-
-    public GameMap getCurrent() {
-        return current == null ? nextMap(MapSelection.RANDOM) : current;
-    }
-
-    public GameMap nextMap(MapSelection selection) {
-        if (maps.size() == 0) {
-            GameAPI.error("Map size == 0: Please add a map!");
-            return null;
-        }
-        switch (selection) {
-            case CYCLE:
-                current = maps.get(++index);
-            case RANDOM:
-                current = maps.get(new Random().nextInt(maps.size()));
-            case SAME:
-                current.reset();
-            case VOTE:
-                // TODO: Call vote with callback to set map. Something will need to be done about the return type...
-                break;
-            default:
-                break;
-        }
-        return current;
-    }
-
 }

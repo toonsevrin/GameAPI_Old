@@ -160,7 +160,7 @@ public class SurvivalGames extends RepeatingMinigame {
             int spawn = 0;
             for (GamePlayer player : SurvivalGames.this.getManager(TeamManager.class).getTeam().getPlayers()) {//Teleport all active players back to a spawn location.
                 player.getBukkitPlayer().teleport(SurvivalGames.this.getManager(TeamManager.class).getTeam()
-                        .getSpawns(getManager(MapManager.class).getCurrent())[spawn++].getBukkitLocation());
+                        .getSpawns(getCurrent())[spawn++].getBukkitLocation());
             }
         } , 20 * 60 * 10);
     }

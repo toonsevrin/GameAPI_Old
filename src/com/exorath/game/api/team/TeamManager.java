@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 
+import com.exorath.game.api.gametype.minigame.Minigame;
 import com.exorath.game.lib.JoinLeave;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -23,11 +24,11 @@ import com.google.common.collect.Maps;
  */
 public class TeamManager implements Manager, JoinLeave {
 
-    private final Game game;
+    private final Minigame game;
 
     public Map<TeamColor, Team> teams = Maps.newHashMap();
 
-    public TeamManager(Game game) {
+    public TeamManager(Minigame game) {
         this.game = game;
         addTeam(new DefaultTeam());
     }
@@ -71,7 +72,7 @@ public class TeamManager implements Manager, JoinLeave {
     }
 
     /* Getting */
-    public Game getGame() {
+    public Minigame getGame() {
         return game;
     }
     public Collection<Team> getTeams() {
@@ -119,7 +120,7 @@ public class TeamManager implements Manager, JoinLeave {
 
     //** Ran onStart **//
     public void startGame() {
-        GameMap map = getGame().getManager(MapManager.class).getCurrent();
+        GameMap map = getGame().getCurrent();
         for (Team team : teams.values()) {
             int spawn = 0;
             for (GamePlayer player : team.getPlayers()) {

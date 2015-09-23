@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.PriorityQueue;
 
 import com.exorath.game.api.player.GamePlayer;
+import org.bukkit.Bukkit;
 
 /**
  * Created by TOON on 8/9/2015.
@@ -108,6 +109,10 @@ public abstract class HUDDisplay extends HUDLocation {
             return;
         if (currentText == null)
             return;
+        if(!player.isOnline()){
+            cancel();
+            return;
+        }
         currentText.tick();
     }
 

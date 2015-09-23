@@ -9,11 +9,12 @@ import com.exorath.game.api.hud.locations.Subtitle;
 import com.exorath.game.api.hud.locations.Title;
 import com.exorath.game.api.hud.locations.scoreboard.Scoreboard;
 import com.exorath.game.api.player.GamePlayer;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Created by TOON on 8/9/2015.
  */
-public abstract class HUDLocation implements Runnable {
+public abstract class HUDLocation extends BukkitRunnable {
 
     @SuppressWarnings("unchecked")
     public static Class<? extends HUDLocation> LOCATIONS[] = new Class[] { ActionBar.class, BossBar.class,
@@ -24,7 +25,7 @@ public abstract class HUDLocation implements Runnable {
 
     public HUDLocation(GamePlayer player) {
         this.player = player;
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(GameAPI.getInstance(), this, 0, 1);
+        this.runTaskTimer(GameAPI.getInstance(),0,1);
     }
 
     public boolean isActive() {

@@ -13,16 +13,18 @@ import com.exorath.game.api.hud.effects.RainbowEffect;
 import com.exorath.game.api.hud.effects.ScrollEffect;
 import com.exorath.game.api.hud.locations.scoreboard.ScoreboardText;
 import com.exorath.game.api.message.GameMessenger;
+import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.player.PlayerManager;
 import com.exorath.game.api.team.Team;
 import com.exorath.game.api.team.TeamManager;
+import com.exorath.game.lib.JoinLeave;
 import org.bukkit.ChatColor;
 
 /**
  * Created by Toon on 9/1/2015.
  * Not functional yet
  */
-public class MinigameStateManager implements Manager {
+public class MinigameStateManager implements Manager,JoinLeave {
 
     private Minigame minigame;
     private MinigameCountdown countdown;
@@ -30,8 +32,18 @@ public class MinigameStateManager implements Manager {
     public MinigameStateManager(Minigame minigame) {
         this.minigame = minigame;
         minigame.setState(GameState.WAITING);
-        countdown = new MinigameCountdown(minigame);
         setupHUD();
+        countdown = new MinigameCountdown(minigame);
+    }
+
+    @Override
+    public void join(GamePlayer player) {
+        checkStart();
+    }
+
+    @Override
+    public void leave(GamePlayer player) {
+        checkStop();
     }
 
     private void setupHUD() {
@@ -41,7 +53,6 @@ public class MinigameStateManager implements Manager {
         txt.setEffect(new FlickerEffect(4, ChatColor.BLACK));
         minigame.getManager(HUDManager.class).getPublicHUD().addScoreboard("gapi_advert", txt);
     }
-
     //Run this when a player joins
     public void checkStart() {
         if (minigame.getState() != GameState.WAITING)

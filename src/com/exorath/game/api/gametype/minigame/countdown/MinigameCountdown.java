@@ -144,7 +144,7 @@ public class MinigameCountdown {
             }
             /* Action bar */
             float remaining = getInterval() * (LENGTH - currentFrame) / 20f + getInterval() / 20f * 4 - tick / 20f;
-            String cdText = remaining <= 2 ? ChatColor.GREEN + "Game starting..." : "Starting in... " + new DecimalFormat("#.0").format(remaining);
+            String cdText = remaining <= 2 ? ChatColor.GREEN.toString() + ChatColor.BOLD + "Game starting..." : ChatColor.BOLD + "Starting in... " + new DecimalFormat("#.0").format(remaining);
             HUDManager.PublicHUD publicHUD = game.getManager(HUDManager.class).getPublicHUD();
             if (publicHUD.containsActionBar("gapi_cdbar"))
                 publicHUD.updateActionBar("gapi_cdbar", cdText);

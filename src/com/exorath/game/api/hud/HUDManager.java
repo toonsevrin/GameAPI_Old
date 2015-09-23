@@ -184,27 +184,27 @@ public class HUDManager implements Manager, JoinLeave {
 
         /* Update text */
         public void updateActionBar(String key, String text) {
-            game.getManager(PlayerManager.class).getPlayers().stream().filter(gp -> gp.getBukkitPlayer() != null)
+            game.getManager(PlayerManager.class).getPlayers().stream().filter(gp -> gp.getBukkitPlayer() != null).filter(gp -> gp.getHud().getActionBar().containsText(key))
                     .forEach(gp -> gp.getHud().getActionBar().getText(key).setText(text));
         }
 
         public void updateTitle(String key, String text) {
-            game.getManager(PlayerManager.class).getPlayers().stream().filter(gp -> gp.getBukkitPlayer() != null)
+            game.getManager(PlayerManager.class).getPlayers().stream().filter(gp -> gp.getBukkitPlayer() != null).filter(gp -> gp.getHud().getTitle().containsText(key))
                     .forEach(gp -> gp.getHud().getTitle().getText(key).setText(text));
         }
 
         public void updateSubtitle(String key, String text) {
-            game.getManager(PlayerManager.class).getPlayers().stream().filter(gp -> gp.getBukkitPlayer() != null)
+            game.getManager(PlayerManager.class).getPlayers().stream().filter(gp -> gp.getBukkitPlayer() != null).filter(gp -> gp.getHud().getSubtitle().containsText(key))
                     .forEach(gp -> gp.getHud().getSubtitle().getText(key).setText(text));
         }
 
         public void updateBossBar(String key, String text) {
-            game.getManager(PlayerManager.class).getPlayers().stream().filter(gp -> gp.getBukkitPlayer() != null)
+            game.getManager(PlayerManager.class).getPlayers().stream().filter(gp -> gp.getBukkitPlayer() != null).filter(gp -> gp.getHud().getBossBar().containsText(key))
                     .forEach(gp -> gp.getHud().getBossBar().getText(key).setText(text));
         }
 
         public void updateScoreboard(String key, String text) {
-            game.getManager(PlayerManager.class).getPlayers().stream().filter(gp -> gp.getBukkitPlayer() != null)
+            game.getManager(PlayerManager.class).getPlayers().stream().filter(gp -> gp.getBukkitPlayer() != null).filter(gp -> gp.getHud().getScoreboard().containsText(key))
                     .forEach(gp -> gp.getHud().getScoreboard().getText(key).setText(text));
         }
 

@@ -26,7 +26,7 @@ public class SGChests {
     private Set<SGChest> chests = new HashSet<SGChest>();//A list with all loaded chests
 
     public SGChests(SurvivalGames game) {
-        GameMap map = game.getManager(MapManager.class).getCurrent();//Get the default/main Game World
+        GameMap map = game.getCurrent();//Get the default/main Game World
 
         FileConfiguration chestConfig = game.getConfig("chests");//Get the config file "chests.yml"
         if (!chestConfig.contains(map.getName())) {
