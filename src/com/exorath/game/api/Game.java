@@ -90,13 +90,13 @@ public abstract class Game implements JoinLeave{
 
     public void setState(GameState state) {
         setState(state, true);
-
         GameAPI.printConsole("Game state set to " + state.toString());
     }
 
     public void setState(GameState state, boolean callEvent) {
         GameState old = this.state;
         this.state = state;
+        getManager(HUDManager.class).getPublicHUD().onStateChange();
         if (callEvent) {
             GameStateChangedEvent event = new GameStateChangedEvent(this, old, state);
             for (GameListener listener : getListeners())

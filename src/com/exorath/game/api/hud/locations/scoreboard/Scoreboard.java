@@ -72,6 +72,7 @@ public class Scoreboard extends HUDLocation {
         texts.remove();
         textsKeys.remove(key);
         scoreboard.remove(text.getEntry());
+        GameAPI.printConsole("Scoreboard entry removed.");
     }
 
     public boolean containsText(String key) {
