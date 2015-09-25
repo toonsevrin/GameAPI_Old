@@ -172,7 +172,6 @@ public class GameAPIListener implements Listener {
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-
         game.getListeners().forEach(l -> l.onRespawn(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onRespawn(event, game, gp));
@@ -186,7 +185,6 @@ public class GameAPIListener implements Listener {
 
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
-
 
         game.getListeners().forEach(l -> l.onInteract(event, game, gp));
         if (team != null)
@@ -202,7 +200,6 @@ public class GameAPIListener implements Listener {
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-
         game.getListeners().forEach(l -> l.onDropItem(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onDropItem(event, game, gp));
@@ -216,7 +213,6 @@ public class GameAPIListener implements Listener {
 
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
-
 
         game.getListeners().forEach(l -> l.onPickupItem(event, game, gp));
         if (team != null)
@@ -232,7 +228,6 @@ public class GameAPIListener implements Listener {
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-
         game.getListeners().forEach(l -> l.onFish(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onFish(event, game, gp));
@@ -246,7 +241,6 @@ public class GameAPIListener implements Listener {
 
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
-
 
         game.getListeners().forEach(l -> l.onExpChange(event, game, gp));
         if (team != null)
@@ -262,7 +256,6 @@ public class GameAPIListener implements Listener {
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-
         game.getListeners().forEach(l -> l.onGamemodeChange(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onGamemodeChange(event, game, gp));
@@ -276,7 +269,6 @@ public class GameAPIListener implements Listener {
 
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
-
 
         game.getListeners().forEach(l -> l.onInteractEntity(event, game, gp));
         if (team != null)
@@ -292,7 +284,6 @@ public class GameAPIListener implements Listener {
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-
         game.getListeners().forEach(l -> l.onInteractAtEntity(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onInteractAtEntity(event, game, gp));
@@ -306,7 +297,6 @@ public class GameAPIListener implements Listener {
 
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
-
 
         game.getListeners().forEach(l -> l.onWorldChange(event, game, gp));
         if (team != null)
@@ -322,7 +312,6 @@ public class GameAPIListener implements Listener {
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-
         game.getListeners().forEach(l -> l.onLevelChange(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onLevelChange(event, game, gp));
@@ -336,7 +325,6 @@ public class GameAPIListener implements Listener {
 
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
-
 
         game.getListeners().forEach(l -> l.onMove(event, game, gp));
         if (team != null)
@@ -352,7 +340,6 @@ public class GameAPIListener implements Listener {
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-
         game.getListeners().forEach(l -> l.onVelocity(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onVelocity(event, game, gp));
@@ -366,7 +353,6 @@ public class GameAPIListener implements Listener {
 
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
-
 
         game.getListeners().forEach(l -> l.onPortal(event, game, gp));
         if (team != null)
@@ -382,7 +368,6 @@ public class GameAPIListener implements Listener {
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-
         game.getListeners().forEach(l -> l.onShear(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onShear(event, game, gp));
@@ -396,7 +381,6 @@ public class GameAPIListener implements Listener {
 
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
-
 
         game.getListeners().forEach(l -> l.onTeleport(event, game, gp));
         if (team != null)
@@ -412,7 +396,6 @@ public class GameAPIListener implements Listener {
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-
         game.getListeners().forEach(l -> l.onToggleFlight(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onToggleFlight(event, game, gp));
@@ -426,7 +409,6 @@ public class GameAPIListener implements Listener {
 
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
-
 
         game.getListeners().forEach(l -> l.onToggleSneak(event, game, gp));
         if (team != null)
@@ -442,7 +424,6 @@ public class GameAPIListener implements Listener {
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-
         game.getListeners().forEach(l -> l.onToggleSprint(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onToggleSprint(event, game, gp));
@@ -456,7 +437,6 @@ public class GameAPIListener implements Listener {
 
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
-
 
         game.getListeners().forEach(l -> l.onBlockBreak(event, game, gp));
         if (team != null)
@@ -472,7 +452,6 @@ public class GameAPIListener implements Listener {
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
 
-
         game.getListeners().forEach(l -> l.onBlockPlace(event, game, gp));
         if (team != null)
             team.getListeners().forEach(l -> l.onBlockPlace(event, game, gp));
@@ -486,7 +465,6 @@ public class GameAPIListener implements Listener {
 
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
-
 
         game.getListeners().forEach(l -> l.onSignChange(event, game, gp));
         if (team != null)
@@ -503,7 +481,6 @@ public class GameAPIListener implements Listener {
 
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
-
 
         game.getListeners().forEach(l -> l.onEntityDamage(event, game, gp));
         if (team != null)

@@ -3,7 +3,6 @@ package com.exorath.game.api.hud.locations.scoreboard;
 import com.exorath.game.api.hud.HUDLocation;
 import com.exorath.game.api.hud.HUDPriority;
 import com.exorath.game.api.hud.HUDText;
-import com.exorath.game.lib.hud.scoreboard.ScoreboardBase;
 import com.exorath.game.lib.hud.scoreboard.SpigboardEntry;
 
 /**
@@ -34,12 +33,14 @@ public class ScoreboardText extends HUDText {
             sbt.setEffect(getEffect().clone());
         return sbt;
     }
+
     @Override
-    public void setDisplayText(String text){
+    public void setDisplayText(String text) {
         textUpdated = true;
         priorityUpdated = false;
         super.setDisplayText(text);
     }
+
     @Override
     public void setText(String text) {
         textUpdated = true;

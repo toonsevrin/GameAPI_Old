@@ -9,8 +9,6 @@ import com.exorath.game.api.gametype.minigame.countdown.MinigameCountdown;
 import com.exorath.game.api.hud.HUDManager;
 import com.exorath.game.api.hud.HUDPriority;
 import com.exorath.game.api.hud.effects.FlickerEffect;
-import com.exorath.game.api.hud.effects.RainbowEffect;
-import com.exorath.game.api.hud.effects.ScrollEffect;
 import com.exorath.game.api.hud.locations.scoreboard.ScoreboardText;
 import com.exorath.game.api.message.GameMessenger;
 import com.exorath.game.api.player.GamePlayer;
@@ -24,7 +22,7 @@ import org.bukkit.ChatColor;
  * Created by Toon on 9/1/2015.
  * Not functional yet
  */
-public class MinigameStateManager implements Manager,JoinLeave {
+public class MinigameStateManager implements Manager, JoinLeave {
 
     private Minigame minigame;
     private MinigameCountdown countdown;
@@ -53,6 +51,7 @@ public class MinigameStateManager implements Manager,JoinLeave {
         txt.setEffect(new FlickerEffect(4, ChatColor.BLACK));
         minigame.getManager(HUDManager.class).getPublicHUD().addScoreboard("gapi_advert", txt);
     }
+
     //Run this when a player joins
     public void checkStart() {
         if (minigame.getState() != GameState.WAITING)
@@ -67,7 +66,8 @@ public class MinigameStateManager implements Manager,JoinLeave {
         } else {
             if (minigame.hasMinPlayers()) {
                 countdown.start();
-                GameMessenger.sendInfo(minigame, "Starting in " + minigame.getProperties().as(Minigame.START_DELAY, Integer.class) / 20 + "s. Prepare yourself!");
+                GameMessenger.sendInfo(minigame,
+                        "Starting in " + minigame.getProperties().as(Minigame.START_DELAY, Integer.class) / 20 + "s. Prepare yourself!");
             } else
                 GameMessenger.sendInfo(minigame, "More players required: " + players + "/" + min);
         }
@@ -81,7 +81,8 @@ public class MinigameStateManager implements Manager,JoinLeave {
             if (players <= min) {
                 countdown.stop();
 
-                minigame.getManager(HUDManager.class).getPublicHUD().updateScoreboard("gapi_advert", ChatColor.RED + ChatColor.BOLD.toString() + "Countdown cancelled. Minimum: " + players + "/" + min);
+                minigame.getManager(HUDManager.class).getPublicHUD().updateScoreboard("gapi_advert",
+                        ChatColor.RED + ChatColor.BOLD.toString() + "Countdown cancelled. Minimum: " + players + "/" + min);
             }
         } else if (minigame.getState() == GameState.INGAME) {
             if (minigame.getOnlinePlayers().isEmpty())

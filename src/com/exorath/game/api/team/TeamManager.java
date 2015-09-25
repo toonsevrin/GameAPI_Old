@@ -10,10 +10,8 @@ import com.exorath.game.lib.JoinLeave;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.exorath.game.api.Game;
 import com.exorath.game.api.Manager;
 import com.exorath.game.api.maps.GameMap;
-import com.exorath.game.api.maps.MapManager;
 import com.exorath.game.api.player.GamePlayer;
 import com.google.common.collect.Maps;
 
@@ -36,9 +34,9 @@ public class TeamManager implements Manager, JoinLeave {
     //** Join & Leave **//
     @Override
     public void join(GamePlayer player) {
-        if(addToDefault(player)) {
+        if (addToDefault(player)) {
             player.sendMessage("You successfully joined " + getTeam(player).getTeamColor().toString());
-        }else{
+        } else {
             player.sendMessage(ChatColor.RED + "All teams are full :(");
         }
     }
@@ -46,10 +44,11 @@ public class TeamManager implements Manager, JoinLeave {
     @Override
     public void leave(GamePlayer player) {
         Team team = getTeam(player);
-        if(team == null)
+        if (team == null)
             return;
         team.removePlayer(player);
     }
+
     //** Teams **//
     /* Adding & Removing */
     public void addTeam(Team team) {
@@ -75,35 +74,41 @@ public class TeamManager implements Manager, JoinLeave {
     public Minigame getGame() {
         return game;
     }
+
     public Collection<Team> getTeams() {
         return teams.values();
     }
+
     public Team getTeam() {
         return teams.size() == 1 ? teams.values().toArray(new Team[1])[0] : null;
     }
+
     public Team getTeam(GamePlayer gp) {
         Optional<Team>team = getTeams().stream().filter(t -> t.getPlayers().contains(gp)).findAny();
         return team.isPresent() ? team.get() : null;
     }
+
     public Team getTeam(TeamColor color, boolean create) {
         if (create && !teams.containsKey(color))
             teams.put(color, new Team().setTeamColor(color));
         return teams.get(color);
     }
-    public boolean addToDefault(GamePlayer player){
+
+    public boolean addToDefault(GamePlayer player) {
         Team t = null;
-        for(Team team : teams.values()){
-            if(team.getMaxTeamSize() == team.getPlayers().size())//team is full
+        for (Team team : teams.values()) {
+            if (team.getMaxTeamSize() == team.getPlayers().size()) //team is full
                 continue;
-            if(t == null || team.getTotalWeight() < t.getTotalWeight())
+            if (t == null || team.getTotalWeight() < t.getTotalWeight())
                 t = team;
         }
-        if(t == null)
+        if (t == null)
             return false;
 
         t.addPlayer(player);
         return true;
     }
+
     /* Tests */
     public boolean hasMinPlayers() {
         for (Team team : getTeams())
@@ -111,9 +116,10 @@ public class TeamManager implements Manager, JoinLeave {
                 return false;
         return true;
     }
-    public boolean hasPlayersPlaying(){
-        for(Team team : getTeams())
-            if(!team.getActivePlayers().isEmpty())
+
+    public boolean hasPlayersPlaying() {
+        for (Team team : getTeams())
+            if (!team.getActivePlayers().isEmpty())
                 return true;
         return false;
     }

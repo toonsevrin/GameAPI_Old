@@ -3,12 +3,8 @@ package com.exorath.game.api.team;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import org.bukkit.Bukkit;
 
-import com.exorath.game.GameAPI;
 import com.exorath.game.api.BasePlayerProperty;
 import com.exorath.game.api.GameListener;
 import com.exorath.game.api.Properties;
@@ -138,9 +134,11 @@ public class Team {
         properties.set(TeamProperty.COLOR, color);
         return this;
     }
-    public int getTotalWeight(){
+
+    public int getTotalWeight() {
         return players.size() * properties.as(TeamProperty.PLAYER_WEIGHT, int.class);
     }
+
     //** Spawns **//
     public GameSpawn[] getSpawns(GameMap map) {
         return map.getSpawns(getTeamColor());

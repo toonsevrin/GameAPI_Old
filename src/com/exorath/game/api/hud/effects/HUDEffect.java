@@ -14,19 +14,22 @@ public abstract class HUDEffect {
     }
 
     public void setText(String newText) {
-        if(text != null)
+        if (text != null)
             text.setDisplayText(newText);
     }
-    public void setHUDText(HUDText text){
+
+    public void setHUDText(HUDText text) {
         this.text = text;
     }
 
     public String getText() {
-        if(text == null)
+        if (text == null)
             return "";
         return text.getText();
     }
 
     public abstract String getDisplayText();
+
+    @Override
     public abstract HUDEffect clone();
 }

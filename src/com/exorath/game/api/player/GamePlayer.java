@@ -26,6 +26,7 @@ import com.exorath.game.lib.Rank;
  * @author Toon Sevrin
  */
 public final class GamePlayer {
+
     private UUID uuid;
 
     private Game game;
@@ -160,13 +161,14 @@ public final class GamePlayer {
     }
 
     //** Player State Methods *//
-    public PlayerState getState(){
+    public PlayerState getState() {
         if (state == null) {
             state = PlayerState.UNKNOWN;
         }
         return state;
     }
-    public void setState(PlayerState state){
+
+    public void setState(PlayerState state) {
         this.state = state;
     }
 
@@ -212,11 +214,12 @@ public final class GamePlayer {
     }
 
     public Game getGame() {
-        if(game == null)
+        if (game == null)
             game = GameAPI.getGame();
         return game;
     }
-    public void setGame(Game game){
+
+    public void setGame(Game game) {
         this.game = game;
     }
 

@@ -8,9 +8,9 @@ import org.bukkit.ChatColor;
 public class RainbowEffect extends IntervalEffect {
 
     private int color = 0;
-    private static final ChatColor[] colors = new ChatColor[]{ChatColor.DARK_RED, ChatColor.RED, ChatColor.GOLD,
+    private static final ChatColor[] colors = new ChatColor[] { ChatColor.DARK_RED, ChatColor.RED, ChatColor.GOLD,
             ChatColor.YELLOW, ChatColor.GREEN, ChatColor.DARK_GREEN, ChatColor.AQUA, ChatColor.DARK_AQUA,
-            ChatColor.BLUE, ChatColor.DARK_BLUE, ChatColor.DARK_PURPLE, ChatColor.LIGHT_PURPLE};
+            ChatColor.BLUE, ChatColor.DARK_BLUE, ChatColor.DARK_PURPLE, ChatColor.LIGHT_PURPLE };
     private ChatColor extra;
 
     public RainbowEffect(int interval) {

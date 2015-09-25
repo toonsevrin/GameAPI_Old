@@ -22,7 +22,8 @@ public abstract class IntervalEffect extends HUDEffect {
             run();
         }
     }
-    public int getInterval(){
+
+    public int getInterval() {
         return interval;
     }
 

@@ -8,7 +8,6 @@ import com.exorath.game.api.GameProperty;
 import com.exorath.game.api.Manager;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.player.PlayerState;
-import com.exorath.game.api.player.PlayerManager;
 
 /**
  * @author Nick Robson

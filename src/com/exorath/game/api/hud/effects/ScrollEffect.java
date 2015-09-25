@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
  * Created by TOON on 8/11/2015.
  */
 public class ScrollEffect extends IntervalEffect {
+
     private ChatColor lastColor;
     private boolean colorNext = false;
     private int startIndex = 0;
@@ -15,9 +16,10 @@ public class ScrollEffect extends IntervalEffect {
     public ScrollEffect(int interval, int length) {
         this(interval, length, true);
     }
-    public ScrollEffect(int interval, int length, boolean space){
+
+    public ScrollEffect(int interval, int length, boolean space) {
         super(interval);
-        if(!space)
+        if (!space)
             suffix = "";
         this.length = length;
     }
@@ -33,24 +35,24 @@ public class ScrollEffect extends IntervalEffect {
         StringBuilder sb = new StringBuilder();
         char[] chars = getText().toCharArray();
         //Append the last color to the string
-        if(chars[startIndex % chars.length] == ChatColor.COLOR_CHAR) {
+        if (chars[startIndex % chars.length] == ChatColor.COLOR_CHAR) {
             lastColor = ChatColor.getByChar(chars[(startIndex + 1) % chars.length]);
-        }else if(lastColor != null){
+        } else if (lastColor != null) {
             sb.append(lastColor);
         }
         int start = colorNext ? 1 : 0;
         //append all chars from text
         for (int i = 0 + start; i < length; i++) {
-            int index =(startIndex + i) % (chars.length);
+            int index = (startIndex + i) % (chars.length);
             sb.append(chars[index]);
-            if(index + 1 == chars.length && i != length - 1)
+            if (index + 1 == chars.length && i != length - 1)
                 sb.append(suffix);
         }
 
         //Update whether or not theres a color char next
-        if(chars[startIndex % chars.length] == ChatColor.COLOR_CHAR)
+        if (chars[startIndex % chars.length] == ChatColor.COLOR_CHAR)
             colorNext = true;
-        else if(lastColor != null)
+        else if (lastColor != null)
             colorNext = false;
         return sb.toString();
     }

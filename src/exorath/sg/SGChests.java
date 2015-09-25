@@ -15,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.exorath.game.api.maps.GameMap;
-import com.exorath.game.api.maps.MapManager;
 
 /**
  * Created by too on 6/06/2015.

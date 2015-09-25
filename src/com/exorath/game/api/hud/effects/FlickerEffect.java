@@ -1,6 +1,5 @@
 package com.exorath.game.api.hud.effects;
 
-import com.exorath.game.GameAPI;
 import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.ChatColor;
 
@@ -23,14 +22,15 @@ public class FlickerEffect extends IntervalEffect {
         setText(getDisplayText());
     }
 
-    private ChatColor[] keep = new ChatColor[]{ChatColor.BOLD,ChatColor.UNDERLINE,ChatColor.ITALIC,ChatColor.MAGIC};
+    private ChatColor[] keep = new ChatColor[] { ChatColor.BOLD, ChatColor.UNDERLINE, ChatColor.ITALIC, ChatColor.MAGIC };
+
     @Override
     public String getDisplayText() {
         if (visible)
             return getText();
         String text = getText();
-        for(ChatColor color : ChatColor.values()){
-            if(ArrayUtils.contains(keep, color))
+        for (ChatColor color : ChatColor.values()) {
+            if (ArrayUtils.contains(keep, color))
                 continue;
             text = text.replaceAll(color.toString(), "");
         }

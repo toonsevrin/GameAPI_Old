@@ -1,7 +1,5 @@
 package com.exorath.game.api.hud;
 
-import org.bukkit.Bukkit;
-
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.hud.locations.ActionBar;
 import com.exorath.game.api.hud.locations.BossBar;
@@ -25,7 +23,7 @@ public abstract class HUDLocation extends BukkitRunnable {
 
     public HUDLocation(GamePlayer player) {
         this.player = player;
-        this.runTaskTimer(GameAPI.getInstance(),0,1);
+        this.runTaskTimer(GameAPI.getInstance(), 0, 1);
     }
 
     public boolean isActive() {

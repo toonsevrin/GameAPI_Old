@@ -36,9 +36,9 @@ public class Lobby implements JoinLeave {
         Game game = player.getGame();
         if (game.getState() == GameState.WAITING) {
             teleport(player);
-        }else {
-            if(game.getProperties().as(GameProperty.ALLOW_SPECTATING, Boolean.class))
-               game.getManager(SpectateManager.class).addSpectator(player);
+        } else {
+            if (game.getProperties().as(GameProperty.ALLOW_SPECTATING, Boolean.class))
+                game.getManager(SpectateManager.class).addSpectator(player);
         }
     }
 

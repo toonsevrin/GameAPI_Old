@@ -1,11 +1,7 @@
 package com.exorath.game.api.maps;
 
-import com.exorath.game.GameAPI;
-import com.exorath.game.api.gametype.minigame.maps.MapSelection;
-
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 public class MapList {
 

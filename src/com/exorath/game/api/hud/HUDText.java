@@ -1,6 +1,5 @@
 package com.exorath.game.api.hud;
 
-import com.exorath.game.GameAPI;
 import com.exorath.game.api.hud.effects.HUDEffect;
 import com.exorath.game.api.hud.locations.scoreboard.Scoreboard;
 import com.exorath.game.api.hud.locations.scoreboard.ScoreboardText;
@@ -20,7 +19,7 @@ public class HUDText implements Comparable<HUDText> {
 
     public HUDText(String text, HUDPriority priority) {
         this.text = text;
-        this.displayText = text;
+        displayText = text;
         this.priority = priority;
     }
 
@@ -28,7 +27,7 @@ public class HUDText implements Comparable<HUDText> {
     public HUDText clone() {
         HUDText hudText = new HUDText(text, priority);
         hudText.setDisplayText(displayText);
-        if (hudText == null)
+        if (hudText != null)
             hudText.setDisplayText(text);
         if (effect != null)
             hudText.setEffect(effect.clone());
@@ -51,14 +50,14 @@ public class HUDText implements Comparable<HUDText> {
     public void updateLocation() {
         if (location == null)
             return;
-        if (location instanceof HUDDisplay) {
+        if (location instanceof HUDDisplay)
             ((HUDDisplay) location).updated(this);
-        } else if (location instanceof Scoreboard) {
+        else if (location instanceof Scoreboard) {
             Scoreboard sb = (Scoreboard) location;
             if (this instanceof ScoreboardText)
-                ((Scoreboard) location).updated((ScoreboardText) this);
+                sb.updated((ScoreboardText) this);
             else
-                ((Scoreboard) location).updateTitle();
+                sb.updateTitle();
         }
     }
 

@@ -1,12 +1,8 @@
 package com.exorath.game.api.hud;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.PriorityQueue;
-import java.util.Set;
-
 import com.exorath.game.api.player.GamePlayer;
-import org.bukkit.Bukkit;
 
 /**
  * Created by TOON on 8/9/2015.
@@ -111,7 +107,7 @@ public abstract class HUDDisplay extends HUDLocation {
             return;
         if (currentText == null)
             return;
-        if(!player.isOnline()){
+        if (!player.isOnline()) {
             cancel();
             return;
         }

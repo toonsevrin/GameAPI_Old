@@ -3,7 +3,6 @@ package com.exorath.game;
 import java.io.File;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -26,8 +25,6 @@ import com.exorath.game.api.maps.GameMap;
 import com.exorath.game.api.nms.NMS;
 import com.exorath.game.api.nms.NMSProvider;
 import com.exorath.game.api.player.GamePlayer;
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
@@ -80,7 +77,8 @@ public class GameAPI extends JavaPlugin implements Listener {
     public static GamePlayer getPlayer(UUID uuid) {
         return getOnlinePlayers().stream().filter(p -> p.getUUID().equals(uuid)).findAny().orElse(null);
     }
-    public static Set<GamePlayer> getOnlinePlayers(){
+
+    public static Set<GamePlayer> getOnlinePlayers() {
         Set<GamePlayer> players = new HashSet<>();
         games.forEach(g -> players.addAll(g.getOnlinePlayers()));
         return players;

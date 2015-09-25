@@ -29,7 +29,7 @@ import com.google.common.collect.Sets;
  * @author Nick Robson
  */
 
-public abstract class Game implements JoinLeave{
+public abstract class Game implements JoinLeave {
 
     public static final String DEFAULT_GAME_NAME = "Game";
     public static final String DEFAULT_GAME_DESCRIPTION = "Default game description";
@@ -48,27 +48,29 @@ public abstract class Game implements JoinLeave{
     public Game() {
         gameID = UUID.randomUUID();
         addManager(new PlayerManager(this));
-        Manager[] baseManagers = new Manager[] { new HUDManager(this), new MapManager(this), new PlayerManager(this)};
+        Manager[] baseManagers = new Manager[] { new HUDManager(this), new MapManager(this), new PlayerManager(this) };
         Arrays.asList(baseManagers).forEach(manager -> addManager(manager));
     }
+
     //** Join & Leave **//
     @Override
     public void join(GamePlayer player) {
-        for(Manager manager : managers)
-            if(manager instanceof JoinLeave)
+        for (Manager manager : managers)
+            if (manager instanceof JoinLeave)
                 ((JoinLeave) manager).join(player);
-        if(lobby != null)
+        if (lobby != null)
             lobby.join(player);
     }
 
     @Override
     public void leave(GamePlayer player) {
-        for(Manager manager : managers)
-            if(manager instanceof JoinLeave)
+        for (Manager manager : managers)
+            if (manager instanceof JoinLeave)
                 ((JoinLeave) manager).leave(player);
-        if(lobby != null)
+        if (lobby != null)
             lobby.leave(player);
     }
+
     /* Game ID */
     public final UUID getGameID() {
         return gameID;

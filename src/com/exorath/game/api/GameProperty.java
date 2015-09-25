@@ -15,6 +15,6 @@ public class GameProperty {
     public static final Property DEFAULT_GAMEMODE = Property.get("gamemode", "The default gamemode for the game",
             GameMode.ADVENTURE);
 
-    public static final Property WORLD_NAME = Property.get("world-name","The name of the main world", "world");
+    public static final Property WORLD_NAME = Property.get("world-name", "The name of the main world", "world");
 
 }

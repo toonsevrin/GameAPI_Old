@@ -6,11 +6,11 @@ package com.exorath.game.api.action;
  * @author Nick Robson
  */
 public class Actions {
+
     //TODO: It might be better to just remove these :P
     private DieAction die = new DieAction.Spectate();
     private GameEndAction gameEnd = new GameEndAction.SendToServer("hub");
     private HungerAction hunger = new HungerAction.Default();
-
 
     public DieAction getDieAction() {
         return this.die;
