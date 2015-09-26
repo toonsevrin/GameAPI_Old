@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import com.exorath.game.lib.JoinLeave;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -18,6 +17,7 @@ import com.exorath.game.api.lobby.Lobby;
 import com.exorath.game.api.maps.MapManager;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.player.PlayerManager;
+import com.exorath.game.lib.JoinLeave;
 import com.exorath.game.lib.util.FileUtils;
 import com.google.common.collect.Sets;
 

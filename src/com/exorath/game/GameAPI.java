@@ -25,6 +25,7 @@ import com.exorath.game.api.maps.GameMap;
 import com.exorath.game.api.nms.NMS;
 import com.exorath.game.api.nms.NMSProvider;
 import com.exorath.game.api.player.GamePlayer;
+import com.exorath.game.api.player.PlayerManager;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
@@ -121,6 +122,24 @@ public class GameAPI extends JavaPlugin implements Listener {
         versionsConfig = YamlConfiguration.loadConfiguration(new File(this.getDataFolder(), "versions.yml"));
 
         GameMap.loadWorlds();
+
+        getServer().getScheduler().runTaskLater(this, new Runnable() {
+
+            @Override
+            public void run() {
+                Game game = getGame();
+                if (game == null)
+                    return;
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    if (p == null)
+                        continue;
+                    GamePlayer gp = game.getManager(PlayerManager.class).login(p.getUniqueId());
+                    gp.join();
+                    game.join(gp);
+                }
+            }
+
+        }, 5);
 
     }
 

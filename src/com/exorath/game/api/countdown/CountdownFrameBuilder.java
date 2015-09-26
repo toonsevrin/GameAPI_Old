@@ -1,0 +1,166 @@
+package com.exorath.game.api.countdown;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.List;
+import java.util.regex.Matcher;
+
+import com.exorath.game.api.Callback;
+import com.exorath.game.api.SoundInfo;
+import com.exorath.game.api.player.GamePlayer;
+import com.google.common.collect.Lists;
+import com.yoshigenius.lib.util.RegexUtil;
+
+/**
+ * @author Nick Robson
+ */
+public class CountdownFrameBuilder {
+
+    /**
+     * @author Nick Robson
+     */
+    private class FrameInvocationHandler implements InvocationHandler {
+
+        private List<Class<? extends CountdownFrame>> clazzs;
+
+        private FrameInvocationHandler(List<Class<? extends CountdownFrame>> clazzs) {
+            this.clazzs = clazzs;
+        }
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            boolean ok = false;
+            for (Class<?> c : clazzs)
+                if (c.getMethod(method.getName(), method.getParameterTypes()) != null)
+                    ok = true;
+            if (!ok) {
+                StringBuilder str = new StringBuilder();
+                clazzs.forEach(c -> str.append((str.length() == 0 ? "" : ", ") + c.getName()));
+                throw new NoSuchMethodException("There is no " + method.getName() + "() in [" + str.toString() + "]");
+            }
+            if (method.getName().equals("getDuration") && args.length == 0)
+                return duration;
+            else if (method.getName().equals("getSound") && args.length == 0) {
+                if (sound == null)
+                    throw new java.lang.NoSuchMethodException("This CountdownFrame does not support Sound.");
+                return sound.getSound();
+            } else if (method.getName().equals("getPitch") && args.length == 0) {
+                if (sound == null)
+                    throw new java.lang.NoSuchMethodException("This CountdownFrame does not support Sound.");
+                return sound.getPitch();
+            } else if (method.getName().equals("getVolume") && args.length == 0) {
+                if (sound == null)
+                    throw new java.lang.NoSuchMethodException("This CountdownFrame does not support Sound.");
+                return sound.getVolume();
+            } else if (method.getName().equals("getTitle") && args.length == 0) {
+                if (title == null)
+                    throw new java.lang.NoSuchMethodException("This CountdownFrame does not support Titles.");
+                return title;
+            } else if (method.getName().equals("getSubtitle") && args.length == 0) {
+                if (subtitle == null)
+                    throw new java.lang.NoSuchMethodException("This CountdownFrame does not support Subtitles.");
+                return subtitle;
+            } else if (method.getName().equals("start") && args.length == 1) {
+                if (start != null)
+                    start.run(args[0] == null ? null : (GamePlayer) args[0]);
+                return null;
+            } else if (method.getName().equals("display") && args.length == 1) {
+                if (display != null)
+                    display.run(args[0] == null ? null : (GamePlayer) args[0]);
+                return null;
+            } else if (method.getName().equals("end") && args.length == 1) {
+                if (end != null)
+                    end.run(args[0] == null ? null : (GamePlayer) args[0]);
+                return null;
+            }
+            return null;
+        }
+
+    }
+
+    public static CountdownFrameBuilder newBuilder() {
+        return new CountdownFrameBuilder();
+    }
+
+    public static CountdownFrame blank(long duration) {
+        return newBuilder().duration(duration).build();
+    }
+
+    private long duration;
+    private SoundInfo sound;
+    private String title, subtitle;
+    private Callback<GamePlayer> start, display, end;
+
+    {
+        duration = 0;
+        sound = null;
+        title = subtitle = null;
+        start = display = end = null;
+    }
+
+    public CountdownFrameBuilder duration(long duration) {
+        this.duration = duration;
+        return this;
+    }
+
+    public CountdownFrameBuilder title(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public CountdownFrameBuilder subtitle(String subtitle) {
+        this.subtitle = subtitle;
+        return this;
+    }
+
+    public CountdownFrameBuilder sound(SoundInfo sound) {
+        this.sound = sound;
+        return this;
+    }
+
+    public CountdownFrameBuilder start(Callback<GamePlayer> start) {
+        this.start = start;
+        return this;
+    }
+
+    public CountdownFrameBuilder display(Callback<GamePlayer> display) {
+        this.display = display;
+        return this;
+    }
+
+    public CountdownFrameBuilder end(Callback<GamePlayer> end) {
+        this.end = end;
+        return this;
+    }
+
+    public CountdownFrame build() {
+        return build(CountdownFrame.class);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends CountdownFrame> T build(Class<T> clazz) {
+        List<Class<? extends CountdownFrame>> clazzs = Lists.newArrayList();
+        if (title != null)
+            clazzs.add(TitleCountdownFrame.class);
+        if (subtitle != null)
+            clazzs.add(SubtitleCountdownFrame.class);
+        if (sound != null)
+            clazzs.add(SoundCountdownFrame.class);
+        if (clazzs.isEmpty())
+            clazzs.add(CountdownFrame.class);
+        if (clazz != CountdownFrame.class && !clazzs.stream().filter(c -> clazz.isAssignableFrom(c)).findAny().isPresent()) {
+            System.out.println("Exception in CountdownFrame building.");
+            Matcher match = RegexUtil.UPPERCASE_LETTERS.matcher(clazz.getSimpleName());
+            StringBuilder str = new StringBuilder(clazz.getSimpleName());
+            int offset = 0;
+            while (match.find())
+                if (match.start() > 0)
+                    str.insert(match.start() + offset++, " ");
+            throw new IllegalArgumentException("CountdownFrame cannot be built as a " + str.toString());
+        }
+        return (T) Proxy.newProxyInstance(this.getClass().getClassLoader(), clazzs.toArray(new Class<?>[clazzs.size()]),
+                new FrameInvocationHandler(clazzs));
+    }
+
+}

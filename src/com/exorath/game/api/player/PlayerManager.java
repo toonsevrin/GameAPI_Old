@@ -21,10 +21,11 @@ public class PlayerManager implements Manager {
     }
     //** Join & Leave **//
 
-    public void login(UUID id) {
+    public GamePlayer login(UUID id) {
         GamePlayer player = new GamePlayer(id);
         player.setGame(game);
         players.add(player);
+        return player;
     }
 
     public void leave(GamePlayer player) {

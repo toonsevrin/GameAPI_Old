@@ -1,6 +1,5 @@
 package com.exorath.game;
 
-import com.exorath.game.api.player.PlayerManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -41,6 +40,7 @@ import com.exorath.game.api.Game;
 import com.exorath.game.api.GameProvider;
 import com.exorath.game.api.events.GamePlayerKillPlayerEvent;
 import com.exorath.game.api.player.GamePlayer;
+import com.exorath.game.api.player.PlayerManager;
 import com.exorath.game.api.team.Team;
 import com.exorath.game.api.team.TeamManager;
 
@@ -49,6 +49,15 @@ import com.exorath.game.api.team.TeamManager;
  */
 public class GameAPIListener implements Listener {
 
+    static Game getGame(GamePlayer gp) {
+        if (gp == null)
+            throw new NullPointerException("GamePlayer cannot be null");
+        Game game = gp.getGame();
+        if (game == null)
+            throw new NullPointerException("GameAPI needs a plugin provider.");
+        return game;
+    }
+
     @EventHandler
     public void onPluginLoad(PluginEnableEvent event) {
         Plugin plg = event.getPlugin();
@@ -56,13 +65,6 @@ public class GameAPIListener implements Listener {
             GameAPI.registerGameProvider((GameProvider) plg);
             GameAPI.getInstance().getLogger().info("Detected GameAPI provider: " + plg.getName());
         }
-    }
-
-    private Game getGame(GamePlayer gp) {
-        Game game = gp.getGame();
-        if (game == null)
-            throw new NullPointerException("GameAPI needs a plugin provider.");
-        return game;
     }
 
     @EventHandler
@@ -97,7 +99,9 @@ public class GameAPIListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
-        Game game = getGame(gp);
+        if (gp == null || gp.getGame() == null)
+            return;
+        Game game = gp.getGame();
         game.leave(gp);
 
         TeamManager teams = game.getManager(TeamManager.class);
