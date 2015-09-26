@@ -38,6 +38,7 @@ public class Countdown {
 
         private long started = 0;
         private long elapsed = 0;
+        private long lastRun = 0;
 
         @Override
         public void run() {
@@ -53,7 +54,10 @@ public class Countdown {
                 return;
             }
             CountdownFrame frame = frames.get(current);
-            game.getOnlinePlayers().forEach(p -> frame.display(p));
+            if (elapsed - lastRun >= Math.min(frame.getDelay(), frame.getDuration())) {
+                game.getOnlinePlayers().forEach(p -> frame.display(p));
+                lastRun = elapsed;
+            }
             if (elapsed == 0)
                 game.getOnlinePlayers().forEach(p -> frame.start(p));
             if (elapsed - started >= frame.getDuration()) {

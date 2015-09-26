@@ -39,7 +39,9 @@ public class CountdownFrameBuilder {
                 clazzs.forEach(c -> str.append((str.length() == 0 ? "" : ", ") + c.getName()));
                 throw new NoSuchMethodException("There is no " + method.getName() + "() in [" + str.toString() + "]");
             }
-            if (method.getName().equals("getDuration") && args.length == 0)
+            if (method.getName().equals("getDelay") && args.length == 0)
+                return delay;
+            else if (method.getName().equals("getDuration") && args.length == 0)
                 return duration;
             else if (method.getName().equals("getSound") && args.length == 0) {
                 if (sound == null)
@@ -87,16 +89,21 @@ public class CountdownFrameBuilder {
         return newBuilder().duration(duration).build();
     }
 
-    private long duration;
+    private long delay, duration;
     private SoundInfo sound;
     private String title, subtitle;
     private Callback<GamePlayer> start, display, end;
 
     {
-        duration = 0;
         sound = null;
+        delay = duration = 0;
         title = subtitle = null;
         start = display = end = null;
+    }
+
+    public CountdownFrameBuilder delay(long delay) {
+        this.delay = delay;
+        return this;
     }
 
     public CountdownFrameBuilder duration(long duration) {
