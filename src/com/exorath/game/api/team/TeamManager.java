@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 
-import com.exorath.game.api.gametype.minigame.Minigame;
 import com.exorath.game.lib.JoinLeave;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -13,6 +12,7 @@ import org.bukkit.entity.Player;
 import com.exorath.game.api.Manager;
 import com.exorath.game.api.maps.GameMap;
 import com.exorath.game.api.player.GamePlayer;
+import com.exorath.game.api.type.minigame.Minigame;
 import com.google.common.collect.Maps;
 
 /**

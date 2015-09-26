@@ -1,4 +1,4 @@
-package com.exorath.game.api.gametype.minigame;
+package com.exorath.game.api.type.minigame;
 
 import java.util.Arrays;
 
@@ -9,13 +9,13 @@ import com.exorath.game.api.Game;
 import com.exorath.game.api.GameListener;
 import com.exorath.game.api.Manager;
 import com.exorath.game.api.Property;
-import com.exorath.game.api.gametype.minigame.kit.KitManager;
-import com.exorath.game.api.gametype.minigame.maps.MinigameMapManager;
 import com.exorath.game.api.maps.GameMap;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.player.PlayerManager;
 import com.exorath.game.api.spectate.SpectateManager;
 import com.exorath.game.api.team.TeamManager;
+import com.exorath.game.api.type.minigame.kit.KitManager;
+import com.exorath.game.api.type.minigame.maps.MinigameMapManager;
 
 /**
  * @author Nick Robson

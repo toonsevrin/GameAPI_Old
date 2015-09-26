@@ -1,4 +1,4 @@
-package com.exorath.game.api.gametype.minigame.maps;
+package com.exorath.game.api.type.minigame.maps;
 
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.Game;

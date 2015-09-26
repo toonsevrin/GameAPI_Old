@@ -1,6 +1,5 @@
-package com.exorath.game.api.particles.particletypes;
+package com.exorath.game.api.particles;
 
-import com.exorath.game.api.particles.ParticleType;
 import com.exorath.game.lib.particles.ParticleEffectType;
 import org.bukkit.Location;
 

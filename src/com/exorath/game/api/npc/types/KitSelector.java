@@ -4,12 +4,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Zombie;
 import com.exorath.game.api.Game;
-import com.exorath.game.api.gametype.minigame.kit.Kit;
-import com.exorath.game.api.gametype.minigame.kit.KitManager;
 import com.exorath.game.api.menu.EasyMenu;
 import com.exorath.game.api.npc.NPCEquipment;
 import com.exorath.game.api.npc.SpawnedNPC;
 import com.exorath.game.api.player.GamePlayer;
+import com.exorath.game.api.type.minigame.kit.Kit;
+import com.exorath.game.api.type.minigame.kit.KitManager;
 
 /**
  * @author Nick Robson

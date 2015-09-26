@@ -1,4 +1,4 @@
-package com.exorath.game.api.gametype.minigame.countdown;
+package com.exorath.game.api.type.minigame.countdown;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -9,10 +9,10 @@ import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.exorath.game.GameAPI;
-import com.exorath.game.api.gametype.minigame.Minigame;
 import com.exorath.game.api.hud.HUDManager;
 import com.exorath.game.api.hud.HUDPriority;
 import com.exorath.game.api.hud.HUDText;
+import com.exorath.game.api.type.minigame.Minigame;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -77,7 +77,7 @@ public class MinigameCountdown {
         frames.add(getFinalCountdown(ChatColor.GREEN, 1));
         StringBuilder startBuilder = new StringBuilder();
         startBuilder.append(getArrow(ChatColor.GREEN, MinigameCountdown.LENGTH / 2 - 2, MinigameCountdown.CHAR)).append(ChatColor.BOLD)
-                .append(" START ").append(getArrow(ChatColor.GREEN, MinigameCountdown.LENGTH / 2 - 2, MinigameCountdown.CHAR));
+        .append(" START ").append(getArrow(ChatColor.GREEN, MinigameCountdown.LENGTH / 2 - 2, MinigameCountdown.CHAR));
         startBuilder.insert(0, getWhiteSpaces(startBuilder.toString()));
         frames.add(new TitleSubtitleSoundFrame(this, startBuilder.toString(), "", 20, Sound.NOTE_PLING, 3, 10));
         frames.add(new FinishFrame(this));
@@ -97,7 +97,7 @@ public class MinigameCountdown {
         sb.insert(0, getWhiteSpaces(sb.toString()));
         if (frame == frames.size() - 1)
             sb.insert(0, ChatColor.WHITE);
-        return new SubtitleFrame(this, sb.toString(), (int) getInterval());
+        return new SubtitleCountdownFrame(this, sb.toString(), (int) getInterval());
     }
 
     private void getArrow(StringBuilder sb, ChatColor color, int amount, char c) {
@@ -164,7 +164,7 @@ public class MinigameCountdown {
     }
 
     private float getInterval() {
-        return (float) game.getProperties().as(Minigame.START_DELAY, Integer.class) / MinigameCountdown.LENGTH;
+        return game.getProperties().as(Minigame.START_DELAY, Integer.class) / MinigameCountdown.LENGTH;
     }
 
     private String getWhiteSpaces(String str) {

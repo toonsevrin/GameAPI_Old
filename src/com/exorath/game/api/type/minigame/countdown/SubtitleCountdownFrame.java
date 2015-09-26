@@ -1,4 +1,4 @@
-package com.exorath.game.api.gametype.minigame.countdown;
+package com.exorath.game.api.type.minigame.countdown;
 
 import com.exorath.game.api.Game;
 import com.exorath.game.api.hud.HUDManager;
@@ -8,11 +8,11 @@ import com.exorath.game.api.hud.HUDText;
 /**
  * Created by TOON on 9/2/2015.
  */
-public class SubtitleFrame extends CountdownFrame {
+public class SubtitleCountdownFrame extends CountdownFrame {
 
     private String text;
 
-    public SubtitleFrame(MinigameCountdown minigameCountdown, String text, int delay) {
+    public SubtitleCountdownFrame(MinigameCountdown minigameCountdown, String text, int delay) {
         super(minigameCountdown, delay);
         this.text = text;
     }

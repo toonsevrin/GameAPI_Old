@@ -1,4 +1,4 @@
-package com.exorath.game.api.gametype.gamemode;
+package com.exorath.game.api.type.gamemode;
 
 import com.exorath.game.api.Game;
 

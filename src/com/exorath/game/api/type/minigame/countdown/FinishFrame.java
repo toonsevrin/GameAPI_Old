@@ -1,4 +1,4 @@
-package com.exorath.game.api.gametype.minigame.countdown;
+package com.exorath.game.api.type.minigame.countdown;
 
 import com.exorath.game.api.Game;
 

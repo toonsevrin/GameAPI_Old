@@ -1,6 +1,5 @@
 package exorath.sg;
 
-import com.exorath.game.api.gametype.minigame.Minigame;
 import org.bukkit.Bukkit;
 import org.bukkit.util.Vector;
 
@@ -10,8 +9,6 @@ import com.exorath.game.api.StopCause;
 import com.exorath.game.api.action.DieAction;
 import com.exorath.game.api.action.GameEndAction;
 import com.exorath.game.api.action.HungerAction;
-import com.exorath.game.api.gametype.minigame.RepeatingMinigame;
-import com.exorath.game.api.gametype.minigame.kit.KitManager;
 import com.exorath.game.api.message.GameMessenger;
 import com.exorath.game.api.npc.types.KitSelector;
 import com.exorath.game.api.npc.types.SpectatorNPC;
@@ -19,6 +16,9 @@ import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.team.FreeForAllTeam;
 import com.exorath.game.api.team.Team;
 import com.exorath.game.api.team.TeamManager;
+import com.exorath.game.api.type.minigame.Minigame;
+import com.exorath.game.api.type.minigame.RepeatingMinigame;
+import com.exorath.game.api.type.minigame.kit.KitManager;
 
 /**
  * Created by too on 27/05/2015.

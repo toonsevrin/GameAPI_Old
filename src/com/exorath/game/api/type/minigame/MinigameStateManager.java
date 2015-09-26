@@ -1,11 +1,10 @@
-package com.exorath.game.api.gametype.minigame;
+package com.exorath.game.api.type.minigame;
 
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.GameRunnable;
 import com.exorath.game.api.GameState;
 import com.exorath.game.api.Manager;
 import com.exorath.game.api.StopCause;
-import com.exorath.game.api.gametype.minigame.countdown.MinigameCountdown;
 import com.exorath.game.api.hud.HUDManager;
 import com.exorath.game.api.hud.HUDPriority;
 import com.exorath.game.api.hud.effects.FlickerEffect;
@@ -15,6 +14,7 @@ import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.player.PlayerManager;
 import com.exorath.game.api.team.Team;
 import com.exorath.game.api.team.TeamManager;
+import com.exorath.game.api.type.minigame.countdown.MinigameCountdown;
 import com.exorath.game.lib.JoinLeave;
 import org.bukkit.ChatColor;
 

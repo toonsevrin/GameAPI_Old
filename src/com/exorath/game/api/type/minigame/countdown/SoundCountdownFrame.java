@@ -1,4 +1,4 @@
-package com.exorath.game.api.gametype.minigame.countdown;
+package com.exorath.game.api.type.minigame.countdown;
 
 import org.bukkit.Sound;
 
@@ -8,7 +8,7 @@ import com.exorath.game.api.player.PlayerManager;
 /**
  * Created by TOON on 9/2/2015.
  */
-public class SoundCountdownFrame extends SubtitleFrame {
+public class SoundCountdownFrame extends SubtitleCountdownFrame {
 
     private Sound sound;
     private float pitch;
