@@ -9,12 +9,11 @@ import com.google.common.collect.Maps;
  */
 public class Version {
 
-    private static final Map<String, Version> versions = Maps.newHashMap();
+    private static final Map<Integer, Version> versions = Maps.newHashMap();
 
     public static Version from(String name, String version, int versionNumber, int apiVersion) {
-        if (version != null && Version.versions.containsKey(version)) {
-            return Version.versions.get(version);
-        }
+        if (versionNumber > 0 && Version.versions.containsKey(versionNumber))
+            return Version.versions.get(versionNumber);
         return new Version(name, version, versionNumber, apiVersion);
     }
 
@@ -27,38 +26,38 @@ public class Version {
         this.versionNumber = versionNumber;
         this.apiVersion = apiVersion;
 
-        if (version != null) {
-            Version.versions.put(version, this);
-        }
+        if (version != null)
+            Version.versions.put(versionNumber, this);
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public String getVersion() {
-        return this.version;
+        return version;
     }
 
     public int getVersionNumber() {
-        return this.versionNumber;
+        return versionNumber;
     }
 
     public int getAPIVersion() {
-        return this.apiVersion;
+        return apiVersion;
     }
 
     public boolean isCompatible(Version version) {
-        return version.getAPIVersion() == this.getAPIVersion();
+        return version.getAPIVersion() == getAPIVersion();
     }
 
     @Override
     public boolean equals(Object o) {
+        if (super.equals(o))
+            return true;
         if (o instanceof Version) {
             Version v = (Version) o;
-            if (v.getName().equals(this.getName()) && v.getVersionNumber() == this.getVersionNumber()) {
+            if (v.getName().equals(getName()) && v.getVersionNumber() == getVersionNumber())
                 return true;
-            }
         }
         return false;
     }

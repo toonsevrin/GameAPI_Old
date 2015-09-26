@@ -25,7 +25,7 @@ public class CountdownFrameBuilder {
         private List<Class<? extends CountdownFrame>> clazzs;
 
         private FrameInvocationHandler(List<Class<? extends CountdownFrame>> clazzs) {
-            this.clazzs = clazzs;
+            this.clazzs = clazzs == null ? Lists.newArrayList() : clazzs;
         }
 
         @Override
@@ -63,15 +63,15 @@ public class CountdownFrameBuilder {
                 if (subtitle == null)
                     throw new java.lang.NoSuchMethodException("This CountdownFrame does not support Subtitles.");
                 return subtitle;
-            } else if (method.getName().equals("start") && args.length == 1) {
+            } else if (method.getName().equals("start") && args.length == 1 && method.getParameterTypes()[0] == GamePlayer.class) {
                 if (start != null)
                     start.run(args[0] == null ? null : (GamePlayer) args[0]);
                 return null;
-            } else if (method.getName().equals("display") && args.length == 1) {
+            } else if (method.getName().equals("display") && args.length == 1 && method.getParameterTypes()[0] == GamePlayer.class) {
                 if (display != null)
                     display.run(args[0] == null ? null : (GamePlayer) args[0]);
                 return null;
-            } else if (method.getName().equals("end") && args.length == 1) {
+            } else if (method.getName().equals("end") && args.length == 1 && method.getParameterTypes()[0] == GamePlayer.class) {
                 if (end != null)
                     end.run(args[0] == null ? null : (GamePlayer) args[0]);
                 return null;
