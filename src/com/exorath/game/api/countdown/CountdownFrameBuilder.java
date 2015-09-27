@@ -89,6 +89,9 @@ public class CountdownFrameBuilder {
         return newBuilder().duration(duration).build();
     }
 
+    private CountdownFrameBuilder() {
+    }
+
     private long delay, duration;
     private SoundInfo sound;
     private String title, subtitle;
@@ -157,7 +160,6 @@ public class CountdownFrameBuilder {
         if (clazzs.isEmpty())
             clazzs.add(CountdownFrame.class);
         if (clazz != CountdownFrame.class && !clazzs.stream().filter(c -> clazz.isAssignableFrom(c)).findAny().isPresent()) {
-            System.out.println("Exception in CountdownFrame building.");
             Matcher match = RegexUtil.UPPERCASE_LETTERS.matcher(clazz.getSimpleName());
             StringBuilder str = new StringBuilder(clazz.getSimpleName());
             int offset = 0;
