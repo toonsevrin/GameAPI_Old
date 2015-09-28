@@ -1,11 +1,12 @@
 package com.exorath.game.api.type.minigame.maps;
 
+import java.util.Random;
+
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.Game;
 import com.exorath.game.api.Manager;
 import com.exorath.game.api.maps.GameMap;
 import com.exorath.game.api.maps.MapManager;
-import java.util.Random;
 
 /**
  * Created by TOON on 9/23/2015.
@@ -44,15 +45,15 @@ public class MinigameMapManager implements Manager {
     }
 
     public GameMap nextMap(MapSelection selection) {
-        if (game.getManager(MapManager.class).getMapList().getMaps().size() == 0) {
+        if (game.getManager(MapManager.class).getMaps().size() == 0) {
             GameAPI.error("Map size == 0: Please add a map!");
             return null;
         }
         switch (selection) {
             case CYCLE:
-                current = mapManager.getMapList().getMaps().get(index++);
+                current = mapManager.getMaps().get(index++);
             case RANDOM:
-                current = mapManager.getMapList().getMaps().get(new Random().nextInt(mapManager.getMapList().getMaps().size()));
+                current = mapManager.getMaps().get(new Random().nextInt(mapManager.getMaps().size()));
             case SAME:
                 current.reset();
             case VOTE:

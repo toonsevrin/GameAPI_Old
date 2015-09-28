@@ -27,10 +27,10 @@ import com.exorath.game.api.type.minigame.kit.KitManager;
 public class SurvivalGames extends RepeatingMinigame {
 
     public SurvivalGames() {
-        this.setupGameProperties();
-        this.setupLobby();
-        this.setupTeams();
-        this.addListener(new SGListener());//Adds a custom event listener (See SGListener class).
+        setupGameProperties();
+        setupLobby();
+        setupTeams();
+        addListener(new SGListener());//Adds a custom event listener (See SGListener class).
     }
 
     /**
@@ -39,16 +39,16 @@ public class SurvivalGames extends RepeatingMinigame {
     private void setupGameProperties() {
 
         /* Game properties */
-        this.setName("Survival Games");//Name of the gamemode
-        this.setDescription("Tributes fight to the death in the arena.");//Description of the gamemode
-        this.getProperties().set(Minigame.START_DELAY, 60);//Minimum amount of seconds between two games
-        this.getProperties().set(Minigame.MAX_DURATION, 900);//Set the max game duration to 15 minutes, after this time game will be terminated.
-        this.getProperties().set(GameProperty.ALLOW_SPECTATING, true);//Set the max game duration to 15 minutes, after this time game will be terminated.
+        setName("Survival Games");//Name of the gamemode
+        setDescription("Tributes fight to the death in the arena.");//Description of the gamemode
+        getProperties().set(Minigame.START_DELAY, 60);//Minimum amount of seconds between two games
+        getProperties().set(Minigame.MAX_DURATION, 900);//Set the max game duration to 15 minutes, after this time game will be terminated.
+        getProperties().set(GameProperty.ALLOW_SPECTATING, true);//Set the max game duration to 15 minutes, after this time game will be terminated.
 
         /* Actions */
-        this.getActions().setDieAction(new DieAction.Spectate());//This is to avoid having to write basic actions again on each gamemode.
-        this.getActions().setGameEndAction(new GameEndAction.SendToServer("hub"));//This is to avoid having to write basic actions again on each gamemode.
-        this.getActions().setHungerAction(new HungerAction.Default());
+        getActions().setDieAction(new DieAction.Spectate());//This is to avoid having to write basic actions again on each gamemode.
+        getActions().setGameEndAction(new GameEndAction.SendToServer("hub"));//This is to avoid having to write basic actions again on each gamemode.
+        getActions().setHungerAction(new HungerAction.Default());
 
     }
 
@@ -56,12 +56,12 @@ public class SurvivalGames extends RepeatingMinigame {
      * Sets the lobby in this game up
      */
     private void setupLobby() {
-        this.getLobby().enable();//Enable the lobby
-        this.getLobby().setSpawnLocation(0, 60, 0);//Spawn location in the lobby
+        getLobby().enable();//Enable the lobby
+        getLobby().setSpawnLocation(0, 60, 0);//Spawn location in the lobby
 
-        this.getLobby().addNPC(new SpectatorNPC(), new Vector(0, 60, 10));//When this npc gets right clicked, you become a spectator.
+        getLobby().addNPC(new SpectatorNPC(), new Vector(0, 60, 10));//When this npc gets right clicked, you become a spectator.
 
-        this.setupKits();
+        setupKits();
     }
 
     /**
@@ -91,26 +91,25 @@ public class SurvivalGames extends RepeatingMinigame {
         KitSelector warriorSelector = new KitSelector(warriorKit);//Create a warrior kit selector npc, on right click the kit will be selected
         KitSelector archerSelector = new KitSelector(archerKit);//Create an archer kit selector npc, on right click the kit will be selected
 
-        this.getLobby().addNPC(selector, new Vector(0, 60, 5));//Add the kit selector to the lobby
-        this.getLobby().addNPC(warriorSelector, new Vector(-5, 60, 6));//Add the warrior kit selector to the lobby
-        this.getLobby().addNPC(archerSelector, new Vector(5, 60, 6));//Add the archer kit selector to the lobby
+        getLobby().addNPC(selector, new Vector(0, 60, 5));//Add the kit selector to the lobby
+        getLobby().addNPC(warriorSelector, new Vector(-5, 60, 6));//Add the warrior kit selector to the lobby
+        getLobby().addNPC(archerSelector, new Vector(5, 60, 6));//Add the archer kit selector to the lobby
     }
 
     //game functions
     protected void start() {
         new SGChests(this);//Generates chest contents in the selected game world.
 
-        this.scheduleEndGrace();// Ends the grace period (After 30 seconds)
-        this.scheduleStandoff();// Teleports all players to center of map (After 10 minutes)
+        scheduleEndGrace();// Ends the grace period (After 30 seconds)
+        scheduleStandoff();// Teleports all players to center of map (After 10 minutes)
     }
 
     protected void stop(StopCause cause) {
         Team team = this. getManager(TeamManager.class).getTeam();
         for (GamePlayer player : team.getPlayers()) {
-            if (!player.isOnline()) {
+            if (!player.isOnline())
                 continue;
-            }
-            if (cause == StopCause.TIME_UP) {// If the time is up, it means that the game tied.
+            if (cause == StopCause.TIME_UP)
                 if (player.isAlive()) {// Send the players which are still alive a victory reward and message
                     GameMessenger.sendStructured(this, player, "player.onTie.alive");
                     player.addCoins(150);
@@ -118,8 +117,7 @@ public class SurvivalGames extends RepeatingMinigame {
                     GameMessenger.sendStructured(this, player, "player.onTie.dead");
                     player.addCoins(50);
                 }
-            }
-            if (cause == StopCause.VICTORY) {
+            if (cause == StopCause.VICTORY)
                 if (player.isAlive()) {// Send the victor a big reward and victory message
                     GameMessenger.sendStructured(this, player, "player.onVictory.alive");
                     player.addCoins(250);
@@ -127,7 +125,6 @@ public class SurvivalGames extends RepeatingMinigame {
                     GameMessenger.sendStructured(this, player, "player.onVictory.dead");
                     player.addCoins(50);
                 }
-            }
         }
     }
 
@@ -150,17 +147,15 @@ public class SurvivalGames extends RepeatingMinigame {
      */
     protected void scheduleStandoff() {
         int[] standoffMessageTime = new int[] { 60, 30, 20, 10, 5, 4, 3, 2, 1 };//Times before standoff to send a scheduled message
-        for (int time : standoffMessageTime) {//Schedule a countdown message
-            this.scheduleStandoffMessage(time);
-        }
+        for (int time : standoffMessageTime)
+            scheduleStandoffMessage(time);
 
         Bukkit.getScheduler().runTaskLater(GameAPI.getInstance(), () -> {
             GameMessenger.sendInfo(SurvivalGames.this, "Standoff started! Players are teleported to the center.");
             int spawn = 0;
-            for (GamePlayer player : SurvivalGames.this.getManager(TeamManager.class).getTeam().getPlayers()) {//Teleport all active players back to a spawn location.
+            for (GamePlayer player : SurvivalGames.this.getManager(TeamManager.class).getTeam().getPlayers())
                 player.getBukkitPlayer().teleport(SurvivalGames.this.getManager(TeamManager.class).getTeam()
-                        .getSpawns(getCurrent())[spawn++].getBukkitLocation());
-            }
+                        .getSpawns(getCurrent())[spawn++].getLocation());
         } , 20 * 60 * 10);
     }
 

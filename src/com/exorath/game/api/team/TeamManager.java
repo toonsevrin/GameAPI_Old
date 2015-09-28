@@ -5,14 +5,15 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 
-import com.exorath.game.lib.JoinLeave;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import com.exorath.game.api.Manager;
 import com.exorath.game.api.maps.GameMap;
+import com.exorath.game.api.maps.Spawns;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.type.minigame.Minigame;
+import com.exorath.game.lib.JoinLeave;
 import com.google.common.collect.Maps;
 
 /**
@@ -34,11 +35,10 @@ public class TeamManager implements Manager, JoinLeave {
     //** Join & Leave **//
     @Override
     public void join(GamePlayer player) {
-        if (addToDefault(player)) {
+        if (addToDefault(player))
             player.sendMessage("You successfully joined " + getTeam(player).getTeamColor().toString());
-        } else {
+        else
             player.sendMessage(ChatColor.RED + "All teams are full :(");
-        }
     }
 
     @Override
@@ -128,11 +128,12 @@ public class TeamManager implements Manager, JoinLeave {
     public void startGame() {
         GameMap map = getGame().getCurrent();
         for (Team team : teams.values()) {
-            int spawn = 0;
+            Spawns s = map.getSpawns(team.getTeamColor().name());
+            s.reset();
             for (GamePlayer player : team.getPlayers()) {
                 Player pl = player.getBukkitPlayer();
                 if (pl != null)
-                    pl.teleport(map.getSpawn(team.getTeamColor(), spawn++).getBukkitLocation());
+                    pl.teleport(s.getNextSpawn().getLocation());
             }
         }
     }

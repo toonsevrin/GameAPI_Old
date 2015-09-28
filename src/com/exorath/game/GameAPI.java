@@ -121,7 +121,7 @@ public class GameAPI extends JavaPlugin implements Listener {
 
         versionsConfig = YamlConfiguration.loadConfiguration(new File(this.getDataFolder(), "versions.yml"));
 
-        GameMap.loadWorlds();
+        GameMap.loadAll();
 
         getServer().getScheduler().runTaskLater(this, new Runnable() {
 

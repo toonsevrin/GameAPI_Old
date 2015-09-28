@@ -84,6 +84,8 @@ public class Properties {
      *            The value you want to store in the key.
      */
     public void set(Property property, Object value) {
+        if (value == null)
+            return;
         if (property.isStrict() && !property.getDefault().getClass().isAssignableFrom(value.getClass()))
             throw new IllegalArgumentException(String.format(
                     "Property %s is strict, and provided value of type %s does not match required type of %s.",

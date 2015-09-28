@@ -3,13 +3,14 @@ package com.exorath.game.api.team;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+
 import org.bukkit.Bukkit;
 
 import com.exorath.game.api.BasePlayerProperty;
 import com.exorath.game.api.GameListener;
 import com.exorath.game.api.Properties;
 import com.exorath.game.api.maps.GameMap;
-import com.exorath.game.api.maps.GameSpawn;
+import com.exorath.game.api.maps.Spawn;
 import com.exorath.game.api.player.GamePlayer;
 
 /**
@@ -140,8 +141,8 @@ public class Team {
     }
 
     //** Spawns **//
-    public GameSpawn[] getSpawns(GameMap map) {
-        return map.getSpawns(getTeamColor());
+    public Spawn[] getSpawns(GameMap map) {
+        return map.getSpawns(getTeamColor().name(), false).getSpawns();
     }
 
     //** Listeners **//
