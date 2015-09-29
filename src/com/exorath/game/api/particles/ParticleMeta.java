@@ -9,7 +9,7 @@ public class ParticleMeta {
     float speed, offsetX, offsetY, offsetZ = 0;
 
     ParticleMeta() {
-        speed = 1;
+        speed = 0.001f;
         amount = 1;
         radius = 64;
         id = data = 0;

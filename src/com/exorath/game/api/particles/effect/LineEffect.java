@@ -44,7 +44,6 @@ public class LineEffect implements ParticleEffect {
             ParticleBuilder.newBuilder().type(type)
             .location(a.toVector().add(direction.clone().multiply(d))
                     .toLocation(a.getWorld()))
-                    .meta().speed(0.01f).builder()
             .build().display();
     }
 
