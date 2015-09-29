@@ -1,4 +1,4 @@
-package com.yoshigenius.lib.sql;
+package me.nickrobson.lib.sql;
 
 public final class SQLColumn {
 

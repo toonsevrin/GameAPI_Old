@@ -1,4 +1,4 @@
-package com.yoshigenius.lib.sql;
+package me.nickrobson.lib.sql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

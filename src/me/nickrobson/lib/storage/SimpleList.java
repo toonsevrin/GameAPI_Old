@@ -1,4 +1,4 @@
-package com.yoshigenius.lib.storage;
+package me.nickrobson.lib.storage;
 
 import java.util.Arrays;
 import java.util.Collection;

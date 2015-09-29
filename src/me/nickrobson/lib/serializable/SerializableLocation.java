@@ -1,4 +1,4 @@
-package com.yoshigenius.lib.serializable;
+package me.nickrobson.lib.serializable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

@@ -30,7 +30,8 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.yoshigenius.lib.util.GameUtil;
+
+import me.nickrobson.lib.util.GameUtil;
 
 /**
  * The main class.

@@ -1,4 +1,4 @@
-package com.yoshigenius.lib.reflect;
+package me.nickrobson.lib.reflect;
 
 /**
  * A utility class providing easy access to the rest of the library uniformly.

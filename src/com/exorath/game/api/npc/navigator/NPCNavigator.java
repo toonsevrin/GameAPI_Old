@@ -7,7 +7,8 @@ import org.bukkit.scheduler.BukkitTask;
 import com.exorath.game.api.Properties;
 import com.exorath.game.api.nms.NMS;
 import com.exorath.game.api.npc.SpawnedNPC;
-import com.yoshigenius.lib.util.GameUtil;
+
+import me.nickrobson.lib.util.GameUtil;
 
 /**
  * @author toon

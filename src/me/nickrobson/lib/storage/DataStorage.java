@@ -1,6 +1,6 @@
-package com.yoshigenius.lib.storage;
+package me.nickrobson.lib.storage;
 
-import com.yoshigenius.lib.util.GameUtil;
+import me.nickrobson.lib.util.GameUtil;
 
 /**
  * A utility class providing easy saving and loading of objects to and from

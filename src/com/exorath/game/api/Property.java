@@ -3,7 +3,7 @@ package com.exorath.game.api;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.yoshigenius.lib.reflect.Reflection;
+import me.nickrobson.lib.reflect.Reflection;
 
 public class Property {
 

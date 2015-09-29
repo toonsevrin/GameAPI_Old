@@ -1,4 +1,4 @@
-package com.yoshigenius.lib.serializable;
+package me.nickrobson.lib.serializable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

@@ -1,4 +1,4 @@
-package com.yoshigenius.lib.storage;
+package me.nickrobson.lib.storage;
 
 import java.util.HashMap;
 import java.util.LinkedList;

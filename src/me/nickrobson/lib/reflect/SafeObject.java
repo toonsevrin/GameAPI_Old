@@ -1,6 +1,6 @@
-package com.yoshigenius.lib.reflect;
+package me.nickrobson.lib.reflect;
 
-import com.yoshigenius.lib.util.GameUtil;
+import me.nickrobson.lib.util.GameUtil;
 
 public class SafeObject<T> {
 

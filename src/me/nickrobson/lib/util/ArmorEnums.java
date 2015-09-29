@@ -1,4 +1,4 @@
-package com.yoshigenius.lib.util;
+package me.nickrobson.lib.util;
 
 import org.bukkit.Material;
 

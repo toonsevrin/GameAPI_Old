@@ -1,4 +1,4 @@
-package com.yoshigenius.lib.reflect;
+package me.nickrobson.lib.reflect;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

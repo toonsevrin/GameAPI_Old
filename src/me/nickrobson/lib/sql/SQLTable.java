@@ -1,4 +1,4 @@
-package com.yoshigenius.lib.sql;
+package me.nickrobson.lib.sql;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.yoshigenius.lib.storage.SimpleMap;
+import me.nickrobson.lib.storage.SimpleMap;
 
 public final class SQLTable {
 

@@ -10,7 +10,8 @@ import com.exorath.game.api.Callback;
 import com.exorath.game.api.SoundInfo;
 import com.exorath.game.api.player.GamePlayer;
 import com.google.common.collect.Lists;
-import com.yoshigenius.lib.util.RegexUtil;
+
+import me.nickrobson.lib.util.RegexUtil;
 
 /**
  * @author Nick Robson

@@ -9,7 +9,8 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.exorath.game.api.nms.NMS;
-import com.yoshigenius.lib.reflect.Reflection;
+
+import me.nickrobson.lib.reflect.Reflection;
 
 /**
  * @author Nick Robson

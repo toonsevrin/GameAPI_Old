@@ -9,7 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
 import com.exorath.game.api.type.minigame.kit.Kit;
-import com.yoshigenius.lib.util.ItemStackBuilder;
+
+import me.nickrobson.lib.util.ItemStackBuilder;
 
 /**
  * @author Nick Robson

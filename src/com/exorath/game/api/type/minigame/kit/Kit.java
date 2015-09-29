@@ -18,8 +18,9 @@ import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.lib.UnlockRequirements;
 import com.exorath.game.lib.items.PurchasableItem;
 import com.google.common.collect.Sets;
-import com.yoshigenius.lib.util.ItemStackBuilder;
-import com.yoshigenius.lib.util.RegexUtil;
+
+import me.nickrobson.lib.util.ItemStackBuilder;
+import me.nickrobson.lib.util.RegexUtil;
 
 /**
  * Created by too on 23/05/2015.

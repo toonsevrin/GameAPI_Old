@@ -7,7 +7,8 @@ import org.bukkit.entity.Player;
 import com.exorath.game.api.nms.NMS;
 import com.exorath.game.api.npc.navigator.NPCNavigator;
 import com.exorath.game.api.npc.player.FakePlayer;
-import com.yoshigenius.lib.reflect.Reflection;
+
+import me.nickrobson.lib.reflect.Reflection;
 
 /**
  * @author Nick Robson

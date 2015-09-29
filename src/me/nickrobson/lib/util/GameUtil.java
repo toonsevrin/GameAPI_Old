@@ -1,4 +1,4 @@
-package com.yoshigenius.lib.util;
+package me.nickrobson.lib.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -9,8 +9,9 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.nms.NMS;
-import com.yoshigenius.lib.serializable.Serializable;
-import com.yoshigenius.lib.serializable.Serializer;
+
+import me.nickrobson.lib.serializable.Serializable;
+import me.nickrobson.lib.serializable.Serializer;
 
 /**
  * A utility class containing some helper methods.

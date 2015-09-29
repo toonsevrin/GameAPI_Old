@@ -1,4 +1,4 @@
-package com.yoshigenius.lib.version;
+package me.nickrobson.lib.version;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

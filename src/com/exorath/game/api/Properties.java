@@ -3,8 +3,8 @@ package com.exorath.game.api;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.yoshigenius.lib.storage.SimpleMap;
-import com.yoshigenius.lib.util.GameUtil;
+import me.nickrobson.lib.storage.SimpleMap;
+import me.nickrobson.lib.util.GameUtil;
 
 /**
  * Created by too on 23/05/2015.

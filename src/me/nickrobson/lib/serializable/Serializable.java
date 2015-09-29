@@ -1,4 +1,4 @@
-package com.yoshigenius.lib.serializable;
+package me.nickrobson.lib.serializable;
 
 /**
  * Represents a class that can be serialized to and deserialized from a

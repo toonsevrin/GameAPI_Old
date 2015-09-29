@@ -1,4 +1,4 @@
-package com.yoshigenius.lib.util;
+package me.nickrobson.lib.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
