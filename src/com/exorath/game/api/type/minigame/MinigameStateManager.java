@@ -1,5 +1,9 @@
 package com.exorath.game.api.type.minigame;
 
+import java.util.Set;
+
+import org.bukkit.ChatColor;
+
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.GameRunnable;
 import com.exorath.game.api.GameState;
@@ -16,7 +20,7 @@ import com.exorath.game.api.team.Team;
 import com.exorath.game.api.team.TeamManager;
 import com.exorath.game.api.type.minigame.countdown.MinigameCountdown;
 import com.exorath.game.lib.JoinLeave;
-import org.bukkit.ChatColor;
+import com.google.common.collect.Sets;
 
 /**
  * Created by Toon on 9/1/2015.
@@ -56,21 +60,26 @@ public class MinigameStateManager implements Manager, JoinLeave {
     public void checkStart() {
         if (minigame.getState() != GameState.WAITING)
             return;
-        for (Team team : minigame.getManager(TeamManager.class).getTeams()) {
+        Set<Team> needMore = Sets.newHashSet();
+        for (Team team : minigame.getManager(TeamManager.class).getTeams())
             //TODO: Check if min amount of players are in this team
+            if (team.getPlayers().size() < team.getMinTeamSize())
+                needMore.add(team);
+        if (needMore.size() > 0) {
+            for (Team t : needMore)
+                GameMessenger.sendInfo(minigame, "Team " + t.getName() + " needs more players: " + t.getPlayers().size() + "/" + t.getMinTeamSize());
+            return;
         }
         int min = minigame.getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
         int players = minigame.getManager(PlayerManager.class).getPlayerCount();
-        if (countdown.isCountingDown()) {
+        if (countdown.isCountingDown())
             GameAPI.printConsole("Player joined: " + players + "/" + min);
-        } else {
-            if (minigame.hasMinPlayers()) {
-                countdown.start();
-                GameMessenger.sendInfo(minigame,
-                        "Starting in " + minigame.getProperties().as(Minigame.START_DELAY, Integer.class) / 20 + "s. Prepare yourself!");
-            } else
-                GameMessenger.sendInfo(minigame, "More players required: " + players + "/" + min);
-        }
+        else if (minigame.hasMinPlayers()) {
+            countdown.start();
+            GameMessenger.sendInfo(minigame,
+                    "Starting in " + minigame.getProperties().as(Minigame.START_DELAY, Integer.class) / 20 + "s. Prepare yourself!");
+        } else
+            GameMessenger.sendInfo(minigame, "More players required: " + players + "/" + min);
     }
 
     //Run this when a player leaves
@@ -84,12 +93,11 @@ public class MinigameStateManager implements Manager, JoinLeave {
                 minigame.getManager(HUDManager.class).getPublicHUD().updateScoreboard("gapi_advert",
                         ChatColor.RED + ChatColor.BOLD.toString() + "Countdown cancelled. Minimum: " + players + "/" + min);
             }
-        } else if (minigame.getState() == GameState.INGAME) {
+        } else if (minigame.getState() == GameState.INGAME)
             if (minigame.getOnlinePlayers().isEmpty())
                 stop(StopCause.NO_PLAYERS);
             else if (!minigame.getManager(TeamManager.class).hasPlayersPlaying())
                 stop(StopCause.NO_PLAYERS);
-        }
     }
 
     //** State Loop [WAITING -> STARTING -> INGAME -> FINISHING -> RESETTING] **//

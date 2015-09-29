@@ -1,9 +1,6 @@
 package com.exorath.game.lib.util;
 
-import com.exorath.game.api.player.GamePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.Collection;
 
 /**
  * Created by TOON on 9/1/2015.
@@ -11,13 +8,11 @@ import java.util.Collection;
 public abstract class BukkitCountdown {
 
     private CountdownTask countdownTask;
-    private Collection<GamePlayer> players;
 
     private int ticks;
 
-    public BukkitCountdown(int ticks, Collection<GamePlayer> players) {
+    public BukkitCountdown(int ticks) {
         this.ticks = ticks;
-        this.players = players;
         countdownTask = new CountdownTask(ticks);
     }
 
@@ -37,11 +32,8 @@ public abstract class BukkitCountdown {
         @Override
         public void run() {
             ticks--;
-            for (GamePlayer player : players) {
-
-            }
             if (ticks <= 0) {
-                this.cancel();
+                cancel();
                 onFinish();
             }
         }
