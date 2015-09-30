@@ -35,7 +35,7 @@ public class MapManager implements Manager {
     }
 
     public void addMap(World world) {
-
+        addMap(GameMap.get(world));
     }
 
     public void addMap(String world) {
