@@ -2,6 +2,8 @@ package com.exorath.game.api.particles.effect;
 
 import java.util.Set;
 
+import org.bukkit.entity.Player;
+
 import com.exorath.game.api.particles.Particle;
 
 /**
@@ -15,8 +17,8 @@ public interface ParticleEffect {
         getParticles().forEach(p -> p.init());
     }
 
-    default void display() {
-        getParticles().forEach(p -> p.display());
+    default void display(Player... players) {
+        getParticles().forEach(p -> p.display(players));
     }
 
     default void uninit() {

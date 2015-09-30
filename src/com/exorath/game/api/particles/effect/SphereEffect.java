@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import com.exorath.game.api.Getter;
 import com.exorath.game.api.particles.Particle;
@@ -36,7 +37,7 @@ public class SphereEffect {
         }
 
         @Override
-        public void display() {
+        public void display(Player... players) {
             Location middle = this.middle.get();
             double rs = radius * radius;
             for (double x = -1; x <= 1; x += step)
@@ -45,7 +46,7 @@ public class SphereEffect {
                         Location loc = middle.clone().add(radius * x, radius * y, radius * z);
                         if (Math.abs(loc.distanceSquared(middle) - rs) <= step * 5)
                             ParticleBuilder.newBuilder().type(type)
-                            .location(loc).build().display();
+                            .location(loc).build().display(players);
                     }
         }
 
@@ -72,7 +73,7 @@ public class SphereEffect {
         }
 
         @Override
-        public void display() {
+        public void display(Player... players) {
             Location middle = this.middle.get();
             double rs = radius * radius;
             for (double x = -1; x <= 1; x += step)
@@ -81,7 +82,7 @@ public class SphereEffect {
                         Location loc = middle.clone().add(radius * x, radius * y, radius * z);
                         if (loc.distanceSquared(middle) - rs <= 0)
                             ParticleBuilder.newBuilder().type(type)
-                            .location(loc).build().display();
+                                    .location(loc).build().display(players);
                     }
         }
 

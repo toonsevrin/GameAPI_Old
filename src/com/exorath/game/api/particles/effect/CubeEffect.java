@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import com.exorath.game.api.Getter;
 import com.exorath.game.api.particles.Particle;
@@ -37,7 +38,7 @@ public class CubeEffect {
         }
 
         @Override
-        public void display() {
+        public void display(Player... players) {
             Location middle = this.middle.get();
             double dist = sideLength / 2;
             for (int x = -1; x <= 1; x++)
@@ -46,7 +47,7 @@ public class CubeEffect {
                         if (x != 0 && y != 0 && z != 0)
                             ParticleBuilder.newBuilder().type(type)
                             .location(middle.clone().add(dist * x, dist * y, dist * z))
-                            .build().display();
+                            .build().display(players);
         }
 
     }
@@ -72,7 +73,7 @@ public class CubeEffect {
         }
 
         @Override
-        public void display() {
+        public void display(Player... players) {
             Location middle = this.middle.get();
             double dist = sideLength / 2;
             for (double x = -1; x <= 1; x += step)
@@ -88,7 +89,7 @@ public class CubeEffect {
                         if (bools.size() >= 2)
                             ParticleBuilder.newBuilder().type(type)
                             .location(middle.clone().add(dist * x, dist * y, dist * z))
-                            .build().display();
+                                    .build().display(players);
                     }
 
         }
@@ -116,7 +117,7 @@ public class CubeEffect {
         }
 
         @Override
-        public void display() {
+        public void display(Player... players) {
             Location middle = this.middle.get();
             double dist = sideLength / 2;
             for (double x = -1; x <= 1; x += step)
@@ -125,7 +126,7 @@ public class CubeEffect {
                         if (Math.abs(x) >= 1 || Math.abs(y) >= 1 || Math.abs(z) >= 1)
                             ParticleBuilder.newBuilder().type(type)
                             .location(middle.clone().add(dist * x, dist * y, dist * z))
-                            .build().display();
+                                    .build().display(players);
 
         }
 
@@ -152,7 +153,7 @@ public class CubeEffect {
         }
 
         @Override
-        public void display() {
+        public void display(Player... players) {
             Location middle = this.middle.get();
             double dist = sideLength / 2;
             for (double x = -1; x <= 1; x += step)
@@ -160,7 +161,7 @@ public class CubeEffect {
                     for (double z = -1; z <= 1; z += step)
                         ParticleBuilder.newBuilder().type(type)
                         .location(middle.clone().add(dist * x, dist * y, dist * z))
-                        .build().display();
+                                .build().display(players);
 
         }
 

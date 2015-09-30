@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.exorath.game.api.Getter;
@@ -35,7 +36,7 @@ public class LineEffect implements ParticleEffect {
     }
 
     @Override
-    public void display() {
+    public void display(Player... players) {
         Location a = this.a.get();
         Location b = this.b.get();
         double distance = a.distance(b);
@@ -44,7 +45,7 @@ public class LineEffect implements ParticleEffect {
             ParticleBuilder.newBuilder().type(type)
             .location(a.toVector().add(direction.clone().multiply(d))
                     .toLocation(a.getWorld()))
-            .build().display();
+                    .build().display(players);
     }
 
 }
