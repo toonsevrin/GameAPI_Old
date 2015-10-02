@@ -37,11 +37,11 @@ public class MinigameMapManager implements Manager {
 
     //** Map rotation **//
     public GameMap getCurrent() {
-        return current == null ? nextMap(MapSelection.RANDOM) : current;
+        return current == null ? nextMap() : current;
     }
 
-    public void nextMap() {
-        nextMap(selection);
+    public GameMap nextMap() {
+        return nextMap(selection);
     }
 
     public GameMap nextMap(MapSelection selection) {
@@ -51,9 +51,13 @@ public class MinigameMapManager implements Manager {
         }
         switch (selection) {
             case CYCLE:
-                current = mapManager.getMaps().get(index++);
+                current = mapManager.getMaps().get(index == mapManager.getMaps().size() ? (index = 0) : index++);
             case RANDOM:
-                current = mapManager.getMaps().get(new Random().nextInt(mapManager.getMaps().size()));
+                GameMap next = null;
+                if (mapManager.getMaps().size() > 1)
+                    while (next == null || next == current)
+                        next = mapManager.getMaps().get(new Random().nextInt(mapManager.getMaps().size()));
+                current = next;
             case SAME:
                 current.reset();
             case VOTE:

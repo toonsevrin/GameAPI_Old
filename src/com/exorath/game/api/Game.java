@@ -1,7 +1,11 @@
 package com.exorath.game.api;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,7 +20,6 @@ import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.player.PlayerManager;
 import com.exorath.game.lib.JoinLeave;
 import com.exorath.game.lib.util.FileUtils;
-import com.google.common.collect.Sets;
 
 /**
  * The class representing a single Game instance.

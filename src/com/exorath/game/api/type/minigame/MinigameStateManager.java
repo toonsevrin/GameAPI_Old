@@ -19,6 +19,7 @@ import com.exorath.game.api.player.PlayerManager;
 import com.exorath.game.api.team.Team;
 import com.exorath.game.api.team.TeamManager;
 import com.exorath.game.api.type.minigame.countdown.MinigameCountdown;
+import com.exorath.game.api.type.minigame.maps.MinigameMapManager;
 import com.exorath.game.lib.JoinLeave;
 import com.google.common.collect.Sets;
 
@@ -53,7 +54,7 @@ public class MinigameStateManager implements Manager, JoinLeave {
         minigame.getManager(HUDManager.class).getPublicHUD().setScoreboardEffect(new FlickerEffect(20, ChatColor.GOLD));
         ScoreboardText txt = new ScoreboardText(ChatColor.BOLD + "Currently under dev.", HUDPriority.HIGHEST);
         txt.setEffect(new FlickerEffect(4, ChatColor.BLACK));
-        minigame.getManager(HUDManager.class).getPublicHUD().addScoreboard("gapi_advert", txt);
+        //minigame.getManager(HUDManager.class).getPublicHUD().addScoreboard("gapi_advert", txt);
     }
 
     //Run this when a player joins
@@ -87,12 +88,8 @@ public class MinigameStateManager implements Manager, JoinLeave {
         if (minigame.getState() == GameState.WAITING) {
             int min = minigame.getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
             int players = minigame.getManager(PlayerManager.class).getPlayerCount();
-            if (players <= min) {
+            if (players <= min)
                 countdown.stop();
-
-                minigame.getManager(HUDManager.class).getPublicHUD().updateScoreboard("gapi_advert",
-                        ChatColor.RED + ChatColor.BOLD.toString() + "Countdown cancelled. Minimum: " + players + "/" + min);
-            }
         } else if (minigame.getState() == GameState.INGAME)
             if (minigame.getOnlinePlayers().isEmpty())
                 stop(StopCause.NO_PLAYERS);
@@ -108,6 +105,7 @@ public class MinigameStateManager implements Manager, JoinLeave {
                     "Tried to change state from " + minigame.getState() + " to " + GameState.STARTING);
         countdown.stop();
         minigame.setState(GameState.STARTING);
+        minigame.getManager(MinigameMapManager.class).nextMap();
         minigame.spawnPlayers();
         setIngame();
     }
