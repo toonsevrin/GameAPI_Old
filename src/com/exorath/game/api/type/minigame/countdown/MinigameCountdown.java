@@ -44,8 +44,6 @@ public class MinigameCountdown {
         if (countingDown)
             return;
         countingDown = true;
-        game.getManager(HUDManager.class).getPublicHUD().updateScoreboard("gapi_advert",
-                ChatColor.GREEN + ChatColor.BOLD.toString() + "Starting soon...");
         new CountdownTask().runTaskTimer(GameAPI.getInstance(), 0, 1);
     }
 
@@ -138,8 +136,6 @@ public class MinigameCountdown {
                 return;
             }
             if (currentFrame == frames.size()) {
-                game.getManager(HUDManager.class).getPublicHUD().updateScoreboard("gapi_advert",
-                        ChatColor.GREEN + ChatColor.BOLD.toString() + "STARTING...");
                 stop();
                 cancel();
                 return;
@@ -152,7 +148,7 @@ public class MinigameCountdown {
             if (publicHUD.containsActionBar("gapi_cdbar"))
                 publicHUD.updateActionBar("gapi_cdbar", cdText);
             else
-                publicHUD.addActionBar("gapi_cdbar", new HUDText(cdText, HUDPriority.HIGH));
+                publicHUD.addActionBar("gapi_cdbar", new HUDText(cdText, HUDPriority.HIGH), true);
             /* Frames */
             tick++;
             if (tick < frames.get(currentFrame).getDelay())

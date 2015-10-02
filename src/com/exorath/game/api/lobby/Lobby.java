@@ -28,6 +28,15 @@ public class Lobby implements JoinLeave {
 
     public Lobby() {
         this.setupWorld();
+        properties.set(LobbyProperty.BLOCK_PLACE, false);
+        properties.set(LobbyProperty.BLOCK_BREAK, false);
+        properties.set(LobbyProperty.DAMAGE_ENTITY, false);
+        properties.set(LobbyProperty.DAMAGE_BY_ENTITY, false);
+        properties.set(LobbyProperty.DAMAGE_RECEIVE, false);
+        properties.set(LobbyProperty.DROP_ITEMS, false);
+        properties.set(LobbyProperty.INTERACT, false);
+        properties.set(LobbyProperty.PVP, false);
+        properties.set(LobbyProperty.HUNGER, false);
     }
 
     //** Join & Leave **//

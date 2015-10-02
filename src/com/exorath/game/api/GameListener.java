@@ -1,10 +1,12 @@
 package com.exorath.game.api;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -78,7 +80,8 @@ public interface GameListener {
 
     public default void onExpChange(PlayerExpChangeEvent event, Game game, GamePlayer player) {
     }
-
+    public default void onFoodLevelChange(FoodLevelChangeEvent event, Game game, GamePlayer player) {
+    }
     public default void onGamemodeChange(PlayerGameModeChangeEvent event, Game game, GamePlayer player) {
     }
 
@@ -136,23 +139,24 @@ public interface GameListener {
      * @param event
      *            The handled event.
      * @param player
-     *            The player being damaged (or null if it isn't a player).
+     *            The player being damaged.
      */
-    public default void onEntityDamage(EntityDamageEvent event, Game game, GamePlayer player) {
+    public default void onPlayerDamage(EntityDamageEvent event, Game game, GamePlayer player) {
     }
 
-    /**
-     * Called when an {@link EntityDamageByEntityEvent} is called.
-     *
-     * @param event
-     *            The handled event.
-     * @param attacker
-     *            The player attacking (or null if it isn't a player).
-     * @param defender
-     *            The player defending (or null if it isn't a player).
+
+    public default void onEntityDamageByPlayer(EntityDamageByEntityEvent event, Game game, GamePlayer attacker,
+            Entity defender) {
+    }
+    public default void onPlayerDamageByEntity(EntityDamageByEntityEvent event, Game game, Entity attacker,
+                                               GamePlayer defender) {
+    }
+    /*
+     * Note: If your listening to this method within the team listeners, it will only be send to the attacking team.
+     * Note: If your listening to this method within the player listeners, it will only be send to the attacking player.
      */
-    public default void onEntityDamageByEntity(EntityDamageByEntityEvent event, Game game, GamePlayer attacker,
-            GamePlayer defender) {
+    public default void onPlayerDamageByPlayer(EntityDamageByEntityEvent event, Game game, GamePlayer attacker,
+                                               GamePlayer defender) {
     }
 
 }

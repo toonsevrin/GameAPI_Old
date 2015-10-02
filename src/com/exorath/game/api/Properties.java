@@ -94,5 +94,7 @@ public class Properties {
                     property.getDefault().getClass().getSimpleName()));
         properties.put(property, value);
     }
-
+    public boolean has(Property property){
+        return properties.containsKey(property);
+    }
 }

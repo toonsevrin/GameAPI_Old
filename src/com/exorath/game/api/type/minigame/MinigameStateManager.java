@@ -54,7 +54,6 @@ public class MinigameStateManager implements Manager, JoinLeave {
         minigame.getManager(HUDManager.class).getPublicHUD().setScoreboardEffect(new FlickerEffect(20, ChatColor.GOLD));
         ScoreboardText txt = new ScoreboardText(ChatColor.BOLD + "Currently under dev.", HUDPriority.HIGHEST);
         txt.setEffect(new FlickerEffect(4, ChatColor.BLACK));
-        //minigame.getManager(HUDManager.class).getPublicHUD().addScoreboard("gapi_advert", txt);
     }
 
     //Run this when a player joins

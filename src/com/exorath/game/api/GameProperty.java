@@ -5,7 +5,7 @@ import org.bukkit.GameMode;
 /**
  * @author toon
  */
-public class GameProperty {
+public class GameProperty extends BasePlayerProperty{
 
     public static final Property NAME = Property.get("name", "The name of the game.", Game.DEFAULT_GAME_NAME);
     public static final Property DESCRIPTION = Property.get("description", "The description of the game.",
