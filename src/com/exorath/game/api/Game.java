@@ -1,10 +1,7 @@
 package com.exorath.game.api;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -37,8 +34,8 @@ public abstract class Game implements JoinLeave {
     private GameProvider host;
 
     private final UUID gameID;
-    private final Set<GameListener> listeners = Sets.newHashSet();
-    private final Set<Manager> managers = new HashSet<>();
+    private final List<GameListener> listeners = new ArrayList<>();
+    private final List<Manager> managers = new ArrayList<>();
 
     private Lobby lobby = new Lobby();
     private Properties properties = new Properties();
@@ -116,7 +113,7 @@ public abstract class Game implements JoinLeave {
     }
 
     /* Managers */
-    public Set<Manager> getManagers() {
+    public List<Manager> getManagers() {
         return managers;
     }
 
@@ -188,7 +185,7 @@ public abstract class Game implements JoinLeave {
             listeners.add(listener);
     }
 
-    public Set<GameListener> getListeners() {
+    public List<GameListener> getListeners() {
         return listeners;
     }
 

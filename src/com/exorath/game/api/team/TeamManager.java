@@ -137,4 +137,7 @@ public class TeamManager implements Manager, JoinLeave {
             }
         }
     }
+    public void reset(){
+        teams.values().forEach(t -> t.clear());
+    }
 }

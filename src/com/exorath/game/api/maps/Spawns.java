@@ -2,6 +2,7 @@ package com.exorath.game.api.maps;
 
 import java.util.List;
 
+import com.exorath.game.GameAPI;
 import com.google.common.collect.Lists;
 
 /**

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.exorath.game.GameAPI;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,8 +38,10 @@ public class GameMap {
     }
 
     public static GameMap get(World world) {
-        if (world == null)
+        if (world == null) {
+            GameAPI.error("Tried to get a map from a null world.");
             return null;
+        }
         ALL.computeIfAbsent(world.getName(), s -> new GameMap(world));
         return ALL.get(world.getName());
     }

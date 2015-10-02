@@ -133,7 +133,6 @@ public class MinigameStateManager implements Manager, JoinLeave {
         setResetting();
 
     }
-
     public void setResetting() {
         if (minigame.getState() != GameState.FINISHING)
             throw new IllegalStateException(

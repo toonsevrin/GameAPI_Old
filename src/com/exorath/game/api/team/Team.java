@@ -154,5 +154,9 @@ public class Team {
         if (listener != null)
             listeners.add(listener);
     }
+    public void clear(){
+        players.clear();
+        activePlayers.clear();
+    }
 
 }

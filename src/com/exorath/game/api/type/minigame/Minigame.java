@@ -2,6 +2,7 @@ package com.exorath.game.api.type.minigame;
 
 import java.util.Arrays;
 
+import com.exorath.game.api.team.Team;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -47,7 +48,10 @@ public abstract class Minigame extends Game {
     }
 
     protected void spawnPlayers() {
-        //TODO: Develop method
+        for(Team team : getManager(TeamManager.class).getTeams()){
+            for(GamePlayer player : team.getPlayers())
+                player.getBukkitPlayer().teleport(getManager(MinigameMapManager.class).getCurrent().getSpawns(team.getName()).getNextSpawn().getLocation());
+        }
     }
 
     protected void reward() {
@@ -66,6 +70,12 @@ public abstract class Minigame extends Game {
         //Reset players potion effects
 
         //Teleport players to hub
+
+        getManager(TeamManager.class).getTeams().forEach(t -> t.getActivePlayers().forEach(p -> getLobby().teleport(p)));
+        //Reset teams
+        getManager(TeamManager.class).reset();
+        //Refill teams
+        getManager(PlayerManager.class).getPlayers().forEach(p -> getManager(TeamManager.class).join(p));
     }
 
     //Maps
