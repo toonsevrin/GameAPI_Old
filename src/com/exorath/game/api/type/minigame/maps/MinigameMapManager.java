@@ -1,12 +1,15 @@
 package com.exorath.game.api.type.minigame.maps;
 
+import java.util.List;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.Game;
 import com.exorath.game.api.Manager;
 import com.exorath.game.api.maps.GameMap;
 import com.exorath.game.api.maps.MapManager;
+import com.google.common.collect.Lists;
 
 /**
  * Created by TOON on 9/23/2015.
@@ -53,11 +56,14 @@ public class MinigameMapManager implements Manager {
             case CYCLE:
                 current = mapManager.getMaps().get(index == mapManager.getMaps().size() ? (index = 0) : index++);
             case RANDOM:
-                GameMap next = null;
-                if (mapManager.getMaps().size() > 1)
-                    while (next == null || next == current)
-                        next = mapManager.getMaps().get(new Random().nextInt(mapManager.getMaps().size()));
-                current = next;
+                List<Integer> indices = Lists.newArrayList();
+                IntStream.range(0, mapManager.getMaps().size()).forEach(i -> {
+                    if (current == null || i != index)
+                        indices.add(i);
+                });
+                int ind = indices.get(new Random().nextInt(indices.size()));
+                current = mapManager.getMaps().get(ind);
+                index = ind;
             case SAME:
                 current.reset();
             case VOTE:
