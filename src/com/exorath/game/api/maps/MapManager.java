@@ -2,6 +2,7 @@ package com.exorath.game.api.maps;
 
 import java.util.List;
 
+import org.apache.commons.lang3.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -30,6 +31,7 @@ public class MapManager implements Manager {
     }
 
     public void addMap(GameMap map) {
+        Validate.notNull(map, "Cannot add null GameMap to MapManager");
         if (!maps.contains(map))
             maps.add(map);
     }

@@ -37,6 +37,8 @@ public class GameMap {
     }
 
     public static GameMap get(World world) {
+        if (world == null)
+            return null;
         ALL.computeIfAbsent(world.getName(), s -> new GameMap(world));
         return ALL.get(world.getName());
     }
