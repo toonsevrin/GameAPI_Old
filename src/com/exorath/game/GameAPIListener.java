@@ -1,9 +1,5 @@
 package com.exorath.game;
 
-import com.exorath.game.api.GameProperty;
-import com.exorath.game.api.lobby.LobbyProperty;
-import com.exorath.game.api.player.PlayerProperty;
-import com.exorath.game.api.team.TeamProperty;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -43,12 +39,16 @@ import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 
 import com.exorath.game.api.Game;
+import com.exorath.game.api.GameProperty;
 import com.exorath.game.api.GameProvider;
 import com.exorath.game.api.events.GamePlayerKillPlayerEvent;
+import com.exorath.game.api.lobby.LobbyProperty;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.player.PlayerManager;
+import com.exorath.game.api.player.PlayerProperty;
 import com.exorath.game.api.team.Team;
 import com.exorath.game.api.team.TeamManager;
+import com.exorath.game.api.team.TeamProperty;
 
 /**
  * @author Nick Robson
@@ -155,9 +155,10 @@ public class GameAPIListener implements Listener {
 
         if (gp.getProperties().has(PlayerProperty.CHAT))
             event.setCancelled(!gp.getProperties().as(PlayerProperty.CHAT, Boolean.class));
+
         gp.getListeners().forEach(l -> l.onChat(event, game, gp));
 
-        if(isLobby(game, gp.getBukkitPlayer().getWorld()))
+        if (isLobby(game, gp.getBukkitPlayer().getWorld()))
             event.setCancelled(!game.getLobby().getProperties().as(LobbyProperty.CHAT, Boolean.class));
     }
 
@@ -209,7 +210,6 @@ public class GameAPIListener implements Listener {
         Team team = teams == null ? null : teams.getTeam(gp);
 
         event.setCancelled(!game.getProperties().as(GameProperty.INTERACT, Boolean.class));
-
         game.getListeners().forEach(l -> l.onInteract(event, game, gp));
 
         if (team != null) {
@@ -221,9 +221,10 @@ public class GameAPIListener implements Listener {
 
         if (gp.getProperties().has(PlayerProperty.INTERACT))
             event.setCancelled(!gp.getProperties().as(PlayerProperty.INTERACT, Boolean.class));
+
         gp.getListeners().forEach(l -> l.onInteract(event, game, gp));
 
-        if(isLobby(game, gp.getBukkitPlayer().getWorld()))
+        if (isLobby(game, gp.getBukkitPlayer().getWorld()))
             event.setCancelled(!game.getLobby().getProperties().as(LobbyProperty.INTERACT, Boolean.class));
     }
 
@@ -236,7 +237,6 @@ public class GameAPIListener implements Listener {
         Team team = teams == null ? null : teams.getTeam(gp);
 
         event.setCancelled(!game.getProperties().as(GameProperty.DROP_ITEMS, Boolean.class));
-
         game.getListeners().forEach(l -> l.onDropItem(event, game, gp));
 
         if (team != null) {
@@ -248,9 +248,10 @@ public class GameAPIListener implements Listener {
 
         if (gp.getProperties().has(PlayerProperty.DROP_ITEMS))
             event.setCancelled(!gp.getProperties().as(PlayerProperty.DROP_ITEMS, Boolean.class));
+
         gp.getListeners().forEach(l -> l.onDropItem(event, game, gp));
 
-        if(isLobby(game, gp.getBukkitPlayer().getWorld()))
+        if (isLobby(game, gp.getBukkitPlayer().getWorld()))
             event.setCancelled(!game.getLobby().getProperties().as(LobbyProperty.DROP_ITEMS, Boolean.class));
     }
 
@@ -295,9 +296,10 @@ public class GameAPIListener implements Listener {
             team.getListeners().forEach(l -> l.onExpChange(event, game, gp));
         gp.getListeners().forEach(l -> l.onExpChange(event, game, gp));
     }
+
     @EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
-        if(!(event.getEntity() instanceof Player))
+        if (!(event.getEntity() instanceof Player))
             return;
         GamePlayer gp = GameAPI.getPlayer((Player) event.getEntity());
         Game game = getGame(gp);
@@ -306,7 +308,6 @@ public class GameAPIListener implements Listener {
         Team team = teams == null ? null : teams.getTeam(gp);
 
         event.setCancelled(!game.getProperties().as(GameProperty.HUNGER, Boolean.class));
-
         game.getListeners().forEach(l -> l.onFoodLevelChange(event, game, gp));
 
         if (team != null) {
@@ -318,9 +319,10 @@ public class GameAPIListener implements Listener {
 
         if (gp.getProperties().has(PlayerProperty.HUNGER))
             event.setCancelled(!gp.getProperties().as(PlayerProperty.HUNGER, Boolean.class));
+
         gp.getListeners().forEach(l -> l.onFoodLevelChange(event, game, gp));
 
-        if(isLobby(game, gp.getBukkitPlayer().getWorld()))
+        if (isLobby(game, gp.getBukkitPlayer().getWorld()))
             event.setCancelled(!game.getLobby().getProperties().as(LobbyProperty.HUNGER, Boolean.class));
     }
 
@@ -515,7 +517,6 @@ public class GameAPIListener implements Listener {
         Team team = teams == null ? null : teams.getTeam(gp);
 
         event.setCancelled(!game.getProperties().as(GameProperty.BLOCK_BREAK, Boolean.class));
-
         game.getListeners().forEach(l -> l.onBlockBreak(event, game, gp));
 
         if (team != null) {
@@ -527,9 +528,10 @@ public class GameAPIListener implements Listener {
 
         if (gp.getProperties().has(PlayerProperty.BLOCK_BREAK))
             event.setCancelled(!gp.getProperties().as(PlayerProperty.BLOCK_BREAK, Boolean.class));
+
         gp.getListeners().forEach(l -> l.onBlockBreak(event, game, gp));
 
-        if(isLobby(game, gp.getBukkitPlayer().getWorld()))
+        if (isLobby(game, gp.getBukkitPlayer().getWorld()))
             event.setCancelled(!game.getLobby().getProperties().as(LobbyProperty.PVP, Boolean.class));
     }
 
@@ -552,9 +554,10 @@ public class GameAPIListener implements Listener {
         }
         if (gp.getProperties().has(PlayerProperty.BLOCK_PLACE))
             event.setCancelled(!gp.getProperties().as(PlayerProperty.BLOCK_PLACE, Boolean.class));
+
         gp.getListeners().forEach(l -> l.onBlockPlace(event, game, gp));
 
-        if(isLobby(game, gp.getBukkitPlayer().getWorld()))
+        if (isLobby(game, gp.getBukkitPlayer().getWorld()))
             event.setCancelled(!game.getLobby().getProperties().as(LobbyProperty.PVP, Boolean.class));
     }
 
@@ -594,10 +597,10 @@ public class GameAPIListener implements Listener {
 
         if (gp.getProperties().has(PlayerProperty.DAMAGE_RECEIVE))
             event.setCancelled(!gp.getProperties().as(PlayerProperty.DAMAGE_RECEIVE, Boolean.class));
+
         gp.getListeners().forEach(l -> l.onPlayerDamage(event, game, gp));
 
-
-        if(isLobby(game, gp.getBukkitPlayer().getWorld()))
+        if (isLobby(game, gp.getBukkitPlayer().getWorld()))
             event.setCancelled(!game.getLobby().getProperties().as(LobbyProperty.DAMAGE_RECEIVE, Boolean.class));
 
     }
@@ -608,74 +611,95 @@ public class GameAPIListener implements Listener {
         GamePlayer defender = event.getEntity() instanceof Player ? GameAPI.getPlayer((Player) event.getEntity()) : null;
         Game attackerGame = attacker == null ? null : attacker.getGame();
         Game defenderGame = defender == null ? null : defender.getGame();
-        if (attackerGame != defenderGame && (attackerGame != null || defenderGame != null)) { // ensure same game
+
+        if (attackerGame != defenderGame && (attackerGame != null || defenderGame != null)) {// ensure same game
             event.setCancelled(true);
             return;
         }
         if (attacker == null && defender == null)
             return;
+
         TeamManager teams = attackerGame == null ? null : attackerGame.getManager(TeamManager.class);
         Team attackerTeam = teams == null ? null : teams.getTeam(attacker);
         TeamManager teams2 = defenderGame == null ? null : defenderGame.getManager(TeamManager.class);
         Team defenderTeam = teams2 == null ? null : teams2.getTeam(defender);
+
         if (attacker == null) {//Entity damages Player
             if (defenderGame != null) {
                 event.setCancelled(!defenderGame.getProperties().as(GameProperty.DAMAGE_BY_ENTITY, Boolean.class));
                 defenderGame.getListeners().forEach(l -> l.onPlayerDamageByEntity(event, defenderGame, event.getDamager(), defender));
             }
+
             if (defenderTeam != null) {
                 if (defenderTeam.getProperties().has(TeamProperty.DAMAGE_BY_ENTITY))
                     event.setCancelled(!defenderTeam.getProperties().as(TeamProperty.DAMAGE_BY_ENTITY, Boolean.class));
+
                 defenderTeam.getListeners().forEach(l -> l.onPlayerDamageByEntity(event, defenderGame, event.getDamager(), defender));
             }
+
             if (defender.getProperties().has(PlayerProperty.DAMAGE_BY_ENTITY))
                 event.setCancelled(!defender.getProperties().as(PlayerProperty.DAMAGE_BY_ENTITY, Boolean.class));
+
             defender.getListeners().forEach(l -> l.onPlayerDamageByEntity(event, defenderGame, event.getDamager(), defender));
 
-            if(isLobby(defenderGame, defender.getBukkitPlayer().getWorld()))
+            if (isLobby(defenderGame, defender.getBukkitPlayer().getWorld()))
                 event.setCancelled(!defenderGame.getLobby().getProperties().as(LobbyProperty.DAMAGE_BY_ENTITY, Boolean.class));
+
         } else if (defender == null) {//player damages Entity
             if (attackerGame != null) {
                 event.setCancelled(!attackerGame.getProperties().as(GameProperty.DAMAGE_ENTITY, Boolean.class));
+
                 attackerGame.getListeners().forEach(l -> l.onEntityDamageByPlayer(event, attackerGame, attacker, event.getEntity()));
             }
+
             if (attackerTeam != null) {
                 if (attackerTeam.getProperties().has(TeamProperty.DAMAGE_ENTITY))
                     event.setCancelled(!attackerTeam.getProperties().as(TeamProperty.DAMAGE_ENTITY, Boolean.class));
+
                 attackerTeam.getListeners().forEach(l -> l.onEntityDamageByPlayer(event, attackerGame, attacker, event.getEntity()));
             }
+
             if (attacker.getProperties().has(PlayerProperty.DAMAGE_ENTITY))
-                event.setCancelled(!defender.getProperties().as(PlayerProperty.DAMAGE_ENTITY, Boolean.class));
+                event.setCancelled(!attacker.getProperties().as(PlayerProperty.DAMAGE_ENTITY, Boolean.class));
+
             attacker.getListeners().forEach(l -> l.onEntityDamageByPlayer(event, attackerGame, attacker, event.getEntity()));
 
-            if(isLobby(attackerGame, attacker.getBukkitPlayer().getWorld()))
+            if (isLobby(attackerGame, attacker.getBukkitPlayer().getWorld()))
                 event.setCancelled(!attackerGame.getLobby().getProperties().as(LobbyProperty.DAMAGE_ENTITY, Boolean.class));
+
         } else {//player damages Player
             if (attackerGame != null) {
                 event.setCancelled(!attackerGame.getProperties().as(GameProperty.PVP, Boolean.class));
                 attackerGame.getListeners().forEach(l -> l.onPlayerDamageByPlayer(event, attackerGame, attacker, defender));
             }
+
             if (attackerTeam != null) {
                 if (attackerTeam.getProperties().has(TeamProperty.PVP))
                     event.setCancelled(!attackerTeam.getProperties().as(TeamProperty.PVP, Boolean.class));
+
                 if (attackerTeam == defenderTeam && attackerTeam.getProperties().has(TeamProperty.FRIENDLY_FIRE))
                     event.setCancelled(!attackerTeam.getProperties().as(TeamProperty.FRIENDLY_FIRE, Boolean.class));
+
                 attackerTeam.getListeners().forEach(l -> l.onPlayerDamageByPlayer(event, attackerGame, attacker, defender));
             }
 
             if (attacker.getProperties().has(PlayerProperty.PVP))
                 event.setCancelled(!defender.getProperties().as(PlayerProperty.PVP, Boolean.class));
+
             attacker.getListeners().forEach(l -> l.onPlayerDamageByPlayer(event, attackerGame, attacker, defender));
 
-            if(isLobby(attackerGame, attacker.getBukkitPlayer().getWorld()))
+            if (isLobby(attackerGame, attacker.getBukkitPlayer().getWorld()))
                 event.setCancelled(!attackerGame.getLobby().getProperties().as(LobbyProperty.PVP, Boolean.class));
         }
     }
-    private boolean isLobby(Game game, World world){
-        if(game.getLobby() == null)
+
+    private boolean isLobby(Game game, World world) {
+        if (game.getLobby() == null)
             return false;
-        if(game.getLobby().getWorld().equals(world))
+
+        if (game.getLobby().getWorld().equals(world))
             return true;
+
         return false;
     }
 

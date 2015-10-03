@@ -58,8 +58,8 @@ public class MinigameCountdown {
 
     //** Frame functions **//
     protected void finish() {
-        for (int i = frames.size() - 1; i >= 0; i--) {
-            final int x = i;
+        for (int i = frames.size(); i > 0; i--) {
+            final int x = i - 1;
             game.getOnlinePlayers().forEach(p -> frames.get(x).end(p));
         }
         HUDManager.PublicHUD publicHUD = game.getManager(HUDManager.class).getPublicHUD();
