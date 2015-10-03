@@ -1,4 +1,4 @@
-package com.exorath.game.api.type.minigame.countdown;
+package com.exorath.game.api.type.minigame.countdown.old;
 
 import org.bukkit.Sound;
 
