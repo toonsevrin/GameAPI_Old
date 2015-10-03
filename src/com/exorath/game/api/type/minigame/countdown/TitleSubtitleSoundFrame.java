@@ -26,7 +26,7 @@ public class TitleSubtitleSoundFrame extends SoundCountdownFrame {
         if (publicHUD.containsTitle("gapi_countdowntitle"))
             publicHUD.updateTitle("gapi_countdowntitle", title);
         else
-            publicHUD.addTitle("gapi_countdowntitle", new HUDText(title, HUDPriority.HIGH));
+            publicHUD.addTitle("gapi_countdowntitle", new HUDText(title, HUDPriority.HIGH.get()),true);
     }
 
     @Override

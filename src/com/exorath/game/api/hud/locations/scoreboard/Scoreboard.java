@@ -18,7 +18,7 @@ import com.exorath.game.lib.hud.scoreboard.ScoreboardBase;
 public class Scoreboard extends HUDLocation {
 
     //TODO: Make title work with display system :)
-    private HUDText title = new HUDText(ChatColor.BOLD + "Title", HUDPriority.GAME_API);
+    private HUDText title = new HUDText(ChatColor.BOLD + "EXORATH", HUDPriority.GAME_API.get());
     private ScoreboardBase scoreboard;
 
     private HashMap<String, ScoreboardText> textsKeys = new HashMap<>();
@@ -40,6 +40,8 @@ public class Scoreboard extends HUDLocation {
     }
 
     public void addText(String key, ScoreboardText text) {
+        GameAPI.printConsole(text.getDisplayText() + " | P: " + text.getPriority().getPriority().getPriority() + " | SP: " + text.getPriority().getSubPriority());
+
         if (!isActive())
             return;
         text.setLocation(this);
@@ -73,7 +75,6 @@ public class Scoreboard extends HUDLocation {
         texts.remove();
         textsKeys.remove(key);
         scoreboard.remove(text.getEntry());
-        GameAPI.printConsole("Scoreboard entry removed.");
     }
 
     public boolean containsText(String key) {
@@ -100,6 +101,7 @@ public class Scoreboard extends HUDLocation {
      */
     private void priorityUpdated() {
         int length = getVisibleTexts().length;
+        GameAPI.printConsole("Length" + length);
         for (int i = 0; i < length; i++)
             getVisibleTexts()[i].getEntry().setValue(length - 1 - i);
     }

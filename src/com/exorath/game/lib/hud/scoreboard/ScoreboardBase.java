@@ -1,5 +1,6 @@
 package com.exorath.game.lib.hud.scoreboard;
 
+import com.exorath.game.GameAPI;
 import com.exorath.game.api.player.GamePlayer;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -30,9 +31,8 @@ public class ScoreboardBase {
         setTitle(title);
 
         this.entries = HashBiMap.create();//Create a HashBiMap for the entries (Double backed HashMap with 16 entries, both key and values can be null)
-        this.teamId = 1;//TODO: Find out what this is
+        this.teamId = 1;
     }
-
     public org.bukkit.scoreboard.Scoreboard getScoreboard() {
         return scoreboard;
     }
@@ -172,7 +172,7 @@ public class ScoreboardBase {
 
         return false;
     }
-
+    private boolean enabled = false;
     private GamePlayer gp;
     private Player player;
 
@@ -194,6 +194,7 @@ public class ScoreboardBase {
         if (gp.getBukkitPlayer() == null)
             return;
         this.player = gp.getBukkitPlayer();
+        enabled = true;
         player.setScoreboard(scoreboard);
 
     }
