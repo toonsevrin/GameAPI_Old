@@ -66,6 +66,7 @@ public class HUDManager implements Manager, JoinLeave {
         }
 
         //** Join & Leave **//
+        //TODO: The bug is here
         @Override
         public void join(GamePlayer player) {
             keys.get(ActionBar.class).entrySet().forEach(e -> player.getHud().getActionBar().addText(e.getKey(), e.getValue().clone()));
@@ -109,6 +110,8 @@ public class HUDManager implements Manager, JoinLeave {
         public void addActionBar(String key, HUDText text, boolean removeOnStateChange) {
             if (keys.get(ActionBar.class).containsKey(key))
                 return;
+            if(removeOnStateChange)
+                removeOnChange.get(ActionBar.class).add(key);
             keys.get(ActionBar.class).put(key, text);
             game.getManager(PlayerManager.class).getPlayers().forEach(gp -> gp.getHud().getActionBar().addText(key, text.clone()));
         }
@@ -120,6 +123,8 @@ public class HUDManager implements Manager, JoinLeave {
         public void addTitle(String key, HUDText text, boolean removeOnStateChange) {
             if (keys.get(Title.class).containsKey(key))
                 return;
+            if(removeOnStateChange)
+                removeOnChange.get(Title.class).add(key);
             keys.get(Title.class).put(key, text);
             game.getManager(PlayerManager.class).getPlayers().forEach(gp -> gp.getHud().getTitle().addText(key, text.clone()));
         }
@@ -131,6 +136,8 @@ public class HUDManager implements Manager, JoinLeave {
         public void addSubtitle(String key, HUDText text, boolean removeOnStateChange) {
             if (keys.get(Subtitle.class).containsKey(key))
                 return;
+            if(removeOnStateChange)
+                removeOnChange.get(Subtitle.class).add(key);
             keys.get(Subtitle.class).put(key, text);
             game.getManager(PlayerManager.class).getPlayers().forEach(gp -> gp.getHud().getSubtitle().addText(key, text.clone()));
         }
@@ -142,6 +149,8 @@ public class HUDManager implements Manager, JoinLeave {
         public void addBossBar(String key, HUDText text, boolean removeOnStateChange) {
             if (keys.get(BossBar.class).containsKey(key))
                 return;
+            if(removeOnStateChange)
+                removeOnChange.get(BossBar.class).add(key);
             keys.get(BossBar.class).put(key, text);
             game.getManager(PlayerManager.class).getPlayers().forEach(gp -> gp.getHud().getBossBar().addText(key, text.clone()));
         }
@@ -153,6 +162,8 @@ public class HUDManager implements Manager, JoinLeave {
         public void addScoreboard(String key, ScoreboardText text, boolean removeOnStateChange) {
             if (keys.get(Scoreboard.class).containsKey(key))
                 return;
+            if(removeOnStateChange)
+                removeOnChange.get(Scoreboard.class).add(key);
             keys.get(Scoreboard.class).put(key, text);
             game.getManager(PlayerManager.class).getPlayers().forEach(gp -> gp.getHud().getScoreboard().addText(key, text.cloneSB()));
         }
@@ -180,8 +191,6 @@ public class HUDManager implements Manager, JoinLeave {
                 return;
             keys.get(Title.class).remove(key);
             game.getManager(PlayerManager.class).getPlayers().forEach(gp -> gp.getHud().getTitle().removeText(key));
-            if (removeOnChange.get(Title.class).contains(key))
-                removeOnChange.get(Title.class).remove(key);
         }
 
         public void removeSubtitle(String key) {
@@ -189,8 +198,6 @@ public class HUDManager implements Manager, JoinLeave {
                 return;
             keys.get(Subtitle.class).remove(key);
             game.getManager(PlayerManager.class).getPlayers().forEach(gp -> gp.getHud().getSubtitle().removeText(key));
-            if (removeOnChange.get(Subtitle.class).contains(key))
-                removeOnChange.get(Subtitle.class).remove(key);
         }
 
         public void removeBossBar(String key) {
@@ -198,8 +205,6 @@ public class HUDManager implements Manager, JoinLeave {
                 return;
             keys.get(BossBar.class).remove(key);
             game.getManager(PlayerManager.class).getPlayers().forEach(gp -> gp.getHud().getBossBar().removeText(key));
-            if (removeOnChange.get(BossBar.class).contains(key))
-                removeOnChange.get(BossBar.class).remove(key);
         }
 
         public void removeScoreboard(String key) {
@@ -207,8 +212,6 @@ public class HUDManager implements Manager, JoinLeave {
                 return;
             keys.get(Scoreboard.class).remove(key);
             game.getManager(PlayerManager.class).getPlayers().forEach(gp -> gp.getHud().getScoreboard().removeText(key));
-            if (removeOnChange.get(Scoreboard.class).contains(key))
-                removeOnChange.get(Scoreboard.class).remove(key);
         }
 
         /* Get texts */

@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.exorath.game.api.GameState;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -45,6 +46,8 @@ public class MinigameCountdown {
             return;
         countingDown = true;
         new CountdownTask().runTaskTimer(GameAPI.getInstance(), 0, 1);
+        HUDManager.PublicHUD publicHUD = game.getManager(HUDManager.class).getPublicHUD();
+        publicHUD.addActionBar("gapi_cdbar", new HUDText("", HUDPriority.HIGH.get()), true);
     }
 
     public void stop() {
@@ -58,8 +61,6 @@ public class MinigameCountdown {
     protected void finish() {
         for (int i = frames.size() - 1; i >= 0; i--)
             frames.get(i).finish(game);
-        HUDManager.PublicHUD publicHUD = game.getManager(HUDManager.class).getPublicHUD();
-        publicHUD.removeActionBar("gapi_cdbar");
     }
 
     protected void startGame() {
@@ -140,15 +141,17 @@ public class MinigameCountdown {
                 cancel();
                 return;
             }
+            if(game.getState() == GameState.INGAME || game.getState() == GameState.STARTING){
+                cancel();
+                return;
+            }
             /* Action bar */
             float remaining = getInterval() * (LENGTH - currentFrame) / 20f + getInterval() / 20f * 4 - tick / 20f;
             String cdText = remaining <= 2 ? ChatColor.GREEN.toString() + ChatColor.BOLD + "Game starting..."
                     : ChatColor.BOLD + "Starting in... " + new DecimalFormat("#.0").format(remaining);
             HUDManager.PublicHUD publicHUD = game.getManager(HUDManager.class).getPublicHUD();
-            if (publicHUD.containsActionBar("gapi_cdbar"))
-                publicHUD.updateActionBar("gapi_cdbar", cdText);
-            else
-                publicHUD.addActionBar("gapi_cdbar", new HUDText(cdText, HUDPriority.HIGH), true);
+            publicHUD.updateActionBar("gapi_cdbar", cdText);
+
             /* Frames */
             tick++;
             if (tick < frames.get(currentFrame).getDelay())

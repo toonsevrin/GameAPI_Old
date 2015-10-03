@@ -31,10 +31,14 @@ public class MinigameStateManager implements Manager, JoinLeave {
     private Minigame minigame;
     private MinigameCountdown countdown;
 
+    private LobbyHUD lobbyHUD;
+
     public MinigameStateManager(Minigame minigame) {
         this.minigame = minigame;
+        lobbyHUD = new LobbyHUD(minigame);
         minigame.setState(GameState.WAITING);
         setupHUD();
+        lobbyHUD.addHUD();
         countdown = new MinigameCountdown(minigame);
     }
 
@@ -51,8 +55,6 @@ public class MinigameStateManager implements Manager, JoinLeave {
     private void setupHUD() {
         minigame.getManager(HUDManager.class).getPublicHUD().setScoreboardTitle(ChatColor.BOLD + "EXORATH");
         minigame.getManager(HUDManager.class).getPublicHUD().setScoreboardEffect(new FlickerEffect(20, ChatColor.GOLD));
-        ScoreboardText txt = new ScoreboardText(ChatColor.BOLD + "Currently under dev.", HUDPriority.HIGHEST);
-        txt.setEffect(new FlickerEffect(4, ChatColor.BLACK));
     }
 
     //Run this when a player joins
@@ -143,6 +145,7 @@ public class MinigameStateManager implements Manager, JoinLeave {
             throw new IllegalStateException(
                     "Tried to change state from " + minigame.getState() + " to " + GameState.WAITING);
         minigame.setState(GameState.WAITING);
+        lobbyHUD.addHUD();
         checkStart();
     }
 

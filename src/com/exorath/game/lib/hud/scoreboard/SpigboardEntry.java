@@ -1,5 +1,6 @@
 package com.exorath.game.lib.hud.scoreboard;
 
+import com.exorath.game.GameAPI;
 import com.google.common.base.Splitter;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.Score;
@@ -61,10 +62,8 @@ public class SpigboardEntry {
     }
 
     public void setValue(int value) {
-        if (!score.isScoreSet()) {
+        if (!score.isScoreSet())
             score.setScore(-1);
-        }
-
         score.setScore(value);
     }
 

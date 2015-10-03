@@ -1,5 +1,6 @@
 package com.exorath.game.api;
 
+import com.exorath.game.api.hud.HUDPriority;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;

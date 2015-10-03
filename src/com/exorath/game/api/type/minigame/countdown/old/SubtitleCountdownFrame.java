@@ -23,7 +23,7 @@ public class SubtitleCountdownFrame extends CountdownFrame {
         if (publicHUD.containsSubtitle("gapi_countdownsub"))
             publicHUD.updateSubtitle("gapi_countdownsub", text);
         else
-            publicHUD.addSubtitle("gapi_countdownsub", new HUDText(text, HUDPriority.HIGH));
+            publicHUD.addSubtitle("gapi_countdownsub", new HUDText(text, HUDPriority.HIGH.get()),true);
     }
 
     @Override
