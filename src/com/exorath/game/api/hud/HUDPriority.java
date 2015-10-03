@@ -26,6 +26,9 @@ public class HUDPriority {
     public int getSubPriority(){
         return subPriority;
     }
+    public HUDPriority clone(){
+        return new HUDPriority(priority, subPriority);
+    }
 
     public enum Priority{
         HIGHEST(5),

@@ -27,7 +27,7 @@ public class ScoreboardText extends HUDText {
     }
 
     public ScoreboardText cloneSB() {
-        ScoreboardText sbt = new ScoreboardText(getText(), getPriority());
+        ScoreboardText sbt = new ScoreboardText(getText(), getPriority().clone());
         sbt.setDisplayText(getDisplayText());
         if (getEffect() != null)
             sbt.setEffect(getEffect().clone());

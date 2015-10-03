@@ -26,7 +26,7 @@ public class HUDText implements Comparable<HUDText> {
 
     @Override
     public HUDText clone() {
-        HUDText hudText = new HUDText(text, priority);
+        HUDText hudText = new HUDText(text, priority.clone());
         hudText.setDisplayText(displayText);
         if (hudText != null)
             hudText.setDisplayText(text);

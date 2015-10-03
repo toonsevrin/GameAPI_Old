@@ -69,12 +69,12 @@ public class HUDManager implements Manager, JoinLeave {
         //TODO: The bug is here
         @Override
         public void join(GamePlayer player) {
-            keys.get(ActionBar.class).entrySet().forEach(e -> player.getHud().getActionBar().addText(e.getKey(), e.getValue().clone()));
-            keys.get(Title.class).entrySet().forEach(e -> player.getHud().getTitle().addText(e.getKey(), e.getValue().clone()));
-            keys.get(Subtitle.class).entrySet().forEach(e -> player.getHud().getSubtitle().addText(e.getKey(), e.getValue().clone()));
-            keys.get(BossBar.class).entrySet().forEach(e -> player.getHud().getBossBar().addText(e.getKey(), e.getValue().clone()));
-            keys.get(Scoreboard.class).entrySet()
-                    .forEach(e -> player.getHud().getScoreboard().addText(e.getKey(), ((ScoreboardText) e.getValue()).cloneSB()));
+            keys.get(ActionBar.class).forEach((key, text) -> player.getHud().getActionBar().addText(key, text.clone()));
+            keys.get(Title.class).forEach((key, text) -> player.getHud().getTitle().addText(key, text.clone()));
+            keys.get(Subtitle.class).forEach((key, text) -> player.getHud().getSubtitle().addText(key, text.clone()));
+            keys.get(BossBar.class).forEach((key, text) -> player.getHud().getBossBar().addText(key, text.clone()));
+            keys.get(Scoreboard.class)
+                    .forEach((key, text) -> player.getHud().getScoreboard().addText(key, ((ScoreboardText) text).cloneSB()));
             if (sbTitle != null)
                 player.getHud().getScoreboard().getTitle().setText(sbTitle);
             if (sbEffect != null)
