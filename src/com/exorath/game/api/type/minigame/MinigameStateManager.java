@@ -103,7 +103,6 @@ public class MinigameStateManager implements Manager, JoinLeave {
                     "Tried to change state from " + minigame.getState() + " to " + GameState.STARTING);
         countdown.stop();
         minigame.setState(GameState.STARTING);
-        minigame.getManager(MinigameMapManager.class).nextMap();
         minigame.spawnPlayers();
         setIngame();
     }
@@ -144,6 +143,7 @@ public class MinigameStateManager implements Manager, JoinLeave {
             throw new IllegalStateException(
                     "Tried to change state from " + minigame.getState() + " to " + GameState.WAITING);
         minigame.setState(GameState.WAITING);
+        minigame.getManager(MinigameMapManager.class).nextMap();
         lobbyHUD.addHUD();
         checkStart();
     }

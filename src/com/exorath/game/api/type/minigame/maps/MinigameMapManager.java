@@ -21,12 +21,14 @@ public class MinigameMapManager implements Manager {
 
     //Map Selection
     private MapSelection selection = MapSelection.RANDOM;
+    private GameMap previous;
     private GameMap current;
     private int index = 0;
 
     public MinigameMapManager(Game game) {
         this.game = game;
         mapManager = game.getManager(MapManager.class);
+        nextMap();
     }
 
     //** Selection **//
@@ -47,11 +49,16 @@ public class MinigameMapManager implements Manager {
         return nextMap(selection);
     }
 
+    public GameMap getPrevious(){
+        return previous;
+    }
+
     public GameMap nextMap(MapSelection selection) {
         if (game.getManager(MapManager.class).getMaps().size() == 0) {
             GameAPI.error("Map size == 0: Please add a map!");
             return null;
         }
+        previous = current;
         switch (selection) {
             case CYCLE:
                 current = mapManager.getMaps().get(index == mapManager.getMaps().size() ? (index = 0) : index++);

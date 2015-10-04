@@ -41,8 +41,6 @@ public class Scoreboard extends HUDLocation {
     }
 
     public void addText(String key, ScoreboardText text) {
-        GameAPI.printConsole(
-                text.getDisplayText() + " | P: " + text.getPriority().getPriority().getPriority() + " | SP: " + text.getPriority().getSubPriority());
 
         if (!isActive())
             return;
@@ -103,7 +101,6 @@ public class Scoreboard extends HUDLocation {
      */
     private void priorityUpdated() {
         int length = getVisibleTexts().length;
-        GameAPI.printConsole("Length" + length);
         for (int i = 0; i < length; i++)
             getVisibleTexts()[i].getEntry().setValue(length - 1 - i);
     }
@@ -132,11 +129,6 @@ public class Scoreboard extends HUDLocation {
 
     private ScoreboardText[] getVisibleTexts() {
         ScoreboardText[] texts = getTexts().toArray(new ScoreboardText[getTexts().size()]);
-        GameAPI.printConsole("---");
-        for(ScoreboardText t : getTexts()){
-            GameAPI.printConsole("Priority: " + t.getPriority().getPriority().getPriority() + ":" + t.getPriority().getSubPriority());
-        }
-        GameAPI.printConsole("---");
         if (getTexts().size() <= 16)
             return texts;
         ScoreboardText[] scoreboardTexts = new ScoreboardText[16];

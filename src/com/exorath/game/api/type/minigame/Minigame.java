@@ -30,8 +30,8 @@ public abstract class Minigame extends Game {
             "Waiting time after there are enough players before game starts", 200);
 
     public Minigame() {
-        Manager[] managers = new Manager[] { new TeamManager(this), new MinigameStateManager(this), new KitManager(this), new SpectateManager(this),
-                new MinigameMapManager(this) };
+        addManager(new MinigameMapManager(this));
+        Manager[] managers = new Manager[] { new TeamManager(this), new MinigameStateManager(this), new KitManager(this), new SpectateManager(this)};
         Arrays.asList(managers).forEach(m -> addManager(m));
 
         addListener(new MinigameListener());

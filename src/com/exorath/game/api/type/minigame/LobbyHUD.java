@@ -1,5 +1,6 @@
 package com.exorath.game.api.type.minigame;
 
+import com.exorath.game.api.type.minigame.maps.MinigameMapManager;
 import org.bukkit.ChatColor;
 
 import com.exorath.game.api.hud.HUDManager;
@@ -70,11 +71,19 @@ public class LobbyHUD implements JoinLeave {
     }
 
     private String getPreviousMapString() {
-        return ChatColor.WHITE + "Previous: " + ChatColor.GREEN + "Map Name";
+        MinigameMapManager mapManager = game.getManager(MinigameMapManager.class);
+        if(mapManager == null)
+            return "wtf?";
+        if(mapManager.getPrevious() == null)
+            return ChatColor.WHITE + "Previous: " + ChatColor.DARK_GRAY + "None";
+        return ChatColor.WHITE + "Previous: " + ChatColor.GREEN + mapManager.getPrevious().getName();
     }
 
     private String getNextMapString() {
-        return ChatColor.WHITE + "Next: " + ChatColor.GREEN + "Map Name";
+        MinigameMapManager mapManager = game.getManager(MinigameMapManager.class);
+        if(mapManager.getCurrent() == null)
+            return ChatColor.WHITE + "Next: " + ChatColor.DARK_GRAY + "None";
+        return ChatColor.WHITE + "Next: " + ChatColor.GREEN + game.getManager(MinigameMapManager.class).getCurrent().getName();
     }
 
     //Stats
