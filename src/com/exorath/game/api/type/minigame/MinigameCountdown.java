@@ -82,9 +82,12 @@ public class MinigameCountdown {
         .append(" START ").append(getArrow(ChatColor.GREEN, MinigameCountdown.LENGTH / 2 - 2, MinigameCountdown.CHAR));
         startBuilder.insert(0, getWhiteSpaces(startBuilder.toString()));
         SoundInfo sound = new SoundInfo(Sound.NOTE_PLING, 3, 10);
-        frames.add(CountdownFrameBuilder.newBuilder().sound(sound).subtitle(startBuilder.toString()).title("").build());
-        frames.add(CountdownFrameBuilder.newBuilder().start(p -> {
+        frames.add(CountdownFrameBuilder.newBuilder().sound(sound).subtitle(startBuilder.toString()).title("").delay(20).build());
+        frames.add(CountdownFrameBuilder.newBuilder().display(p -> {
             try {
+                p.getHud().getTitle().removeText("gapi.countdown.title");
+                p.getHud().getSubtitle().removeText("gapi.countdown.subtitle");
+                stop();
                 game.getStateManager().start();
             } catch (Exception ignored) {
             }
@@ -133,6 +136,7 @@ public class MinigameCountdown {
                 .title(color.toString() + number)
                 .subtitle(sb.toString())
                 .sound(new SoundInfo(Sound.NOTE_PLING, 1, 10))
+                .delay(20)
                 .build();
     }
 
@@ -174,7 +178,7 @@ public class MinigameCountdown {
     }
 
     private float getInterval() {
-        return game.getProperties().as(Minigame.START_DELAY, Float.class) / MinigameCountdown.LENGTH;
+        return game.getProperties().as(Minigame.START_DELAY, Integer.class) / (float) MinigameCountdown.LENGTH;
     }
 
     private String getWhiteSpaces(String str) {

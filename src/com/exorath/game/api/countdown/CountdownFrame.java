@@ -7,9 +7,9 @@ import com.exorath.game.api.player.GamePlayer;
  */
 public interface CountdownFrame {
 
-    int getDelay();
+    long getDelay();
 
-    int getDuration();
+    long getDuration();
 
     void start(GamePlayer player);
 

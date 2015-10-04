@@ -1,5 +1,6 @@
 package com.exorath.game.api.hud;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.PriorityQueue;
 import com.exorath.game.api.player.GamePlayer;
@@ -75,6 +76,7 @@ public abstract class HUDDisplay extends HUDLocation {
             currentText = null;
         }
         texts.remove(text);
+        textsKeys.values().removeAll(Collections.singleton(text));
     }
 
     public void removeText(String key) {
@@ -90,6 +92,7 @@ public abstract class HUDDisplay extends HUDLocation {
             currentText = null;
         }
         texts.remove(text);
+        textsKeys.remove(key);
     }
 
     public boolean containsText(String key) {
