@@ -1,17 +1,17 @@
 package com.exorath.game.lib.hud.scoreboard;
 
-import com.exorath.game.GameAPI;
-import com.exorath.game.api.player.GamePlayer;
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.exorath.game.api.player.GamePlayer;
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 /**
  * Created by TOON on 8/12/2015.
@@ -25,14 +25,15 @@ public class ScoreboardBase {
     private int teamId;
 
     public ScoreboardBase(String title) {
-        this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        this.objective = scoreboard.registerNewObjective("spigobjective", "dummy");//Register a new dummy objective on the scoreboard
-        this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);//Make sure the objective displays on the sidebar
+        scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        objective = scoreboard.registerNewObjective("spigobjective", "dummy");//Register a new dummy objective on the scoreboard
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);//Make sure the objective displays on the sidebar
         setTitle(title);
 
-        this.entries = HashBiMap.create();//Create a HashBiMap for the entries (Double backed HashMap with 16 entries, both key and values can be null)
-        this.teamId = 1;
+        entries = HashBiMap.create();//Create a HashBiMap for the entries (Double backed HashMap with 16 entries, both key and values can be null)
+        teamId = 1;
     }
+
     public org.bukkit.scoreboard.Scoreboard getScoreboard() {
         return scoreboard;
     }
@@ -72,25 +73,22 @@ public class ScoreboardBase {
 
     public SpigboardEntry add(String key, String name, int value, boolean overwrite) {
         add();
-        if (key == null && !contains(name)) {
+        if (key == null && !contains(name))
             throw new IllegalArgumentException(
                     "Entry could not be found with the supplied name and no key was supplied");
-        }
 
         if (overwrite && contains(name)) {
             SpigboardEntry entry = getEntryByName(name);
-            if (key != null && entries.get(key) != entry) {
+            if (key != null && entries.get(key) != entry)
                 throw new IllegalArgumentException(
                         "Supplied key references a different score than the one to be overwritten");
-            }
 
             entry.setValue(value);
             return entry;
         }
 
-        if (entries.get(key) != null) {
+        if (entries.get(key) != null)
             throw new IllegalArgumentException("Score already exists with that key");
-        }
 
         int count = 0;
         String origName = name;
@@ -114,14 +112,12 @@ public class ScoreboardBase {
 
     public void remove(SpigboardEntry entry) {
         add();
-        if (entry.getSpigboard() != this) {
+        if (entry.getSpigboard() != this)
             throw new IllegalArgumentException("Supplied entry does not belong to this Spigboard");
-        }
 
         String key = entries.inverse().get(entry);
-        if (key != null) {
+        if (key != null)
             entries.remove(key);
-        }
 
         entry.remove();
     }
@@ -135,14 +131,12 @@ public class ScoreboardBase {
             // Bukkit.getLogger().info("Name: '" + name + "' (" + name.length() + ") contains? " + contains(name) + " (" + ++count + ")");
         }
 
-        if (name.length() > 48) {
+        if (name.length() > 48)
             name = name.substring(0, 47);
-            // Bukkit.getLogger().info("Name: '" + name + "' (" + name.length() + ") contains? " + contains(name) + " (trim)");
-        }
+        // Bukkit.getLogger().info("Name: '" + name + "' (" + name.length() + ") contains? " + contains(name) + " (trim)");
 
-        if (contains(name)) {
+        if (contains(name))
             throw new IllegalArgumentException("Could not find a suitable replacement name for '" + name + "'");
-        }
 
         Map<Integer, String> created = new HashMap<Integer, String>();
         created.put(count, name);
@@ -154,24 +148,21 @@ public class ScoreboardBase {
     }
 
     public SpigboardEntry getEntryByName(String name) {
-        for (SpigboardEntry entry : entries.values()) {
-            if (entry.getName().equals(name)) {
+        for (SpigboardEntry entry : entries.values())
+            if (entry.getName().equals(name))
                 return entry;
-            }
-        }
 
         return null;
     }
 
     public boolean contains(String name) {
-        for (SpigboardEntry entry : entries.values()) {
-            if (entry.getName().equals(name)) {
+        for (SpigboardEntry entry : entries.values())
+            if (entry.getName().equals(name))
                 return true;
-            }
-        }
 
         return false;
     }
+
     private boolean enabled = false;
     private GamePlayer gp;
     private Player player;
@@ -187,13 +178,13 @@ public class ScoreboardBase {
     }
 
     public void add() {
-        if (this.player != null)
+        if (player != null)
             return;
         if (gp == null)
             return;
         if (gp.getBukkitPlayer() == null)
             return;
-        this.player = gp.getBukkitPlayer();
+        player = gp.getBukkitPlayer();
         enabled = true;
         player.setScoreboard(scoreboard);
 

@@ -43,8 +43,8 @@ public class LineEffect implements ParticleEffect {
         Vector direction = b.toVector().subtract(a.toVector()).normalize();
         for (double d = 0; d < distance; d += step)
             ParticleBuilder.newBuilder().type(type)
-            .location(a.toVector().add(direction.clone().multiply(d))
-                    .toLocation(a.getWorld()))
+                    .location(a.toVector().add(direction.clone().multiply(d))
+                            .toLocation(a.getWorld()))
                     .build().display(players);
     }
 

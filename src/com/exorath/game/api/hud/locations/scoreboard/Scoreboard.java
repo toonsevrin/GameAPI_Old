@@ -40,7 +40,8 @@ public class Scoreboard extends HUDLocation {
     }
 
     public void addText(String key, ScoreboardText text) {
-        GameAPI.printConsole(text.getDisplayText() + " | P: " + text.getPriority().getPriority().getPriority() + " | SP: " + text.getPriority().getSubPriority());
+        GameAPI.printConsole(
+                text.getDisplayText() + " | P: " + text.getPriority().getPriority().getPriority() + " | SP: " + text.getPriority().getSubPriority());
 
         if (!isActive())
             return;

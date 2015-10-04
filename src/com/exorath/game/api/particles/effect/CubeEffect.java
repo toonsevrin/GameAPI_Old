@@ -46,8 +46,8 @@ public class CubeEffect {
                     for (int z = -1; z <= 1; z++)
                         if (x != 0 && y != 0 && z != 0)
                             ParticleBuilder.newBuilder().type(type)
-                            .location(middle.clone().add(dist * x, dist * y, dist * z))
-                            .build().display(players);
+                                    .location(middle.clone().add(dist * x, dist * y, dist * z))
+                                    .build().display(players);
         }
 
     }
@@ -88,7 +88,7 @@ public class CubeEffect {
                             bools.add(true);
                         if (bools.size() >= 2)
                             ParticleBuilder.newBuilder().type(type)
-                            .location(middle.clone().add(dist * x, dist * y, dist * z))
+                                    .location(middle.clone().add(dist * x, dist * y, dist * z))
                                     .build().display(players);
                     }
 
@@ -125,7 +125,7 @@ public class CubeEffect {
                     for (double z = -1; z <= 1; z += step)
                         if (Math.abs(x) >= 1 || Math.abs(y) >= 1 || Math.abs(z) >= 1)
                             ParticleBuilder.newBuilder().type(type)
-                            .location(middle.clone().add(dist * x, dist * y, dist * z))
+                                    .location(middle.clone().add(dist * x, dist * y, dist * z))
                                     .build().display(players);
 
         }
@@ -160,7 +160,7 @@ public class CubeEffect {
                 for (double y = -1; y <= 1; y += step)
                     for (double z = -1; z <= 1; z += step)
                         ParticleBuilder.newBuilder().type(type)
-                        .location(middle.clone().add(dist * x, dist * y, dist * z))
+                                .location(middle.clone().add(dist * x, dist * y, dist * z))
                                 .build().display(players);
 
         }

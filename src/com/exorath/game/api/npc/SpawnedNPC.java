@@ -23,9 +23,8 @@ public class SpawnedNPC {
             player = new FakePlayer(npc.getName(), npc.getSkin());
             nms_Player = player.spawnPlayer(location);
             entity = (Player) Reflection.getMethod(NMS.get().getPlayerClass(), "getBukkitEntity").invoke(nms_Player);
-        } else {
+        } else
             entity = location.getWorld().spawn(location, npc.getEntityClass());
-        }
         // TODO: Set names, skins, player NPC handling.
         SpawnedNPC snpc = new SpawnedNPC(npc, entity);
 
@@ -50,62 +49,60 @@ public class SpawnedNPC {
 
     /**
      * Gets the corresponding NPC type of this spawned NPC.
-     * 
+     *
      * @return This NPC's matching NPC object.
      */
     public NPC getNPC() {
-        return this.npc;
+        return npc;
     }
 
     /**
      * Gets the NPC's corresponding Bukkit entity.
-     * 
+     *
      * @return The Bukkit entity.
      */
     public LivingEntity getBukkitEntity() {
-        return this.entity;
+        return entity;
     }
 
     /**
      * Gets whether or not this NPC is valid.
-     * 
+     *
      * @return True iff the entity exists and is valid.
      */
     public boolean isValid() {
-        return this.entity != null && this.entity.isValid() && !this.entity.isDead();
+        return entity != null && entity.isValid() && !entity.isDead();
     }
 
     /**
      * Despawns this NPC.
      */
     public void despawn() {
-        if (this.isValid()) {
-            this.entity.remove();
-        }
-        this.entity = null;
+        if (isValid())
+            entity.remove();
+        entity = null;
     }
 
     /**
      * Gets the NPC's corresponding NPCNavigator, or null if it hasn't been
      * created yet.
-     * 
+     *
      * @return The NPC's navigator object.
      * @see {@link #createNavigator()}
      */
     public NPCNavigator getNavigator() {
-        return this.navigator;
+        return navigator;
     }
 
     /**
      * Creates and sets this NPC's navigator if non-existent.
-     * 
+     *
      * @return The old navigator (if it existed), or the newly created one.
      */
     public NPCNavigator createNavigator() {
-        if (this.navigator == null) {
-            this.navigator = new NPCNavigator(this);
-        }
-        return this.navigator;
+        if (navigator == null)
+            navigator = new NPCNavigator(this);
+        return navigator;
     }
 
 }

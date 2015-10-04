@@ -1,6 +1,5 @@
 package com.exorath.game.api;
 
-import com.exorath.game.api.hud.HUDPriority;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -81,8 +80,10 @@ public interface GameListener {
 
     public default void onExpChange(PlayerExpChangeEvent event, Game game, GamePlayer player) {
     }
+
     public default void onFoodLevelChange(FoodLevelChangeEvent event, Game game, GamePlayer player) {
     }
+
     public default void onGamemodeChange(PlayerGameModeChangeEvent event, Game game, GamePlayer player) {
     }
 
@@ -145,19 +146,22 @@ public interface GameListener {
     public default void onPlayerDamage(EntityDamageEvent event, Game game, GamePlayer player) {
     }
 
-
     public default void onEntityDamageByPlayer(EntityDamageByEntityEvent event, Game game, GamePlayer attacker,
             Entity defender) {
     }
+
     public default void onPlayerDamageByEntity(EntityDamageByEntityEvent event, Game game, Entity attacker,
-                                               GamePlayer defender) {
+            GamePlayer defender) {
     }
+
     /*
-     * Note: If your listening to this method within the team listeners, it will only be send to the attacking team.
-     * Note: If your listening to this method within the player listeners, it will only be send to the attacking player.
+     * Note: If your listening to this method within the team listeners, it will
+     * only be send to the attacking team.
+     * Note: If your listening to this method within the player listeners, it
+     * will only be send to the attacking player.
      */
     public default void onPlayerDamageByPlayer(EntityDamageByEntityEvent event, Game game, GamePlayer attacker,
-                                               GamePlayer defender) {
+            GamePlayer defender) {
     }
 
 }

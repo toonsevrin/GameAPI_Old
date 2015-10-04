@@ -50,7 +50,9 @@ public abstract class HUDDisplay extends HUDLocation {
         if (getTexts().isEmpty()) {//No text displaying atm
             displayText(text);
             currentText = text;
-        } else if (text.getPriority().getPriority().getPriority() > getTexts().peek().getPriority().getPriority().getPriority() || (text.getPriority().getPriority().getPriority() == getTexts().peek().getPriority().getPriority().getPriority() && text.getPriority().getSubPriority() > getTexts().peek().getPriority().getSubPriority())) {
+        } else if (text.getPriority().getPriority().getPriority() > getTexts().peek().getPriority().getPriority().getPriority()
+                || (text.getPriority().getPriority().getPriority() == getTexts().peek().getPriority().getPriority().getPriority()
+                        && text.getPriority().getSubPriority() > getTexts().peek().getPriority().getSubPriority())) {
             //The added text has a higher priority then the current highest one
             displayText(text);
             currentText = text;

@@ -7,37 +7,41 @@ import org.bukkit.inventory.ItemStack;
  */
 public final class NPCEquipmentBuilder {
 
+    public static NPCEquipmentBuilder newBuilder() {
+        return new NPCEquipmentBuilder();
+    }
+
     private NPCEquipment equipment = new NPCEquipment();
 
-    NPCEquipmentBuilder() {
+    private NPCEquipmentBuilder() {
     }
 
     public NPCEquipment get() {
-        return this.equipment;
+        return equipment;
     }
 
     public NPCEquipmentBuilder hand(ItemStack item) {
-        this.equipment.setItemInHand(item);
+        equipment.setItemInHand(item);
         return this;
     }
 
     public NPCEquipmentBuilder helmet(ItemStack item) {
-        this.equipment.setHelmet(item);
+        equipment.setHelmet(item);
         return this;
     }
 
     public NPCEquipmentBuilder chestplate(ItemStack item) {
-        this.equipment.setChestplate(item);
+        equipment.setChestplate(item);
         return this;
     }
 
     public NPCEquipmentBuilder leggings(ItemStack item) {
-        this.equipment.setLeggings(item);
+        equipment.setLeggings(item);
         return this;
     }
 
     public NPCEquipmentBuilder boots(ItemStack item) {
-        this.equipment.setBoots(item);
+        equipment.setBoots(item);
         return this;
     }
 

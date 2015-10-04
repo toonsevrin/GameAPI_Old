@@ -1,28 +1,32 @@
 package com.exorath.game.api.type.minigame;
 
+import org.bukkit.ChatColor;
+
 import com.exorath.game.api.hud.HUDManager;
 import com.exorath.game.api.hud.HUDPriority;
 import com.exorath.game.api.hud.locations.scoreboard.ScoreboardText;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.player.PlayerManager;
-import com.exorath.game.api.team.TeamManager;
 import com.exorath.game.lib.JoinLeave;
-import org.bukkit.ChatColor;
 
 /**
  * Created by TOON on 10/3/2015.
  */
-public class LobbyHUD implements JoinLeave{
+public class LobbyHUD implements JoinLeave {
+
     private static final String PREFIX = "exorath.lobby.key";
-    private static final String[] KEYS = {PREFIX + 1, PREFIX + 2, PREFIX + 3, PREFIX + 4, PREFIX + 5, PREFIX + 6, PREFIX + 7, PREFIX + 8, PREFIX + 9, PREFIX +10, PREFIX + 11, PREFIX + 12};
+    private static final String[] KEYS = { PREFIX + 1, PREFIX + 2, PREFIX + 3, PREFIX + 4, PREFIX + 5, PREFIX + 6, PREFIX + 7, PREFIX + 8, PREFIX + 9,
+            PREFIX + 10, PREFIX + 11, PREFIX + 12 };
 
     private Minigame game;
     private HUDManager.PublicHUD publicHUD;
-    public LobbyHUD(Minigame game){
+
+    public LobbyHUD(Minigame game) {
         this.game = game;
         publicHUD = game.getManager(HUDManager.class).getPublicHUD();
     }
-    public void addHUD(){
+
+    public void addHUD() {
         publicHUD.addScoreboard(KEYS[0], new ScoreboardText(" ", HUDPriority.GAME_API.get(11)), true);
         publicHUD.addScoreboard(KEYS[1], new ScoreboardText(getGameString(), HUDPriority.GAME_API.get(10)), true);
         publicHUD.addScoreboard(KEYS[2], new ScoreboardText(getGameNameString(), HUDPriority.GAME_API.get(9)), true);
@@ -46,35 +50,42 @@ public class LobbyHUD implements JoinLeave{
     public void leave(GamePlayer player) {
 
     }
+
     //Game
-    private String getGameString(){
+    private String getGameString() {
         return ChatColor.YELLOW + "GAME";
     }
-    private String getGameNameString(){
+
+    private String getGameNameString() {
         return ChatColor.WHITE + "Name: " + ChatColor.GREEN + game.getName();
     }
-    private String getPlayersString(){
+
+    private String getPlayersString() {
         return ChatColor.WHITE + "Players: " + ChatColor.GREEN + game.getManager(PlayerManager.class).getPlayers().size();
     }
+
     //Maps
-    private String getMapsString(){
+    private String getMapsString() {
         return ChatColor.YELLOW + "MAPS";
     }
 
-    private String getPreviousMapString(){
+    private String getPreviousMapString() {
         return ChatColor.WHITE + "Previous: " + ChatColor.GREEN + "Map Name";
     }
+
     private String getNextMapString() {
         return ChatColor.WHITE + "Next: " + ChatColor.GREEN + "Map Name";
     }
+
     //Stats
-    private String getStatsString(){
+    private String getStatsString() {
         return ChatColor.YELLOW + "STATS";
     }
 
-    private String getCoinsString(){
+    private String getCoinsString() {
         return ChatColor.WHITE + "Coins: " + ChatColor.GREEN + 0;
     }
+
     private String getCreditsString() {
         return ChatColor.WHITE + "Credits: " + ChatColor.GREEN + 0;
     }

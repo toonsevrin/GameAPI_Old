@@ -49,9 +49,9 @@ public class TextEffect implements ParticleEffect {
                     for (int y = 0; y < Letter.MAX_HEIGHT; y++)
                         if (letter.has(y, x))
                             ParticleBuilder.newBuilder().type(type)
-                            .location(bottomLeft.clone().add(xz ? offset * x : 0, offset * (letter.getHeight() - y), xz ? 0 : offset * x))
-                            .meta().speed(0).builder()
-                            .build().display(players);
+                                    .location(bottomLeft.clone().add(xz ? offset * x : 0, offset * (letter.getHeight() - y), xz ? 0 : offset * x))
+                                    .meta().speed(0).builder()
+                                    .build().display(players);
                 bottomLeft = bottomLeft.clone().add(xz ? offset * (letter.getWidth() + 1) : 0, 0, xz ? 0 : offset * (letter.getWidth() + 1));
             }
         }

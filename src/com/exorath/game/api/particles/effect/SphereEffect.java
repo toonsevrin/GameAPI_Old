@@ -46,7 +46,7 @@ public class SphereEffect {
                         Location loc = middle.clone().add(radius * x, radius * y, radius * z);
                         if (Math.abs(loc.distanceSquared(middle) - rs) <= step * 5)
                             ParticleBuilder.newBuilder().type(type)
-                            .location(loc).build().display(players);
+                                    .location(loc).build().display(players);
                     }
         }
 

@@ -3,8 +3,8 @@ package com.exorath.game.api;
 /**
  * @author toon
  * @author Nick Robson
- * Note: Friendly fire overwrites pvp
- * TODO: IMPLEMENT ITERACTION
+ *         Note: Friendly fire overwrites pvp
+ *         TODO: IMPLEMENT ITERACTION
  */
 public class BasePlayerProperty {
 
@@ -19,7 +19,7 @@ public class BasePlayerProperty {
     // public static final Property BLOCK_INTERACT = Property.get("block.interact",
     //        "Whether or not interaction with blocks is allowed", false);
     //public static final Property ENTITY_INTERACT = Property.get("entity.interact",
-     //       "Whether or not interaction with entities is allowed", false);
+    //       "Whether or not interaction with entities is allowed", false);
     public static final Property INTERACT = Property.get("interact", "Whether or not interacting is allowed", true);
     public static final Property CHAT = Property.get("chat", "Whether or not chat is allowed", true);//IMPLEMENTED
     public static final Property DROP_ITEMS = Property.get("items.drop", "Whether or not dropping is allowed", true);

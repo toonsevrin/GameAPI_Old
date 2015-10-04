@@ -16,7 +16,8 @@ public class ParticleBuilder {
         return new ParticleBuilder();
     }
 
-    private ParticleBuilder() {}
+    private ParticleBuilder() {
+    }
 
     private ParticleMeta meta = new ParticleMeta();
     private Effect type;

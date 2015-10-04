@@ -4,6 +4,7 @@ package com.exorath.game.api.hud;
  * Created by TOON on 8/9/2015.
  */
 public class HUDPriority {
+
     public static final Priority HIGHEST = Priority.HIGHEST;
     public static final Priority HIGH = Priority.HIGH;
     public static final Priority MEDIUM = Priority.MEDIUM;
@@ -13,24 +14,30 @@ public class HUDPriority {
 
     private Priority priority;
     private int subPriority;
-    public HUDPriority(Priority priority, int subPriority){
+
+    public HUDPriority(Priority priority, int subPriority) {
         this.priority = priority;
         this.subPriority = subPriority;
     }
-    public HUDPriority(Priority priority){
-        this.priority = priority;
+
+    public HUDPriority(Priority priority) {
+        this(priority, 0);
     }
-    public Priority getPriority(){
+
+    public Priority getPriority() {
         return priority;
     }
-    public int getSubPriority(){
+
+    public int getSubPriority() {
         return subPriority;
     }
-    public HUDPriority clone(){
+
+    @Override
+    public HUDPriority clone() {
         return new HUDPriority(priority, subPriority);
     }
 
-    public enum Priority{
+    public enum Priority {
         HIGHEST(5),
         HIGH(4),
         MEDIUM(3),
@@ -39,17 +46,23 @@ public class HUDPriority {
         LOWEST(0);
 
         private int priority;
-        Priority(int priority){
+
+        Priority(int priority) {
             this.priority = priority;
         }
-        public HUDPriority get(){
+
+        public HUDPriority get() {
             return new HUDPriority(this, 0);
         }
-        public HUDPriority get(int subPriority){
+
+        public HUDPriority get(int subPriority) {
             return new HUDPriority(this, subPriority);
         }
-        public int getPriority(){
+
+        public int getPriority() {
             return priority;
         }
+
     }
+
 }

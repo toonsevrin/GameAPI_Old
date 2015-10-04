@@ -76,7 +76,7 @@ public class MinigameCountdown {
         frames.add(getFinalCountdown(ChatColor.GREEN, 1));
         StringBuilder startBuilder = new StringBuilder();
         startBuilder.append(getArrow(ChatColor.GREEN, MinigameCountdown.LENGTH / 2 - 2, MinigameCountdown.CHAR)).append(ChatColor.BOLD)
-        .append(" START ").append(getArrow(ChatColor.GREEN, MinigameCountdown.LENGTH / 2 - 2, MinigameCountdown.CHAR));
+                .append(" START ").append(getArrow(ChatColor.GREEN, MinigameCountdown.LENGTH / 2 - 2, MinigameCountdown.CHAR));
         startBuilder.insert(0, getWhiteSpaces(startBuilder.toString()));
         frames.add(new TitleSubtitleSoundFrame(this, startBuilder.toString(), "", 20, Sound.NOTE_PLING, 3, 10));
         frames.add(new FinishFrame(this));
@@ -141,7 +141,7 @@ public class MinigameCountdown {
                 cancel();
                 return;
             }
-            if(game.getState() == GameState.INGAME || game.getState() == GameState.STARTING){
+            if (game.getState() == GameState.INGAME || game.getState() == GameState.STARTING) {
                 cancel();
                 return;
             }

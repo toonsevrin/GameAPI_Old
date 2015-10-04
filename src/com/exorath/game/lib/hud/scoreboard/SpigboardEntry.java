@@ -1,11 +1,11 @@
 package com.exorath.game.lib.hud.scoreboard;
 
-import com.exorath.game.GameAPI;
-import com.google.common.base.Splitter;
+import java.util.Iterator;
+
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.Score;
 
-import java.util.Iterator;
+import com.google.common.base.Splitter;
 
 /**
  * Created by TOON on 8/12/2015.
@@ -26,7 +26,7 @@ public class SpigboardEntry {
         this.key = key;
         this.spigboard = spigboard;
         this.value = value;
-        this.count = 0;
+        count = 0;
     }
 
     public SpigboardEntry(String key, ScoreboardBase spigboard, int value, String origName, int count) {
@@ -69,30 +69,24 @@ public class SpigboardEntry {
 
     public void update(String newName) {
         int value = getValue();
-        if (origName != null && newName.equals(origName)) {
+        if (origName != null && newName.equals(origName))
             // String oldName = newName;
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < count; i++)
                 newName = ChatColor.RESET + newName;
-            }
-
-            // Bukkit.getLogger().info("Changed '" + oldName + "' (" + oldName.length() + ") into '" + newName + "' (" + newName.length() + ")");
-        } else if (newName.equals(name)) {
+        else if (newName.equals(name))
             // Bukkit.getLogger().info("Not updating '" + newName + "' because it matches previous name");
             return;
-        }
 
         create(newName);
         setValue(value);
     }
 
     void remove() {
-        if (score != null) {
+        if (score != null)
             score.getScoreboard().resetScores(score.getEntry());
-        }
 
-        if (team != null) {
+        if (team != null)
             team.unregister();
-        }
     }
 
     private void create(String name) {

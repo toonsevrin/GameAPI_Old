@@ -100,7 +100,8 @@ public class Letter {
             return ASTERISK;
         try {
             return (Letter) Reflection.getField(Letter.class, s).get(null).getObject();
-        } catch (Exception ex) {}
+        } catch (Exception ex) {
+        }
         return null;
     }
 

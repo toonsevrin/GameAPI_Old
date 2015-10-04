@@ -14,54 +14,54 @@ public interface NPC {
 
     /**
      * Get the NPCs display name.
-     * 
+     *
      * @return The NPCs display name.
      */
     public String getName();
 
     /**
      * Get NPCs skin name if a Player NPC, otherwise null.
-     * 
+     *
      * @return NPCs skin name.
      */
     public String getSkin();
 
     /**
      * Get NPCs entity type
-     * 
+     *
      * @return NPCs entity type, null if not set
      */
     public Class<? extends LivingEntity> getEntityClass();
 
     /**
      * Get NPCs properties
-     * 
+     *
      * @return NPCs properties
      */
     public Properties getProperties();
 
     /**
      * Checks if NPC is invulnerable.
-     * 
+     *
      * @return Whether or not NPC is invulnerable.
      */
     default public boolean isProtected() {
-        return this.getProperties().as(NPCProperty.PROTECTED, boolean.class);
+        return getProperties().as(NPCProperty.PROTECTED, boolean.class);
     }
 
     /**
      * Enable or disable protection.
-     * 
+     *
      * @param protect
      *            Whether protection should be enabled or disabled.
      */
     default public void setProtected(boolean enabled) {
-        this.getProperties().set(NPCProperty.PROTECTED, enabled);
+        getProperties().set(NPCProperty.PROTECTED, enabled);
     }
 
     /**
      * Gets the NPC's NPCEquipment object.
-     * 
+     *
      * @return If the NPC can have equipment, then it will return the NPC's
      *         equipment, otherwise
      *         null.
@@ -70,7 +70,7 @@ public interface NPC {
 
     /**
      * Called when a player clicks the NPC.
-     * 
+     *
      * @param game
      *            The game the player is in.
      * @param player

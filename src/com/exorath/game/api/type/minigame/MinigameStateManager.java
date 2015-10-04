@@ -10,9 +10,7 @@ import com.exorath.game.api.GameState;
 import com.exorath.game.api.Manager;
 import com.exorath.game.api.StopCause;
 import com.exorath.game.api.hud.HUDManager;
-import com.exorath.game.api.hud.HUDPriority;
 import com.exorath.game.api.hud.effects.FlickerEffect;
-import com.exorath.game.api.hud.locations.scoreboard.ScoreboardText;
 import com.exorath.game.api.message.GameMessenger;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.player.PlayerManager;
@@ -131,6 +129,7 @@ public class MinigameStateManager implements Manager, JoinLeave {
         setResetting();
 
     }
+
     public void setResetting() {
         if (minigame.getState() != GameState.FINISHING)
             throw new IllegalStateException(

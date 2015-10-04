@@ -48,9 +48,10 @@ public abstract class Minigame extends Game {
     }
 
     protected void spawnPlayers() {
-        for(Team team : getManager(TeamManager.class).getTeams()){
-            for(GamePlayer player : team.getPlayers())
-                player.getBukkitPlayer().teleport(getManager(MinigameMapManager.class).getCurrent().getSpawns(team.getName()).getNextSpawn().getLocation());
+        for (Team team : getManager(TeamManager.class).getTeams()) {
+            for (GamePlayer player : team.getPlayers())
+                player.getBukkitPlayer()
+                        .teleport(getManager(MinigameMapManager.class).getCurrent().getSpawns(team.getName()).getNextSpawn().getLocation());
         }
     }
 

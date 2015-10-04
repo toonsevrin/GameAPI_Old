@@ -1,6 +1,5 @@
 package com.exorath.game.api.hud;
 
-import com.exorath.game.GameAPI;
 import com.exorath.game.api.hud.effects.HUDEffect;
 import com.exorath.game.api.hud.locations.scoreboard.Scoreboard;
 import com.exorath.game.api.hud.locations.scoreboard.ScoreboardText;
@@ -76,12 +75,10 @@ public class HUDText implements Comparable<HUDText> {
      */
     @Override
     public int compareTo(HUDText text) {
-        if (priority.getPriority() == text.getPriority().getPriority()) { //If they both have same priority, first in will be set higher
-            if (priority.getSubPriority() == text.getPriority().getSubPriority()) {
+        if (priority.getPriority() == text.getPriority().getPriority()) {
+            if (priority.getSubPriority() == text.getPriority().getSubPriority())
                 return text.getSequence() - sequence;
-            }else{
-                return text.getPriority().getSubPriority() - priority.getSubPriority();
-            }
+            return text.getPriority().getSubPriority() - priority.getSubPriority();
         }
         return text.getPriority().getPriority().getPriority() - priority.getPriority().getPriority();
     }

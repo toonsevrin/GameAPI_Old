@@ -1,6 +1,5 @@
 package com.exorath.game.api.particles;
 
-
 /**
  * @author Nick Robson
  */

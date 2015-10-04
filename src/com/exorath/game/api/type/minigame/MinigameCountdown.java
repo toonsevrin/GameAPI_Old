@@ -162,7 +162,7 @@ public class MinigameCountdown {
             if (publicHUD.containsActionBar("gapi_cdbar"))
                 publicHUD.updateActionBar("gapi_cdbar", cdText);
             else
-                publicHUD.addActionBar("gapi_cdbar", new HUDText(cdText, HUDPriority.HIGH), true);
+                publicHUD.addActionBar("gapi_cdbar", new HUDText(cdText, new HUDPriority(HUDPriority.HIGH)), true);
             /* Frames */
             tick++;
             if (tick < frames.get(currentFrame).getDelay())
