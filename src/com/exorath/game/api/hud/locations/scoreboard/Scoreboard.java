@@ -2,6 +2,7 @@ package com.exorath.game.api.hud.locations.scoreboard;
 
 import java.util.HashMap;
 import java.util.PriorityQueue;
+import java.util.TreeSet;
 
 import com.exorath.game.GameAPI;
 import org.bukkit.ChatColor;
@@ -22,7 +23,7 @@ public class Scoreboard extends HUDLocation {
     private ScoreboardBase scoreboard;
 
     private HashMap<String, ScoreboardText> textsKeys = new HashMap<>();
-    private PriorityQueue<ScoreboardText> texts = new PriorityQueue<>();
+    private TreeSet<ScoreboardText> texts = new TreeSet<>();
 
     public Scoreboard(GamePlayer player) {
         super(player);
@@ -31,7 +32,7 @@ public class Scoreboard extends HUDLocation {
         scoreboard.add(player);
     }
 
-    protected PriorityQueue<ScoreboardText> getTexts() {
+    protected TreeSet<ScoreboardText> getTexts() {
         return texts;
     }
 
@@ -73,7 +74,7 @@ public class Scoreboard extends HUDLocation {
         ScoreboardText text = textsKeys.get(key);
         if (!texts.contains(text))
             return;
-        texts.remove();
+        texts.remove(text);
         textsKeys.remove(key);
         scoreboard.remove(text.getEntry());
     }
@@ -131,6 +132,11 @@ public class Scoreboard extends HUDLocation {
 
     private ScoreboardText[] getVisibleTexts() {
         ScoreboardText[] texts = getTexts().toArray(new ScoreboardText[getTexts().size()]);
+        GameAPI.printConsole("---");
+        for(ScoreboardText t : getTexts()){
+            GameAPI.printConsole("Priority: " + t.getPriority().getPriority().getPriority() + ":" + t.getPriority().getSubPriority());
+        }
+        GameAPI.printConsole("---");
         if (getTexts().size() <= 16)
             return texts;
         ScoreboardText[] scoreboardTexts = new ScoreboardText[16];

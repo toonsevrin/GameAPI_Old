@@ -73,8 +73,7 @@ public class HUDManager implements Manager, JoinLeave {
             keys.get(Title.class).forEach((key, text) -> player.getHud().getTitle().addText(key, text.clone()));
             keys.get(Subtitle.class).forEach((key, text) -> player.getHud().getSubtitle().addText(key, text.clone()));
             keys.get(BossBar.class).forEach((key, text) -> player.getHud().getBossBar().addText(key, text.clone()));
-            keys.get(Scoreboard.class)
-                    .forEach((key, text) -> player.getHud().getScoreboard().addText(key, ((ScoreboardText) text).cloneSB()));
+            keys.get(Scoreboard.class).forEach((key, text) -> player.getHud().getScoreboard().addText(key, ((ScoreboardText) text).cloneSB()));
             if (sbTitle != null)
                 player.getHud().getScoreboard().getTitle().setText(sbTitle);
             if (sbEffect != null)

@@ -3,6 +3,8 @@ package com.exorath.game.api.hud;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.PriorityQueue;
+import java.util.TreeSet;
+
 import com.exorath.game.api.player.GamePlayer;
 
 /**
@@ -14,7 +16,7 @@ public abstract class HUDDisplay extends HUDLocation {
     private HUDText currentText;
 
     private HashMap<String, HUDText> textsKeys = new HashMap<>();
-    private PriorityQueue<HUDText> texts = new PriorityQueue<>();
+    private TreeSet<HUDText> texts = new TreeSet<>();
 
     public HUDDisplay(GamePlayer player, int maxChars) {
         super(player);
@@ -28,7 +30,7 @@ public abstract class HUDDisplay extends HUDLocation {
     /**
      * @return The texts in the queue to display here
      */
-    protected PriorityQueue<HUDText> getTexts() {
+    protected TreeSet<HUDText> getTexts() {
         return texts;
     }
 
@@ -51,9 +53,9 @@ public abstract class HUDDisplay extends HUDLocation {
         if (getTexts().isEmpty()) {//No text displaying atm
             displayText(text);
             currentText = text;
-        } else if (text.getPriority().getPriority().getPriority() > getTexts().peek().getPriority().getPriority().getPriority()
-                || (text.getPriority().getPriority().getPriority() == getTexts().peek().getPriority().getPriority().getPriority()
-                        && text.getPriority().getSubPriority() > getTexts().peek().getPriority().getSubPriority())) {
+        } else if (text.getPriority().getPriority().getPriority() > getTexts().first().getPriority().getPriority().getPriority()
+                || (text.getPriority().getPriority().getPriority() == getTexts().first().getPriority().getPriority().getPriority()
+                        && text.getPriority().getSubPriority() > getTexts().first().getPriority().getSubPriority())) {
             //The added text has a higher priority then the current highest one
             displayText(text);
             currentText = text;
@@ -71,7 +73,7 @@ public abstract class HUDDisplay extends HUDLocation {
             return;
         if (!texts.contains(text))
             return;
-        if (texts.peek() == text) {//This text is currently being displayed
+        if (texts.first() == text) {//This text is currently being displayed
             removeCurrent();
             currentText = null;
         }
@@ -87,7 +89,7 @@ public abstract class HUDDisplay extends HUDLocation {
         HUDText text = textsKeys.get(key);
         if (!texts.contains(text))
             return;
-        if (texts.peek().equals(text)) {//This text is currently being displayed
+        if (texts.first().equals(text)) {//This text is currently being displayed
             removeCurrent();
             currentText = null;
         }
