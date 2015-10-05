@@ -28,7 +28,7 @@ public class SQLData {
 
     public SQLData(Plugin host, String tableName, UUID uuid, boolean sync) {
         this.uuid = uuid;
-        tableName = host.getName() + "_" + tableName;//eg. GolemWarfare_Players
+        this.tableName = host.getName() + "_" + tableName;//eg. GolemWarfare_Players
 
         load(sync);
     }
@@ -79,6 +79,14 @@ public class SQLData {
     public String getValuesString() {
         StringBuilder keys = new StringBuilder();
         StringBuilder values = new StringBuilder();
+        keys.append(SQLTable.KEY);
+        keys.append(",");
+
+        values.append("'");
+        values.append(uuid);
+        values.append("'");
+        values.append(",");
+
         for (String key : this.data.keySet()) {
             keys.append(key);
             keys.append(",");
@@ -88,8 +96,10 @@ public class SQLData {
             values.append("'");
             values.append(",");
         }
+        if(keys.length() > 0)
         keys.deleteCharAt(keys.length() - 1);
-        values.deleteCharAt(keys.length() - 1);
+        if(values.length() > 0)
+        values.deleteCharAt(values.length() - 1);
 
         return "(" + keys.toString() + ") VALUES (" + values.toString() + ")";
     }
@@ -354,13 +364,13 @@ public class SQLData {
             }
             //Load all cells
             if (table.load(SQLData.this)) {
-                setLoaded();
+                Bukkit.getScheduler().runTask(GameAPI.getInstance(), ()-> setLoaded());
             }
         }
 
         //Change loaded to true, needs testing if this happens before the login event
         private void setLoaded() {
-            Bukkit.getScheduler().runTask(GameAPI.getInstance(), () -> loaded = true);
+            loaded = true;
         }
     }
 
@@ -373,17 +383,15 @@ public class SQLData {
         public void run() {
             //Get the table
             SQLTable table = GameAPI.getSQLManager().getTable(tableName);
-
+            //Create not existing columns
+            for (String key : data.keySet()) {
+                if (table.getColumns().containsKey(key))
+                    continue;
+                addColumn(table, key, data.get(key));
+            }
             if (table.rowExists(uuid.toString())) {//Update row
                 table.updateRow(SQLData.this);
             } else {//create row
-                //Create not existing columns
-                for (String key : data.keySet()) {
-                    if (table.getColumns().containsKey(key)) {
-                        continue;
-                    }
-                    addColumn(table, key, data.get(key));
-                }
                 table.createRow(SQLData.this);
             }
         }

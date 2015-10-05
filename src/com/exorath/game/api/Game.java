@@ -69,6 +69,7 @@ public abstract class Game implements JoinLeave {
                 ((JoinLeave) manager).leave(player);
         if (lobby != null)
             lobby.leave(player);
+        GameAPI.getSQLManager().leave(player);
     }
 
     /* Game ID */

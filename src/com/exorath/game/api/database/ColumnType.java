@@ -1,5 +1,7 @@
 package com.exorath.game.api.database;
 
+import com.exorath.game.GameAPI;
+
 /**
  * Created by Toon on 31/05/2015.
  * SQL Column types.
@@ -82,11 +84,12 @@ public enum ColumnType {
      * @return ColumnType that has the given dataType as dataType
      */
     public static ColumnType getColumnType(String dataType) {
+        GameAPI.printConsole("");
         if (dataType == null)
             return null;
 
         for (ColumnType type : ColumnType.values()) {
-            if (type.getDataType().equals(dataType))
+            if (type.getDataType().equalsIgnoreCase(dataType))
                 return type;
         }
         return null;
@@ -119,9 +122,9 @@ public enum ColumnType {
      */
     public String getDataTypeStructured() {
         if (this.cappedLength && this.decimal)
-            return this.name + "(" + this.cappedLength + "," + this.decimals + ")";
+            return this.name + "(" + this.maxCharLength + "," + this.decimals + ")";
         if (this.cappedLength)
-            return this.name + "(" + this.cappedLength + ")";
+            return this.name + "(" + this.maxCharLength + ")";
         if (this.decimal)
             return this.name + "(" + this.decimals + ")";
         return this.name;

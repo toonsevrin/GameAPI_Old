@@ -12,7 +12,7 @@ import com.exorath.game.GameAPI;
  */
 public class SQLTable {
 
-    public static final String KEY = "Key";
+    public static final String KEY = "UUID";
     private String name;
     private HashMap<String, SQLColumn> columns = new HashMap<>();
 
@@ -20,61 +20,6 @@ public class SQLTable {
         this.name = name;
     }
 
-    /**
-     * loads the data from the database of the given key
-     */
-    public boolean load(SQLData data) {
-        //TODO: If exists: load and return. Else: return null;
-        ResultSet rs = GameAPI.getSQLManager().executeQuery(
-                "SELECT * FROM " + this.name + " WHERE " + SQLTable.KEY + "='" + data.getUuid() + "' LIMIT 1");
-        try {
-            if (rs.next()) {
-                ResultSetMetaData rsMeta = rs.getMetaData();
-                for (int i = 0; i < rsMeta.getColumnCount(); i++) {
-                    String columnName = rsMeta.getColumnName(i);
-                    Object obj = rs.getObject(columnName);
-                    if (obj == null) {
-                        continue;
-                    }
-                    data.setData(columnName, obj);
-                }
-            } else {
-                GameAPI.printConsole(
-                        "SQLTable.getData with key " + data.getUuid() + " failed to load data. SQLData doesn't exist.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * loads the data from the database of the given key
-     */
-    public void save(SQLData data) {
-        //TODO: If exists: load and return. Else: return null;
-        ResultSet rs = GameAPI.getSQLManager().executeQuery(
-                "SELECT * FROM " + this.name + " WHERE " + SQLTable.KEY + "='" + data.getUuid() + "' LIMIT 1");
-        try {
-            if (rs.next()) {
-                ResultSetMetaData rsMeta = rs.getMetaData();
-                for (int i = 0; i < rsMeta.getColumnCount(); i++) {
-                    String columnName = rsMeta.getColumnName(i);
-                    Object obj = rs.getObject(columnName);
-                    if (obj == null) {
-                        continue;
-                    }
-                    data.setData(columnName, obj);
-                }
-            } else {
-                GameAPI.error(
-                        "SQLTable.getData with key " + data.getUuid() + " failed to load data. SQLData doesn't exist.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Update or insert data into database
@@ -100,6 +45,36 @@ public class SQLTable {
                 "ALTER TABLE " + this.name + " ADD " + column.getKey() + column.getType().getDataTypeStructured());
         this.loadColumn(column);
     }
+    /**
+     * loads the data from the database of the given key
+     */
+    public boolean load(SQLData data) {
+        //TODO: If exists: load and return. Else: return null;
+        ResultSet rs = GameAPI.getSQLManager().executeQuery(
+                "SELECT * FROM " + this.name + " WHERE " + SQLTable.KEY + "='" + data.getUuid() + "' LIMIT 1");
+        try {
+            if (rs.next()) {
+                ResultSetMetaData rsMeta = rs.getMetaData();
+                for (int i = 1; i <= rsMeta.getColumnCount(); i++) {
+                    String columnName = rsMeta.getColumnName(i);
+                    if(columnName.equals(KEY))
+                        continue;
+                    Object obj = rs.getObject(columnName);
+                    if (obj == null) {
+                        continue;
+                    }
+                    data.setData(columnName, obj);
+                }
+            } else {
+                GameAPI.printConsole(
+                        "SQLTable.getData with key " + data.getUuid() + " failed to load data. SQLData doesn't exist.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Load a column in the columns hashmap
@@ -116,6 +91,7 @@ public class SQLTable {
      * @param data
      */
     public void createRow(SQLData data) {
+        GameAPI.printConsole("INSERT INTO " + this.name + " " + data.getValuesString() + ";");
         int rowsChanged = GameAPI.getSQLManager()
                 .executeUpdate("INSERT INTO " + this.name + " " + data.getValuesString() + ";");//create new row with data
         if (rowsChanged >= 0) {
@@ -141,9 +117,12 @@ public class SQLTable {
             query.append("='");
             query.append(data.getData().get(dataKey).toString());
             query.append("' ");
+            query.append(",");
         }
+        if(data.getData().size() > 0)
+            query.deleteCharAt(query.length() - 1);
         query.append("WHERE " + KEY + "=" + "'" + data.getUuid() + "'");
-
+        GameAPI.printConsole(query.toString());
         GameAPI.getSQLManager().executeUpdate(query.toString());//update row with data
 
         GameAPI.printConsole("Updated row " + data.getUuid() + " in table " + this.name + " successfully.");
@@ -166,7 +145,7 @@ public class SQLTable {
     public boolean rowExists(String key) {
         try {
             ResultSet rs = GameAPI.getSQLManager().executeQuery(
-                    "SELECT EXISTS(SELECT 1 FROM" + this.name + " WHERE " + KEY + "='" + key + "');");
+                    "SELECT 1 FROM " + this.name + " WHERE " + KEY + "='" + key + "';");
             if (rs == null)
                 return false;
             if (rs.next())
@@ -189,7 +168,7 @@ public class SQLTable {
      *            Type this column should have
      */
     public void addColumn(String columnName, ColumnType type) {
-        GameAPI.getSQLManager().executeQuery(
+        GameAPI.getSQLManager().execute(
                 "ALTER TABLE " + this.name + " ADD " + columnName + " " + type.getDataTypeStructured() + " UNIQUE;");
 
         GameAPI.printConsole("Added column " + columnName + " with type " + type.getDataTypeStructured() + " to table "

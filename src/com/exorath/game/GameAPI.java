@@ -57,6 +57,9 @@ public class GameAPI extends JavaPlugin implements Listener {
         gameProvider = plugin.getName();
         getGame();
     }
+    public static Plugin getGameProvider(){
+        return Bukkit.getPluginManager().getPlugin(gameProvider);
+    }
 
     public static Game getGame() {
         if (games.isEmpty() && gameProvider != null) {

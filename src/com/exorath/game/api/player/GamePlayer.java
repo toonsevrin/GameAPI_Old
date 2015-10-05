@@ -47,13 +47,15 @@ public final class GamePlayer {
 
     public GamePlayer(UUID id) {
         uuid = id;
+        sqlData = new SQLData(GameAPI.getGameProvider(), "players", id, true);
         gSqlData = new SQLData(GameAPI.getInstance(), "players", id, false);
-
+        Bukkit.getScheduler().runTask(GameAPI.getInstance(), ()-> setupSync());
+    }
+    private void setupSync(){
         hud = new HUD(this);
         hud.getTitle().setOtherLocation(hud.getSubtitle());
         hud.getSubtitle().setOtherLocation(hud.getTitle());
     }
-
     public GamePlayer(Player player) {
         this(player.getUniqueId());
     }

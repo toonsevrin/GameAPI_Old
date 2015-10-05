@@ -3,6 +3,7 @@ package com.exorath.game;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -11,30 +12,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerChangedWorldEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerExpChangeEvent;
-import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.event.player.PlayerGameModeChangeEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerLevelChangeEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerPortalEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.player.PlayerShearEntityEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.event.player.PlayerToggleFlightEvent;
-import org.bukkit.event.player.PlayerToggleSneakEvent;
-import org.bukkit.event.player.PlayerToggleSprintEvent;
-import org.bukkit.event.player.PlayerVelocityEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.bukkit.plugin.Plugin;
 
@@ -72,11 +50,16 @@ public class GameAPIListener implements Listener {
             GameAPI.getInstance().getLogger().info("Detected GameAPI provider: " + plg.getName());
         }
     }
-
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPrelogin(AsyncPlayerPreLoginEvent event){
+        if(event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED)
+            return;
+        Game game = GameAPI.getGame();
+        game.getManager(PlayerManager.class).login(event.getUniqueId());
+    }
     @EventHandler
     public void onLogin(PlayerLoginEvent event) {
         Game game = GameAPI.getGame();
-        game.getManager(PlayerManager.class).login(event.getPlayer().getUniqueId());
         GamePlayer gp = GameAPI.getPlayer(event.getPlayer());
         TeamManager teams = game.getManager(TeamManager.class);
         Team team = teams == null ? null : teams.getTeam(gp);
