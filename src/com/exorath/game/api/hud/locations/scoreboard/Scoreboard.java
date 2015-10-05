@@ -1,10 +1,8 @@
 package com.exorath.game.api.hud.locations.scoreboard;
 
 import java.util.HashMap;
-import java.util.PriorityQueue;
 import java.util.TreeSet;
 
-import com.exorath.game.GameAPI;
 import org.bukkit.ChatColor;
 
 import com.exorath.game.api.hud.HUDLocation;

@@ -167,6 +167,10 @@ public class ScoreboardBase {
     private GamePlayer gp;
     private Player player;
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
     public void add(GamePlayer gp) {
         this.gp = gp;
         add();

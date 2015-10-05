@@ -6,7 +6,6 @@ import java.lang.reflect.Proxy;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import com.exorath.game.GameAPI;
 import com.exorath.game.api.Callback;
 import com.exorath.game.api.SoundInfo;
 import com.exorath.game.api.hud.HUDPriority;
@@ -78,18 +77,16 @@ public class CountdownFrameBuilder {
                     GamePlayer gp = (GamePlayer) args[0];
                     if (display != null)
                         display.run(gp);
-                    if (title != null) {
+                    if (title != null)
                         if (gp.getHud().getTitle().containsText("gapi.countdown.title"))
                             gp.getHud().getTitle().getText("gapi.countdown.title").setText(title);
                         else
                             gp.getHud().getTitle().addText("gapi.countdown.title", new HUDText(title, HUDPriority.GAME_API.get()));
-                    }
-                    if (subtitle != null) {
+                    if (subtitle != null)
                         if (gp.getHud().getSubtitle().containsText("gapi.countdown.subtitle"))
                             gp.getHud().getSubtitle().getText("gapi.countdown.subtitle").setText(subtitle);
                         else
                             gp.getHud().getSubtitle().addText("gapi.countdown.subtitle", new HUDText(subtitle, HUDPriority.GAME_API.get()));
-                    }
                     if(sound != null)
                         gp.getBukkitPlayer().playSound(gp.getBukkitPlayer().getLocation(), sound.getSound(), sound.getVolume(), sound.getPitch());
 

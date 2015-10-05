@@ -2,7 +2,6 @@ package com.exorath.game.api.hud;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.PriorityQueue;
 import java.util.TreeSet;
 
 import com.exorath.game.api.player.GamePlayer;
