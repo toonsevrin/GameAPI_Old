@@ -36,46 +36,46 @@ public abstract class Kit {
     private final Set<GameListener> listeners = Sets.newHashSet();
 
     public Kit(String name, ItemStack item) {
-        this.setName(name);
-        this.setIcon(item);
+        setName(name);
+        setIcon(item);
     }
 
     public void setName(String name) {
-        this.properties.set(KitProperty.NAME, name);
+        properties.set(KitProperty.NAME, name);
     }
 
     public String getName() {
-        return this.properties.as(KitProperty.NAME, String.class);
+        return properties.as(KitProperty.NAME, String.class);
     }
 
     public void setIcon(ItemStack item) {
-        this.properties.set(KitProperty.ICON, item);
+        properties.set(KitProperty.ICON, item);
     }
 
     public ItemStack getIcon() {
-        return this.properties.as(KitProperty.ICON, ItemStack.class);
+        return properties.as(KitProperty.ICON, ItemStack.class);
     }
 
     public void setDescription(String[] description) {
-        this.properties.set(KitProperty.DESCRIPTION, description);
+        properties.set(KitProperty.DESCRIPTION, description);
     }
 
     public String[] getDescription() {
-        return this.properties.as(KitProperty.DESCRIPTION, String[].class);
+        return properties.as(KitProperty.DESCRIPTION, String[].class);
     }
 
     public UnlockRequirements getUnlockRequirements() {
-        return this.properties.as(KitProperty.UNLOCK_REQUIREMENTS, UnlockRequirements.class);
+        return properties.as(KitProperty.UNLOCK_REQUIREMENTS, UnlockRequirements.class);
     }
 
     public void setUnlockRequirements(UnlockRequirements reqs) {
-        this.properties.set(KitProperty.UNLOCK_REQUIREMENTS, reqs);
+        properties.set(KitProperty.UNLOCK_REQUIREMENTS, reqs);
     }
 
     public PurchasableItem getKitItem(GamePlayer player) {
-        return new PurchasableItem(this.getName(), this.getIcon(), this.getDescription(), this.getUnlockRequirements(),
+        return new PurchasableItem(getName(), getIcon(), getDescription(), getUnlockRequirements(),
                 player,
-                this.isUnlocked(player));
+                isUnlocked(player));
     }
 
     /**
@@ -84,7 +84,7 @@ public abstract class Kit {
      * @return itemStack with nice markup
      */
     public ItemStack getKitSelectorItem(GamePlayer player) {
-        String name = this.getName();
+        String name = getName();
         if (name == null || name.equals(" ")) {
             Pattern p = RegexUtil.UPPERCASE_LETTERS;
             String temp = name;
@@ -98,7 +98,7 @@ public abstract class Kit {
                 numMatches++;
             }
         }
-        return new ItemStackBuilder(this.getIcon()).getMeta().setDisplayName(ChatColor.GOLD + name).getBuilder().get();
+        return new ItemStackBuilder(getIcon()).getMeta().setDisplayName(ChatColor.GOLD + name).getBuilder().get();
     }
 
     public abstract Map<Integer, ItemStack> getItems();
@@ -109,20 +109,19 @@ public abstract class Kit {
 
     public void give(GamePlayer player, Game game) {
         //TODO: Go into GPlayer and add methods addKit, delKit, clearKits and getKits.
+        player.setKit(this);
     }
 
     public boolean isUnlocked(GamePlayer player) {
-        UnlockRequirements reqs = this.getUnlockRequirements();
-        if (reqs == null) {
+        UnlockRequirements reqs = getUnlockRequirements();
+        if (reqs == null)
             return true;
-        }
         return reqs.isUnlocked(player);
     }
 
     protected void addListener(GameListener listener) {
-        if (listener != null) {
-            this.listeners.add(listener);
-        }
+        if (listener != null)
+            listeners.add(listener);
     }
 
     /* End Events */
@@ -133,11 +132,11 @@ public abstract class Kit {
 
     public NPCEquipment toNPCEquipment() {
         NPCEquipment eq = new NPCEquipment();
-        eq.setItemInHand(this.getIcon());
-        eq.setHelmet(this.getArmour().get(0));
-        eq.setChestplate(this.getArmour().get(1));
-        eq.setLeggings(this.getArmour().get(2));
-        eq.setBoots(this.getArmour().get(3));
+        eq.setItemInHand(getIcon());
+        eq.setHelmet(getArmour().get(0));
+        eq.setChestplate(getArmour().get(1));
+        eq.setLeggings(getArmour().get(2));
+        eq.setBoots(getArmour().get(3));
         return eq;
     }
 }

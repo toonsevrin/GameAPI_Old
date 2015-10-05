@@ -7,6 +7,6 @@ import com.exorath.game.api.Property;
  */
 public class NPCProperty {
 
-    public static final Property PROTECTED = Property.get("protected", "Whether or not this npc is invulnerable", true);
+    public static final Property PROTECTED = Property.get("npc.protected", "Whether or not this npc is invulnerable", true);
 
 }

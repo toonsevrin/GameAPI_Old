@@ -1,6 +1,8 @@
 package com.exorath.game.api.player;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -8,6 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 
 import com.exorath.game.GameAPI;
 import com.exorath.game.api.Game;
@@ -16,15 +20,16 @@ import com.exorath.game.api.Properties;
 import com.exorath.game.api.database.SQLData;
 import com.exorath.game.api.hud.HUD;
 import com.exorath.game.api.menu.Menu;
+import com.exorath.game.api.type.minigame.kit.Kit;
 import com.exorath.game.lib.Rank;
 
-@SuppressWarnings("unused")
 /**
  * GamePlayer class.
  *
  * @author Nick Robson
  * @author Toon Sevrin
  */
+@SuppressWarnings("unused")
 public final class GamePlayer {
 
     private UUID uuid;
@@ -34,6 +39,8 @@ public final class GamePlayer {
     private int coins = 0, credits = 0, wonCoins = 0;
     private Properties properties = new Properties();
     private Menu menu;
+    private Kit kit;
+    private HUD hud;
 
     private SQLData sqlData;
     private SQLData gSqlData;
@@ -42,8 +49,6 @@ public final class GamePlayer {
     private PlayerState state = PlayerState.UNKNOWN;
 
     private Set<GameListener> listeners = new HashSet<>();
-
-    private HUD hud;
 
     public GamePlayer(UUID id) {
         uuid = id;
@@ -93,13 +98,13 @@ public final class GamePlayer {
 
     //** Rank Methods *//
     public Rank getRank() {
-        if (getApiSqlData().contains("rank"))
-            return Rank.valueOf(getApiSqlData().getString("rank"));
+        if (getApiSQLData().contains("rank"))
+            return Rank.valueOf(getApiSQLData().getString("rank"));
         return Rank.NONE;
     }
 
     public void setRank(Rank rank) {
-        getApiSqlData().setString("rank", rank.toString());
+        getApiSQLData().setString("rank", rank.toString());
     }
 
     //** Currency Methods **//
@@ -162,9 +167,8 @@ public final class GamePlayer {
 
     //** Player State Methods *//
     public PlayerState getState() {
-        if (state == null) {
+        if (state == null)
             state = PlayerState.UNKNOWN;
-        }
         return state;
     }
 
@@ -205,11 +209,11 @@ public final class GamePlayer {
     }
 
     //** SQLData Methods**//
-    public SQLData getSqlData() {
+    public SQLData getSQLData() {
         return sqlData;
     }
 
-    public SQLData getApiSqlData() {
+    public SQLData getApiSQLData() {
         return gSqlData;
     }
 
@@ -234,6 +238,36 @@ public final class GamePlayer {
     public void addListener(GameListener listener) {
         if (listener != null)
             listeners.add(listener);
+    }
+
+    /* KITS */
+
+    public Kit getKit() {
+        return kit;
+    }
+
+    public void setKit(Kit kit) {
+        Player player = getBukkitPlayer();
+        if (player != null)
+            if (kit == null) {
+                if (this.kit != null) {
+                    this.kit.getItems().forEach((slot, item) -> {
+                        if (player.getInventory().getItem(slot).getType() == item.getType())
+                            player.getInventory().setItem(slot, null);
+                    });
+                    player.getInventory().setArmorContents(new ItemStack[4]);
+                    Collection<PotionEffect> effects = player.getActivePotionEffects();
+                    effects.forEach(e -> player.removePotionEffect(e.getType()));
+                }
+            } else {
+                kit.getItems().forEach((slot, item) -> player.getInventory().setItem(slot, item));
+                Map<Integer, ItemStack> armor = kit.getArmour();
+                player.getInventory().setHelmet(armor.get(0));
+                player.getInventory().setChestplate(armor.get(1));
+                player.getInventory().setLeggings(armor.get(2));
+                player.getInventory().setBoots(armor.get(3));
+            }
+        this.kit = kit;
     }
 
 }

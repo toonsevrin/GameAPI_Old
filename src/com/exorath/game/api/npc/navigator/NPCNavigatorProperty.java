@@ -8,6 +8,6 @@ import com.exorath.game.api.Property;
  */
 public class NPCNavigatorProperty {
 
-    public static final Property SPEED = Property.get("speed", "The speed the NPC should move at.", 1.0);
+    public static final Property SPEED = Property.get("npc.speed", "The speed the NPC should move at.", 1.0);
 
 }

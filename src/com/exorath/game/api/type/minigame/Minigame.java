@@ -2,7 +2,6 @@ package com.exorath.game.api.type.minigame;
 
 import java.util.Arrays;
 
-import com.exorath.game.api.team.Team;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -14,6 +13,7 @@ import com.exorath.game.api.maps.GameMap;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.player.PlayerManager;
 import com.exorath.game.api.spectate.SpectateManager;
+import com.exorath.game.api.team.Team;
 import com.exorath.game.api.team.TeamManager;
 import com.exorath.game.api.type.minigame.kit.KitManager;
 import com.exorath.game.api.type.minigame.maps.MinigameMapManager;
@@ -23,10 +23,10 @@ import com.exorath.game.api.type.minigame.maps.MinigameMapManager;
  */
 public abstract class Minigame extends Game {
 
-    public static final Property MIN_PLAYERS = Property.get("minplayers", "Minimal amount of players in team", 2);
-    public static final Property MAX_DURATION = Property.get("maxduration",
+    public static final Property MIN_PLAYERS = Property.get("minigame.minplayers", "Minimal amount of players in the whole minigame", 2);
+    public static final Property MAX_DURATION = Property.get("minigame.maxduration",
             "The maximum duration of the game in ticks. 0 disables.", 0);
-    public static final Property START_DELAY = Property.get("startdelay",
+    public static final Property START_DELAY = Property.get("minigame.startdelay",
             "Waiting time after there are enough players before game starts", 200);
 
     public Minigame() {
@@ -39,7 +39,6 @@ public abstract class Minigame extends Game {
     }
 
     public boolean hasMinPlayers() {
-
         return getManager(PlayerManager.class).getPlayerCount() >= getProperties().as(Minigame.MIN_PLAYERS, Integer.class);
     }
 
@@ -48,11 +47,10 @@ public abstract class Minigame extends Game {
     }
 
     protected void spawnPlayers() {
-        for (Team team : getManager(TeamManager.class).getTeams()) {
+        for (Team team : getManager(TeamManager.class).getTeams())
             for (GamePlayer player : team.getPlayers())
                 player.getBukkitPlayer()
-                        .teleport(getManager(MinigameMapManager.class).getCurrent().getSpawns(team.getName()).getNextSpawn().getLocation());
-        }
+                .teleport(getManager(MinigameMapManager.class).getCurrent().getSpawns(team.getName()).getNextSpawn().getLocation());
     }
 
     protected void reward() {

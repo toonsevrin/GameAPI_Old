@@ -2,13 +2,18 @@ package com.exorath.game.api.database;
 
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.exorath.game.GameAPI;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 
 /**
  * Created by Toon Sevrin on 8/16/2015.
@@ -23,7 +28,7 @@ public class SQLData {
     private UUID uuid;
     private String tableName;
 
-    private HashMap<String, Object> data = new HashMap<>();
+    private Map<String, Object> data = new HashMap<>();
     private boolean loaded = false;
 
     public SQLData(Plugin host, String tableName, UUID uuid, boolean sync) {
@@ -42,11 +47,10 @@ public class SQLData {
      *            main thread or not
      */
     private void load(boolean sync) {
-        if (sync) {
+        if (sync)
             new LoadTask().run();
-        } else {
+        else
             new LoadTask().runTaskAsynchronously(GameAPI.getInstance());
-        }
     }
 
     /**
@@ -61,11 +65,10 @@ public class SQLData {
      * Save data to database
      */
     public void save(boolean sync) {
-        if (sync) {
+        if (sync)
             new SaveTask().run();
-        } else {
+        else
             new SaveTask().runTaskAsynchronously(GameAPI.getInstance());
-        }
     }
 
     //** Utility **//
@@ -73,25 +76,16 @@ public class SQLData {
      * Get a string with keys and values formatted like this:
      * KEY1,KEY2,KEY3...='VALUE1','VALUE2','VALUE3'
      * TODO: Remove apostrophes if not a string.
-     * 
+     *
      * @return A string with keys and values, formatted for insert
      */
     public String getValuesString() {
-        StringBuilder keys = new StringBuilder();
-        StringBuilder values = new StringBuilder();
-        for (String key : this.data.keySet()) {
-            keys.append(key);
-            keys.append(",");
-
-            values.append("'");
-            values.append(this.data.get(key).toString());
-            values.append("'");
-            values.append(",");
-        }
-        keys.deleteCharAt(keys.length() - 1);
-        values.deleteCharAt(keys.length() - 1);
-
-        return "(" + keys.toString() + ") VALUES (" + values.toString() + ")";
+        List<String> keys = Lists.newArrayList(data.keySet());
+        String k = Joiner.on(',').join(keys);
+        String v = Joiner.on("','").join(keys.stream().map(s -> data.get(s)).collect(Collectors.toList()));
+        if (v.length() > 0)
+            v = "'" + v + "'";
+        return "(" + k + ") VALUES (" + v + ")";
     }
 
     //** Setters **//
@@ -156,178 +150,118 @@ public class SQLData {
      * @return null if key is not found, otherwise the saved value
      */
     public String getString(String key) {
-        if (!data.containsKey(key)) {
-            return null;
-        }
-        Object value = data.get(key);
-        if (!(value instanceof String)) {
-            return null;
-        }
-        return (String) value;
+        return getString(key, null);
     }
 
     /**
      * @return def if key is not found, otherwise the saved value
      */
     public String getString(String key, String def) {
-        if (!data.containsKey(key)) {
-            return def;
-        }
-        Object value = data.get(key);
-        if (!(value instanceof String)) {
-            return def;
-        }
-        return (String) value;
+        return data.containsKey(key) ? data.get(key).toString() : def;
     }
 
     /**
      * @return null if key is not found, otherwise the saved value
      */
-    public Integer getInt(String key) {
-        if (!data.containsKey(key)) {
-            return null;
-        }
-        Object value = data.get(key);
-        if (!(value instanceof Integer)) {
-            return null;
-        }
-        return (Integer) value;
+    public int getInt(String key) {
+        return getInt(key, 0);
     }
 
     /**
      * @return def if key is not found, otherwise the saved value
      */
     public int getInt(String key, int def) {
-        if (!data.containsKey(key)) {
+        if (!data.containsKey(key))
             return def;
-        }
         Object value = data.get(key);
-        if (!(value instanceof Integer)) {
+        if (!(value instanceof Number))
             return def;
-        }
-        return (int) value;
+        return ((Number) value).intValue();
     }
 
     /**
      * @return null if key is not found, otherwise the saved value
      */
-    public Float getFloat(String key) {
-        if (!data.containsKey(key)) {
-            return null;
-        }
-        Object value = data.get(key);
-        if (!(value instanceof Float)) {
-            return null;
-        }
-        return (Float) value;
+    public float getFloat(String key) {
+        return getFloat(key, 0);
     }
 
     /**
      * @return def if key is not found, otherwise the saved value
      */
     public float getFloat(String key, float def) {
-        if (!data.containsKey(key)) {
+        if (!data.containsKey(key))
             return def;
-        }
         Object value = data.get(key);
-        if (!(value instanceof Float)) {
+        if (!(value instanceof Number))
             return def;
-        }
-        return (float) value;
+        return ((Number) value).floatValue();
     }
 
     /**
      * @return null if key is not found, otherwise the saved value
      */
-    public Double getDouble(String key) {
-        if (!data.containsKey(key)) {
-            return null;
-        }
-        Object value = data.get(key);
-        if (!(value instanceof Double)) {
-            return null;
-        }
-        return (Double) value;
+    public double getDouble(String key) {
+        return getDouble(key, 0);
     }
 
     /**
      * @return def if key is not found, otherwise the saved value
      */
     public double getDouble(String key, double def) {
-        if (!data.containsKey(key)) {
+        if (!data.containsKey(key))
             return def;
-        }
         Object value = data.get(key);
-        if (!(value instanceof Double)) {
+        if (!(value instanceof Number))
             return def;
-        }
-        return (double) value;
+        return ((Number) value).doubleValue();
     }
 
     /**
      * @return null if key is not found, otherwise the saved value
      */
-    public Long getLong(String key) {
-        if (!data.containsKey(key)) {
-            return null;
-        }
-        Object value = data.get(key);
-        if (!(value instanceof Long)) {
-            return null;
-        }
-        return (Long) value;
+    public long getLong(String key) {
+        return getLong(key, 0);
     }
 
     /**
      * @return def if key is not found, otherwise the saved value
      */
     public long getLong(String key, long def) {
-        if (!data.containsKey(key)) {
+        if (!data.containsKey(key))
             return def;
-        }
         Object value = data.get(key);
-        if (!(value instanceof Long)) {
+        if (!(value instanceof Number))
             return def;
-        }
-        return (long) value;
+        return ((Number) value).longValue();
     }
 
     /**
      * @return null if key is not found, otherwise the saved value
      */
     public Date getDate(String key) {
-        if (!data.containsKey(key)) {
-            return null;
-        }
-        Object value = data.get(key);
-        if (!(value instanceof Date)) {
-            return null;
-        }
-        return (Date) value;
+        return getDate(key, null);
     }
 
     /**
      * @return def if key is not found, otherwise the saved value
      */
     public Date getDate(String key, Date def) {
-        if (!data.containsKey(key)) {
+        if (!data.containsKey(key))
             return def;
-        }
         Object value = data.get(key);
-        if (!(value instanceof Date)) {
+        if (!(value instanceof Date))
             return def;
-        }
         return (Date) value;
     }
 
     public boolean contains(String key) {
-        if (key == null) {
+        if (key == null)
             return false;
-        }
         return data.containsKey(key);
     }
 
-    public UUID getUuid() {
+    public UUID getUUID() {
         return uuid;
     }
 
@@ -335,7 +269,7 @@ public class SQLData {
         return tableName;
     }
 
-    protected HashMap<String, Object> getData() {
+    protected Map<String, Object> getData() {
         return data;
     }
 
@@ -349,13 +283,11 @@ public class SQLData {
             //Get the table
             SQLTable table = GameAPI.getSQLManager().getTable(tableName);
             //Check if uuid exists
-            if (table == null || !table.rowExists(uuid.toString())) {
+            if (table == null || !table.rowExists(uuid.toString()))
                 return;
-            }
             //Load all cells
-            if (table.load(SQLData.this)) {
+            if (table.load(SQLData.this))
                 setLoaded();
-            }
         }
 
         //Change loaded to true, needs testing if this happens before the login event
@@ -374,14 +306,13 @@ public class SQLData {
             //Get the table
             SQLTable table = GameAPI.getSQLManager().getTable(tableName);
 
-            if (table.rowExists(uuid.toString())) {//Update row
+            if (table.rowExists(uuid.toString()))
                 table.updateRow(SQLData.this);
-            } else {//create row
+            else {//create row
                 //Create not existing columns
                 for (String key : data.keySet()) {
-                    if (table.getColumns().containsKey(key)) {
+                    if (table.getColumns().containsKey(key))
                         continue;
-                    }
                     addColumn(table, key, data.get(key));
                 }
                 table.createRow(SQLData.this);
@@ -389,19 +320,18 @@ public class SQLData {
         }
 
         private void addColumn(SQLTable table, String key, Object value) {
-            if (value instanceof String) {
+            if (value instanceof String)
                 table.addColumn(key, ColumnType.STRING_128);
-            } else if (value instanceof Integer) {
+            else if (value instanceof Integer)
                 table.addColumn(key, ColumnType.INT);
-            } else if (value instanceof Float) {
+            else if (value instanceof Float)
                 table.addColumn(key, ColumnType.FLOAT);
-            } else if (value instanceof Double) {
+            else if (value instanceof Double)
                 table.addColumn(key, ColumnType.DOUBLE);
-            } else if (value instanceof Long) {
+            else if (value instanceof Long)
                 table.addColumn(key, ColumnType.BIG_INT);
-            } else if (value instanceof Date) {
+            else if (value instanceof Date)
                 table.addColumn(key, ColumnType.DATE_TIME);
-            }
         }
     }
 }

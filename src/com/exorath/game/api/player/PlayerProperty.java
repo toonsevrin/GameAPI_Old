@@ -11,12 +11,12 @@ import com.exorath.game.api.Property;
  */
 public class PlayerProperty extends BasePlayerProperty {
 
-    public static final Property PREFIX = Property.get("prefix",
+    public static final Property PREFIX = Property.get("player.prefix",
             "Prefix for members, will be used in various places", "");
-    public static final Property GAMEMODE = Property.get("gamemode", "Default members gamemode", GameMode.SURVIVAL);
-    public static final Property NAME_TAG_VISIBILITY = Property.get("nametags",
+    public static final Property GAMEMODE = Property.get("player.gamemode", "Default members gamemode", GameMode.SURVIVAL);
+    public static final Property NAME_TAG_VISIBILITY = Property.get("player.nametags",
             "Whether or not members name tag should be visible", true);
-    public static final Property SPECTATE_ON_DEATH = Property.get("spectate_on_death",
+    public static final Property SPECTATE_ON_DEATH = Property.get("player.spectate_on_death",
             "Whether or not players should be moved to spectate when they die", false);
 
 }

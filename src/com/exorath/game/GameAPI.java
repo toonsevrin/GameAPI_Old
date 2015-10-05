@@ -16,6 +16,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
 
 import com.exorath.game.api.Game;
 import com.exorath.game.api.GameProvider;
@@ -26,6 +27,7 @@ import com.exorath.game.api.nms.NMS;
 import com.exorath.game.api.nms.NMSProvider;
 import com.exorath.game.api.player.GamePlayer;
 import com.exorath.game.api.player.PlayerManager;
+import com.exorath.game.api.type.minigame.kit.Kit;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.google.gson.Gson;
@@ -141,6 +143,17 @@ public class GameAPI extends JavaPlugin implements Listener {
             }
 
         }, 5);
+
+        getServer().getScheduler().runTaskTimer(this, () -> {
+            for (GamePlayer player : getOnlinePlayers()) {
+                Kit kit = player.getKit();
+                Player p = player.getBukkitPlayer();
+                if (p != null && kit != null)
+                    kit.getPotionEffects().forEach((type, level) -> {
+                        p.addPotionEffect(new PotionEffect(type, 160, level, true));
+                    });
+            }
+        } , 100, 100);
 
     }
 
