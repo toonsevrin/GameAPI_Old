@@ -57,7 +57,7 @@ public class HelixEffect implements ParticleEffect {
                 vec.add(new Vector(dx, 0, dz));
             vec.add(new Vector(0, stepY * i, 0));
             Location loc = vec.toLocation(start.getWorld()).add(start);
-            angle = (angle + stepAngle) % 360;
+            angle = (angle + stepAngle) % (2 * Math.PI);
             ParticleBuilder.newBuilder().type(type)
             .location(loc).build().display(players);
         }
