@@ -13,86 +13,88 @@ import org.bukkit.entity.Player;
  */
 public interface NMSProvider {
 
-    public Class<?> getMinecraftServerClass();
+    Class<?> getMinecraftServerClass();
 
-    public Class<?> getBukkitServerClass();
+    Class<?> getBukkitServerClass();
 
-    public Class<?> getBukkitPlayerClass();
+    Class<?> getBukkitPlayerClass();
 
-    public default Package getNMSPackage() {
-        return this.getMinecraftServerClass().getPackage();
+    default Package getNMSPackage() {
+        return getMinecraftServerClass().getPackage();
     }
 
-    public default Package getCraftBukkitPackage() {
-        return this.getBukkitServerClass().getPackage();
+    default Package getCraftBukkitPackage() {
+        return getBukkitServerClass().getPackage();
     }
 
-    default public Class<?> getClass(String name) {
+    default Class<?> getClass(String name) {
         try {
-            return Class.forName(this.getNMSPackage().getName() + "." + name);
+            return Class.forName(getNMSPackage().getName() + "." + name);
         } catch (Throwable t) {
             return null;
         }
     }
 
-    public Class<?> getBlockClass();
+    Class<?> getBlockClass();
 
-    public Class<?> getWorldClass();
+    Class<?> getWorldClass();
 
-    public Class<?> getWorldServerClass();
+    Class<?> getWorldServerClass();
 
-    public Class<?> getEntityClass();
+    Class<?> getEntityClass();
 
-    public Class<?> getPlayerClass();
+    Class<?> getPlayerClass();
 
-    public Class<?> getGameProfileClass();
+    Class<?> getGameProfileClass();
 
-    public Class<?> getPlayerInteractManagerClass();
+    Class<?> getPlayerInteractManagerClass();
 
-    public Object getMinecraftServer();
+    Object getMinecraftServer();
 
-    public Object getBukkitServer();
+    Object getBukkitServer();
 
-    public Object getBlock(Block block);
+    Object getBlock(Block block);
 
-    public Object getWorld(World world);
+    Object getWorld(World world);
 
-    public Object createPlayerInteractManager(World world);
+    Object createPlayerInteractManager(World world);
 
-    public Object createNetworkManager();
+    Object createNetworkManager();
 
-    public Object createNetServerHandler(Object nms_DedicatedServer, Object nms_NetworkManager, Object nms_Player);
+    Object createNetServerHandler(Object nms_DedicatedServer, Object nms_NetworkManager, Object nms_Player);
 
-    public Object getEntity(Entity entity);
+    Object getEntity(Entity entity);
 
-    public Object getPlayer(Player player);
+    Object getPlayer(Player player);
 
-    public Object getPacketTunnel(Player player);
+    Object getPacketTunnel(Player player);
 
-    public Object getPlayerInteractManager(Player player);
+    Object getPlayerInteractManager(Player player);
 
-    public Object getPlayerAbilities(Player player);
+    Object getPlayerAbilities(Player player);
 
-    public void setCanInstantBuild(Player player, boolean enabled);
+    void setCanInstantBuild(Player player, boolean enabled);
 
-    public void setInvulnerable(Player player, boolean enabled);
+    void setInvulnerable(Player player, boolean enabled);
 
-    public void setWalkSpeed(Player player, float f);
+    void setWalkSpeed(Player player, float f);
 
-    public void setFlySpeed(Player player, float f);
+    void setFlySpeed(Player player, float f);
 
-    public void setPortalCooldown(Player player, int cooldown);
+    void setPortalCooldown(Player player, int cooldown);
 
-    public void setSleeping(Player player, boolean sleeping);
+    void setSleeping(Player player, boolean sleeping);
 
-    public void setTimeOffset(Player player, long timeOffset);
+    void setTimeOffset(Player player, long timeOffset);
 
-    public void setWeather(Player player, WeatherType weather);
+    void setWeather(Player player, WeatherType weather);
 
-    public void setInvisible(Entity e, boolean invisible);
+    void setInvisible(Entity e, boolean invisible);
 
-    public void navigate(LivingEntity entity, Location location, double speed);
+    void navigate(LivingEntity entity, Location location, double speed);
 
-    public void revive(Player p);
+    void revive(Player p);
+
+    Player getBukkitPlayer(Object nms_Player);
 
 }

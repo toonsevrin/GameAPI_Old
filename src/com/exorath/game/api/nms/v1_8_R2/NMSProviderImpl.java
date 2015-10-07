@@ -177,7 +177,7 @@ public class NMSProviderImpl implements NMSProvider {
 
     @Override
     public void navigate(LivingEntity entity, Location location, double speed) {
-        Object handle = this.getEntity(entity);
+        Object handle = getEntity(entity);
         if (handle instanceof EntityInsentient) {
             EntityInsentient ent = (EntityInsentient) handle;
             ent.getNavigation().a(location.getX(), location.getY(), location.getZ(), speed);
@@ -199,6 +199,11 @@ public class NMSProviderImpl implements NMSProvider {
         return new FakePlayerNetServerHandler((MinecraftServer) nms_DedicatedServer,
                 (NetworkManager) nms_NetworkManager,
                 (EntityPlayer) nms_Player);
+    }
+
+    @Override
+    public Player getBukkitPlayer(Object nms_Player) {
+        return ((net.minecraft.server.v1_8_R2.EntityPlayer) nms_Player).getBukkitEntity();
     }
 
 }
