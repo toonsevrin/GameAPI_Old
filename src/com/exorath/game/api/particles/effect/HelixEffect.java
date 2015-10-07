@@ -31,7 +31,7 @@ public class HelixEffect implements ParticleEffect {
         this.radius = radius;
         this.height = height;
         this.offsetAngle = offsetAngle % (2 * Math.PI);
-        this.stepAngle = stepAngle;
+        this.stepAngle = stepAngle % (2 * Math.PI);
         this.stepY = stepY;
         this.clockwise = clockwise;
     }
