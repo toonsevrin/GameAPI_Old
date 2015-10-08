@@ -38,11 +38,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.health.HealthCheckRegistry;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariPoolMXBean;
 import com.zaxxer.hikari.metrics.MetricsTrackerFactory;
@@ -54,6 +49,8 @@ import com.zaxxer.hikari.util.ConcurrentBag;
 import com.zaxxer.hikari.util.ConcurrentBag.IBagStateListener;
 import com.zaxxer.hikari.util.DefaultThreadFactory;
 import com.zaxxer.hikari.util.SuspendResumeLock;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is the primary connection pool class that provides the basic
@@ -63,7 +60,7 @@ import com.zaxxer.hikari.util.SuspendResumeLock;
  */
 public class HikariPool extends PoolBase implements HikariPoolMXBean, IBagStateListener
 {
-   private static final Logger LOGGER = LoggerFactory.getLogger(HikariPool.class);
+   private static final Logger LOGGER = LogManager.getLogger(HikariPool.class);
 
    private static final ClockSource clockSource = ClockSource.INSTANCE;
 

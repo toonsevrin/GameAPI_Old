@@ -22,10 +22,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.zaxxer.hikari.util.ConcurrentBag.IConcurrentBagEntry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static com.zaxxer.hikari.util.ConcurrentBag.IConcurrentBagEntry.STATE_NOT_IN_USE;
 import static com.zaxxer.hikari.util.ConcurrentBag.IConcurrentBagEntry.STATE_IN_USE;
@@ -55,7 +54,7 @@ import static com.zaxxer.hikari.util.ConcurrentBag.IConcurrentBagEntry.STATE_RES
 @SuppressWarnings("rawtypes")
 public class ConcurrentBag<T extends IConcurrentBagEntry> implements AutoCloseable
 {
-   private static final Logger LOGGER = LoggerFactory.getLogger(ConcurrentBag.class);
+   private static final Logger LOGGER = LogManager.getLogger(ConcurrentBag.class);
 
    private final QueuedSequenceSynchronizer synchronizer;
    private final CopyOnWriteArrayList<T> sharedList;

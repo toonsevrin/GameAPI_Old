@@ -30,11 +30,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.zaxxer.hikari.util.ClockSource;
 import com.zaxxer.hikari.util.FastList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * This is the proxy class for java.sql.Connection.
@@ -71,9 +70,7 @@ public abstract class ProxyConnection implements Connection
 
    // static initializer
    static {
-      LOGGER = LoggerFactory.getLogger(ProxyConnection.class);
-      clockSource = ClockSource.INSTANCE;
-
+      LOGGER = LogManager.getLogger(ProxyConnection.class);
       SQL_ERRORS = new HashSet<>();
       SQL_ERRORS.add("57P01"); // ADMIN SHUTDOWN
       SQL_ERRORS.add("57P02"); // CRASH SHUTDOWN

@@ -15,6 +15,9 @@
  */
 package com.zaxxer.hikari.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.Driver;
@@ -27,12 +30,9 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 public final class DriverDataSource implements DataSource
 {
-   private static final Logger LOGGER = LoggerFactory.getLogger(DriverDataSource.class);
+   private static final Logger LOGGER = LogManager.getLogger(DriverDataSource.class);
 
    private final String jdbcUrl;
    private final Properties driverProperties;

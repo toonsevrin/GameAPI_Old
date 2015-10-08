@@ -25,11 +25,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.zaxxer.hikari.metrics.MetricsTrackerFactory;
 import com.zaxxer.hikari.pool.HikariPool;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * The HikariCP pooled DataSource.
@@ -38,7 +37,7 @@ import com.zaxxer.hikari.pool.HikariPool;
  */
 public class HikariDataSource extends HikariConfig implements DataSource, Closeable
 {
-   private static final Logger LOGGER = LoggerFactory.getLogger(HikariDataSource.class);
+   private static final Logger LOGGER = LogManager.getLogger(HikariDataSource.class);
 
    private final AtomicBoolean isShutdown = new AtomicBoolean();
 

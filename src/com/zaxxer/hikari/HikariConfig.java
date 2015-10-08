@@ -12,8 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * https://dropwizard.github.io/metrics/3.1.0/getting-started/
  */
-
+//
 package com.zaxxer.hikari;
 
 import java.io.File;
@@ -34,18 +35,17 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.health.HealthCheckRegistry;
+import com.exorath.game.lib.metrics.HealthCheckRegistry;
+import com.exorath.game.lib.metrics.MetricRegistry;
 import com.zaxxer.hikari.metrics.MetricsTrackerFactory;
 import com.zaxxer.hikari.util.PropertyElf;
 import com.zaxxer.hikari.util.UtilityElf;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class HikariConfig implements HikariConfigMXBean
 {
-   private static final Logger LOGGER = LoggerFactory.getLogger(HikariConfig.class);
+   private static final Logger LOGGER = LogManager.getLogger(HikariConfig.class);
 
    private static final long CONNECTION_TIMEOUT = TimeUnit.SECONDS.toMillis(30);
    private static final long VALIDATION_TIMEOUT = TimeUnit.SECONDS.toMillis(5);

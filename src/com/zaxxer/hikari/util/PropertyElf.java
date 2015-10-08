@@ -24,11 +24,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.zaxxer.hikari.HikariConfig;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * A class that reflectively sets bean properties on a target object.
@@ -37,7 +35,7 @@ import com.zaxxer.hikari.HikariConfig;
  */
 public final class PropertyElf
 {
-   private static final Logger LOGGER = LoggerFactory.getLogger(PropertyElf.class);
+   private static final Logger LOGGER = LogManager.getLogger(PropertyElf.class);
 
    public static void setTargetFromProperties(Object target, Properties properties)
    {

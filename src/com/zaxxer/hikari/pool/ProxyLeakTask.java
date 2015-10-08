@@ -16,12 +16,12 @@
 
 package com.zaxxer.hikari.pool;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A Runnable that is scheduled in the future to report leaks.  The ScheduledFuture is
@@ -31,7 +31,8 @@ import org.slf4j.LoggerFactory;
  */
 class ProxyLeakTask implements Runnable
 {
-   private static final Logger LOGGER = LoggerFactory.getLogger(ProxyLeakTask.class);
+
+   private static final Logger LOGGER = LogManager.getLogger(ProxyLeakTask.class);
    private static final ProxyLeakTask NO_LEAK;
 
    private ScheduledExecutorService executorService;

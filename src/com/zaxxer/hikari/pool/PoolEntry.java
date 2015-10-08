@@ -22,12 +22,11 @@ import java.util.Comparator;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.zaxxer.hikari.util.ClockSource;
 import com.zaxxer.hikari.util.ConcurrentBag.IConcurrentBagEntry;
 import com.zaxxer.hikari.util.FastList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Entry used in the ConcurrentBag to track Connection instances.
@@ -36,7 +35,8 @@ import com.zaxxer.hikari.util.FastList;
  */
 final class PoolEntry implements IConcurrentBagEntry
 {
-   private static final Logger LOGGER = LoggerFactory.getLogger(PoolEntry.class);
+
+   private static final Logger LOGGER = LogManager.getLogger(PoolEntry.class);
 
    static final Comparator<PoolEntry> LASTACCESS_COMPARABLE;
    Connection connection;
