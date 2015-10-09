@@ -37,23 +37,23 @@ public enum ColumnType {
 
     ColumnType(String name) {
         this.name = name;
-        this.cappedLength = false;
-        this.decimal = false;
+        cappedLength = false;
+        decimal = false;
     }
 
     ColumnType(String name, int maxCharLength) {
         this.name = name;
         this.maxCharLength = maxCharLength;
-        this.cappedLength = true;
-        this.decimal = false;
+        cappedLength = true;
+        decimal = false;
     }
 
     ColumnType(String name, int maxCharLength, int decimals) {
         this.name = name;
         this.maxCharLength = maxCharLength;
-        this.cappedLength = true;
+        cappedLength = true;
         this.decimals = decimals;
-        this.decimal = true;
+        decimal = true;
     }
 
     /**
@@ -62,7 +62,7 @@ public enum ColumnType {
      * @return The DataType of this column, no parameters.
      */
     public String getDataType() {
-        return this.name;
+        return name;
     }
 
     /**
@@ -71,7 +71,7 @@ public enum ColumnType {
      * @return The maximum amount of characters/digits in this column
      */
     public int getMaxCharLength() {
-        return this.maxCharLength;
+        return maxCharLength;
     }
 
     /**
@@ -85,10 +85,9 @@ public enum ColumnType {
         if (dataType == null)
             return null;
 
-        for (ColumnType type : ColumnType.values()) {
+        for (ColumnType type : ColumnType.values())
             if (type.getDataType().equals(dataType))
                 return type;
-        }
         return null;
     }
 
@@ -103,12 +102,9 @@ public enum ColumnType {
         if (dataType == null)
             return null;
 
-        for (ColumnType type : ColumnType.values()) {
-            if (type.getMaxCharLength() == 0)
-                return null;
+        for (ColumnType type : ColumnType.values())
             if (type.getMaxCharLength() == maxCharLength && type.getDataType().equals(dataType))
                 return type;
-        }
         return null;
     }
 
@@ -118,13 +114,13 @@ public enum ColumnType {
      * @return The dataType with parameter layout: DATA_TYPE(P,M)
      */
     public String getDataTypeStructured() {
-        if (this.cappedLength && this.decimal)
-            return this.name + "(" + this.cappedLength + "," + this.decimals + ")";
-        if (this.cappedLength)
-            return this.name + "(" + this.cappedLength + ")";
-        if (this.decimal)
-            return this.name + "(" + this.decimals + ")";
-        return this.name;
+        if (cappedLength && decimal)
+            return name + "(" + cappedLength + "," + decimals + ")";
+        if (cappedLength)
+            return name + "(" + cappedLength + ")";
+        if (decimal)
+            return name + "(" + decimals + ")";
+        return name;
     }
 
     /**
@@ -133,7 +129,7 @@ public enum ColumnType {
      * @return Whether or not this type is a varchar
      */
     public boolean isVarChar() {
-        return this.name.equals("varchar");
+        return name.equals("varchar");
     }
 
     /**
@@ -142,6 +138,6 @@ public enum ColumnType {
      * @return Whether or not this column has a defined max character length
      */
     public boolean hasCappedLength() {
-        return this.cappedLength;
+        return cappedLength;
     }
 }
