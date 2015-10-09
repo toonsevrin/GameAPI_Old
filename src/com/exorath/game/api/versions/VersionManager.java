@@ -56,16 +56,15 @@ public class VersionManager {
      */
     private void fetchRemote() {
         ResultSet rs = GameAPI.getSQLManager()
-                .executeQuery("SELECT * FROM " + VERSIONS_TABLENAME + " WHERE plugin='" + pluginName + "';");
+                .execute("SELECT * FROM " + VERSIONS_TABLENAME + " WHERE plugin='" + pluginName + "';");
         try {
             if (rs.next()) {
                 rMapsVersions = new VersionFiles(rs.getString(COLUMN_MAPS));
                 rConfigsVersions = new VersionFiles(rs.getString(COLUMN_CONFIGS));
                 rResourcesVersions = new VersionFiles(rs.getString(COLUMN_RESOURCES));
-            } else {
+            } else
                 GameAPI.printConsole(
                         "Version manager didn't find a row with the plugin name in table " + VERSIONS_TABLENAME);
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
